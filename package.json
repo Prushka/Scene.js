@@ -1,0 +1,27 @@
+{
+  "name": "js-library-lyudan1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/bundle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:bundle": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csc309-winter-2022/js-library-lyudan1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/csc309-winter-2022/js-library-lyudan1/issues"
+  },
+  "homepage": "https://github.com/csc309-winter-2022/js-library-lyudan1#readme",
+  "dependencies": {
+    "ts-loader": "^9.2.8",
+    "typescript": "^4.6.2",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  }
+}
