@@ -17,8 +17,10 @@ export type FrameAnimationConfig = { [key: number]: AnimationConfig }
 export interface PropConfig {
     name?: string,
     iconColor?: string,
+    iconStyle?: string,
     propId?: number,
     type?: PropType,
+    enabled?: boolean,
     frameAnimationConfig?: FrameAnimationConfig
 }
 
