@@ -7,7 +7,7 @@
 
 :root {
     --theme-dark-white: #F5F5F5;
-    --theme-dark-gray: #444444;
+    --theme-dark-gray: #1c1c1c;
 }
 
 .root-container{
@@ -34,13 +34,27 @@
     cursor: pointer;
 }
 
+.prop__list__item--not-selected {
+    color: black;
+}
+
+.prop__list__item--not-selected :is(p,i) {
+    color: black;
+}
+
+.prop__list__item--not-selected:hover{
+    background-color: var(--theme-dark-white);
+}
+
 .prop__list__item--selected {
     background-color: var(--theme-dark-gray);
 }
 
-.prop__list__item:hover{
-    background-color: var(--theme-dark-white);
+.prop__list__item--selected :is(p,i) {
+    color: white
 }
+
+
 
 .prop__list__item p {
     margin: 0 1rem;
@@ -48,9 +62,8 @@
     font-weight: 700;
 }
 
-.prop__list__item__icon {
+.prop__list__item i {
     font-size: 1.6rem;
-    color: black;
 }
 
 .test{
