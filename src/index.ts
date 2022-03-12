@@ -58,22 +58,24 @@ export class ConfigConstructor {
             afterRender: () => {
                 $('.prop__list__item').on("click", (e) => {
                     const [id] = extractIdType(e.target.id)
-                    this.toggleSelected = id
+                    this.toggleSelected(id)
                 })
             }
         }, {
             listeningSelectors: [".prop__property-container"], renderWith: (v:PropConfig) => {
                 if (v) {
                     return `<div class="prop__property-dialog">
-                            <div class="prop__property-dialog__header"><i class="bi bi-x pointer"></i></div>
+                            <div class="prop__property-dialog__header"><i id="prop-property-dialog-${v.propId}" class="bi bi-x pointer prop__property-dialog__close"></i></div>
                             <div class="prop__property-dialog__footer"><span>${v.name}</span></div>
                             </div>`
                 }
                 return ""
             },
             afterRender: () => {
-                $('.prop__list__item').on("click", (e) => {
-
+                $('.prop__property-dialog__close').on("click", (e) => {
+                    const [id] = extractIdType(e.target.id)
+                    console.log(e.target.id)
+                    this.toggleSelected(id)
                 })
             }
         })
@@ -119,7 +121,7 @@ export class ConfigConstructor {
         return null
     }
 
-    private set toggleSelected(prop: PropConfig | number) {
+    private toggleSelected(prop: PropConfig | number) {
         let _prop: PropConfig
         if (typeof prop == "number") {
             _prop = this.getPropById(prop)
