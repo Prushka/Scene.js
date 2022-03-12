@@ -3,16 +3,37 @@ import {AnimationConfig, FrameAnimationConfig, PropConfig, PropType, PropTypeIco
 
 export * as position from './props/Position'
 
-function convertTypeToReadable(type:PropType):string{
+function convertTypeToReadable(type: PropType): string {
     return `${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()}`
+}
+
+export interface SceneContextConfig {
+    totalFrames?: number
+}
+
+export class SceneContext {
+    protected _config: SceneContextConfig
+    protected _currentFrame: number = 0
+
+    public constructor(config?: SceneContextConfig) {
+        config = config || {}
+        config.totalFrames = config.totalFrames || 0
+        this._config = config
+    }
+
 }
 
 export class ConfigConstructor {
     protected ids: number = 0
     protected _props: Array<PropConfig> = []
-    protected currentFrame: number = 0
+    protected _sceneContext: SceneContext
 
-    public constructor() {
+    public constructor(context: SceneContext) {
+        this._sceneContext = context
+    }
+
+    public set ctx(context: SceneContext) {
+        this._sceneContext = context
     }
 
     public get props() {
@@ -57,7 +78,8 @@ export function demo() {
             }
         }
     }
-    const config: ConfigConstructor = new ConfigConstructor()
+    const context: SceneContext = new SceneContext()
+    const config: ConfigConstructor = new ConfigConstructor(context)
     config.addProp(getDemoLight(), getDemoLight(), getDemoLight(),
         getDemoLight(), getDemoLight()).displayRoot("#scene")
     console.log(config.props)
