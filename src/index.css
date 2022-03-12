@@ -7,6 +7,7 @@
 
 :root {
     --theme-dark-white: #F5F5F5;
+    --theme-dark-gray: #444444;
 }
 
 .root-container{
@@ -31,6 +32,10 @@
     padding: 10px 15px;
     align-items: center;
     cursor: pointer;
+}
+
+.prop__list__item--selected {
+    background-color: var(--theme-dark-gray);
 }
 
 .prop__list__item:hover{

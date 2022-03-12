@@ -48,7 +48,8 @@ export class ConfigConstructor {
     protected _ctx: SceneContext
     protected _selected?: StateListener<PropConfig> = createState()
         .populateSelectorWith({
-            listeningSelectors: [".prop__list"], populateWith: ()=>{
+            listeningSelectors: [".prop__list"], renderWith: (v)=>{
+                console.log(v)
                 const lst: Array<string> = this.props.map(prop => {
                     return `<div id='prop-list-${prop.propId}' class='prop__list__item'>
                     <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']} prop__list__item__icon"></i>
@@ -56,6 +57,12 @@ export class ConfigConstructor {
                     </div>`
                 })
                 return lst.join('')
+            },
+            afterRender: ()=>{
+                $('.prop__list__item').on("click", (e) => {
+                    const [id] = extractIdType(e.target.id)
+                    this.selected = id
+                })
             }
         })
 
@@ -112,11 +119,7 @@ export class ConfigConstructor {
         $(() => {
             $(selector).addClass("root-container")
                 .html(`<div class='prop__list'></div>`)
-            this._selected.update()
-            $('.prop__list__item').on("click", (e) => {
-                const [id] = extractIdType(e.target.id)
-                this.selected = id
-            })
+            this._selected.render()
         })
     }
 }

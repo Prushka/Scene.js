@@ -2,47 +2,49 @@
  * Copyright 2022 Dan Lyu.
  */
 
-export interface StateHTMLUpdater {
+export interface StateHTMLUpdater<T> {
     listeningSelectors: string[],
     // events: string[],
-    populateWith: () => string
+    renderWith: (value: T) => string
+    afterRender: () => void
 }
 
 export default class StateListener<T> {
     private _state: T
-    private _f: Array<StateHTMLUpdater> = []
+    private _f: Array<StateHTMLUpdater<T>> = []
 
     public constructor(defaultValue?: T) {
         this._state = defaultValue
     }
 
     public get(): T {
-        console.log(this._f[0][1]())
         return this._state
     }
 
-    public update(){
-        this.withSelectorPopulate((selector, populate) => {
-            $(selector).html(populate())
+    public render() {
+        this.withSelectorPopulate((selector, populate, afterRender) => {
+            $(selector).html(populate(this.get()))
+            afterRender()
         })
+
     }
 
     public set(value: T) {
         if (value !== this._state) {
             this._state = value
-            this.update()
+            this.render()
         }
     }
 
-    private withSelectorPopulate(f: (selector: string, populate: () => string) => void) {
+    private withSelectorPopulate(f: (selector: string, populate: (v: T) => string, afterRender: () => void) => void) {
         this._f.forEach(updater => {
             updater.listeningSelectors.forEach(selector => {
-                f(selector, updater.populateWith)
+                f(selector, updater.renderWith, updater.afterRender)
             })
         })
     }
 
-    public populateSelectorWith(...f: StateHTMLUpdater[]) {
+    public populateSelectorWith(...f: StateHTMLUpdater<T>[]) {
         this._f = this._f.concat(f)
         // // remove previous listeners
         // this.withUpdaterSelectorEvent((updater, selector, event) => {
