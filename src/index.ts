@@ -25,11 +25,13 @@ export interface SceneContextConfig {
 export class SceneContext {
     protected _config: SceneContextConfig
     public currentFrame: StateListener<number> = createState(0).populateSelectorWith({
-        listeningSelectors: [".prop__footer-container"], renderWith: (v: number) => {
-            if(this._config.totalFrames === 0){
-                return "<div class='prop__footer'></div>"
+        listeningSelectors: [".footer-container"], renderWith: (v: number) => {
+            if (this._config.totalFrames === 0) {
+                return `<div class='footer'>
+<div class="footer__button-group"> <div class="button button--purple pointer"><span>Play</span></div>
+<div class="button button--purple pointer"><span>Export</span></div></div></div>`
             }
-            return "<div class='prop__footer'></div>"
+            return "<div class='footer'></div>"
         },
         afterRender: () => {
         }
@@ -149,7 +151,7 @@ export class ConfigConstructor {
             $(selector).addClass("root-container")
                 .html(`<div class='prop__list-container'></div>
                                     <div class='prop__property-container'></div>
-                                    <div class='prop__footer-container'></div>`)
+                                    <div class="footer-container"></div>`)
             this._selected.set(this._props[0])
             StateListener.renderAll()
         })

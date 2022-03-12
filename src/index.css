@@ -8,6 +8,8 @@
 :root {
     --theme-dark-white: #F5F5F5;
     --theme-dark-gray: #1c1c1c;
+    --theme-purple: #8688BC;
+    --theme-dark-purple: #6565a1;
 }
 
 .pointer{
@@ -82,12 +84,47 @@
     font-size: 1.2rem;
 }
 
-.prop__footer{
+.footer{
     position: absolute;
     bottom: 0;
     width: 100%;
-    background-color: red;
-    height: 20px;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    display: flex;
+}
+
+.footer__button-group {
+    display: flex;
+    flex-direction: column;
+    width: 80px;
+}
+
+.button{
+    text-align: center;
+    align-self: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition-duration: 0.3s;
+    border-radius: 4px;
+    padding: 9px 13px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 8px
+}
+
+.button span{
+    font-family: Roboto, serif;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.button--purple:hover{
+    background-color: var(--theme-dark-purple);
+}
+
+.button--purple {
+    color: white;
+    background-color: var(--theme-purple);
 }
 
 .prop__list__item {
