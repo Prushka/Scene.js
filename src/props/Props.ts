@@ -15,7 +15,7 @@ export interface AnimationConfig extends OrientationConfig, PositionConfig {
 export type FrameAnimationConfig = { [key: number]: AnimationConfig }
 
 export interface PropConfig {
-    name: string,
+    name?: string,
     iconColor?: string,
     propId?: number,
     type?: PropType,

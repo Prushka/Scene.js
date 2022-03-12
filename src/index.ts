@@ -3,6 +3,10 @@ import {AnimationConfig, FrameAnimationConfig, PropConfig, PropType, PropTypeIco
 
 export * as position from './props/Position'
 
+function convertTypeToReadable(type:PropType):string{
+    return `${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()}`
+}
+
 export class ConfigConstructor {
     protected ids: number = 0
     protected _props: Array<PropConfig> = []
@@ -18,6 +22,7 @@ export class ConfigConstructor {
     public addProp<T extends PropConfig>(...propConfigs: T[]) {
         propConfigs.forEach(propConfig => {
             propConfig.propId = propConfig.propId || this.ids
+            propConfig.name = propConfig.name || `${convertTypeToReadable(propConfig.type)} ${propConfig.propId}`
             this.ids += 1
             this._props.push(propConfig)
         })
@@ -44,7 +49,6 @@ export class ConfigConstructor {
 export function demo() {
     const getDemoLight = () => {
         return {
-            name: "Hard Light",
             type: PropType.LIGHT,
             colorTemperature: 5000,
             frameAnimationConfig: {
