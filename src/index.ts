@@ -31,7 +31,7 @@ export class SceneContext {
             if (this._config.totalFrames !== 0) {
                 let frames = ""
                 for(let f = 0; f < this._config.totalFrames; f++){
-                    frames += `<div class="timeline__frame"></div>`
+                    frames += `<div id="timeline-frame-${f+1}" class="timeline__frame pointer">${f}</div>`
                 }
                 elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
                 buttons.push(`<div class="button button--purple pointer"><span>Play</span></div>`)
@@ -47,7 +47,7 @@ export class SceneContext {
 
     public constructor(config?: SceneContextConfig) {
         config = config || {}
-        config.totalFrames = config.totalFrames || 20
+        config.totalFrames = config.totalFrames || 5
         this._config = config
     }
 

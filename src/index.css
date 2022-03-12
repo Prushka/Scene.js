@@ -146,8 +146,13 @@
 }
 
 .timeline__frame{
-    height: 20px;
-    border-left: 4px solid var(--theme-pink);
+    /*height: 20px;*/
+    /*border-left: 4px solid var(--theme-pink);*/
+    background-color: var(--theme-pink);
+    color: white;
+    padding: 9px 15px 6px 15px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
 
 .prop__list__item {
