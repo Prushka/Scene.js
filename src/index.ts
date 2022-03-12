@@ -64,7 +64,7 @@ export class ConfigConstructor {
         },{
             listeningSelectors: [".prop__property-container"], renderWith: (v)=>{
                 if(v){
-                    return `<div class=""></div>`
+                    return `<div class="prop__property-dialog"></div>`
                 }
                 return ""
             },

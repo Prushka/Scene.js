@@ -32,9 +32,12 @@
 }
 
 .prop__property-container {
+}
+
+.prop__property-dialog {
     display: flex;
-    width: 200px;
-    height: 200px;
+    width: 400px;
+    height: 500px;
     background-color: white;
     right: 20px;
     bottom: 20px;
