@@ -28,9 +28,12 @@ export class SceneContext {
         listeningSelectors: [".footer-container"], renderWith: (v: number) => {
             let elements = ""
             const buttons = [`<div class="button button--purple pointer"><span>Export</span></div>`]
-            if (this._config.totalFrames === 0) {
-
-                elements = `<div class="timeline-container"><div class="timeline"></div></div>`
+            if (this._config.totalFrames !== 0) {
+                let frames = ""
+                for(let f = 0; f < this._config.totalFrames; f++){
+                    frames += `<div class="timeline__frame"></div>`
+                }
+                elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
                 buttons.push(`<div class="button button--purple pointer"><span>Play</span></div>`)
             }
             return `<div class='footer'>
@@ -44,7 +47,7 @@ export class SceneContext {
 
     public constructor(config?: SceneContextConfig) {
         config = config || {}
-        config.totalFrames = config.totalFrames || 0
+        config.totalFrames = config.totalFrames || 20
         this._config = config
     }
 

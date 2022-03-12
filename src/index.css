@@ -140,6 +140,16 @@
     border-top: 4px solid var(--theme-pink);
 }
 
+.timeline__frame-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.timeline__frame{
+    height: 20px;
+    border-left: 4px solid var(--theme-pink);
+}
+
 .prop__list__item {
     display: flex;
     padding: 10px 15px;
