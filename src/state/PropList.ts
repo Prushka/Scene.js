@@ -18,7 +18,7 @@ export function addProp(prop: PropConfig) {
     }
 }
 
-export const PropListReducer: StateReducer<PropConfig[]> = (state, action: Action) => {
+export const PropListReducer: StateReducer<PropConfig[]> = (state?, action?: Action) => {
     switch (action.type) {
         case PropListAction.ADD_PROP:
             return [
