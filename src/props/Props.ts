@@ -16,19 +16,39 @@ export type FrameAnimationConfig = { [key: number]: AnimationConfig }
 
 export interface PropConfig {
     name: string,
-    iconColor: string,
+    iconColor?: string,
     propId?: number,
     type?: PropType,
     frameAnimationConfig?: FrameAnimationConfig
 }
 
 export enum PropType {
-    TABLE,
-    LIGHT,
-    CHARACTER,
-    CAMERA,
-    SCRIPT,
-    STORYBOARD
+    TABLE= "TABLE",
+    LIGHT= "LIGHT",
+    CHARACTER= "CHARACTER",
+    CAMERA= "CAMERA",
+    SCRIPT= "SCRIPT",
+    STORYBOARD= "STORYBOARD"
+}
+
+export interface PropTypeIcon {
+    default: string,
+    enabled: string,
+    disabled: string,
+    styles?: {[key: string]:string}
+}
+
+export const PropTypeIcons: {[key in PropType]: PropTypeIcon} = {
+    TABLE:  {
+        default: "bi-triangle",
+        enabled: "bi-triangle",
+        disabled: "bi-exclamation-triangle-fill",
+    },
+    LIGHT: {
+        default: "bi-lightbulb",
+        enabled: "bi-lightbulb",
+        disabled: "bi-lightbulb-off",
+    }
 }
 
 export interface FurnitureConfig extends PropConfig {
