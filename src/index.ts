@@ -24,14 +24,14 @@ export interface SceneContextConfig {
 
 export class SceneContext {
     protected _config: SceneContextConfig
-    public currentFrame: StateListener<number> = createState(0).populateSelectorWith({
+    public currentFrame: StateListener<number> = createState(1).populateSelectorWith({
         listeningSelectors: [".footer-container"], renderWith: (v: number) => {
             let elements = ""
             const buttons = [`<div class="button button--purple pointer"><span>Export</span></div>`]
             if (this._config.totalFrames !== 0) {
                 let frames = ""
-                for(let f = 0; f < this._config.totalFrames; f++){
-                    frames += `<div id="timeline-frame-${f+1}" class="timeline__frame pointer">${f}</div>`
+                for (let f = 0; f < this._config.totalFrames; f++) {
+                    frames += `<div id="timeline-frame-${f + 1}" class="timeline__frame ${v===f+1?'timeline__frame--selected':'timeline__frame--not-selected'} pointer">${f}</div>`
                 }
                 elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
                 buttons.push(`<div class="button button--purple pointer"><span>Play</span></div>`)
@@ -42,6 +42,10 @@ export class SceneContext {
                     </div>`
         },
         afterRender: () => {
+            $('.timeline__frame').on("click", (e) => {
+                const [frame] = extractIdType(e.target.id)
+                this.currentFrame.set(frame)
+            })
         }
     })
 

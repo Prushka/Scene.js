@@ -11,6 +11,7 @@
     --theme-purple: #8688BC;
     --theme-dark-purple: #6565a1;
     --theme-pink: #EB7777;
+    --theme-dark-pink: #d96262;
 }
 
 .pointer{
@@ -150,9 +151,19 @@
     /*border-left: 4px solid var(--theme-pink);*/
     background-color: var(--theme-pink);
     color: white;
-    padding: 9px 15px 6px 15px;
+    padding: 7px 15px 4px 15px;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+    font-weight: 600;
+}
+
+.timeline__frame--selected{
+    background-color: var(--theme-purple);
+}
+
+.timeline__frame--not-selected:hover{
+    background-color: var(--theme-dark-pink);
+    transition-duration: 0.3s;
 }
 
 .prop__list__item {
