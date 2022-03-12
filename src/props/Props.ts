@@ -23,31 +23,33 @@ export interface PropConfig {
 }
 
 export enum PropType {
-    TABLE= "TABLE",
-    LIGHT= "LIGHT",
-    CHARACTER= "CHARACTER",
-    CAMERA= "CAMERA",
-    SCRIPT= "SCRIPT",
-    STORYBOARD= "STORYBOARD"
+    TABLE = "TABLE",
+    LIGHT = "LIGHT",
+    // CHARACTER = "CHARACTER",
+    // CAMERA = "CAMERA",
+    // SCRIPT = "SCRIPT",
+    // STORYBOARD = "STORYBOARD"
 }
 
-export interface PropTypeIcon {
-    default: string,
+export interface PropTypeStyleIcon {
     enabled: string,
     disabled: string,
-    styles?: {[key: string]:string}
 }
 
-export const PropTypeIcons: {[key in PropType]: PropTypeIcon} = {
-    TABLE:  {
-        default: "bi-triangle",
-        enabled: "bi-triangle",
-        disabled: "bi-exclamation-triangle-fill",
+export type PropTypeIcon = { [key: string]: PropTypeStyleIcon }
+
+export const PropTypeIcons: { [key in PropType]: PropTypeIcon } = {
+    TABLE: {
+        default: {
+            enabled: "bi-triangle",
+            disabled: "bi-exclamation-triangle-fill",
+        }
     },
     LIGHT: {
-        default: "bi-lightbulb",
-        enabled: "bi-lightbulb",
-        disabled: "bi-lightbulb-off",
+        default: {
+            enabled: "bi-lightbulb",
+            disabled: "bi-lightbulb-off",
+        }
     }
 }
 
