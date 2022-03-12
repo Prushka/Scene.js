@@ -47,6 +47,17 @@ export class ConfigConstructor {
     protected _props: Array<PropConfig> = []
     protected _ctx: SceneContext
     protected _selected?: StateListener<PropConfig> = createState()
+        .populateSelectorWith({
+            listeningSelectors: [".prop__list"], populateWith: ()=>{
+                const lst: Array<string> = this.props.map(prop => {
+                    return `<div id='prop-list-${prop.propId}' class='prop__list__item'>
+                    <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']} prop__list__item__icon"></i>
+                    <p id='prop-list-text-${prop.propId}'>${prop.name}</p>
+                    </div>`
+                })
+                return lst.join('')
+            }
+        })
 
     public constructor(context: SceneContext) {
         this.ctx = context
@@ -89,30 +100,19 @@ export class ConfigConstructor {
         return null
     }
 
-    private getPropListHtml() {
-        const lst: Array<string> = this.props.map(prop => {
-            return `<div id='prop-list-${prop.propId}' class='prop__list__item'>
-                    <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']} prop__list__item__icon"></i>
-                    <p id='prop-list-text-${prop.propId}'>${prop.name}</p>
-                    </div>`
-        })
-        return lst.join('')
-    }
-
-    private set selected(prop:PropConfig | number){
-        if(typeof prop == "number"){
-            this._selected = this.getPropById(prop)
-        }else{
-            this._selected = prop
+    private set selected(prop: PropConfig | number) {
+        if (typeof prop == "number") {
+            this._selected.set(this.getPropById(prop))
+        } else {
+            this._selected.set(prop)
         }
     }
 
     public displayRoot(selector: string) {
-
         $(() => {
             $(selector).addClass("root-container")
-                .html(`<div class='prop__list'>${this.getPropListHtml()}</div>`)
-
+                .html(`<div class='prop__list'></div>`)
+            this._selected.update()
             $('.prop__list__item').on("click", (e) => {
                 const [id] = extractIdType(e.target.id)
                 this.selected = id
