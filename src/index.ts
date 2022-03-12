@@ -25,7 +25,7 @@ export class ConfigConstructor {
 
     private getPropListHtml() {
         const lst: Array<string> = this.props.map(prop => {
-            return `<div class='prop__list__item'>${prop.name}</div>`
+            return `<div class='prop__list__item'><i class="bi-alarm prop__list__item__icon"></i><p>${prop.name}</p></div>`
         })
         return lst.join('')
     }
