@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     target: "web",
-    mode: "production",
+    mode: "development",
     entry: "./src/index.ts",
     output: {
         library: {
