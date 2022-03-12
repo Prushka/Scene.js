@@ -14,7 +14,7 @@ export class ConfigConstructor {
         return this._props
     }
 
-    public addProp<T extends PropConfig>(propType: PropType, propConfig: T,
+    public addProp<T extends PropConfig>(propConfig: T,
                                          propAnimations?: FrameAnimationConfig) {
         propConfig.propId = propConfig.propId || this.ids
         propConfig.frameAnimationConfig = propConfig.frameAnimationConfig || propAnimations
@@ -23,20 +23,34 @@ export class ConfigConstructor {
         return this
     }
 
+    private getPropListHtml() {
+        const lst: Array<string> = this.props.map(prop => {
+            return `<div class='prop__list__item'>${prop.name}</div>`
+        })
+        return lst.join('')
+    }
+
+    public displayRoot(selector: string) {
+        $(() => {
+            $(selector).addClass("root-container")
+                .html(`<div class='prop__list'>${this.getPropListHtml()}</div>`)
+        })
+    }
 }
 
 export function demo() {
     const config: ConfigConstructor = new ConfigConstructor()
-    config.addProp(PropType.LIGHT, {
-        name: "Light", iconColor: "#000000", colorTemperature: 5000
-    }, {
-        1: {enabled: true, x: 200, y: 200, degree: 30}
-    })
+    config.addProp({
+        name: "Light", iconColor: "#000000",
+        type: PropType.LIGHT,
+        colorTemperature: 5000,
+        frameAnimationConfig: {
+            1: {x: 200, y: 200, degree: 30},
+            2: {x: 20, y: 20, degree: 30, isOffset: false}
+        }
+    }).displayRoot("#scene")
     console.log(config.props)
-    $(() => {
-        $("#scene").addClass("root-container")
-            .html("<p class='test'>tewst12</p>")
-    })
+
     return new Position(1, 1)
 }
 

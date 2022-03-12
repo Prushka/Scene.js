@@ -4,6 +4,16 @@
     background-color: rgb(230,230,230);
 }
 
+.prop__list{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.prop__list__item {
+
+}
+
 .test{
     color:red;
 }

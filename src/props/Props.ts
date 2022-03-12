@@ -1,6 +1,6 @@
 export interface PositionConfig {
-    x?: number,
-    y?: number
+    x: number,
+    y: number
 }
 
 export interface OrientationConfig {
@@ -8,7 +8,8 @@ export interface OrientationConfig {
 }
 
 export interface AnimationConfig extends OrientationConfig, PositionConfig {
-    enabled: boolean
+    enabled?: boolean,
+    isOffset?: boolean
 }
 
 export type FrameAnimationConfig = { [key: number]: AnimationConfig }
