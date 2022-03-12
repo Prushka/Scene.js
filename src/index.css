@@ -45,7 +45,7 @@
     height: 500px;
     background-color: white;
     right: 20px;
-    bottom: 20px;
+    bottom: 80px;
     position: absolute;
 }
 
@@ -75,8 +75,20 @@
 .prop__property-dialog__footer span{
     font-size: 1.2rem;
     font-weight: 700;
+    margin-left: 15px;
 }
 
+.prop__property-dialog__footer i{
+    font-size: 1.2rem;
+}
+
+.prop__footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: red;
+    height: 20px;
+}
 
 .prop__list__item {
     display: flex;
