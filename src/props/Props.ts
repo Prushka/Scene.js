@@ -7,9 +7,15 @@ export interface OrientationConfig {
     degree?: number
 }
 
-export interface PropConfig extends OrientationConfig, PositionConfig{
+export interface AnimationConfig extends OrientationConfig, PositionConfig {
+    enabled: boolean,
+    propId: string
+}
+
+export interface PropConfig {
     name: string,
-    iconColor: string
+    iconColor: string,
+    propId: string
 }
 
 export enum PropType {
