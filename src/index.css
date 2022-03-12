@@ -10,6 +10,7 @@
     --theme-dark-gray: #1c1c1c;
     --theme-purple: #8688BC;
     --theme-dark-purple: #6565a1;
+    --theme-pink: #EB7777;
 }
 
 .pointer{
@@ -127,6 +128,18 @@
     background-color: var(--theme-purple);
 }
 
+.timeline-container{
+    flex-direction: column;
+    width: 100%;
+    margin-top: auto;
+    padding: 5px 20px;
+}
+
+.timeline{
+    width: 100%;
+    border-top: 4px solid var(--theme-pink);
+}
+
 .prop__list__item {
     display: flex;
     padding: 10px 15px;
@@ -161,8 +174,4 @@
 
 .prop__list__item i {
     font-size: 1.6rem;
-}
-
-.test {
-    color: red;
 }

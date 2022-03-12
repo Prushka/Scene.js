@@ -26,12 +26,17 @@ export class SceneContext {
     protected _config: SceneContextConfig
     public currentFrame: StateListener<number> = createState(0).populateSelectorWith({
         listeningSelectors: [".footer-container"], renderWith: (v: number) => {
+            let elements = ""
+            const buttons = [`<div class="button button--purple pointer"><span>Export</span></div>`]
             if (this._config.totalFrames === 0) {
-                return `<div class='footer'>
-<div class="footer__button-group"> <div class="button button--purple pointer"><span>Play</span></div>
-<div class="button button--purple pointer"><span>Export</span></div></div></div>`
+
+                elements = `<div class="timeline-container"><div class="timeline"></div></div>`
+                buttons.push(`<div class="button button--purple pointer"><span>Play</span></div>`)
             }
-            return "<div class='footer'></div>"
+            return `<div class='footer'>
+                    <div class="footer__button-group">${buttons.join('')}</div>
+                    ${elements}
+                    </div>`
         },
         afterRender: () => {
         }
