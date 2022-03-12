@@ -3,8 +3,9 @@
  */
 
 import Position from "./props/Position";
-import {PropConfig, PropType, PropTypeIcons} from "./props/Props";
+import {AnimationConfig, PropConfig, PropType, PropTypeIcons} from "./props/Props";
 import StateListener, {createState} from "./StateListener";
+import Coordinates = JQuery.Coordinates;
 
 export * as position from './props/Position'
 
@@ -31,7 +32,7 @@ export class SceneContext {
             if (this._config.totalFrames !== 0) {
                 let frames = ""
                 for (let f = 0; f < this._config.totalFrames; f++) {
-                    frames += `<div id="timeline-frame-${f + 1}" class="timeline__frame ${v===f+1?'timeline__frame--selected':'timeline__frame--not-selected'} pointer">${f}</div>`
+                    frames += `<div id="timeline-frame-${f + 1}" class="timeline__frame ${v === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
                 }
                 elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
                 buttons.push(`<div class="button button--purple pointer"><span>Play</span></div>`)
@@ -67,7 +68,6 @@ export class SceneContext {
 
 export class ConfigConstructor {
     protected ids: number = 0
-    protected _props: Array<PropConfig> = []
     protected _ctx: SceneContext
     protected _selected?: StateListener<PropConfig> = createState()
         .populateSelectorWith({
@@ -103,6 +103,40 @@ export class ConfigConstructor {
             }
         })
 
+
+    protected _props: StateListener<PropConfig[]> = createState([]).populateSelectorWith(
+        {
+            listeningSelectors: [".view-container"], renderWith: (v: PropConfig[]) =>
+                v.map(prop => {
+                    const position: AnimationConfig = this.getPropPosition(prop)
+                    return `<div class="view__prop" style="left:${position.x}px;bottom: ${position.y}px">
+<i id='prop-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
+</div>`
+                }),
+            afterRender: () => {
+                let mouseX, mouseY
+                let dragging: boolean = false
+                $('.view__prop').on("dragstart", (e) => {
+                    console.log(e)
+                })
+                $('.view-container').on("mousedown", (e) => {
+                    e.preventDefault()
+                    mouseX = e.clientX
+                    mouseY = e.clientY
+                    dragging = true
+                }).on("mousemove", (e) => {
+                    e.preventDefault()
+                    if (dragging) {
+
+                    }
+                }).on("mouseup", (e) => {
+                    e.preventDefault()
+                    dragging = false
+                })
+            }
+        }
+    )
+
     public constructor(context: SceneContext) {
         this.ctx = context
     }
@@ -111,19 +145,30 @@ export class ConfigConstructor {
         this._ctx = context
     }
 
+    public get ctx() {
+        return this._ctx
+    }
+
     public get props() {
-        return this._props
+        return this._props.get()
     }
 
     public addProp<T extends PropConfig>(...propConfigs: T[]): ConfigConstructor {
+        const _props = [...this.props]
         propConfigs.forEach(propConfig => {
             propConfig.iconStyle = propConfig.iconStyle || "default"
             propConfig.propId = propConfig.propId || this.ids
             propConfig.enabled = propConfig.enabled === undefined ? true : propConfig.enabled
             propConfig.name = propConfig.name || `${convertTypeToReadable(propConfig.type)} ${propConfig.propId}`
+            if (propConfig.frameAnimationConfig) {
+                for (let key in propConfig.frameAnimationConfig) {
+                    propConfig.frameAnimationConfig[key].enabled = propConfig.frameAnimationConfig[key].enabled === undefined ? true : propConfig.frameAnimationConfig[key].enabled
+                }
+            }
             this.ids += 1
-            this._props.push(propConfig)
+            _props.push(propConfig)
         })
+        this._props.set(_props)
         return this
     }
 
@@ -136,12 +181,20 @@ export class ConfigConstructor {
     }
 
     private getPropById(id: number): PropConfig | null {
-        for (const prop of this._props) {
+        for (const prop of this.props) {
             if (prop.propId === id) {
                 return prop
             }
         }
         return null
+    }
+
+    private getPropPosition(prop: PropConfig): AnimationConfig | null {
+        if (this.ctx.isStatic) {
+            return prop.staticPosition
+        } else {
+            return prop.frameAnimationConfig[this.ctx.currentFrame.get()]
+        }
     }
 
     private toggleSelected(prop: PropConfig | number) {
@@ -158,14 +211,21 @@ export class ConfigConstructor {
         }
     }
 
+    private offset: Coordinates
+
     public displayRoot(selector: string) {
         $(() => {
+
             $(selector).addClass("root-container")
                 .html(`<div class='prop__list-container'></div>
                                     <div class='prop__property-container'></div>
+                                    <div class='view-container'></div>
                                     <div class="footer-container"></div>`)
-            this._selected.set(this._props[0])
+
+            // this._selected.set(this.props[0])
             StateListener.renderAll()
+            this.offset = $(selector).offset()
+            console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
         })
     }
 }
@@ -176,6 +236,9 @@ export function demo() {
             type: PropType.LIGHT,
             colorTemperature: 5000,
             enabled: false,
+            staticPosition: {
+                x: 180, y: 100, degree: 30
+            },
             frameAnimationConfig: {
                 1: {x: 200, y: 200, degree: 30},
                 2: {x: 20, y: 20, degree: 30, isOffset: false}
@@ -187,8 +250,11 @@ export function demo() {
         return {
             type: PropType.TABLE,
             enabled: true,
+            staticPosition: {
+                x: 280, y: 200, degree: 30
+            },
             frameAnimationConfig: {
-                1: {x: 200, y: 200, degree: 30},
+                1: {x: 280, y: 200, degree: 30},
                 2: {x: 20, y: 20, degree: 30, isOffset: false}
             }
         }

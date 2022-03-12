@@ -25,6 +25,7 @@ export interface PropConfig {
     propId?: number,
     type?: PropType,
     enabled?: boolean,
+    staticPosition?: AnimationConfig,
     frameAnimationConfig?: FrameAnimationConfig
 }
 

@@ -201,3 +201,13 @@
 .prop__list__item i {
     font-size: 1.6rem;
 }
+
+.view-container{
+    width: 100%;
+    height: 100%;
+    cursor: move;
+}
+
+.view__prop{
+    position: absolute;
+}
