@@ -24,7 +24,16 @@ export interface SceneContextConfig {
 
 export class SceneContext {
     protected _config: SceneContextConfig
-    public currentFrame: number = 0
+    public currentFrame: StateListener<number> = createState(0).populateSelectorWith({
+        listeningSelectors: [".prop__footer-container"], renderWith: (v: number) => {
+            if(this._config.totalFrames === 0){
+                return "<div class='prop__footer'></div>"
+            }
+            return "<div class='prop__footer'></div>"
+        },
+        afterRender: () => {
+        }
+    })
 
     public constructor(config?: SceneContextConfig) {
         config = config || {}
@@ -48,7 +57,7 @@ export class ConfigConstructor {
     protected _ctx: SceneContext
     protected _selected?: StateListener<PropConfig> = createState()
         .populateSelectorWith({
-            listeningSelectors: [".prop__list-container"], renderWith: (v:PropConfig) =>
+            listeningSelectors: [".prop__list-container"], renderWith: (v: PropConfig) =>
                 this.props.map(prop => {
                     return `<div id='prop-list-${prop.propId}' class='pointer prop__list__item  ${v === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
                     <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
@@ -62,11 +71,11 @@ export class ConfigConstructor {
                 })
             }
         }, {
-            listeningSelectors: [".prop__property-container"], renderWith: (v:PropConfig) => {
+            listeningSelectors: [".prop__property-container"], renderWith: (v: PropConfig) => {
                 if (v) {
                     return `<div class="prop__property-dialog">
                             <div class="prop__property-dialog__header"><i id="prop-property-dialog-${v.propId}" class="bi bi-x pointer prop__property-dialog__close"></i></div>
-                            <div class="prop__property-dialog__footer"><span>${v.name}</span></div>
+                            <div class="prop__property-dialog__footer"><i id='prop-property-dialog-icon-${v.propId}' class="${PropTypeIcons[v.type][v.iconStyle][this.isPropEnabled(v) ? 'enabled' : 'disabled']}"></i> <span>${v.name}</span></div>
                             </div>`
                 }
                 return ""
@@ -138,9 +147,11 @@ export class ConfigConstructor {
     public displayRoot(selector: string) {
         $(() => {
             $(selector).addClass("root-container")
-                .html(`<div class='prop__list-container'></div><div class='prop__property-container'></div>`)
+                .html(`<div class='prop__list-container'></div>
+                                    <div class='prop__property-container'></div>
+                                    <div class='prop__footer-container'></div>`)
             this._selected.set(this._props[0])
-            this._selected.render()
+            StateListener.renderAll()
         })
     }
 }

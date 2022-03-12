@@ -12,9 +12,15 @@ export interface StateHTMLUpdater<T> {
 export default class StateListener<T> {
     private _state: T
     private _f: Array<StateHTMLUpdater<T>> = []
+    private static globalStates: StateListener<any>[] = []
+
+    public static renderAll() {
+        StateListener.globalStates.forEach(s => s.render())
+    }
 
     public constructor(defaultValue?: T) {
         this._state = defaultValue
+        StateListener.globalStates.push(this)
     }
 
     public get(): T {
@@ -25,7 +31,7 @@ export default class StateListener<T> {
         this.withSelectorPopulate((selector, populate, afterRender) => {
             const html: string | string[] = populate(this.get())
             $(selector).html(Array.isArray(html) ? html.join('') : html)
-            if(afterRender){
+            if (afterRender) {
                 afterRender()
             }
         })
