@@ -8,15 +8,17 @@ export interface OrientationConfig {
 }
 
 export interface AnimationConfig extends OrientationConfig, PositionConfig {
-    enabled: boolean,
-    propId: string
+    enabled: boolean
 }
+
+export type FrameAnimationConfig = { [key: number]: AnimationConfig }
 
 export interface PropConfig {
     name: string,
     iconColor: string,
     propId?: number,
-    type?: PropType
+    type?: PropType,
+    frameAnimationConfig?: FrameAnimationConfig
 }
 
 export enum PropType {
