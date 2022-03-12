@@ -49,13 +49,12 @@ export class ConfigConstructor {
     protected _selected?: StateListener<PropConfig> = createState()
         .populateSelectorWith({
             listeningSelectors: [".prop__list"], renderWith: (v)=>{
-                const lst: Array<string> = this.props.map(prop => {
+                return this.props.map(prop => {
                     return `<div id='prop-list-${prop.propId}' class='prop__list__item  ${v===prop?"prop__list__item--selected":"prop__list__item--not-selected"}'>
                     <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
                     <p id='prop-list-text-${prop.propId}'>${prop.name}</p>
                     </div>`
                 })
-                return lst.join('')
             },
             afterRender: ()=>{
                 $('.prop__list__item').on("click", (e) => {

@@ -5,7 +5,7 @@
 export interface StateHTMLUpdater<T> {
     listeningSelectors: string[],
     // events: string[],
-    renderWith: (value: T) => string
+    renderWith: (value: T) => string | string[]
     afterRender: () => void
 }
 
@@ -23,7 +23,8 @@ export default class StateListener<T> {
 
     public render() {
         this.withSelectorPopulate((selector, populate, afterRender) => {
-            $(selector).html(populate(this.get()))
+            const html: string | string[] = populate(this.get())
+            $(selector).html(Array.isArray(html) ? html.join('') : html)
             afterRender()
         })
 
@@ -36,7 +37,7 @@ export default class StateListener<T> {
         }
     }
 
-    private withSelectorPopulate(f: (selector: string, populate: (v: T) => string, afterRender: () => void) => void) {
+    private withSelectorPopulate(f: (selector: string, populate: (v: T) => string | string[], afterRender: () => void) => void) {
         this._f.forEach(updater => {
             updater.listeningSelectors.forEach(selector => {
                 f(selector, updater.renderWith, updater.afterRender)
