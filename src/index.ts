@@ -48,7 +48,7 @@ export class ConfigConstructor {
     protected _ctx: SceneContext
     protected _selected?: StateListener<PropConfig> = createState()
         .populateSelectorWith({
-            listeningSelectors: [".prop__list"], renderWith: (v) =>
+            listeningSelectors: [".prop__list-container"], renderWith: (v) =>
                 this.props.map(prop => {
                     return `<div id='prop-list-${prop.propId}' class='prop__list__item  ${v === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
                     <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
@@ -61,6 +61,13 @@ export class ConfigConstructor {
                     this.toggleSelected = id
                 })
             }
+        },{
+            listeningSelectors: [".prop__property-container"], renderWith: (v)=>{
+                if(v){
+                    return `<div class=""></div>`
+                }
+                return ""
+            },
         })
 
     public constructor(context: SceneContext) {
@@ -121,7 +128,7 @@ export class ConfigConstructor {
     public displayRoot(selector: string) {
         $(() => {
             $(selector).addClass("root-container")
-                .html(`<div class='prop__list'></div>`)
+                .html(`<div class='prop__list-container'></div><div class='prop__property-container'></div>`)
             this._selected.render()
         })
     }

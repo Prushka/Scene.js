@@ -6,7 +6,7 @@ export interface StateHTMLUpdater<T> {
     listeningSelectors: string[],
     // events: string[],
     renderWith: (value: T) => string | string[]
-    afterRender: () => void
+    afterRender?: () => void
 }
 
 export default class StateListener<T> {
@@ -25,7 +25,9 @@ export default class StateListener<T> {
         this.withSelectorPopulate((selector, populate, afterRender) => {
             const html: string | string[] = populate(this.get())
             $(selector).html(Array.isArray(html) ? html.join('') : html)
-            afterRender()
+            if(afterRender){
+                afterRender()
+            }
         })
 
     }

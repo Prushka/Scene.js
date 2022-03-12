@@ -15,9 +15,10 @@
     height: 100%;
     background-color: var(--theme-dark-white);
     font-family: Comfortaa, serif;
+    position: relative;
 }
 
-.prop__list{
+.prop__list-container{
     display: flex;
     flex-direction: column;
 
@@ -25,6 +26,19 @@
     max-height: 200px;
     overflow: auto;
     background-color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.prop__property-container {
+    display: flex;
+    width: 200px;
+    height: 200px;
+    background-color: white;
+    right: 20px;
+    bottom: 20px;
+    position: absolute;
 }
 
 .prop__list__item {
