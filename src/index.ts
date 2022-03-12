@@ -1,5 +1,10 @@
+/*
+ * Copyright 2022 Dan Lyu.
+ */
+
 import Position from "./props/Position";
 import {AnimationConfig, FrameAnimationConfig, PropConfig, PropType, PropTypeIcons} from "./props/Props";
+import StateListener, {createState} from "./StateListener";
 
 export * as position from './props/Position'
 
@@ -41,7 +46,7 @@ export class ConfigConstructor {
     protected ids: number = 0
     protected _props: Array<PropConfig> = []
     protected _ctx: SceneContext
-    protected _selected?: PropConfig
+    protected _selected?: StateListener<PropConfig> = createState()
 
     public constructor(context: SceneContext) {
         this.ctx = context
@@ -94,6 +99,14 @@ export class ConfigConstructor {
         return lst.join('')
     }
 
+    private set selected(prop:PropConfig | number){
+        if(typeof prop == "number"){
+            this._selected = this.getPropById(prop)
+        }else{
+            this._selected = prop
+        }
+    }
+
     public displayRoot(selector: string) {
 
         $(() => {
@@ -101,7 +114,8 @@ export class ConfigConstructor {
                 .html(`<div class='prop__list'>${this.getPropListHtml()}</div>`)
 
             $('.prop__list__item').on("click", (e) => {
-                console.log(extractIdType(e.target.id))
+                const [id] = extractIdType(e.target.id)
+                this.selected = id
             })
         })
     }

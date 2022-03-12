@@ -1,3 +1,7 @@
+/*
+ * Copyright 2022 Dan Lyu.
+ */
+
 export interface PositionConfig {
     x: number,
     y: number
