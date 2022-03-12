@@ -7,6 +7,12 @@ function convertTypeToReadable(type: PropType): string {
     return `${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()}`
 }
 
+function extractIdType(htmlID: string): [number, string] {
+    const id: number = parseInt(htmlID.match(/\d+/)[0])
+    const type: string = htmlID.replace(/-\d+/, '')
+    return [id, type]
+}
+
 export interface SceneContextConfig {
     totalFrames?: number
 }
@@ -35,9 +41,10 @@ export class ConfigConstructor {
     protected ids: number = 0
     protected _props: Array<PropConfig> = []
     protected _ctx: SceneContext
+    protected _selected?: PropConfig
 
     public constructor(context: SceneContext) {
-        this._ctx = context
+        this.ctx = context
     }
 
     public set ctx(context: SceneContext) {
@@ -68,19 +75,34 @@ export class ConfigConstructor {
         }
     }
 
+    private getPropById(id: number): PropConfig | null {
+        for (const prop of this._props) {
+            if (prop.propId === id) {
+                return prop
+            }
+        }
+        return null
+    }
+
     private getPropListHtml() {
         const lst: Array<string> = this.props.map(prop => {
             return `<div id='prop-list-${prop.propId}' class='prop__list__item'>
-                    <i class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']} prop__list__item__icon"></i><p>${prop.name}</p>
+                    <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']} prop__list__item__icon"></i>
+                    <p id='prop-list-text-${prop.propId}'>${prop.name}</p>
                     </div>`
         })
         return lst.join('')
     }
 
     public displayRoot(selector: string) {
+
         $(() => {
             $(selector).addClass("root-container")
                 .html(`<div class='prop__list'>${this.getPropListHtml()}</div>`)
+
+            $('.prop__list__item').on("click", (e) => {
+                console.log(extractIdType(e.target.id))
+            })
         })
     }
 }
