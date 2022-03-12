@@ -3,7 +3,7 @@
  */
 
 import Position from "./props/Position";
-import {AnimationConfig, FrameAnimationConfig, PropConfig, PropType, PropTypeIcons} from "./props/Props";
+import {PropConfig, PropType, PropTypeIcons} from "./props/Props";
 import StateListener, {createState} from "./StateListener";
 
 export * as position from './props/Position'
@@ -48,18 +48,17 @@ export class ConfigConstructor {
     protected _ctx: SceneContext
     protected _selected?: StateListener<PropConfig> = createState()
         .populateSelectorWith({
-            listeningSelectors: [".prop__list"], renderWith: (v)=>{
-                return this.props.map(prop => {
-                    return `<div id='prop-list-${prop.propId}' class='prop__list__item  ${v===prop?"prop__list__item--selected":"prop__list__item--not-selected"}'>
+            listeningSelectors: [".prop__list"], renderWith: (v) =>
+                this.props.map(prop => {
+                    return `<div id='prop-list-${prop.propId}' class='prop__list__item  ${v === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
                     <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
                     <p id='prop-list-text-${prop.propId}'>${prop.name}</p>
                     </div>`
-                })
-            },
-            afterRender: ()=>{
+                }),
+            afterRender: () => {
                 $('.prop__list__item').on("click", (e) => {
                     const [id] = extractIdType(e.target.id)
-                    this.selected = id
+                    this.toggleSelected = id
                 })
             }
         })
@@ -105,11 +104,17 @@ export class ConfigConstructor {
         return null
     }
 
-    private set selected(prop: PropConfig | number) {
+    private set toggleSelected(prop: PropConfig | number) {
+        let _prop : PropConfig
         if (typeof prop == "number") {
-            this._selected.set(this.getPropById(prop))
+            _prop = this.getPropById(prop)
         } else {
-            this._selected.set(prop)
+            _prop = prop
+        }
+        if(_prop === this._selected.get()){
+            this._selected.set(null)
+        }else{
+            this._selected.set(_prop)
         }
     }
 
@@ -134,10 +139,20 @@ export function demo() {
             }
         }
     }
+
+    const getDemoTable = () => {
+        return {
+            type: PropType.TABLE,
+            enabled: true,
+            frameAnimationConfig: {
+                1: {x: 200, y: 200, degree: 30},
+                2: {x: 20, y: 20, degree: 30, isOffset: false}
+            }
+        }
+    }
     const context: SceneContext = new SceneContext()
     const config: ConfigConstructor = new ConfigConstructor(context)
-    config.addProp(getDemoLight(), getDemoLight(), getDemoLight(),
-        getDemoLight(), getDemoLight()).displayRoot("#scene")
+    config.addProp(getDemoLight(), getDemoLight(), getDemoTable(), getDemoLight(), getDemoTable()).displayRoot("#scene")
     console.log(config.props)
 
     return new Position(1, 1)
