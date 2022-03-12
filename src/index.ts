@@ -48,11 +48,11 @@ export class ConfigConstructor {
     protected _ctx: SceneContext
     protected _selected?: StateListener<PropConfig> = createState()
         .populateSelectorWith({
-            listeningSelectors: [".prop__list-container"], renderWith: (v) =>
+            listeningSelectors: [".prop__list-container"], renderWith: (v:PropConfig) =>
                 this.props.map(prop => {
-                    return `<div id='prop-list-${prop.propId}' class='prop__list__item  ${v === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
+                    return `<div id='prop-list-${prop.propId}' class='pointer prop__list__item  ${v === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
                     <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
-                    <p id='prop-list-text-${prop.propId}'>${prop.name}</p>
+                    <span id='prop-list-text-${prop.propId}'>${prop.name}</span>
                     </div>`
                 }),
             afterRender: () => {
@@ -61,13 +61,21 @@ export class ConfigConstructor {
                     this.toggleSelected = id
                 })
             }
-        },{
-            listeningSelectors: [".prop__property-container"], renderWith: (v)=>{
-                if(v){
-                    return `<div class="prop__property-dialog"></div>`
+        }, {
+            listeningSelectors: [".prop__property-container"], renderWith: (v:PropConfig) => {
+                if (v) {
+                    return `<div class="prop__property-dialog">
+                            <div class="prop__property-dialog__header"><i class="bi bi-x pointer"></i></div>
+                            <div class="prop__property-dialog__footer"><span>${v.name}</span></div>
+                            </div>`
                 }
                 return ""
             },
+            afterRender: () => {
+                $('.prop__list__item').on("click", (e) => {
+
+                })
+            }
         })
 
     public constructor(context: SceneContext) {
@@ -112,15 +120,15 @@ export class ConfigConstructor {
     }
 
     private set toggleSelected(prop: PropConfig | number) {
-        let _prop : PropConfig
+        let _prop: PropConfig
         if (typeof prop == "number") {
             _prop = this.getPropById(prop)
         } else {
             _prop = prop
         }
-        if(_prop === this._selected.get()){
+        if (_prop === this._selected.get()) {
             this._selected.set(null)
-        }else{
+        } else {
             this._selected.set(_prop)
         }
     }
@@ -129,6 +137,7 @@ export class ConfigConstructor {
         $(() => {
             $(selector).addClass("root-container")
                 .html(`<div class='prop__list-container'></div><div class='prop__property-container'></div>`)
+            this._selected.set(this._props[0])
             this._selected.render()
         })
     }

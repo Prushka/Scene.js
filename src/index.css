@@ -10,7 +10,11 @@
     --theme-dark-gray: #1c1c1c;
 }
 
-.root-container{
+.pointer{
+    cursor: pointer;
+}
+
+.root-container {
     width: 100%;
     height: 100%;
     background-color: var(--theme-dark-white);
@@ -18,7 +22,7 @@
     position: relative;
 }
 
-.prop__list-container{
+.prop__list-container {
     display: flex;
     flex-direction: column;
 
@@ -36,6 +40,7 @@
 
 .prop__property-dialog {
     display: flex;
+    flex-direction: column;
     width: 400px;
     height: 500px;
     background-color: white;
@@ -44,22 +49,50 @@
     position: absolute;
 }
 
+.prop__property-dialog__header {
+    display: flex;
+    align-items: center;
+}
+
+.prop__property-dialog__header i{
+    font-size: 2.5rem;
+    align-self: end;
+    padding: 10px;
+    margin-left: auto;
+}
+
+.prop__property-dialog__footer {
+    display: flex;
+    margin-top: auto;
+    align-self: end;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.prop__property-dialog__footer span{
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+
 .prop__list__item {
     display: flex;
     padding: 10px 15px;
     align-items: center;
-    cursor: pointer;
 }
 
 .prop__list__item--not-selected {
     color: black;
 }
 
-.prop__list__item--not-selected :is(p,i) {
+.prop__list__item--not-selected :is(span,i) {
     color: black;
 }
 
-.prop__list__item--not-selected:hover{
+.prop__list__item--not-selected:hover {
     background-color: var(--theme-dark-white);
 }
 
@@ -67,13 +100,11 @@
     background-color: var(--theme-dark-gray);
 }
 
-.prop__list__item--selected :is(p,i) {
+.prop__list__item--selected :is(span,i) {
     color: white
 }
 
-
-
-.prop__list__item p {
+.prop__list__item span {
     margin: 0 1rem;
     font-size: 1rem;
     font-weight: 700;
@@ -83,6 +114,6 @@
     font-size: 1.6rem;
 }
 
-.test{
-    color:red;
+.test {
+    color: red;
 }
