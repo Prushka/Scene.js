@@ -15,7 +15,8 @@ export interface AnimationConfig extends OrientationConfig, PositionConfig {
 export interface PropConfig {
     name: string,
     iconColor: string,
-    propId: string
+    propId?: number,
+    type?: PropType
 }
 
 export enum PropType {
