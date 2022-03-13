@@ -3,7 +3,7 @@
  */
 
 import Position from "./props/Position";
-import {AnimationConfig, PositionConfig, PropConfig, PropType} from "./props/Props";
+import {AnimationConfig, FrameAnimationConfig, PositionConfig, PropConfig, PropType} from "./props/Props";
 import Coordinates = JQuery.Coordinates;
 import State, {createState} from "./state/State";
 import {convertTypeToReadable} from "./utils/Utils";
@@ -36,6 +36,17 @@ export class SceneContext {
         return this._config.totalFrames
     }
 
+    public set totalFrames(f: number) {
+        this._config.totalFrames = f
+    }
+
+}
+
+export class ViewPort {
+    viewPortOffset: State<PositionConfig> = createState({
+        x: 0, y: 0
+    })
+    viewPortScale: State<number> = createState(1)
 }
 
 export class Context {
@@ -43,10 +54,7 @@ export class Context {
     ctx: SceneContext
     selected: State<PropConfig> = createState()
     props: State<PropConfig[]> = createState([])
-    viewPortOffset: State<PositionConfig> = createState({
-        x: 0, y: 0
-    })
-    viewPortZoom: State<number> = createState(1)
+    viewports: State<{ [key: number]: ViewPort }> = createState({})
 
     public constructor(context: SceneContext) {
         this.ctx = context
@@ -118,7 +126,25 @@ export class Context {
         })
     }
 
+    public findMaxFrames(): number {
+        let max = 0
+        this.props.get().forEach(prop => {
+            const frameConfig: FrameAnimationConfig = prop.frameAnimationConfig
+            const _max: number = Number(Object.keys(frameConfig).reduce((a, b) => frameConfig[a] > frameConfig[b] ? a : b))
+            if (_max > max) {
+                max = _max
+            }
+        })
+        return max
+    }
+
+    private beforeDisplay() {
+        this.ctx.totalFrames = this.findMaxFrames()
+        console.log(this.ctx.totalFrames)
+    }
+
     public displayRoot(selector: string) {
+        this.beforeDisplay()
         $(() => {
             $(selector).addClass("root-container")
                 .html(`<div class='prop__list-container'></div>
