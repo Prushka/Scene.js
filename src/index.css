@@ -24,6 +24,7 @@
     background-color: var(--theme-dark-white);
     font-family: Comfortaa, serif;
     position: relative;
+    overflow: hidden;
 }
 
 .prop__list-container {
@@ -37,6 +38,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1000;
 }
 
 .prop__property-container {
@@ -93,6 +95,7 @@
     padding: 8px 10px;
     box-sizing: border-box;
     display: flex;
+    z-index: 1000;
 }
 
 .footer__button-group {

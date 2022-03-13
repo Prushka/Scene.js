@@ -12,11 +12,16 @@ export class View extends SceneComponent {
     mouseY: number = 0
     dragging: boolean = false
     stopDragging = (e) => {
-        e.preventDefault()
-        this.dragging = false
-        const previous = this.context.viewPortOffset.get()
-        this.context.viewPortOffset.set({x: e.clientX - this.mouseX + previous.x, y: this.mouseY - e.clientY + previous.y})
-        console.log(this.context.viewPortOffset.get())
+        if(this.dragging) {
+            e.preventDefault()
+            this.dragging = false
+            const previous = this.context.viewPortOffset.get()
+            this.context.viewPortOffset.set({
+                x: e.clientX - this.mouseX + previous.x,
+                y: this.mouseY - e.clientY + previous.y
+            })
+            console.log(this.context.viewPortOffset.get())
+        }
     }
 
     listen(): State<any>[] {
