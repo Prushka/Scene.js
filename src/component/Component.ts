@@ -3,22 +3,23 @@
  */
 
 import State from "../state/State";
+import {Context} from "../index";
 
 export abstract class CustomComponent {
+
     abstract render(): string | string[]
 
     abstract afterRender(): void
 
     abstract subscribe(): string[]
 
-    mount() {
-        for(let key in this){
-            let v = this[key]
-            if(v instanceof State){
-                v.subscribe(this)
-            }
-        }
+    mount(ss: State<any>[]) {
+        ss.forEach(s=>{
+            s.subscribe(this)
+        })
     }
+
+    abstract listen(): State<any>[]
 
     renderComponent() {
         const html = this.render()
@@ -26,5 +27,15 @@ export abstract class CustomComponent {
             $(selector).html(Array.isArray(html) ? html.join('') : html)
         })
         this.afterRender()
+    }
+}
+
+export abstract class SceneComponent extends CustomComponent {
+    protected context: Context
+
+    constructor(context: Context) {
+        super();
+        this.context = context
+        this.mount(this.listen())
     }
 }

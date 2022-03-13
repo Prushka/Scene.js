@@ -37,55 +37,18 @@ export class SceneContext {
 
 }
 
-export class ConfigConstructor {
+export class Context {
     protected ids: number = 0
-    protected _ctx: SceneContext
-    protected _selected: State<PropConfig> = createState()
-    protected _props: State<PropConfig[]> = createState([])
-
-//     protected _props: StateListener<PropConfig[]> = createStateContext([]).populateSelectorWith(
-//         {
-//             listeningSelectors: [".view-container"], renderWith: (v: PropConfig[]) =>
-//                 v.map(prop => {
-//                     const position: AnimationConfig = this.getPropPosition(prop)
-//                     return `<div class="view__prop" style="left:${position.x}px;bottom: ${position.y}px">
-// <i id='prop-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
-// </div>`
-//                 }),
-//             afterRender: () => {
-//                 let mouseX, mouseY
-//                 let dragging: boolean = false
-//                 $('.view__prop').on("dragstart", (e) => {
-//                     console.log(e)
-//                 })
-//                 $('.view-container').on("mousedown", (e) => {
-//                     e.preventDefault()
-//                     mouseX = e.clientX
-//                     mouseY = e.clientY
-//                     dragging = true
-//                 }).on("mousemove", (e) => {
-//                     e.preventDefault()
-//                     if (dragging) {
-//
-//                     }
-//                 }).on("mouseup", (e) => {
-//                     e.preventDefault()
-//                     dragging = false
-//                 })
-//             }
-//         }
-//     )
+    public ctx: SceneContext
+    public selected: State<PropConfig> = createState()
+    public props: State<PropConfig[]> = createState([])
 
     public constructor(context: SceneContext) {
-        this._ctx = context
+        this.ctx = context
     }
 
-    public get props() {
-        return this._props.get()
-    }
-
-    public addProp<T extends PropConfig>(...propConfigs: T[]): ConfigConstructor {
-        const _props = [...this.props]
+    public addProp<T extends PropConfig>(...propConfigs: T[]): Context {
+        const _props = [...this.props.get()]
         propConfigs.forEach(propConfig => {
             propConfig.iconStyle = propConfig.iconStyle || "default"
             propConfig.propId = propConfig.propId || this.ids
@@ -99,20 +62,20 @@ export class ConfigConstructor {
             this.ids += 1
             _props.push(propConfig)
         })
-        this._props.set(_props)
+        this.props.set(_props)
         return this
     }
 
-    private isPropEnabled(prop: PropConfig): boolean {
-        if (this._ctx.isStatic) {
+    public isPropEnabled(prop: PropConfig): boolean {
+        if (this.ctx.isStatic) {
             return prop.enabled
         } else {
             return false
         }
     }
 
-    private getPropById(id: number): PropConfig | null {
-        for (const prop of this.props) {
+    public getPropById(id: number): PropConfig | null {
+        for (const prop of this.props.get()) {
             if (prop.propId === id) {
                 return prop
             }
@@ -121,24 +84,24 @@ export class ConfigConstructor {
     }
 
     private getPropPosition(prop: PropConfig): AnimationConfig | null {
-        if (this._ctx.isStatic) {
+        if (this.ctx.isStatic) {
             return prop.staticPosition
         } else {
-            return prop.frameAnimationConfig[this._ctx.currentFrame.get()]
+            return prop.frameAnimationConfig[this.ctx.currentFrame.get()]
         }
     }
 
-    private toggleSelected(prop: PropConfig | number) {
+    public toggleSelected(prop: PropConfig | number) {
         let _prop: PropConfig
         if (typeof prop == "number") {
             _prop = this.getPropById(prop)
         } else {
             _prop = prop
         }
-        if (_prop === this._selected.get()) {
-            this._selected.set(null)
+        if (_prop === this.selected.get()) {
+            this.selected.set(null)
         } else {
-            this._selected.set(_prop)
+            this.selected.set(_prop)
         }
     }
 
@@ -154,9 +117,9 @@ export class ConfigConstructor {
                                     <div class="footer-container"></div>`)
 
             // this._selected.set(this.props[0])
-            new PropList(this._props, this._selected, (prop) => this.toggleSelected(prop), (prop) => this.isPropEnabled(prop))
-            new PropDialog(this._selected, (prop) => this.toggleSelected(prop), (prop) => this.isPropEnabled(prop))
-            new Footer(this._ctx.totalFrames, this._ctx.currentFrame)
+            new PropList(this)
+            // new PropDialog(this._selected, (prop) => this.toggleSelected(prop), (prop) => this.isPropEnabled(prop))
+            // new Footer(this._ctx.totalFrames, this._ctx.currentFrame)
             State.renderAll()
             this.offset = $(selector).offset()
             console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
@@ -194,9 +157,9 @@ export function demo() {
         }
     }
     const context: SceneContext = new SceneContext()
-    const config: ConfigConstructor = new ConfigConstructor(context)
+    const config: Context = new Context(context)
     config.addProp(getDemoLight(), getDemoLight(), getDemoTable(), getDemoLight(), getDemoTable()).displayRoot("#scene")
-    console.log(config.props)
+    console.log(config.props.get())
 
     return new Position(1, 1)
 }
