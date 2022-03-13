@@ -15,18 +15,17 @@ export class View extends SceneComponent {
         if(this.dragging) {
             e.preventDefault()
             this.dragging = false
-            const previous = this.context.viewPortOffset.get()
-            this.context.viewPortOffset.set({
+            const previous = this.context.viewportOffset
+            this.context.viewportOffset = {
                 x: e.clientX - this.mouseX + previous.x,
                 y: this.mouseY - e.clientY + previous.y
-            })
-            console.log(this.context.viewPortOffset.get())
+            }
             $('.view-container').css('cursor','unset')
         }
     }
 
     listen(): State<any>[] {
-        return [this.context.props, this.context.ctx.currentFrame]
+        return [this.context.props, this.context.ctx.currentFrameState]
     }
 
     subscribe() {
@@ -49,8 +48,8 @@ export class View extends SceneComponent {
                 this.context.props.get().forEach(prop => {
                     const position: AnimationConfig = this.context.getPropPosition(prop)
                     if(position){
-                        $(`#view-prop-${prop.propId}`).css("left", position.x + e.clientX - this.mouseX + this.context.viewPortOffset.get().x)
-                            .css("bottom", position.y + this.context.viewPortOffset.get().y + this.mouseY - e.clientY)
+                        $(`#view-prop-${prop.propId}`).css("left", position.x + e.clientX - this.mouseX + this.context.viewportOffset.x)
+                            .css("bottom", position.y + this.context.viewportOffset.y + this.mouseY - e.clientY)
                     }
                 })
             }
@@ -67,11 +66,12 @@ export class View extends SceneComponent {
 
     render(): string | string[] {
         const props = this.context.props.get()
-        return props.map(prop => {
+        let s = props.map(prop => {
             const position: AnimationConfig = this.context.getPropPosition(prop)
             return position && `<div class="view__prop" id="view-prop-${prop.propId}" style="left:${position.x}px;bottom: ${position.y}px;transform: rotate(${position.degree}deg);">
                     <i id='prop-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.context.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
                     </div>`
-        })
+        }).join('')
+        return `<canvas class="view-canvas">${s}</canvas>`
     }
 }

@@ -20,7 +20,7 @@ export interface SceneContextConfig {
 
 export class SceneContext {
     protected _config: SceneContextConfig
-    public currentFrame: State<number> = createState(1)
+    private _currentFrame: State<number> = createState(1)
 
     public constructor(config?: SceneContextConfig) {
         config = config || {}
@@ -40,13 +40,41 @@ export class SceneContext {
         this._config.totalFrames = f
     }
 
+    public get currentFrame() {
+        return this._currentFrame.get()
+    }
+
+    public set currentFrame(f: number) {
+        this._currentFrame.set(f)
+    }
+
+    public get currentFrameState(){
+        return this._currentFrame
+    }
+
 }
 
 export class ViewPort {
-    offset: State<PositionConfig> = createState({
+    _offset: State<PositionConfig> = createState({
         x: 0, y: 0
     })
-    scale: State<number> = createState(1)
+    _scale: State<number> = createState(1)
+
+    public get offset() {
+        return this._offset.get()
+    }
+
+    public set offset(offset) {
+        this._offset.set(offset)
+    }
+
+    public get scale() {
+        return this._scale.get()
+    }
+
+    public set scale(scale) {
+        this._scale.set(scale)
+    }
 }
 
 export class Context {
@@ -100,7 +128,7 @@ export class Context {
         if (this.ctx.isStatic) {
             return prop.staticPosition
         } else {
-            return prop.frameAnimationConfig[this.ctx.currentFrame.get()]
+            return prop.frameAnimationConfig[this.ctx.currentFrame]
         }
     }
 
@@ -136,6 +164,16 @@ export class Context {
             }
         })
         return max
+    }
+
+    public get viewportOffset() {
+        return this.viewports.get()[this.ctx.currentFrame].offset
+    }
+
+    public set viewportOffset(offset: PositionConfig) {
+        const _viewports = [...this.viewports.get()]
+        _viewports[this.ctx.currentFrame].offset = offset
+        this.viewports.set(_viewports)
     }
 
     private beforeDisplay() {

@@ -8,7 +8,7 @@ import {extractIdType} from "../utils/Utils";
 
 export class Footer extends SceneComponent {
     listen(): State<any>[] {
-        return [this.context.ctx.currentFrame]
+        return [this.context.ctx.currentFrameState]
     }
 
     // prop is not a property, it's the prop used in a scene
@@ -20,12 +20,12 @@ export class Footer extends SceneComponent {
     afterRender() {
         $('.timeline__frame').on("click", (e) => {
             const [frame] = extractIdType(e.target.id)
-            this.context.ctx.currentFrame.set(frame)
+            this.context.ctx.currentFrame = frame
         })
     }
 
     render(): string | string[] {
-        const currentFrame = this.context.ctx.currentFrame.get()
+        const currentFrame = this.context.ctx.currentFrame
         let elements = ""
         const buttons = [`<div class="button button--purple pointer"><span>Export</span></div>`]
         if (this.context.ctx.totalFrames !== 0) {
