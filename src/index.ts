@@ -7,8 +7,9 @@ import {AnimationConfig, PropConfig, PropType} from "./props/Props";
 import Coordinates = JQuery.Coordinates;
 import State, {createState} from "./state/State";
 import {convertTypeToReadable} from "./utils/Utils";
-import {PropList} from "./component/PropListComponent";
+import {PropList} from "./component/PropList";
 import {PropDialog} from "./component/PropDialog";
+import {Footer} from "./component/Footer";
 
 export * as position from './props/Position'
 
@@ -19,30 +20,6 @@ export interface SceneContextConfig {
 export class SceneContext {
     protected _config: SceneContextConfig
     public currentFrame: State<number> = createState(1)
-    //     .populateSelectorWith({
-    //     listeningSelectors: [".footer-container"], renderWith: (v: number) => {
-    //         let elements = ""
-    //         const buttons = [`<div class="button button--purple pointer"><span>Export</span></div>`]
-    //         if (this._config.totalFrames !== 0) {
-    //             let frames = ""
-    //             for (let f = 0; f < this._config.totalFrames; f++) {
-    //                 frames += `<div id="timeline-frame-${f + 1}" class="timeline__frame ${v === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
-    //             }
-    //             elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
-    //             buttons.push(`<div class="button button--purple pointer"><span>Play</span></div>`)
-    //         }
-    //         return `<div class='footer'>
-    //                 <div class="footer__button-group">${buttons.join('')}</div>
-    //                 ${elements}
-    //                 </div>`
-    //     },
-    //     afterRender: () => {
-    //         $('.timeline__frame').on("click", (e) => {
-    //             const [frame] = extractIdType(e.target.id)
-    //             this.currentFrame.set(frame)
-    //         })
-    //     }
-    // })
 
     public constructor(config?: SceneContextConfig) {
         config = config || {}
@@ -177,8 +154,9 @@ export class ConfigConstructor {
                                     <div class="footer-container"></div>`)
 
             // this._selected.set(this.props[0])
-            new PropList(this._props, this._selected, (prop)=>this.toggleSelected(prop), (prop)=>this.isPropEnabled(prop))
-            new PropDialog(this._selected, (prop)=>this.toggleSelected(prop), (prop)=>this.isPropEnabled(prop))
+            new PropList(this._props, this._selected, (prop) => this.toggleSelected(prop), (prop) => this.isPropEnabled(prop))
+            new PropDialog(this._selected, (prop) => this.toggleSelected(prop), (prop) => this.isPropEnabled(prop))
+            new Footer(this._ctx.totalFrames, this._ctx.currentFrame)
             State.renderAll()
             this.offset = $(selector).offset()
             console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)

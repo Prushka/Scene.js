@@ -22,7 +22,7 @@ export default class State<T> {
         return this._state
     }
 
-    public render() {
+    private render() {
         this._components.forEach(component => {
             component.renderComponent()
         })
