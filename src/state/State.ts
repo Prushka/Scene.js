@@ -17,12 +17,21 @@ interface StateStore<T> {
 
 class StateContext {
     _store: { [key: string]: StateStore<any> }
+    _reducers: { [key: string]: StateReducer<any> }
 
-    constructor() {
+    constructor(reducers: { [key: string]: StateReducer<any> }) {
         this._store = {}
+        this._reducers = reducers
+        for (let k in reducers) {
+            this.addReducer(k, reducers[k])
+        }
     }
 
-    public addReducer(key, reducer) {
+    public dispatch<T>(f:(T)=>Action){
+        return f
+    }
+
+    private addReducer(key, reducer) {
         this._store[key] = {
             key: key,
             reducer: reducer,
@@ -31,16 +40,12 @@ class StateContext {
         }
     }
 
-    public bindState(component: CustomComponent, key) {
+    public bindState(component: CustomComponent, key:string) {
         this._store[key].subscribers.add(component)
         return this._store[key].state
     }
 }
 
 export function createStateContext(reducers: { [key: string]: StateReducer<any> }): StateContext {
-    const states: StateContext = new StateContext()
-    for (let k in reducers) {
-        states.addReducer(k, reducers[k])
-    }
-    return states
+    return new StateContext(reducers)
 }

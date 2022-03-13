@@ -9,6 +9,30 @@ export interface StateHTMLUpdater<T> {
     afterRender?: () => void
 }
 
+export class StateManager<T> {
+    private _state: T
+    private static globalStates: StateManager<any>[] = []
+
+    public constructor(defaultValue?: T) {
+        this._state = defaultValue
+        StateManager.globalStates.push(this)
+    }
+
+    public get(): T {
+        return this._state
+    }
+
+    public set(value: T) {
+        if (value !== this._state) {
+            this._state = value
+        }
+    }
+
+    public subscribe() {
+
+    }
+}
+
 export default class StateListener<T> {
     private _state: T
     private _f: Array<StateHTMLUpdater<T>> = []
@@ -64,8 +88,4 @@ export default class StateListener<T> {
         // })
         return this
     }
-}
-
-export function createState<T>(defaultValue?: T) {
-    return new StateListener(defaultValue)
 }

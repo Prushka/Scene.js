@@ -4,8 +4,11 @@
 
 import Position from "./props/Position";
 import {AnimationConfig, PropConfig, PropType, PropTypeIcons} from "./props/Props";
-import StateListener, {createState} from "./StateListener";
+import StateListener from "./StateListener";
 import Coordinates = JQuery.Coordinates;
+import {addProp, PropListReducer} from "./state/PropList";
+import {createStateContext} from "./state/State";
+import {CustomComponent} from "./component/Component";
 
 export * as position from './props/Position'
 
@@ -23,9 +26,48 @@ export interface SceneContextConfig {
     totalFrames?: number
 }
 
+const states = createStateContext({
+    propList: PropListReducer
+})
+
+export class PropList extends CustomComponent {
+
+    // prop is not a property, it's the prop used in a scene
+    private props: PropConfig[];
+    private selected: StateListener<PropConfig>;
+
+    public constructor() {
+        super();
+        this.props = states.bindState(this, "propList")
+        states.dispatch(addProp("test"))
+        this.selected = selected
+    }
+
+    subscribe() {
+        return ["prop__list-container"]
+    }
+
+    afterRender() {
+        $('.prop__list__item').on("click", (e) => {
+            const [id] = extractIdType(e.target.id)
+            this.toggleSelected(id)
+        })
+    }
+
+    render(): string | string[] {
+        return this.props.map(prop => {
+            return `<div id='prop-list-${prop.propId}' class='pointer prop__list__item  ${v === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
+                    <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
+                    <span id='prop-list-text-${prop.propId}'>${prop.name}</span>
+                    </div>`
+        })
+    }
+
+}
+
 export class SceneContext {
     protected _config: SceneContextConfig
-    public currentFrame: StateListener<number> = createState(1).populateSelectorWith({
+    public currentFrame: StateListener<number> = createStateContext(1).populateSelectorWith({
         listeningSelectors: [".footer-container"], renderWith: (v: number) => {
             let elements = ""
             const buttons = [`<div class="button button--purple pointer"><span>Export</span></div>`]
@@ -69,22 +111,8 @@ export class SceneContext {
 export class ConfigConstructor {
     protected ids: number = 0
     protected _ctx: SceneContext
-    protected _selected?: StateListener<PropConfig> = createState()
-        .populateSelectorWith({
-            listeningSelectors: [".prop__list-container"], renderWith: (v: PropConfig) =>
-                this.props.map(prop => {
-                    return `<div id='prop-list-${prop.propId}' class='pointer prop__list__item  ${v === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
-                    <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
-                    <span id='prop-list-text-${prop.propId}'>${prop.name}</span>
-                    </div>`
-                }),
-            afterRender: () => {
-                $('.prop__list__item').on("click", (e) => {
-                    const [id] = extractIdType(e.target.id)
-                    this.toggleSelected(id)
-                })
-            }
-        }, {
+    protected _selected?: StateListener<PropConfig> = createStateContext()
+        .populateSelectorWith( {
             listeningSelectors: [".prop__property-container"], renderWith: (v: PropConfig) => {
                 if (v) {
                     return `<div class="prop__property-dialog">
@@ -104,7 +132,7 @@ export class ConfigConstructor {
         })
 
 
-    protected _props: StateListener<PropConfig[]> = createState([]).populateSelectorWith(
+    protected _props: StateListener<PropConfig[]> = createStateContext([]).populateSelectorWith(
         {
             listeningSelectors: [".view-container"], renderWith: (v: PropConfig[]) =>
                 v.map(prop => {
