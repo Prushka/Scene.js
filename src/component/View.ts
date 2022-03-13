@@ -25,7 +25,7 @@ export class View extends SceneComponent {
     }
 
     listen(): State<any>[] {
-        return [this.context.props]
+        return [this.context.props, this.context.ctx.currentFrame]
     }
 
     subscribe() {
@@ -46,14 +46,20 @@ export class View extends SceneComponent {
             if (this.dragging) {
                 this.context.props.get().forEach(prop => {
                     const position: AnimationConfig = this.context.getPropPosition(prop)
-                    $(`#view-prop-${prop.propId}`).css("left", position.x + e.clientX - this.mouseX + this.context.viewPortOffset.get().x)
-                        .css("bottom", position.y + this.context.viewPortOffset.get().y + this.mouseY - e.clientY)
+                    if(position){
+                        $(`#view-prop-${prop.propId}`).css("left", position.x + e.clientX - this.mouseX + this.context.viewPortOffset.get().x)
+                            .css("bottom", position.y + this.context.viewPortOffset.get().y + this.mouseY - e.clientY)
+                    }
                 })
             }
-        }).on("mouseup", (e) => {
+        }).on("mouseup mouseleave", (e) => {
             this.stopDragging(e)
-        }).on("mouseleave", (e) => {
-            this.stopDragging(e)
+        }).on('wheel', (e)=>{
+            if (e.originalEvent.wheelDelta / 120 > 0) { // up
+
+            } else { // down
+
+            }
         })
     }
 
@@ -61,7 +67,7 @@ export class View extends SceneComponent {
         const props = this.context.props.get()
         return props.map(prop => {
             const position: AnimationConfig = this.context.getPropPosition(prop)
-            return `<div class="view__prop" id="view-prop-${prop.propId}" style="left:${position.x}px;bottom: ${position.y}px">
+            return position && `<div class="view__prop" id="view-prop-${prop.propId}" style="left:${position.x}px;bottom: ${position.y}px;transform: rotate(${position.degree}deg);">
                     <i id='prop-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.context.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
                     </div>`
         })

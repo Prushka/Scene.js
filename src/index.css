@@ -53,6 +53,7 @@
     right: 20px;
     bottom: 80px;
     position: absolute;
+    z-index: 1100;
 }
 
 .prop__property-dialog__header {

@@ -40,18 +40,19 @@ export class SceneContext {
 
 export class Context {
     protected ids: number = 0
-    public ctx: SceneContext
-    public selected: State<PropConfig> = createState()
-    public props: State<PropConfig[]> = createState([])
-    viewPortOffset:State<PositionConfig> = createState({
-        x:0, y:0
+    ctx: SceneContext
+    selected: State<PropConfig> = createState()
+    props: State<PropConfig[]> = createState([])
+    viewPortOffset: State<PositionConfig> = createState({
+        x: 0, y: 0
     })
+    viewPortZoom: State<number> = createState(1)
 
     public constructor(context: SceneContext) {
         this.ctx = context
     }
 
-    public addProp<T extends PropConfig>(...propConfigs: T[]): Context {
+    public addProp(...propConfigs: PropConfig[]): Context {
         const _props = [...this.props.get()]
         propConfigs.forEach(propConfig => {
             propConfig.iconStyle = propConfig.iconStyle || "default"
@@ -135,17 +136,20 @@ export class Context {
 }
 
 export function demo() {
+    const getRandomPosition = () => {
+        return {x: Math.random() * 600, y: Math.random() * 600, degree: Math.random() * 360}
+    }
     const getDemoLight = () => {
         return {
             type: PropType.LIGHT,
             colorTemperature: 5000,
             enabled: false,
             staticPosition: {
-                x: 180, y: 100, degree: 30
+                x: Math.random() * 600, y: Math.random() * 600, degree: 30
             },
             frameAnimationConfig: {
-                1: {x: 200, y: 200, degree: 30},
-                2: {x: 20, y: 20, degree: 30, isOffset: false}
+                1: getRandomPosition(),
+                2: getRandomPosition()
             }
         }
     }
@@ -155,11 +159,13 @@ export function demo() {
             type: PropType.TABLE,
             enabled: true,
             staticPosition: {
-                x: 280, y: 200, degree: 30
+                x: Math.random() * 600, y: Math.random() * 600, degree: 30
             },
             frameAnimationConfig: {
-                1: {x: 280, y: 200, degree: 30},
-                2: {x: 20, y: 20, degree: 30, isOffset: false}
+                1: getRandomPosition(),
+                2: getRandomPosition(),
+                3: getRandomPosition(),
+                4: getRandomPosition(),
             }
         }
     }
