@@ -21,6 +21,7 @@ export class View extends SceneComponent {
                 y: this.mouseY - e.clientY + previous.y
             })
             console.log(this.context.viewPortOffset.get())
+            $('.view-container').css('cursor','unset')
         }
     }
 
@@ -41,6 +42,7 @@ export class View extends SceneComponent {
             this.mouseX = e.clientX
             this.mouseY = e.clientY
             this.dragging = true
+            $('.view-container').css('cursor','grabbing')
         }).on("mousemove", (e) => {
             e.preventDefault()
             if (this.dragging) {
