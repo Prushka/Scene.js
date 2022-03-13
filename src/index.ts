@@ -6,91 +6,43 @@ import Position from "./props/Position";
 import {AnimationConfig, PropConfig, PropType, PropTypeIcons} from "./props/Props";
 import StateListener from "./StateListener";
 import Coordinates = JQuery.Coordinates;
-import {addProp, PropListReducer} from "./state/PropList";
-import {createStateContext} from "./state/State";
 import {CustomComponent} from "./component/Component";
+import {createState} from "./state/State";
+import {convertTypeToReadable} from "./utils/Utils";
 
 export * as position from './props/Position'
-
-function convertTypeToReadable(type: PropType): string {
-    return `${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()}`
-}
-
-function extractIdType(htmlID: string): [number, string] {
-    const id: number = parseInt(htmlID.match(/\d+/)[0])
-    const type: string = htmlID.replace(/-\d+/, '')
-    return [id, type]
-}
 
 export interface SceneContextConfig {
     totalFrames?: number
 }
 
-const states = createStateContext({
-    propList: PropListReducer
-})
-
-export class PropList extends CustomComponent {
-
-    // prop is not a property, it's the prop used in a scene
-    private props: PropConfig[];
-    private selected: StateListener<PropConfig>;
-
-    public constructor() {
-        super();
-        this.props = states.bindState(this, "propList")
-        states.dispatch(addProp("test"))
-        this.selected = selected
-    }
-
-    subscribe() {
-        return ["prop__list-container"]
-    }
-
-    afterRender() {
-        $('.prop__list__item').on("click", (e) => {
-            const [id] = extractIdType(e.target.id)
-            this.toggleSelected(id)
-        })
-    }
-
-    render(): string | string[] {
-        return this.props.map(prop => {
-            return `<div id='prop-list-${prop.propId}' class='pointer prop__list__item  ${v === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
-                    <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
-                    <span id='prop-list-text-${prop.propId}'>${prop.name}</span>
-                    </div>`
-        })
-    }
-
-}
-
 export class SceneContext {
     protected _config: SceneContextConfig
-    public currentFrame: StateListener<number> = createStateContext(1).populateSelectorWith({
-        listeningSelectors: [".footer-container"], renderWith: (v: number) => {
-            let elements = ""
-            const buttons = [`<div class="button button--purple pointer"><span>Export</span></div>`]
-            if (this._config.totalFrames !== 0) {
-                let frames = ""
-                for (let f = 0; f < this._config.totalFrames; f++) {
-                    frames += `<div id="timeline-frame-${f + 1}" class="timeline__frame ${v === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
-                }
-                elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
-                buttons.push(`<div class="button button--purple pointer"><span>Play</span></div>`)
-            }
-            return `<div class='footer'>
-                    <div class="footer__button-group">${buttons.join('')}</div>
-                    ${elements}
-                    </div>`
-        },
-        afterRender: () => {
-            $('.timeline__frame').on("click", (e) => {
-                const [frame] = extractIdType(e.target.id)
-                this.currentFrame.set(frame)
-            })
-        }
-    })
+    public currentFrame: StateListener<number> = createState(1)
+    //     .populateSelectorWith({
+    //     listeningSelectors: [".footer-container"], renderWith: (v: number) => {
+    //         let elements = ""
+    //         const buttons = [`<div class="button button--purple pointer"><span>Export</span></div>`]
+    //         if (this._config.totalFrames !== 0) {
+    //             let frames = ""
+    //             for (let f = 0; f < this._config.totalFrames; f++) {
+    //                 frames += `<div id="timeline-frame-${f + 1}" class="timeline__frame ${v === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
+    //             }
+    //             elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
+    //             buttons.push(`<div class="button button--purple pointer"><span>Play</span></div>`)
+    //         }
+    //         return `<div class='footer'>
+    //                 <div class="footer__button-group">${buttons.join('')}</div>
+    //                 ${elements}
+    //                 </div>`
+    //     },
+    //     afterRender: () => {
+    //         $('.timeline__frame').on("click", (e) => {
+    //             const [frame] = extractIdType(e.target.id)
+    //             this.currentFrame.set(frame)
+    //         })
+    //     }
+    // })
 
     public constructor(config?: SceneContextConfig) {
         config = config || {}
@@ -111,59 +63,41 @@ export class SceneContext {
 export class ConfigConstructor {
     protected ids: number = 0
     protected _ctx: SceneContext
-    protected _selected?: StateListener<PropConfig> = createStateContext()
-        .populateSelectorWith( {
-            listeningSelectors: [".prop__property-container"], renderWith: (v: PropConfig) => {
-                if (v) {
-                    return `<div class="prop__property-dialog">
-                            <div class="prop__property-dialog__header"><i id="prop-property-dialog-${v.propId}" class="bi bi-x pointer prop__property-dialog__close"></i></div>
-                            <div class="prop__property-dialog__footer"><i id='prop-property-dialog-icon-${v.propId}' class="${PropTypeIcons[v.type][v.iconStyle][this.isPropEnabled(v) ? 'enabled' : 'disabled']}"></i> <span>${v.name}</span></div>
-                            </div>`
-                }
-                return ""
-            },
-            afterRender: () => {
-                $('.prop__property-dialog__close').on("click", (e) => {
-                    const [id] = extractIdType(e.target.id)
-                    console.log(e.target.id)
-                    this.toggleSelected(id)
-                })
-            }
-        })
+    protected _selected?: StateListener<PropConfig> = createState()
+    protected _props: StateListener<PropConfig[]> = createState([])
 
-
-    protected _props: StateListener<PropConfig[]> = createStateContext([]).populateSelectorWith(
-        {
-            listeningSelectors: [".view-container"], renderWith: (v: PropConfig[]) =>
-                v.map(prop => {
-                    const position: AnimationConfig = this.getPropPosition(prop)
-                    return `<div class="view__prop" style="left:${position.x}px;bottom: ${position.y}px">
-<i id='prop-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
-</div>`
-                }),
-            afterRender: () => {
-                let mouseX, mouseY
-                let dragging: boolean = false
-                $('.view__prop').on("dragstart", (e) => {
-                    console.log(e)
-                })
-                $('.view-container').on("mousedown", (e) => {
-                    e.preventDefault()
-                    mouseX = e.clientX
-                    mouseY = e.clientY
-                    dragging = true
-                }).on("mousemove", (e) => {
-                    e.preventDefault()
-                    if (dragging) {
-
-                    }
-                }).on("mouseup", (e) => {
-                    e.preventDefault()
-                    dragging = false
-                })
-            }
-        }
-    )
+//     protected _props: StateListener<PropConfig[]> = createStateContext([]).populateSelectorWith(
+//         {
+//             listeningSelectors: [".view-container"], renderWith: (v: PropConfig[]) =>
+//                 v.map(prop => {
+//                     const position: AnimationConfig = this.getPropPosition(prop)
+//                     return `<div class="view__prop" style="left:${position.x}px;bottom: ${position.y}px">
+// <i id='prop-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
+// </div>`
+//                 }),
+//             afterRender: () => {
+//                 let mouseX, mouseY
+//                 let dragging: boolean = false
+//                 $('.view__prop').on("dragstart", (e) => {
+//                     console.log(e)
+//                 })
+//                 $('.view-container').on("mousedown", (e) => {
+//                     e.preventDefault()
+//                     mouseX = e.clientX
+//                     mouseY = e.clientY
+//                     dragging = true
+//                 }).on("mousemove", (e) => {
+//                     e.preventDefault()
+//                     if (dragging) {
+//
+//                     }
+//                 }).on("mouseup", (e) => {
+//                     e.preventDefault()
+//                     dragging = false
+//                 })
+//             }
+//         }
+//     )
 
     public constructor(context: SceneContext) {
         this.ctx = context

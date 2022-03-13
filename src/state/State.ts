@@ -2,50 +2,42 @@
  * Copyright 2022 Dan Lyu.
  */
 
-import Action from "./Action";
-import {CustomComponent} from "../component/Component";
+export default class State<T> {
+    private _state: T
+    private static globalStates: State<any>[] = []
 
+    public static renderAll() {
+        State.globalStates.forEach(s => s.render())
+    }
 
-export type StateReducer<T> = (state?: T, action?: Action) => T
+    public constructor(defaultValue?: T) {
+        this._state = defaultValue
+        State.globalStates.push(this)
+    }
 
-interface StateStore<T> {
-    key: string,
-    reducer: StateReducer<T>,
-    state: T,
-    subscribers: Set<CustomComponent>
-}
+    public get(): T {
+        return this._state
+    }
 
-class StateContext {
-    _store: { [key: string]: StateStore<any> }
-    _reducers: { [key: string]: StateReducer<any> }
+    public render() {
+        // this.withSelectorPopulate((selector, populate, afterRender) => {
+        //     const html: string | string[] = populate(this.get())
+        //     $(selector).html(Array.isArray(html) ? html.join('') : html)
+        //     if (afterRender) {
+        //         afterRender()
+        //     }
+        // })
 
-    constructor(reducers: { [key: string]: StateReducer<any> }) {
-        this._store = {}
-        this._reducers = reducers
-        for (let k in reducers) {
-            this.addReducer(k, reducers[k])
+    }
+
+    public set(value: T) {
+        if (value !== this._state) {
+            this._state = value
+            this.render()
         }
-    }
-
-    public dispatch<T>(f:(T)=>Action){
-        return f
-    }
-
-    private addReducer(key, reducer) {
-        this._store[key] = {
-            key: key,
-            reducer: reducer,
-            state: reducer(),
-            subscribers: new Set<CustomComponent>()
-        }
-    }
-
-    public bindState(component: CustomComponent, key:string) {
-        this._store[key].subscribers.add(component)
-        return this._store[key].state
     }
 }
 
-export function createStateContext(reducers: { [key: string]: StateReducer<any> }): StateContext {
-    return new StateContext(reducers)
+export function createState<T>(defaultValue?:T):State<T>{
+    return new State(defaultValue)
 }
