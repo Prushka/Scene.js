@@ -3,13 +3,14 @@
  */
 
 import Position from "./props/Position";
-import {AnimationConfig, PropConfig, PropType} from "./props/Props";
+import {AnimationConfig, PositionConfig, PropConfig, PropType} from "./props/Props";
 import Coordinates = JQuery.Coordinates;
 import State, {createState} from "./state/State";
 import {convertTypeToReadable} from "./utils/Utils";
 import {PropList} from "./component/PropList";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
+import {View} from "./component/View";
 
 export * as position from './props/Position'
 
@@ -42,6 +43,9 @@ export class Context {
     public ctx: SceneContext
     public selected: State<PropConfig> = createState()
     public props: State<PropConfig[]> = createState([])
+    viewPortOffset:State<PositionConfig> = createState({
+        x:0, y:0
+    })
 
     public constructor(context: SceneContext) {
         this.ctx = context
@@ -83,7 +87,7 @@ export class Context {
         return null
     }
 
-    private getPropPosition(prop: PropConfig): AnimationConfig | null {
+    public getPropPosition(prop: PropConfig): AnimationConfig | null {
         if (this.ctx.isStatic) {
             return prop.staticPosition
         } else {
@@ -122,7 +126,7 @@ export class Context {
                                     <div class="footer-container"></div>`)
 
             // this._selected.set(this.props[0])
-            this.register(PropList, PropDialog, Footer)
+            this.register(PropList, PropDialog, Footer, View)
             State.renderAll()
             this.offset = $(selector).offset()
             console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
