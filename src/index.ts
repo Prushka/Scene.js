@@ -107,9 +107,14 @@ export class Context {
 
     private offset: Coordinates
 
+    private register<T>(...c: Array<new(T) => T>) {
+        c.forEach(cl => {
+            new cl(this)
+        })
+    }
+
     public displayRoot(selector: string) {
         $(() => {
-
             $(selector).addClass("root-container")
                 .html(`<div class='prop__list-container'></div>
                                     <div class='prop__property-container'></div>
@@ -117,9 +122,7 @@ export class Context {
                                     <div class="footer-container"></div>`)
 
             // this._selected.set(this.props[0])
-            new PropList(this)
-            // new PropDialog(this._selected, (prop) => this.toggleSelected(prop), (prop) => this.isPropEnabled(prop))
-            // new Footer(this._ctx.totalFrames, this._ctx.currentFrame)
+            this.register(PropList, PropDialog, Footer)
             State.renderAll()
             this.offset = $(selector).offset()
             console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
