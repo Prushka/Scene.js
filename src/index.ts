@@ -43,10 +43,10 @@ export class SceneContext {
 }
 
 export class ViewPort {
-    viewPortOffset: State<PositionConfig> = createState({
+    offset: State<PositionConfig> = createState({
         x: 0, y: 0
     })
-    viewPortScale: State<number> = createState(1)
+    scale: State<number> = createState(1)
 }
 
 export class Context {
@@ -54,7 +54,7 @@ export class Context {
     ctx: SceneContext
     selected: State<PropConfig> = createState()
     props: State<PropConfig[]> = createState([])
-    viewports: State<{ [key: number]: ViewPort }> = createState({})
+    viewports: State<ViewPort[]> = createState([])
 
     public constructor(context: SceneContext) {
         this.ctx = context
@@ -140,7 +140,11 @@ export class Context {
 
     private beforeDisplay() {
         this.ctx.totalFrames = this.findMaxFrames()
-        console.log(this.ctx.totalFrames)
+        const viewports = []
+        for (let i = 0; i < this.ctx.totalFrames; i++) {
+            viewports.push(new ViewPort())
+        }
+        this.viewports.set(viewports)
     }
 
     public displayRoot(selector: string) {
