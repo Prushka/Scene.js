@@ -15,12 +15,13 @@ export class PropList extends CustomComponent {
     private readonly toggleSelected;
     private readonly isPropEnabled;
 
-    public constructor({props, selected, toggleSelected, isPropEnabled}) {
-        super();
+    public constructor(props, selected, toggleSelected, isPropEnabled) {
+        super()
         this.props = props
         this.selected = selected
         this.toggleSelected = toggleSelected
         this.isPropEnabled = isPropEnabled
+        this.mount()
     }
 
     subscribe() {
@@ -35,8 +36,9 @@ export class PropList extends CustomComponent {
     }
 
     render(): string | string[] {
+        const selected = this.selected.get()
         return this.props.get().map(prop => {
-            return `<div id='prop-list-${prop.propId}' class='pointer prop__list__item  ${this.props.get() === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
+            return `<div id='prop-list-${prop.propId}' class='pointer prop__list__item  ${selected === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
                     <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
                     <span id='prop-list-text-${prop.propId}'>${prop.name}</span>
                     </div>`

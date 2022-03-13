@@ -7,7 +7,7 @@ import {PropConfig, PropTypeIcons} from "../props/Props";
 import State from "../state/State";
 import {extractIdType} from "../utils/Utils";
 
-export class PropList extends CustomComponent {
+export class PropDialog extends CustomComponent {
 
     // prop is not a property, it's the prop used in a scene
     private props: State<PropConfig[]>;
@@ -15,11 +15,12 @@ export class PropList extends CustomComponent {
     private readonly toggleSelected;
     private readonly isPropEnabled;
 
-    public constructor({selected, toggleSelected, isPropEnabled}) {
-        super();
+    public constructor(selected, toggleSelected, isPropEnabled) {
+        super()
         this.selected = selected
         this.toggleSelected = toggleSelected
         this.isPropEnabled = isPropEnabled
+        this.mount()
     }
 
     subscribe() {

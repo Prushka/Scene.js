@@ -3,12 +3,12 @@
  */
 
 import Position from "./props/Position";
-import {AnimationConfig, PropConfig, PropType, PropTypeIcons} from "./props/Props";
-import StateListener from "./StateListener";
+import {AnimationConfig, PropConfig, PropType} from "./props/Props";
 import Coordinates = JQuery.Coordinates;
-import {CustomComponent} from "./component/Component";
-import {createState} from "./state/State";
+import State, {createState} from "./state/State";
 import {convertTypeToReadable} from "./utils/Utils";
+import {PropList} from "./component/PropListComponent";
+import {PropDialog} from "./component/PropDialog";
 
 export * as position from './props/Position'
 
@@ -18,7 +18,7 @@ export interface SceneContextConfig {
 
 export class SceneContext {
     protected _config: SceneContextConfig
-    public currentFrame: StateListener<number> = createState(1)
+    public currentFrame: State<number> = createState(1)
     //     .populateSelectorWith({
     //     listeningSelectors: [".footer-container"], renderWith: (v: number) => {
     //         let elements = ""
@@ -63,8 +63,8 @@ export class SceneContext {
 export class ConfigConstructor {
     protected ids: number = 0
     protected _ctx: SceneContext
-    protected _selected?: StateListener<PropConfig> = createState()
-    protected _props: StateListener<PropConfig[]> = createState([])
+    protected _selected: State<PropConfig> = createState()
+    protected _props: State<PropConfig[]> = createState([])
 
 //     protected _props: StateListener<PropConfig[]> = createStateContext([]).populateSelectorWith(
 //         {
@@ -100,15 +100,7 @@ export class ConfigConstructor {
 //     )
 
     public constructor(context: SceneContext) {
-        this.ctx = context
-    }
-
-    public set ctx(context: SceneContext) {
         this._ctx = context
-    }
-
-    public get ctx() {
-        return this._ctx
     }
 
     public get props() {
@@ -152,10 +144,10 @@ export class ConfigConstructor {
     }
 
     private getPropPosition(prop: PropConfig): AnimationConfig | null {
-        if (this.ctx.isStatic) {
+        if (this._ctx.isStatic) {
             return prop.staticPosition
         } else {
-            return prop.frameAnimationConfig[this.ctx.currentFrame.get()]
+            return prop.frameAnimationConfig[this._ctx.currentFrame.get()]
         }
     }
 
@@ -185,7 +177,9 @@ export class ConfigConstructor {
                                     <div class="footer-container"></div>`)
 
             // this._selected.set(this.props[0])
-            StateListener.renderAll()
+            new PropList(this._props, this._selected, (prop)=>this.toggleSelected(prop), (prop)=>this.isPropEnabled(prop))
+            new PropDialog(this._selected, (prop)=>this.toggleSelected(prop), (prop)=>this.isPropEnabled(prop))
+            State.renderAll()
             this.offset = $(selector).offset()
             console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
         })
