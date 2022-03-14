@@ -136,6 +136,7 @@ export class Context {
     }
 
     public getId(id: HasId | number, ...type: string[]) {
+        type.sort((a, b) => a.localeCompare(b))
         const _id = typeof id === 'number' ? id : id.id
         return `${this.contextId}-${type.join('-')}-${_id}`
     }
@@ -296,8 +297,11 @@ export function demo() {
                 1: {
                     x: 50, y: 50, degree: 30
                 },
+                2: {
+                    x: 100, y: 100, degree: 60
+                },
                 3: {
-                    x: 150, y: 150, degree: 30
+                    x: 190, y: 150, degree: 90
                 },
             }
         }
