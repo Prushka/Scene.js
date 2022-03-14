@@ -29,11 +29,8 @@ export class View extends SceneComponent {
         $('.view__prop').each((index, element) => {
             const textElement = element.querySelector('text')
             const textWidth = textElement.getBBox().width
-            element.querySelectorAll('path').forEach(path => {
-                const pathWidth = path.getBBox().width
-                path.setAttribute("transform", `translate(${textWidth / 2 - pathWidth/2}, 0)`)
-            })
-
+            const pathGroup = element.querySelector('g')
+            pathGroup.setAttribute("transform", `translate(${textWidth / 2 - pathGroup.getBBox().width/2}, 0)`)
         })
     }
 
@@ -115,12 +112,15 @@ export class View extends SceneComponent {
             // (until I find a workaround or figure out what the issue is)
             const pathsHTML: string = PropTypeIcons[prop.type][prop.iconStyle][this.context.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths']
             let pathId = 0
+            const pathGroup = document.createElement("g")
+            pathGroup.id = this.context.getId(prop, 'view', 'prop', 'icon', 'group')
             pathsHTML.match(/<path.*?\/>/g).forEach(pathHTML => {
                 const path = createElement(pathHTML)
                 path.id = this.context.getId(prop, 'view', 'prop', 'icon', `[${pathId}]`)
-                group.appendChild(path)
+                pathGroup.appendChild(path)
                 pathId++
             })
+            group.appendChild(pathGroup)
             //path.id = this.context.getId(prop, 'view', 'prop', 'icon')
             return position && group.outerHTML
         })
