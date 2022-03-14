@@ -26,9 +26,8 @@ export class PropList extends SceneComponent {
     }
 
     render(): string | string[] {
-        const selected = this.context.selected.get()
         return this.context.props.get().map(prop => {
-            return `<div id="${this.context.getId(prop, 'prop', 'list')}" class='pointer prop__list__item  ${selected === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
+            return `<div id="${this.context.getId(prop, 'prop', 'list')}" class='pointer prop__list__item  ${this.context.propSelected(prop) ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
                     <i id="${this.context.getId(prop, 'prop', 'list', 'icon')}" class="${PropTypeIcons[prop.type][prop.iconStyle][this.context.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
                     <span id="${this.context.getId(prop, 'prop', 'list', 'title')}">${prop.name}</span>
                     </div>`

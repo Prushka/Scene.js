@@ -111,6 +111,12 @@ export class Context {
         return this
     }
 
+    public propSelected(prop: PropConfig | number): boolean {
+        const selectedProp: PropConfig = this.selected.get()
+        const propId: number = typeof prop === 'number' ? prop : prop.id
+        return selectedProp && selectedProp.id === propId;
+    }
+
     public extractIdType(htmlID: string): [number, string[]] {
         const id: number = parseInt(htmlID.match(/-\d+/)[0].replace('-', ''))
         const type: string = htmlID.replace(/-\d+/, '').replace(/\d+-/, '')

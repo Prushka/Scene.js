@@ -217,6 +217,11 @@
     cursor: pointer;
 }
 
+.view__prop--selected {
+    -webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .13));
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .13));
+}
+
 .view__prop:hover {
     -webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .13));
     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .13));
