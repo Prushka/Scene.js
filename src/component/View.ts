@@ -15,10 +15,17 @@ export class View extends SceneComponent {
         return [".view-container"]
     }
 
+    private reapplyViewportAttrs(){
+            $(`.view-svg`)
+                .attr("transform",
+                    `scale(${this.context.viewportScale} ${this.context.viewportScale}) translate(${this.context.viewportOffset.x}, ${this.context.viewportOffset.y})`);
+    }
+
     afterRender() {
         console.log("Reset")
         this.mouse = {x: 0, y: 0}
         this.dragging = false
+        this.reapplyViewportAttrs()
 
         const stopDragging = (e) => {
             if (this.dragging) {
@@ -28,11 +35,7 @@ export class View extends SceneComponent {
             }
         }
 
-        const render = () => {
-            $(`.view-svg`)
-                .attr("transform",
-                    `scale(${this.context.viewportScale} ${this.context.viewportScale}) translate(${this.context.viewportOffset.x}, ${this.context.viewportOffset.y})`);
-        }
+
 
         const getMouseOffset = (e) => {
             const c = $('.view-container')
@@ -44,7 +47,6 @@ export class View extends SceneComponent {
             this.dragging = true
             const c = $('.view-container')
             this.mouse = getMouseOffset(e)
-            console.log(this.mouse)
             c.css('cursor', 'grabbing')
         }).on("mousemove", (e) => {
             e.preventDefault()
@@ -57,8 +59,7 @@ export class View extends SceneComponent {
                     x: previous.x + currMouse.x - previousMouse.x,
                     y: previous.y + currMouse.y - previousMouse.y,
                 }
-                console.log(this.context.viewportOffset)
-                render()
+                this.reapplyViewportAttrs()
             }
         }).on("mouseup mouseleave", (e) => {
             stopDragging(e)
@@ -71,7 +72,7 @@ export class View extends SceneComponent {
             } else { // zoom out
                 this.context.viewportScale = Math.max(0.4, this.context.viewportScale * (1 / 1.02))
             }
-            render()
+            this.reapplyViewportAttrs()
         })
     }
 
@@ -86,7 +87,7 @@ export class View extends SceneComponent {
         const props = this.context.props.get()
         let s = props.map(prop => {
             const position: AnimationConfig = this.context.getPropPosition(prop)
-            return position && `<g class="view__prop" id="view-prop-${prop.propId}" transform="translate(${position.x}, ${position.y}) rotate(${position.degree * (Math.PI / 180)})">
+            return position && `<g class="view__prop" id="view-prop-${prop.propId}" transform="translate(${position.x}, ${position.y}) rotate(${position.degree})">
                         <text y="-5">test</text>
                         <path style="transform-origin: center center;" fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
                     </g>`

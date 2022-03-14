@@ -132,10 +132,6 @@ export class Context {
             position = prop.frameAnimationConfig[this.ctx.currentFrame]
         }
         position = {...position}
-        if (position) {
-            position.x = position.x + this.viewportOffset.x
-            position.y = position.y + this.viewportOffset.y
-        }
         console.log(`${prop.name} (${position.x},${position.y})`)
         return position
     }
@@ -173,6 +169,8 @@ export class Context {
     }
 
     public get viewportOffset() {
+
+        console.log(this.viewports.get()[this.ctx.currentFrame].offset)
         return this.viewports.get()[this.ctx.currentFrame].offset
     }
 
@@ -195,7 +193,8 @@ export class Context {
     private beforeDisplay() {
         this.ctx.totalFrames = this.findMaxFrames()
         const viewports = []
-        for (let i = 0; i < this.ctx.totalFrames; i++) {
+        for (let i = 0; i <= this.ctx.totalFrames; i++) {
+            // populate one more frame since 0's used for static
             viewports.push(new ViewPort())
         }
         this.viewports.set(viewports)
@@ -212,8 +211,8 @@ export class Context {
                                     <div class="footer-container"></div>`)
 
             // this._selected.set(this.props[0])
-            //PropList, PropDialog, Footer,
-            this.register(View)
+            //
+            this.register(View,PropList, PropDialog, Footer,)
             State.renderAll()
 
             // console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
@@ -234,9 +233,7 @@ export function demo() {
                 x: 500, y: 500 , degree: 30
             },
             frameAnimationConfig: {
-                1: {
-                    x: 500, y: 300 , degree: 30
-                },
+                1: getRandomPosition(),
                 2: getRandomPosition(),
                 3: getRandomPosition(),
             }
@@ -260,7 +257,7 @@ export function demo() {
     }
     const context: SceneContext = new SceneContext()
     const config: Context = new Context(context)
-    config.addProp(getDemoLight()).displayRoot("#scene")
+    config.addProp(getDemoLight(), getDemoLight()).displayRoot("#scene")
     console.log(config.props.get())
 
     return new Position(1, 1)
