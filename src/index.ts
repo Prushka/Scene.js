@@ -111,6 +111,24 @@ export class Context {
         return this
     }
 
+    public propPreviousFrame(prop: PropConfig, oldFrame: number): AnimationConfig | null {
+        const frameConfig: FrameAnimationConfig = prop.frameAnimationConfig
+        if (frameConfig) {
+            if (frameConfig[oldFrame]) {
+                return frameConfig[oldFrame]
+            }
+            let closest = -1
+            for (let key in frameConfig) {
+                const _key = Number(key)
+                if (_key < oldFrame && (closest === -1 || Math.abs(_key - oldFrame) < closest)) {
+                    closest = _key
+                }
+            }
+            return frameConfig[closest]
+        }
+        return null
+    }
+
     public get selected() {
         return this._selected.get()
     }

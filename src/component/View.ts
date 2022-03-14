@@ -26,19 +26,24 @@ export class View extends SceneComponent {
             [this.context.selectedState, (oldProp: PropConfig, newProp: PropConfig) => {
                 if (oldProp) {
                     const propDOM = $(`#${this.context.getId(oldProp, 'view', 'prop')}`)
-                    if(propDOM){
+                    if (propDOM) {
                         propDOM.removeClass("view__prop--selected")
                     }
                 }
                 if (newProp) {
                     const propDOM = $(`#${this.context.getId(newProp, 'view', 'prop')}`)
-                    if(propDOM){
+                    if (propDOM) {
                         propDOM.addClass("view__prop--selected")
                     }
                 }
             }],
-            [this.context.ctx.currentFrameState, () => {
-
+            [this.context.ctx.currentFrameState, (oldFrame: number, newFrame: number) => {
+                this.context.props.get().forEach(prop => {
+                    if(prop.frameAnimationConfig[newFrame]){
+                        const previous = this.context.propPreviousFrame(prop, oldFrame)
+                        console.log(previous)
+                    }
+                })
             }]]
     }
 
