@@ -125,11 +125,19 @@ export class Context {
     }
 
     public getPropPosition(prop: PropConfig): AnimationConfig | null {
+        let position:AnimationConfig
         if (this.ctx.isStatic) {
-            return prop.staticPosition
+            position = prop.staticPosition
         } else {
-            return prop.frameAnimationConfig[this.ctx.currentFrame]
+            position = prop.frameAnimationConfig[this.ctx.currentFrame]
         }
+        position = {...position}
+        if(position){
+            position.x = position.x + this.viewportOffset.x
+            position.y = position.x + this.viewportOffset.y
+        }
+        console.log(`${prop.name} (${position.x},${position.y})`)
+        return position
     }
 
     public toggleSelected(prop: PropConfig | number) {
