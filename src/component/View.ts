@@ -39,8 +39,8 @@ export class View extends SceneComponent {
             }],
             [this.context.ctx.currentFrameState, (oldFrame: number, newFrame: number) => {
                 this.context.props.get().forEach(prop => {
-                    if(prop.frameAnimationConfig[newFrame]){
-                        const previous = this.context.propPreviousFrame(prop, oldFrame)
+                    if (prop.frameAnimationConfig[newFrame]) {
+                        const previous = this.context.getPropPositionByFrame(prop, oldFrame, newFrame - oldFrame < 0)
                         console.log(previous)
                     }
                 })

@@ -111,24 +111,6 @@ export class Context {
         return this
     }
 
-    public propPreviousFrame(prop: PropConfig, oldFrame: number): AnimationConfig | null {
-        const frameConfig: FrameAnimationConfig = prop.frameAnimationConfig
-        if (frameConfig) {
-            if (frameConfig[oldFrame]) {
-                return frameConfig[oldFrame]
-            }
-            let closest = -1
-            for (let key in frameConfig) {
-                const _key = Number(key)
-                if (_key < oldFrame && (closest === -1 || Math.abs(_key - oldFrame) < closest)) {
-                    closest = _key
-                }
-            }
-            return frameConfig[closest]
-        }
-        return null
-    }
-
     public get selected() {
         return this._selected.get()
     }
@@ -185,6 +167,35 @@ export class Context {
         position = {...position}
         console.log(`${prop.name} (${position.x},${position.y})`)
         return position
+    }
+
+    public getPropPositionByFrame(prop: PropConfig, frame: number, lookForward: boolean): AnimationConfig | null{
+        let position: AnimationConfig
+        const frameConfig = prop.frameAnimationConfig
+        if(frameConfig){
+            if(frameConfig[frame]){
+                position = frameConfig[frame]
+            }else{
+                let closest = -1
+                for (let key in frameConfig) {
+                    const _key = Number(key)
+                    if (lookForward) {
+                        if(_key > frame && (closest === -1 || Math.abs(_key - frame) < closest)){
+                            closest = _key
+                        }
+                    }else{
+                        if(_key < frame && (closest === -1 || Math.abs(_key - frame) < closest)){
+                            closest = _key
+                        }
+                    }
+                }
+                position = frameConfig[closest]
+            }
+        }
+        if(position){
+            return {...position}
+        }
+        return null
     }
 
     public toggleSelected(prop: PropConfig | number) {
@@ -282,9 +293,12 @@ export function demo() {
                 x: 500, y: 500, degree: 30
             },
             frameAnimationConfig: {
-                1: getRandomPosition(),
-                2: getRandomPosition(),
-                3: getRandomPosition(),
+                1: {
+                    x: 50, y: 50, degree: 30
+                },
+                3: {
+                    x: 150, y: 150, degree: 30
+                },
             }
         }
     }
@@ -306,7 +320,7 @@ export function demo() {
     }
     const context: SceneContext = new SceneContext()
     const config: Context = new Context(context)
-    config.addProp(getDemoLight(), getDemoLight()).displayRoot("#scene")
+    config.addProp(getDemoLight()).displayRoot("#scene")
     console.log(config.props.get())
 
     return new Position(1, 1)
