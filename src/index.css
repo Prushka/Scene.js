@@ -8,6 +8,7 @@
 :root {
     --theme-dark-white: #F5F5F5;
     --theme-dark-gray: #1c1c1c;
+    --theme-gray: #414141;
     --theme-purple: #8688BC;
     --theme-dark-purple: #6565a1;
     --theme-pink: #EB7777;
@@ -218,8 +219,10 @@
 }
 
 .view__prop--selected {
-    -webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .13));
-    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .13));
+    outline: 1px solid var(--theme-gray);
+    outline-offset: 7px;
+    -webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .09));
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .09));
 }
 
 .view__prop:hover {

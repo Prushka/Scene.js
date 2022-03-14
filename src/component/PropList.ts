@@ -10,7 +10,7 @@ export class PropList extends SceneComponent {
     // prop is not a property, it's the prop used in a scene
 
     listen() {
-        return [this.context.selected, this.context.props]
+        return [this.context.selectedState, this.context.props]
     }
 
     subscribe() {

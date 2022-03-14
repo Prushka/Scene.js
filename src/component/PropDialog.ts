@@ -23,7 +23,7 @@ export class PropDialog extends SceneComponent {
     }
 
     render(): string | string[] {
-        const selectedProp = this.context.selected.get()
+        const selectedProp = this.context.selected
         if (selectedProp) {
             return `<div class="prop__property-dialog">
                             <div class="prop__property-dialog__header"><i id="${this.context.getId(selectedProp, 'prop', 'dialog', 'property')}" class="bi bi-x pointer prop__property-dialog__close"></i></div>
@@ -34,6 +34,6 @@ export class PropDialog extends SceneComponent {
     }
 
     listen(): State<any>[] {
-        return [this.context.selected, this.context.props];
+        return [this.context.selectedState, this.context.props];
     }
 }

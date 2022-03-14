@@ -8,7 +8,7 @@ export class View extends SceneComponent {
     dragging: boolean
 
     listen(): State<any>[] {
-        return [this.context.props, this.context.ctx.currentFrameState]
+        return [this.context.props, this.context.ctx.currentFrameState, this.context.selectedState]
     }
 
     subscribe() {
@@ -74,7 +74,8 @@ export class View extends SceneComponent {
         })
 
         $('.view__prop').on('click', (e) => {
-            console.log(e.target.id)
+            const [id] = this.context.extractIdType(e.target.id)
+            this.context.selected = this.context.getPropById(id)
         })
     }
 
@@ -89,8 +90,9 @@ export class View extends SceneComponent {
         const props = this.context.props.get()
         let s = props.map(prop => {
             const position: AnimationConfig = this.context.getPropPosition(prop)
-            return position && `<g class="view__prop ${this.context.propSelected(prop) ? 'view__prop--selected':'view__prop--not-selected'}" id="${this.context.getId(prop, 'view', 'prop')}" transform="translate(${position.x}, ${position.y}) rotate(${position.degree})">
-                        <text id="${this.context.getId(prop, 'view', 'prop', 'text')}" y="-5">test</text>
+            const selected = this.context.propSelected(prop)
+            return position && `<g class="view__prop ${selected ? 'view__prop--selected':'view__prop--not-selected'}" id="${this.context.getId(prop, 'view', 'prop')}" transform="translate(${position.x}, ${position.y}) rotate(${position.degree})">
+                        <text id="${this.context.getId(prop, 'view', 'prop', 'text')}" y="-7">${prop.name}</text>
                         <path id="${this.context.getId(prop, 'view', 'prop', 'icon')}" fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
                     </g>`
         })

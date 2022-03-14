@@ -82,7 +82,7 @@ export class Context {
     private readonly contextId
     protected ids: number = 0
     ctx: SceneContext
-    selected: State<PropConfig> = createState()
+    private _selected: State<PropConfig> = createState()
     props: State<PropConfig[]> = createState([])
     viewports: State<ViewPort[]> = createState([])
 
@@ -111,8 +111,20 @@ export class Context {
         return this
     }
 
+    public get selected() {
+        return this._selected.get()
+    }
+
+    public set selected(selected: PropConfig) {
+        this._selected.set(selected)
+    }
+
+    public get selectedState() {
+        return this._selected
+    }
+
     public propSelected(prop: PropConfig | number): boolean {
-        const selectedProp: PropConfig = this.selected.get()
+        const selectedProp: PropConfig = this.selected
         const propId: number = typeof prop === 'number' ? prop : prop.id
         return selectedProp && selectedProp.id === propId;
     }
@@ -164,10 +176,10 @@ export class Context {
         } else {
             _prop = prop
         }
-        if (_prop === this.selected.get()) {
-            this.selected.set(null)
+        if (_prop === this.selected) {
+            this.selected = null
         } else {
-            this.selected.set(_prop)
+            this.selected = _prop
         }
     }
 
