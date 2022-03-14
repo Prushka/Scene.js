@@ -23,9 +23,12 @@ export class View extends SceneComponent {
 
     actions(): StateAction<any>[] {
         return [
-            [this.context.selectedState, (v: PropConfig | null) => {
-                if (v) {
-
+            [this.context.selectedState, (oldProp: PropConfig, newProp: PropConfig) => {
+                if (newProp) {
+                    const propDOM = $(`#${this.context.getId(newProp, 'view', 'prop')}`)
+                    if(propDOM){
+                        propDOM.addClass("view__prop--selected")
+                    }
                 }
             }],
             [this.context.ctx.currentFrameState, () => {
