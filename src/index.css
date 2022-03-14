@@ -8,7 +8,7 @@
 :root {
     --theme-dark-white: #F5F5F5;
     --theme-dark-gray: #1c1c1c;
-    --theme-gray: #414141;
+    --theme-gray: #696969;
     --theme-purple: #8688BC;
     --theme-dark-purple: #6565a1;
     --theme-pink: #EB7777;
@@ -229,6 +229,9 @@
     outline: 1px solid var(--theme-gray);
     outline-offset: 7px;
     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .09));
+    /*stroke: var(--theme-gray);*/
+    /*stroke-width: 1px;*/
+    /*stroke-dasharray: 2,2;*/
 }
 
 .view__prop:hover {

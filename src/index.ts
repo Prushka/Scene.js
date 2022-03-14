@@ -233,22 +233,22 @@ export class Context {
     }
 
     public get viewportOffset() {
-        return this.viewports.get()[this.ctx.currentFrame].offset
+        return this.viewports.get()[0].offset
     }
 
     public set viewportOffset(offset: PositionConfig) {
         const _viewports = [...this.viewports.get()]
-        _viewports[this.ctx.currentFrame].offset = offset
+        _viewports[0].offset = offset
         this.viewports.set(_viewports)
     }
 
     public get viewportScale() {
-        return this.viewports.get()[this.ctx.currentFrame].scale
+        return this.viewports.get()[0].scale
     }
 
     public set viewportScale(scale: number) {
         const _viewports = [...this.viewports.get()]
-        _viewports[this.ctx.currentFrame].scale = scale
+        _viewports[0].scale = scale
         this.viewports.set(_viewports)
     }
 
