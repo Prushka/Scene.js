@@ -24,6 +24,12 @@ export class View extends SceneComponent {
     actions(): StateAction<any>[] {
         return [
             [this.context.selectedState, (oldProp: PropConfig, newProp: PropConfig) => {
+                if (oldProp) {
+                    const propDOM = $(`#${this.context.getId(oldProp, 'view', 'prop')}`)
+                    if(propDOM){
+                        propDOM.removeClass("view__prop--selected")
+                    }
+                }
                 if (newProp) {
                     const propDOM = $(`#${this.context.getId(newProp, 'view', 'prop')}`)
                     if(propDOM){
