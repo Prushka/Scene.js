@@ -24,14 +24,10 @@ export class View extends SceneComponent {
         // scale(${this.context.viewportScale} ${this.context.viewportScale}) translate(${this.context.viewportOffset.x}, ${this.context.viewportOffset.y})
         $('.view__prop').each((index, element) => {
             const textElement = element.querySelector('text')
-            const parentOffset = {
-                x: textElement.getBoundingClientRect().width,
-                y: textElement.getBoundingClientRect().height
-            }
+            const textWidth = textElement.getBBox().width
             element.querySelectorAll('path').forEach(path => {
-                const pathWidth = path.getBoundingClientRect().width
-                const pathHeight = path.getBoundingClientRect().height
-                // path.setAttribute("transform", `translate(${parentOffset.x / 2}, 0)`)
+                const pathWidth = path.getBBox().width
+                path.setAttribute("transform", `translate(${textWidth / 2 - pathWidth/2}, 0)`)
             })
 
         })
@@ -113,7 +109,7 @@ export class View extends SceneComponent {
             group.appendChild(path)
             return position && group.outerHTML
         })
-        return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg">${s}</svg>`
+        return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg">${s.join('')}</svg>`
     }
 }
 
