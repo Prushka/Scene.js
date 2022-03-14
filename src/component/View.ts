@@ -9,10 +9,10 @@ import State from "../state/State";
 
 export class View extends SceneComponent {
 
-    mousePos: PositionConfig
-    mouseRPos: PositionConfig
-    mouseSPos: PositionConfig
-    zoomOrigin: PositionConfig
+    mouse: PositionConfig
+    mouseR: PositionConfig
+    mouseS: PositionConfig
+    origin: PositionConfig
     dragging: boolean
 
     listen(): State<any>[] {
@@ -25,30 +25,27 @@ export class View extends SceneComponent {
 
     afterRender() {
         console.log("Reset")
-        this.mousePos = {x: 0, y: 0}
-        this.mouseRPos = {...this.mousePos}
-        this.mouseSPos = {...this.mousePos}
-        this.zoomOrigin = {...this.mousePos}
+        this.mouse = {x: 0, y: 0}
+        this.mouseR = {...this.mouse}
+        this.mouseS = {...this.mouse}
+        this.origin = {...this.mouse}
         this.dragging = false
 
 
         const zoomedXInv = (number) => {
-            return Math.floor((number - this.mouseSPos.x) * (1 / this.context.viewportScale) + this.zoomOrigin.x);
+            return Math.floor((number - this.mouseS.x) * (1 / this.context.viewportScale) + this.origin.x);
         }
 
         const zoomedYInv = (number) => {
-            return Math.floor((number - this.mouseSPos.y) * (1 / this.context.viewportScale) + this.zoomOrigin.y);
+            return Math.floor((number - this.mouseS.y) * (1 / this.context.viewportScale) + this.origin.y);
         }
 
-        const zoomed = (number) => {
-            return Math.floor(number * this.context.viewportScale);
-        }
         const zoomedX = (number) => {
-            return Math.floor((number - this.zoomOrigin.x) * this.context.viewportScale + this.mouseSPos.x);
+            return Math.floor((number - this.origin.x) * this.context.viewportScale + this.mouseS.x);
         }
 
         const zoomedY = (number) => { // scale & origin Y
-            return Math.floor((number - this.zoomOrigin.y) * this.context.viewportScale + this.mouseSPos.y);
+            return Math.floor((number - this.origin.y) * this.context.viewportScale + this.mouseS.y);
         }
 
         const stopDragging = (e) => {
@@ -56,66 +53,64 @@ export class View extends SceneComponent {
                 e.preventDefault()
                 this.dragging = false
                 const previous = this.context.viewportOffset
+                console.log(this.context.viewportScale)
                 this.context.viewportOffset = {
                     x: zoomedX(this.context.viewportScale) + previous.x,
-                    y: zoomedY(this.context.viewportScale) - e.clientY + previous.y
+                    y: zoomedY(this.context.viewportScale) + previous.y
                 }
                 $('.view-container').css('cursor', 'unset')
             }
         }
 
         const regMouse = (e) => {
-            this.mousePos.x = e.clientX - this.context.offset.left
-            this.mousePos.y = e.clientY - this.context.offset.top
-            let xx = this.mouseRPos.x
-            let yy = this.mouseRPos.y
-            this.mouseRPos.x = zoomedXInv(this.mousePos.x);
-            this.mouseRPos.y = zoomedYInv(this.mousePos.y);
+            const c = $('.view-container')
+            this.mouse.x = e.clientX - c[0].getBoundingClientRect().left
+            this.mouse.y = e.clientY - c[0].getBoundingClientRect().top
+            let xx = this.mouseR.x
+            let yy = this.mouseR.y
+            this.mouseR.x = zoomedXInv(this.mouse.x);
+            this.mouseR.y = zoomedYInv(this.mouse.y);
             return [xx, yy]
         }
 
-        $('.view__prop').on("dragstart", (e) => {
-            console.log(e)
-        })
+        const render = () => {
+            const newX = zoomedX(this.context.viewportScale)
+            const newY = zoomedY(this.context.viewportScale)
+            $(`.view-svg`).attr("transform", `matrix(${this.context.viewportScale},0,0,${this.context.viewportScale},${newX}, ${newY})`);
+        }
+
         $('.view-container').on("mousedown", (e) => {
             e.preventDefault()
-            regMouse(e)
             this.dragging = true
             $('.view-container').css('cursor', 'grabbing')
         }).on("mousemove", (e) => {
             e.preventDefault()
+            const [xx, yy] = regMouse(e)
             if (this.dragging) {
-                const [xx, yy] = regMouse(e)
-                this.zoomOrigin.x -= this.mouseRPos.x - xx;
-                this.zoomOrigin.y -= this.mouseRPos.y - yy;
-                this.mouseRPos.x = zoomedXInv(this.mousePos.x);
-                this.mouseRPos.y = zoomedYInv(this.mousePos.y);
-
-                const newX = zoomedX(this.context.viewportScale)
-                const newY = zoomedY(this.context.viewportScale)
-                $(`.view-svg`).attr("transform", `matrix(1,0,0,1,${newX}, ${newY})`);
-                this.context.props.get().forEach(prop => {
-                    const position: AnimationConfig = this.context.getPropPosition(prop)
-                    if (position) {
-                    }
-                })
+                this.origin.x -= this.mouseR.x - xx;
+                this.origin.y -= this.mouseR.y - yy;
+                this.mouseR.x = zoomedXInv(this.mouse.x);
+                this.mouseR.y = zoomedYInv(this.mouse.y);
+                render()
             }
         }).on("mouseup mouseleave mouseout", (e) => {
             stopDragging(e)
         }).on('wheel', (e) => {
+            e.preventDefault()
             const deltaY = (<WheelEvent>e.originalEvent).deltaY
             if (deltaY < 0) { // zoom in
                 console.log("zooming in")
-                this.context.viewportScale = Math.min(5, this.context.viewportScale * 1.1)
+                this.context.viewportScale = Math.min(3, this.context.viewportScale * 1.02)
             } else { // zoom out
-                this.context.viewportScale = Math.max(0.1, this.context.viewportScale * (1 / 1.1))
+                this.context.viewportScale = Math.max(0.4, this.context.viewportScale * (1 / 1.02))
             }
-            this.zoomOrigin = {...this.mouseRPos}
-            this.mouseSPos = {...this.mousePos}
-            this.mouseRPos = {
-                x: zoomedXInv(this.mousePos.x),
-                y: zoomedYInv(this.mousePos.y)
+            this.origin = {...this.mouseR}
+            this.mouseS = {...this.mouse}
+            this.mouseR = {
+                x: zoomedXInv(this.mouse.x),
+                y: zoomedYInv(this.mouse.y)
             }
+            render()
         })
     }
 

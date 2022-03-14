@@ -154,8 +154,6 @@ export class Context {
         }
     }
 
-    public offset: Coordinates
-
     private register<T>(...c: Array<new(T) => T>) {
         c.forEach(cl => {
             new cl(this)
@@ -206,7 +204,6 @@ export class Context {
     public displayRoot(selector: string) {
         this.beforeDisplay()
         $(() => {
-            this.offset = $(selector).offset()
 
             $(selector).addClass("root-container")
                 .html(`<div class='prop__list-container'></div>
@@ -219,7 +216,7 @@ export class Context {
             this.register(View)
             State.renderAll()
 
-            console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
+            // console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
         })
     }
 }
@@ -234,10 +231,12 @@ export function demo() {
             colorTemperature: 5000,
             enabled: false,
             staticPosition: {
-                x: Math.random() * 600, y: Math.random() * 600, degree: 30
+                x: 500, y: 500 , degree: 30
             },
             frameAnimationConfig: {
-                1: getRandomPosition(),
+                1: {
+                    x: 500, y: 300 , degree: 30
+                },
                 2: getRandomPosition(),
                 3: getRandomPosition(),
             }
