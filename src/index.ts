@@ -215,7 +215,8 @@ export class Context {
                                     <div class="footer-container"></div>`)
 
             // this._selected.set(this.props[0])
-            this.register(PropList, PropDialog, Footer, View)
+            //PropList, PropDialog, Footer,
+            this.register(View)
             State.renderAll()
 
             console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
