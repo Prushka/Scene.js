@@ -134,7 +134,7 @@ export class Context {
         position = {...position}
         if(position){
             position.x = position.x + this.viewportOffset.x
-            position.y = position.x + this.viewportOffset.y
+            position.y = position.y + this.viewportOffset.y
         }
         console.log(`${prop.name} (${position.x},${position.y})`)
         return position
@@ -225,7 +225,8 @@ export function demo() {
             },
             frameAnimationConfig: {
                 1: getRandomPosition(),
-                2: getRandomPosition()
+                2: getRandomPosition(),
+                3: getRandomPosition(),
             }
         }
     }
@@ -247,7 +248,7 @@ export function demo() {
     }
     const context: SceneContext = new SceneContext()
     const config: Context = new Context(context)
-    config.addProp(getDemoLight(), getDemoLight(), getDemoTable(), getDemoLight(), getDemoTable()).displayRoot("#scene")
+    config.addProp(getDemoLight()).displayRoot("#scene")
     console.log(config.props.get())
 
     return new Position(1, 1)
