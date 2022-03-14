@@ -58,7 +58,7 @@ export class ViewPort {
     _offset: State<PositionConfig> = createState({
         x: 0, y: 0
     })
-    _scale: State<number> = createState(1)
+    _scale: State<number> = createState(0.75)
 
     public get offset() {
         return this._offset.get()
@@ -202,8 +202,6 @@ export class Context {
     }
 
     public get viewportOffset() {
-
-        console.log(this.viewports.get()[this.ctx.currentFrame].offset)
         return this.viewports.get()[this.ctx.currentFrame].offset
     }
 
