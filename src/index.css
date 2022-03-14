@@ -218,6 +218,10 @@
     cursor: pointer;
 }
 
+.view__prop text{
+    font: normal 12px Comfortaa;
+}
+
 .view__prop--selected {
     outline: 1px solid var(--theme-gray);
     outline-offset: 7px;
@@ -233,4 +237,7 @@
 .view-svg {
     width: 100%;
     height: 100%;
+
+    text-anchor: middle;
+    alignment-baseline: middle;
 }

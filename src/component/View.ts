@@ -16,9 +16,11 @@ export class View extends SceneComponent {
     }
 
     private reapplyViewportAttrs() {
-        $(`.view-svg`)
-            .attr("transform",
-                `scale(${this.context.viewportScale} ${this.context.viewportScale}) translate(${this.context.viewportOffset.x}, ${this.context.viewportOffset.y})`);
+        const svgE =
+            $(`.view-svg`)
+        svgE.attr("viewBox",
+                `${-this.context.viewportOffset.x} ${-this.context.viewportOffset.y} ${svgE.width()*this.context.viewportScale} ${svgE.height()*this.context.viewportScale}`);
+        // scale(${this.context.viewportScale} ${this.context.viewportScale}) translate(${this.context.viewportOffset.x}, ${this.context.viewportOffset.y})
     }
 
     afterRender() {
@@ -65,7 +67,7 @@ export class View extends SceneComponent {
         }).on('wheel', (e) => {
             e.preventDefault()
             const deltaY = (<WheelEvent>e.originalEvent).deltaY
-            if (deltaY < 0) { // zoom in
+            if (deltaY > 0) { // zoom in
                 this.context.viewportScale = Math.min(3, this.context.viewportScale * 1.02)
             } else { // zoom out
                 this.context.viewportScale = Math.max(0.4, this.context.viewportScale * (1 / 1.02))
@@ -91,7 +93,7 @@ export class View extends SceneComponent {
         let s = props.map(prop => {
             const position: AnimationConfig = this.context.getPropPosition(prop)
             const selected = this.context.propSelected(prop)
-            return position && `<g class="view__prop ${selected ? 'view__prop--selected':'view__prop--not-selected'}" id="${this.context.getId(prop, 'view', 'prop')}" transform="translate(${position.x}, ${position.y}) rotate(${position.degree})">
+            return position && `<g class="view__prop ${selected ? 'view__prop--selected' : 'view__prop--not-selected'}" id="${this.context.getId(prop, 'view', 'prop')}" transform="translate(${position.x}, ${position.y}) rotate(${position.degree})">
                         <text id="${this.context.getId(prop, 'view', 'prop', 'text')}" y="-7">${prop.name}</text>
                         <path id="${this.context.getId(prop, 'view', 'prop', 'icon')}" fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
                     </g>`
