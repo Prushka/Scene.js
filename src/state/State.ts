@@ -4,13 +4,19 @@
 
 import {CustomComponent} from "../component/Component";
 
+export type StateAction = [State<any>, (() => void)?][]
+export type ComponentActions = [CustomComponent, (() => void)?][]
+
 export default class State<T> {
     private _state: T
     private static globalStates: State<any>[] = []
     private _components: CustomComponent[] = []
+    private _componentsActions: ComponentActions = []
 
     public static renderAll() {
-        State.globalStates.forEach(s => s.render())
+        State.globalStates.forEach(s => {
+            s.render()
+        })
     }
 
     public constructor(defaultValue?: T) {
@@ -25,6 +31,9 @@ export default class State<T> {
     private render() {
         this._components.forEach(component => {
             component.renderComponent()
+        })
+        this._componentsActions.forEach(([, action])=>{
+            action()
         })
         // this.withSelectorPopulate((selector, populate, afterRender) => {
         //     const html: string | string[] = populate(this.get())
@@ -45,6 +54,10 @@ export default class State<T> {
 
     public subscribe(component: CustomComponent) {
         this._components.push(component)
+    }
+
+    public subscribeActions(component: CustomComponent, func: () => void) {
+        this._componentsActions.push([component, func])
     }
 }
 

@@ -4,7 +4,7 @@
 
 import {SceneComponent} from "./Component";
 import {AnimationConfig, PositionConfig, PropTypeIcons} from "../props/Props";
-import State from "../state/State";
+import State, {StateAction} from "../state/State";
 import {createElement} from "../utils/Utils";
 
 export class View extends SceneComponent {
@@ -13,7 +13,15 @@ export class View extends SceneComponent {
     dragging: boolean
 
     listen(): State<any>[] {
-        return [this.context.props, this.context.ctx.currentFrameState, this.context.selectedState]
+        return [this.context.props];
+    }
+
+    actions(): StateAction {
+        return [
+            [this.context.selectedState, () => {
+            console.log("selected changed")
+            }],
+            [this.context.ctx.currentFrameState]]
     }
 
     subscribe() {
@@ -30,7 +38,7 @@ export class View extends SceneComponent {
             const textElement = element.querySelector('text')
             const textWidth = textElement.getBBox().width
             const pathGroup = element.querySelector('g')
-            pathGroup.setAttribute("transform", `translate(${textWidth / 2 - pathGroup.getBBox().width/2}, 0)`)
+            pathGroup.setAttribute("transform", `translate(${textWidth / 2 - pathGroup.getBBox().width / 2}, 0)`)
         })
     }
 
@@ -93,6 +101,7 @@ export class View extends SceneComponent {
     }
 
     render(): string | string[] {
+        console.log("render")
         const props = this.context.props.get()
         let s = props.map(prop => {
             const position: AnimationConfig = this.context.getPropPosition(prop)
