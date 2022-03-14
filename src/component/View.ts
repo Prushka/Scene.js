@@ -24,7 +24,6 @@ export class View extends SceneComponent {
     }
 
     afterRender() {
-        return
         console.log("Reset")
         this.mousePos = {x: 0, y: 0}
         this.mouseRPos = {...this.mousePos}
@@ -91,11 +90,13 @@ export class View extends SceneComponent {
                 this.zoomOrigin.y -= this.mouseRPos.y - yy;
                 this.mouseRPos.x = zoomedXInv(this.mousePos.x);
                 this.mouseRPos.y = zoomedYInv(this.mousePos.y);
+
+                const newX = zoomedX(this.context.viewportScale)
+                const newY = zoomedY(this.context.viewportScale)
+                $(`.view-svg`).attr("transform", `matrix(1,0,0,1,${newX}, ${newY})`);
                 this.context.props.get().forEach(prop => {
                     const position: AnimationConfig = this.context.getPropPosition(prop)
                     if (position) {
-                        $(`#view-prop-${prop.propId}`).css("left", position.x + zoomedX(this.context.viewportScale))
-                            .css("bottom", position.y + zoomedY(this.context.viewportScale))
                     }
                 })
             }
@@ -129,9 +130,9 @@ export class View extends SceneComponent {
         const props = this.context.props.get()
         let s = props.map(prop => {
             const position: AnimationConfig = this.context.getPropPosition(prop)
-            return position && `<g color="red" class="view__prop" id="view-prop-${prop.propId}" transform="translate(${position.x}, ${position.y}) rotate(${position.degree * (Math.PI/180)})">
-                        <text>test</text>
-                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+            return position && `<g class="view__prop" id="view-prop-${prop.propId}" transform="translate(${position.x}, ${position.y}) rotate(${position.degree * (Math.PI/180)})">
+                        <text y="-5">test</text>
+                        <path style="transform-origin: center center;" fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
                     </g>`
         })
         return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg">${s}</svg>`
