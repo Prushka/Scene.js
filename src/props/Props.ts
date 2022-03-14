@@ -16,13 +16,16 @@ export interface AnimationConfig extends OrientationConfig, PositionConfig {
     isOffset?: boolean
 }
 
+export interface HasId {
+    id?: number,
+}
+
 export type FrameAnimationConfig = { [key: number]: AnimationConfig }
 
-export interface PropConfig {
+export interface PropConfig extends HasId {
     name?: string,
     iconColor?: string,
     iconStyle?: string,
-    propId?: number,
     type?: PropType,
     enabled?: boolean,
     staticPosition?: AnimationConfig,

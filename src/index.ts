@@ -3,7 +3,7 @@
  */
 
 import Position from "./props/Position";
-import {AnimationConfig, FrameAnimationConfig, PositionConfig, PropConfig, PropType} from "./props/Props";
+import {AnimationConfig, FrameAnimationConfig, HasId, PositionConfig, PropConfig, PropType} from "./props/Props";
 import Coordinates = JQuery.Coordinates;
 import State, {createState} from "./state/State";
 import {convertTypeToReadable} from "./utils/Utils";
@@ -79,7 +79,7 @@ export class ViewPort {
 
 export class Context {
     private static contextIds = 0
-    private contextId = 0
+    private readonly contextId
     protected ids: number = 0
     ctx: SceneContext
     selected: State<PropConfig> = createState()
@@ -96,9 +96,9 @@ export class Context {
         const _props = [...this.props.get()]
         propConfigs.forEach(propConfig => {
             propConfig.iconStyle = propConfig.iconStyle || "default"
-            propConfig.propId = propConfig.propId || this.ids
+            propConfig.id = propConfig.id || this.ids
             propConfig.enabled = propConfig.enabled === undefined ? true : propConfig.enabled
-            propConfig.name = propConfig.name || `${convertTypeToReadable(propConfig.type)} ${propConfig.propId}`
+            propConfig.name = propConfig.name || `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
             if (propConfig.frameAnimationConfig) {
                 for (let key in propConfig.frameAnimationConfig) {
                     propConfig.frameAnimationConfig[key].enabled = propConfig.frameAnimationConfig[key].enabled === undefined ? true : propConfig.frameAnimationConfig[key].enabled
@@ -112,14 +112,14 @@ export class Context {
     }
 
     public extractIdType(htmlID: string): [number, string[]] {
-        const id: number = parseInt(htmlID.match(/-\d+/)[0].replace('-',''))
+        const id: number = parseInt(htmlID.match(/-\d+/)[0].replace('-', ''))
         const type: string = htmlID.replace(/-\d+/, '').replace(/\d+-/, '')
         return [id, type.split('-')]
     }
 
-    public getId(prop: PropConfig | number, ...type: string[]) {
-        const id = typeof prop === 'number' ? prop : prop.propId
-        return `${this.contextId}-${type.join('-')}-${id}`
+    public getId(id: HasId | number, ...type: string[]) {
+        const _id = typeof id === 'number' ? id : id.id
+        return `${this.contextId}-${type.join('-')}-${_id}`
     }
 
     public isPropEnabled(prop: PropConfig): boolean {
@@ -132,7 +132,7 @@ export class Context {
 
     public getPropById(id: number): PropConfig | null {
         for (const prop of this.props.get()) {
-            if (prop.propId === id) {
+            if (prop.id === id) {
                 return prop
             }
         }
