@@ -9,5 +9,5 @@ export function convertTypeToReadable(type: string): string {
 export function createElement(html:string):Element {
     const template = document.createElement('template')
     template.innerHTML = html.trim()
-    return template.content.children[0];
+    return template.content.children[0]
 }
