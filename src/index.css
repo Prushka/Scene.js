@@ -216,6 +216,7 @@
     /*position: absolute;*/
     pointer-events: bounding-box;
     cursor: pointer;
+    transition-duration: 1s;
 }
 
 .view__prop text{

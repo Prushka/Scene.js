@@ -39,9 +39,33 @@ export class View extends SceneComponent {
             }],
             [this.context.ctx.currentFrameState, (oldFrame: number, newFrame: number) => {
                 this.context.props.get().forEach(prop => {
-                    if (prop.frameAnimationConfig[newFrame]) {
-                        const previous = this.context.getPropPositionByFrame(prop, oldFrame, newFrame - oldFrame < 0)
-                        console.log(previous)
+                    const newPosition = prop.frameAnimationConfig[newFrame]
+                    if (newPosition) {
+                        const previousPosition = this.context.getPropPositionByFrame(prop, oldFrame, newFrame - oldFrame < 0)
+                        const animationElement = document.getElementById(this.context.getId(prop, 'view', 'prop', 'animation'))
+                        const groupElement = document.getElementById(this.context.getId(prop, 'view', 'prop'))
+                        console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
+                        groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree})`)
+                        // if (animationElement) {
+                        //     //<animateTransform
+                        //     //        attributeName="transform"
+                        //     //        begin="0s"
+                        //     //        dur="1s"
+                        //     //        type="translate"
+                        //     //        from="-50 10"
+                        //     //        to="150 10"
+                        //     //        repeatCount="indefinite"
+                        //     //             />
+                        //     animationElement.setAttribute("attributeName","transform")
+                        //     animationElement.setAttribute("type","translate")
+                        //     animationElement.setAttribute("begin","0s")
+                        //     animationElement.setAttribute("dur","1s")
+                        //     animationElement.setAttribute("from",`${previousPosition.x} ${previousPosition.y}`)
+                        //     animationElement.setAttribute("to",`${newPosition.x} ${newPosition.y}`)
+                        //     animationElement.setAttribute("fill",'freeze')
+                        //     animationElement.setAttribute("repeat",'indefinite')
+                        //     animationElement.id += "-"
+                        // }
                     }
                 })
             }]]
@@ -109,9 +133,9 @@ export class View extends SceneComponent {
             e.preventDefault()
             const deltaY = (<WheelEvent>e.originalEvent).deltaY
             if (deltaY > 0) { // zoom in
-                this.context.viewportScale = Math.min(3, this.context.viewportScale * 1.015)
+                this.context.viewportScale = Math.min(3, this.context.viewportScale * 1.02)
             } else { // zoom out
-                this.context.viewportScale = Math.max(0.4, this.context.viewportScale * (1 / 1.015))
+                this.context.viewportScale = Math.max(0.4, this.context.viewportScale * (1 / 1.02))
             }
             this.applyViewportAttrs()
         })
@@ -132,6 +156,11 @@ export class View extends SceneComponent {
             group.classList.add("view__prop", selected ? 'view__prop--selected' : 'view__prop--not-selected')
             group.id = this.context.getId(prop, 'view', 'prop')
             group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree})`)
+
+            const animationTransform = document.createElementNS(null, "animateTransform")
+            animationTransform.id = this.context.getId(prop, 'view', 'prop', 'animation')
+            group.appendChild(animationTransform)
+
             const text = document.createElement("text")
             text.id = this.context.getId(prop, 'view', 'prop', 'text')
             text.innerText = prop.name
