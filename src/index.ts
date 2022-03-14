@@ -48,7 +48,7 @@ export class SceneContext {
         this._currentFrame.set(f)
     }
 
-    public get currentFrameState(){
+    public get currentFrameState() {
         return this._currentFrame
     }
 
@@ -125,14 +125,14 @@ export class Context {
     }
 
     public getPropPosition(prop: PropConfig): AnimationConfig | null {
-        let position:AnimationConfig
+        let position: AnimationConfig
         if (this.ctx.isStatic) {
             position = prop.staticPosition
         } else {
             position = prop.frameAnimationConfig[this.ctx.currentFrame]
         }
         position = {...position}
-        if(position){
+        if (position) {
             position.x = position.x + this.viewportOffset.x
             position.y = position.y + this.viewportOffset.y
         }
@@ -154,7 +154,7 @@ export class Context {
         }
     }
 
-    private offset: Coordinates
+    public offset: Coordinates
 
     private register<T>(...c: Array<new(T) => T>) {
         c.forEach(cl => {
@@ -184,6 +184,16 @@ export class Context {
         this.viewports.set(_viewports)
     }
 
+    public get viewportScale() {
+        return this.viewports.get()[this.ctx.currentFrame].scale
+    }
+
+    public set viewportScale(scale: number) {
+        const _viewports = [...this.viewports.get()]
+        _viewports[this.ctx.currentFrame].scale = scale
+        this.viewports.set(_viewports)
+    }
+
     private beforeDisplay() {
         this.ctx.totalFrames = this.findMaxFrames()
         const viewports = []
@@ -196,6 +206,8 @@ export class Context {
     public displayRoot(selector: string) {
         this.beforeDisplay()
         $(() => {
+            this.offset = $(selector).offset()
+
             $(selector).addClass("root-container")
                 .html(`<div class='prop__list-container'></div>
                                     <div class='prop__property-container'></div>
@@ -205,7 +217,7 @@ export class Context {
             // this._selected.set(this.props[0])
             this.register(PropList, PropDialog, Footer, View)
             State.renderAll()
-            this.offset = $(selector).offset()
+
             console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
         })
     }
