@@ -14,7 +14,7 @@
     --theme-dark-pink: #d96262;
 }
 
-.pointer{
+.pointer {
     cursor: pointer;
 }
 
@@ -61,7 +61,7 @@
     align-items: center;
 }
 
-.prop__property-dialog__header i{
+.prop__property-dialog__header i {
     font-size: 2.5rem;
     align-self: end;
     padding: 10px;
@@ -79,17 +79,17 @@
     box-sizing: border-box;
 }
 
-.prop__property-dialog__footer span{
+.prop__property-dialog__footer span {
     font-size: 1.2rem;
     font-weight: 700;
     margin-left: 15px;
 }
 
-.prop__property-dialog__footer i{
+.prop__property-dialog__footer i {
     font-size: 1.2rem;
 }
 
-.footer{
+.footer {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -105,7 +105,7 @@
     width: 80px;
 }
 
-.button{
+.button {
     text-align: center;
     align-self: center;
     font-weight: bold;
@@ -118,13 +118,13 @@
     margin-top: 8px
 }
 
-.button span{
+.button span {
     font-family: Roboto, serif;
     font-weight: 500;
     font-size: 1rem;
 }
 
-.button--purple:hover{
+.button--purple:hover {
     background-color: var(--theme-dark-purple);
 }
 
@@ -133,24 +133,24 @@
     background-color: var(--theme-purple);
 }
 
-.timeline-container{
+.timeline-container {
     flex-direction: column;
     width: 100%;
     margin-top: auto;
     padding: 5px 20px;
 }
 
-.timeline{
+.timeline {
     width: 100%;
     border-top: 4px solid var(--theme-pink);
 }
 
-.timeline__frame-container{
+.timeline__frame-container {
     display: flex;
     justify-content: space-between;
 }
 
-.timeline__frame{
+.timeline__frame {
     /*height: 20px;*/
     /*border-left: 4px solid var(--theme-pink);*/
     background-color: var(--theme-pink);
@@ -161,11 +161,11 @@
     font-weight: 600;
 }
 
-.timeline__frame--selected{
+.timeline__frame--selected {
     background-color: var(--theme-purple);
 }
 
-.timeline__frame--not-selected:hover{
+.timeline__frame--not-selected:hover {
     background-color: var(--theme-dark-pink);
     transition-duration: 0.3s;
 }
@@ -206,16 +206,23 @@
     font-size: 1.6rem;
 }
 
-.view-container{
+.view-container {
     width: 100%;
     height: 100%;
 }
 
-.view__prop{
-    position: absolute;
+.view__prop {
+    /*position: absolute;*/
+    pointer-events: bounding-box;
+    cursor: pointer;
 }
 
-.view-svg{
+.view__prop:hover {
+    -webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .2));
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .2));
+}
+
+.view-svg {
     width: 100%;
     height: 100%;
 }

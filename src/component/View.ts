@@ -74,6 +74,10 @@ export class View extends SceneComponent {
             }
             this.reapplyViewportAttrs()
         })
+
+        $('.view__prop').on('click', (e)=>{
+            console.log(e.target.id)
+        })
     }
 
     render(): string | string[] {
@@ -88,8 +92,8 @@ export class View extends SceneComponent {
         let s = props.map(prop => {
             const position: AnimationConfig = this.context.getPropPosition(prop)
             return position && `<g class="view__prop" id="view-prop-${prop.propId}" transform="translate(${position.x}, ${position.y}) rotate(${position.degree})">
-                        <text y="-5">test</text>
-                        <path style="transform-origin: center center;" fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                        <text id="view-prop-text-${prop.propId}" y="-5">test</text>
+                        <path id="view-prop-icon-${prop.propId}" fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
                     </g>`
         })
         return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg">${s}</svg>`
