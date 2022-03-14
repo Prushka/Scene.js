@@ -6,7 +6,7 @@ import Position from "./props/Position";
 import {AnimationConfig, FrameAnimationConfig, HasId, PositionConfig, PropConfig, PropType} from "./props/Props";
 import Coordinates = JQuery.Coordinates;
 import State, {createState} from "./state/State";
-import {convertTypeToReadable} from "./utils/Utils";
+import {convertTypeToReadable, generateRandomColor} from "./utils/Utils";
 import {PropList} from "./component/PropList";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
@@ -95,6 +95,7 @@ export class Context {
     public addProp(...propConfigs: PropConfig[]): Context {
         const _props = [...this.props.get()]
         propConfigs.forEach(propConfig => {
+            propConfig.color = propConfig.color || generateRandomColor()
             propConfig.iconStyle = propConfig.iconStyle || "default"
             propConfig.id = propConfig.id || this.ids
             propConfig.enabled = propConfig.enabled === undefined ? true : propConfig.enabled

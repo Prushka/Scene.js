@@ -165,6 +165,7 @@ export class View extends SceneComponent {
             text.id = this.context.getId(prop, 'view', 'prop', 'text')
             text.innerText = prop.name
             text.setAttribute("y", "-7")
+            text.style.fill = prop.color
             group.appendChild(text)
             // It's not possible to set innerHTML to format: <path ... /><path ... />
             // The above line will be formatted to: <path ...><path ...></path></path>
@@ -177,6 +178,7 @@ export class View extends SceneComponent {
             pathsHTML.match(/<path.*?\/>/g).forEach(pathHTML => {
                 const path = createElement(pathHTML)
                 path.id = this.context.getId(prop, 'view', 'prop', 'icon', `[${pathId}]`)
+                path.style.fill = prop.color
                 pathGroup.appendChild(path)
                 pathId++
             })
