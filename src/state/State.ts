@@ -4,14 +4,14 @@
 
 import {CustomComponent} from "../component/Component";
 
-export type StateAction = [State<any>, (() => void)?][]
-export type ComponentActions = [CustomComponent, (() => void)?][]
+export type StateAction<T> = [State<T>, ((T) => void)?]
+export type ComponentAction<T> = [CustomComponent, ((T) => void)?]
 
 export default class State<T> {
     private _state: T
     private static globalStates: State<any>[] = []
     private _components: CustomComponent[] = []
-    private _componentsActions: ComponentActions = []
+    private _componentsActions: ComponentAction<any>[] = []
 
     public static renderAll() {
         State.globalStates.forEach(s => {
@@ -32,8 +32,8 @@ export default class State<T> {
         this._components.forEach(component => {
             component.renderComponent()
         })
-        this._componentsActions.forEach(([, action])=>{
-            action()
+        this._componentsActions.forEach(([, action]) => {
+            action(this.get())
         })
         // this.withSelectorPopulate((selector, populate, afterRender) => {
         //     const html: string | string[] = populate(this.get())

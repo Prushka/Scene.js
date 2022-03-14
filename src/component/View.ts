@@ -3,11 +3,16 @@
  */
 
 import {SceneComponent} from "./Component";
-import {AnimationConfig, PositionConfig, PropTypeIcons} from "../props/Props";
+import {AnimationConfig, PositionConfig, PropConfig, PropTypeIcons} from "../props/Props";
 import State, {StateAction} from "../state/State";
 import {createElement} from "../utils/Utils";
 
 export class View extends SceneComponent {
+
+    // I can't find a way to add animation while re-rendering the entire content
+    // This means:
+    // view will be updated only when props config changed
+    // the rest of state changes will dispatch actions that modify the DOM
 
     mouse: PositionConfig
     dragging: boolean
@@ -16,12 +21,16 @@ export class View extends SceneComponent {
         return [this.context.props];
     }
 
-    actions(): StateAction {
+    actions(): StateAction<any>[] {
         return [
-            [this.context.selectedState, () => {
-            console.log("selected changed")
+            [this.context.selectedState, (v: PropConfig | null) => {
+                if (v) {
+
+                }
             }],
-            [this.context.ctx.currentFrameState]]
+            [this.context.ctx.currentFrameState, () => {
+
+            }]]
     }
 
     subscribe() {
@@ -86,16 +95,15 @@ export class View extends SceneComponent {
             e.preventDefault()
             const deltaY = (<WheelEvent>e.originalEvent).deltaY
             if (deltaY > 0) { // zoom in
-                this.context.viewportScale = Math.min(3, this.context.viewportScale * 1.01)
+                this.context.viewportScale = Math.min(3, this.context.viewportScale * 1.015)
             } else { // zoom out
-                this.context.viewportScale = Math.max(0.4, this.context.viewportScale * (1 / 1.01))
+                this.context.viewportScale = Math.max(0.4, this.context.viewportScale * (1 / 1.015))
             }
             this.applyViewportAttrs()
         })
 
         $('.view__prop').on('click', (e) => {
             const [id] = this.context.extractIdType(e.target.id)
-            console.log(e.target.id)
             this.context.selected = this.context.getPropById(id)
         })
     }
