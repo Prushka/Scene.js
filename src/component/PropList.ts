@@ -4,7 +4,6 @@
 
 import {SceneComponent} from "./Component";
 import {PropTypeIcons} from "../props/Props";
-import {extractIdType} from "../utils/Utils";
 
 export class PropList extends SceneComponent {
 
@@ -20,7 +19,8 @@ export class PropList extends SceneComponent {
 
     afterRender() {
         $('.prop__list__item').on("click", (e) => {
-            const [id] = extractIdType(e.target.id)
+            console.log(this.context.extractIdType(e.target.id))
+            const [id] = this.context.extractIdType(e.target.id)
             this.context.toggleSelected(id)
         })
     }
@@ -28,9 +28,9 @@ export class PropList extends SceneComponent {
     render(): string | string[] {
         const selected = this.context.selected.get()
         return this.context.props.get().map(prop => {
-            return `<div id='prop-list-${prop.propId}' class='pointer prop__list__item  ${selected === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
-                    <i id='prop-list-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.context.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
-                    <span id='prop-list-text-${prop.propId}'>${prop.name}</span>
+            return `<div id="${this.context.getId(prop, 'prop', 'list')}" class='pointer prop__list__item  ${selected === prop ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
+                    <i id="${this.context.getId(prop, 'prop', 'list', 'icon')}" class="${PropTypeIcons[prop.type][prop.iconStyle][this.context.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
+                    <span id="${this.context.getId(prop, 'prop', 'list', 'title')}">${prop.name}</span>
                     </div>`
         })
     }

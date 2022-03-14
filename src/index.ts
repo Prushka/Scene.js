@@ -78,6 +78,8 @@ export class ViewPort {
 }
 
 export class Context {
+    private static contextIds = 0
+    private contextId = 0
     protected ids: number = 0
     ctx: SceneContext
     selected: State<PropConfig> = createState()
@@ -85,6 +87,8 @@ export class Context {
     viewports: State<ViewPort[]> = createState([])
 
     public constructor(context: SceneContext) {
+        this.contextId = Context.contextIds
+        Context.contextIds += 1
         this.ctx = context
     }
 
@@ -105,6 +109,17 @@ export class Context {
         })
         this.props.set(_props)
         return this
+    }
+
+    public extractIdType(htmlID: string): [number, string[]] {
+        const id: number = parseInt(htmlID.match(/-\d+/)[0].replace('-',''))
+        const type: string = htmlID.replace(/-\d+/, '').replace(/\d+-/, '')
+        return [id, type.split('-')]
+    }
+
+    public getId(prop: PropConfig | number, ...type: string[]) {
+        const id = typeof prop === 'number' ? prop : prop.propId
+        return `${this.contextId}-${type.join('-')}-${id}`
     }
 
     public isPropEnabled(prop: PropConfig): boolean {
@@ -212,7 +227,7 @@ export class Context {
 
             // this._selected.set(this.props[0])
             //
-            this.register(View,PropList, PropDialog, Footer,)
+            this.register(View, PropList, PropDialog, Footer,)
             State.renderAll()
 
             // console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
@@ -230,7 +245,7 @@ export function demo() {
             colorTemperature: 5000,
             enabled: false,
             staticPosition: {
-                x: 500, y: 500 , degree: 30
+                x: 500, y: 500, degree: 30
             },
             frameAnimationConfig: {
                 1: getRandomPosition(),

@@ -4,7 +4,6 @@
 
 import {SceneComponent} from "./Component";
 import State from "../state/State";
-import {extractIdType} from "../utils/Utils";
 
 export class Footer extends SceneComponent {
     listen(): State<any>[] {
@@ -19,7 +18,7 @@ export class Footer extends SceneComponent {
 
     afterRender() {
         $('.timeline__frame').on("click", (e) => {
-            const [frame] = extractIdType(e.target.id)
+            const [frame] = this.context.extractIdType(e.target.id)
             this.context.ctx.currentFrame = frame
         })
     }
@@ -31,7 +30,7 @@ export class Footer extends SceneComponent {
         if (this.context.ctx.totalFrames !== 0) {
             let frames = ""
             for (let f = 0; f < this.context.ctx.totalFrames; f++) {
-                frames += `<div id="timeline-frame-${f + 1}" class="timeline__frame ${currentFrame === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
+                frames += `<div id="${this.context.getId(f + 1, 'timeline', 'frame')}" class="timeline__frame ${currentFrame === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
             }
             elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
             buttons.push(`<div class="button button--purple pointer"><span>Play</span></div>`)
