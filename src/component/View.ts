@@ -47,18 +47,18 @@ export class View extends SceneComponent {
             }],
             [this.context.ctx.currentFrameState, (oldFrame: number, newFrame: number) => {
                 this.context.props.get().forEach(prop => {
-                    const newPosition = prop.frameAnimationConfig[newFrame]
-                    if (newPosition) {
-                        //const previousPosition = this.context.getPropPositionByFrame(prop, oldFrame, newFrame - oldFrame < 0)
-                        const groupElement = document.getElementById(this.context.getId(prop, 'view', 'prop'))
-                        groupElement.style.display = newPosition.hide ? "none": "unset"
-                        // console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
-                        groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scale} ${newPosition.scale})`)
-                        if (newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.context.ctx.totalFrames)) {
-                            groupElement.style.transitionDuration = this.context.getFrameSeconds(oldFrame) + "s"
-                        } else {
-                            groupElement.style.transitionDuration = this.context.config.frameSelectionSpeed + "s"
-                        }
+                    let newPosition = prop.frameAnimationConfig[newFrame]
+                    let show = newPosition && !newPosition.hide
+                    newPosition = this.context.getPropPositionByCurrentFrame(prop)
+                    //const previousPosition = this.context.getPropPositionByFrame(prop, oldFrame, newFrame - oldFrame < 0)
+                    const groupElement = document.getElementById(this.context.getId(prop, 'view', 'prop'))
+                    groupElement.style.display = show ? "unset" : "none"
+                    // console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
+                    groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scale} ${newPosition.scale})`)
+                    if (newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.context.ctx.totalFrames)) {
+                        groupElement.style.transitionDuration = this.context.getFrameSeconds(oldFrame) + "s"
+                    } else {
+                        groupElement.style.transitionDuration = this.context.config.frameSelectionSpeed + "s"
                     }
                 })
 
@@ -197,7 +197,7 @@ export class View extends SceneComponent {
                 // (until I find a workaround or figure out what the issue is)
                 const pathGroup = this.context.getPathGroup(prop)
                 group.appendChild(pathGroup)
-                if(hide){
+                if (hide) {
                     group.style.display = "none"
                 }
                 //path.id = this.context.getId(prop, 'view', 'prop', 'icon')

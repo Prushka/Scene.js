@@ -425,8 +425,7 @@ export function demo() {
             enabled: !!randInclusive(0, 1),
             x: Math.random() * 500,
             y: Math.random() * 500,
-            degree: Math.random() * 360,
-            scale: randInclusive(5, 30)/10
+            degree: Math.random() * 360
         }
     }
     const getDemoLight = () => {

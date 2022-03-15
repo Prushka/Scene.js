@@ -18,7 +18,7 @@ export class Footer extends SceneComponent {
     }
 
     listen(): State<any>[] {
-        return [this.context.ctx.currentFrameState]
+        return []
     }
 
     actions(): StateAction<any>[] {
@@ -33,7 +33,19 @@ export class Footer extends SceneComponent {
             } else {
                 setClassList(icon, "bi", "bi-play-fill")
             }
-        })]]
+        })],
+        [this.context.ctx.currentFrameState, (_, currentFrame)=>{
+            for (let f = 0; f < this.context.ctx.totalFrames; f++) {
+                const fElement = document.getElementById(this.context.getId(f + 1, 'timeline', 'frame'))
+                fElement.classList.remove("timeline__frame--selected")
+                fElement.classList.add("timeline__frame--not-selected")
+            }
+            const frameElement = document.getElementById(this.context.getId(currentFrame, 'timeline', 'frame'))
+            frameElement.classList.remove("timeline__frame--not-selected")
+            frameElement.classList.add("timeline__frame--selected")
+            console.log(frameElement.id)
+
+        }]]
     }
 
     subscribe() {
