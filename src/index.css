@@ -59,7 +59,7 @@
 }
 
 .prop__dialog--embedded {
-    padding: 15px;
+    padding: 15px 15px 15px 21px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -75,6 +75,7 @@
 .prop__dialog--popup .header {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .prop__dialog--popup .header i {
@@ -95,6 +96,11 @@
     margin-left: auto;
 }
 
+.header span{
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
 .prop__dialog--popup .content,
 .prop__dialog--embedded .content {
     display: flex;
@@ -106,7 +112,7 @@
 .prop__dialog--popup .content span,
 .prop__dialog--embedded .content span{
     font-size: 1.2rem;
-    padding: 4px 0 4px 6px;
+    padding: 4px 0;
 }
 
 .prop__dialog--popup .footer,

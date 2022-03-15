@@ -44,6 +44,10 @@ export class PropDialog extends SceneComponent {
             const header = document.createElement('div')
             header.classList.add('header')
 
+            const titleSpan = document.createElement('span')
+            const position = this.context.getPropPositionByCurrentFrame(selectedProp)
+            titleSpan.innerText = `Position: ${position.x}, ${position.y}, ${position.degree}° | Scale: ${position.scaleX}, ${position.scaleY}`
+            header.append(titleSpan)
 
             const content = document.createElement('div')
             content.classList.add("content")
