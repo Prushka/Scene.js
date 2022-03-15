@@ -15,7 +15,7 @@ import {
 import State, {createState} from "./state/State";
 import {
     convertTypeToReadable,
-    createElement,
+    createElement, createSpan,
     createSVGIcon,
     generateDarkColor,
     getLineGroup,
@@ -367,10 +367,7 @@ export class Context {
     }
 
     public getPropSpanText(prop: PropConfig, color ?: string) {
-        const propText = document.createElement("span")
-        propText.innerText = prop.name
-        propText.style.color = color ? color : prop.color
-        return propText
+        return createSpan(prop.name, color ? color : prop.color)
     }
 
     public getPropSVG(prop: PropConfig, color ?: string, scale ?: number) {
@@ -398,8 +395,8 @@ export class Context {
         return pathGroup
     }
 
-    private register<T extends CustomComponent>(...c: Array<new(T) => T>): T[] {
-        const components: T[] = []
+    private register(...c: Array<new(T) => CustomComponent>): CustomComponent[] {
+        const components: CustomComponent[] = []
         c.forEach(cl => {
             const component = new cl(this)
             component.renderComponent()
@@ -433,13 +430,14 @@ export class Context {
 
 export function demo() {
     const getRandomPosition = () => {
+        const scale = randInclusive(5, 30)/10
         return {
             enabled: !!randInclusive(0, 1),
             x: Math.random() * 500,
             y: Math.random() * 500,
             degree: Math.random() * 360,
-            scaleX: 15,
-            scaleY: 15
+            scaleX: scale,
+            scaleY: scale,
         }
     }
     const getDemoLight = () => {
@@ -449,7 +447,7 @@ export function demo() {
             lightType: "hard",
             frameAnimationConfig: {
                 1: {
-                    x: 0, y: 0, degree: 30, enabled: false, scaleX: 2, scaleY: 2
+                    x: 0, y: 0, degree: 30, enabled: false
                 },
                 2: {
                     x: 100, y: 100, degree: 60
@@ -463,15 +461,11 @@ export function demo() {
 
     const getDemoTable = () => {
         return {
-            type: "TABLE",
+            type: "MAP",
             brand: "Random",
-            style: "fillSquare",
-            color: "rgb(10,200,20)",
             note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             frameAnimationConfig: {
-                1: {
-                    x: 0, y: 0, degree: 30, scaleX: 20, scaleY: 20
-                },
+                1: getRandomPosition(),
                 2: getRandomPosition(),
                 3: getRandomPosition(),
                 4: getRandomPosition(),

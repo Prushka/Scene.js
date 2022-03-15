@@ -78,3 +78,10 @@ export function camelToDisplay(input: string){
     input = input.charAt(0).toUpperCase() + input.slice(1)
     return input.replace(/[A-Z]/g, letter => ` ${letter}`)
 }
+
+export function createSpan(text:string, color?:string){
+    const span = document.createElement("span")
+    span.innerText = text
+    span.style.color = color ? color : "black"
+    return span
+}

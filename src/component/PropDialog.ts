@@ -5,7 +5,7 @@
 import {SceneComponent} from "./Component";
 import State from "../state/State";
 import {ExcludeKeys} from "../props/Props";
-import {camelToDisplay, positionToDisplay} from "../utils/Utils";
+import {camelToDisplay, createSpan, positionToDisplay} from "../utils/Utils";
 
 export class PropDialog extends SceneComponent {
 
@@ -31,6 +31,13 @@ export class PropDialog extends SceneComponent {
         })
     }
 
+    private createContent(title, contentHTML) {
+        const titleElement = document.createElement("div")
+        titleElement.classList.add("title")
+        titleElement.innerText = title
+        return titleElement.outerHTML + contentHTML
+    }
+
     render(): string | string[] {
         const selectedProp = this.context.selected
         if (selectedProp) {
@@ -45,14 +52,24 @@ export class PropDialog extends SceneComponent {
             const header = document.createElement('div')
             header.classList.add('header')
 
-            const titleSpan = document.createElement('span')
+            const createTitleButton = (id, ...classNames)=> {
+                const container = document.createElement('div')
+                container.classList.add('header__button')
+                const icon = document.createElement('i')
+                icon.classList.add(...classNames)
+                icon.id = this.context.getIdType("dialog",id)
+                container.append(icon)
+                return container
+            }
+
             const position = this.context.getPropPositionByCurrentFrame(selectedProp)
             const positionDisplay = positionToDisplay(position)
-            titleSpan.innerText = `Position: ${positionDisplay.x}, ${positionDisplay.y}, ${positionDisplay.degree}° | Scale: ${positionDisplay.scaleX}, ${positionDisplay.scaleY}`
-            header.append(titleSpan)
+            header.append(createTitleButton("general","bi", "bi-boxes"),
+                createTitleButton("scripts","scripts"))
 
             const content = document.createElement('div')
             content.classList.add("content")
+
             for(let key in selectedProp){
                 if(!ExcludeKeys.includes(key)){
                     const span = document.createElement('span')
@@ -79,7 +96,9 @@ export class PropDialog extends SceneComponent {
             propText.innerText = selectedProp.name
             propText.style.color = selectedProp.color
 
-            footer.append(propIcon, propText)
+            const positionText = createSpan(`(${positionDisplay.x}, ${positionDisplay.y}, ${positionDisplay.degree}°)`, selectedProp.color)
+            const scaleText = createSpan(`(${positionDisplay.scaleX}x, ${positionDisplay.scaleY}x)`, selectedProp.color)
+            footer.append(propIcon, propText, positionText, scaleText)
             container.append(header, content, footer)
             return parentContainer.outerHTML
         }

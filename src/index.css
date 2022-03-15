@@ -16,7 +16,7 @@
     --theme-dark-pink: #d96262;
     --prop-list-width: 172px;
     --toolbar-button-width: 40px;
-    --theme-trans-white: rgba(255, 255, 255, 0.91)
+    --theme-trans-white: rgba(255, 255, 255, 0.95)
 }
 
 .pointer {
@@ -94,6 +94,7 @@
 .prop__dialog--embedded .header {
     display: flex;
     align-items: center;
+    margin-bottom: 8px;
 }
 
 .prop__dialog--embedded .header i {
@@ -102,9 +103,31 @@
     margin-left: auto;
 }
 
-.header span{
-    font-size: 1.1rem;
+.header__button {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--theme-dark-gray);
+    border-radius: 8px;
+    transition-duration: .2s;
+    transition-property: background-color, color;
+    padding: 7px;
+    color: var(--theme-dark-gray);
+    margin-right: 12px;
+}
+
+.header__button i {
+    font-size: 1.3rem;
     font-weight: 600;
+
+    cursor: pointer;
+}
+
+.header__button:hover{
+    background-color: var(--theme-dark-gray);
+    color: white;
 }
 
 .prop__dialog--popup .content,
@@ -125,7 +148,7 @@
 .prop__dialog--embedded .footer {
     display: flex;
     margin-top: auto;
-    padding-top: 14px;
+    padding-top: 13px;
     align-self: end;
     justify-content: center;
     align-items: center;
@@ -135,7 +158,7 @@
 
 .prop__dialog--popup .footer span,
 .prop__dialog--embedded .footer span {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 700;
     margin-left: 13px;
 }
