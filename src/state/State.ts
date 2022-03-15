@@ -41,8 +41,8 @@ export default class State<T> {
 
     }
 
-    public set(value: T) {
-        if (value !== this._state) {
+    public set(value: T, forceUpdate?:boolean) {
+        if (forceUpdate || value !== this._state) {
             this._componentsActions.forEach(([, action]) => {
                 action(this.get(), value)
             })

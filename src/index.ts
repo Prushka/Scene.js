@@ -114,7 +114,7 @@ export class Context {
     }
 
     public set snackbar(message: string) {
-        this._snackbarMSG.set(message)
+        this._snackbarMSG.set(message, true)
     }
 
     public constructor(config?: Config, context?: TimeContext) {

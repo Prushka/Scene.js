@@ -328,7 +328,7 @@
 
 .snackbar{
     margin-top: 15px;
-    padding: 10px;
+    padding: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -341,4 +341,5 @@
     background-color: var(--theme-trans-white);
     z-index: 1400;
     border-radius: 4px;
+    font-size: 16px;
 }
