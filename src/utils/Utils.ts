@@ -36,9 +36,9 @@ export function createSVGElement(width: number, height: number) {
     return svg
 }
 
-export function createIconFontElement(id?:string,...classes: string[]){
+export function createIconFontElement(id?: string, ...classes: string[]) {
     const icon = document.createElement('i')
-    if(id){
+    if (id) {
         icon.id = id
     }
     classes.forEach(c => icon.classList.add(c))
@@ -50,4 +50,9 @@ export function createSVGIcon(scale?: number) {
     const svg = createSVGElement(16, 16)
     svg.setAttribute("transform", `scale(${scale} ${scale})`)
     return svg
+}
+
+export function setClassList(element: Element, ...classes: string[]) {
+    element.removeAttribute("class")
+    element.classList.add(...classes)
 }

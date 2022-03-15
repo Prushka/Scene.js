@@ -5,6 +5,7 @@
 import {SceneComponent} from "./Component";
 import State, {createState, StateAction} from "../state/State";
 import ClickEvent = JQuery.ClickEvent;
+import {setClassList} from "../utils/Utils";
 
 export class Footer extends SceneComponent {
 
@@ -30,6 +31,13 @@ export class Footer extends SceneComponent {
                 bottom = -(toolbarElement.getBoundingClientRect().height - 45)
             }
             toolbarElement.style.bottom = `${bottom}px`
+        })], [this.playing, ((_, playing) => {
+            const icon = document.getElementById(this.context.getIdType("toolbar", "play", "icon"))
+            if (playing) {
+                setClassList(icon, "bi","bi-pause-fill")
+            } else {
+                setClassList(icon, "bi","bi-play-fill")
+            }
         })]]
     }
 
@@ -55,7 +63,7 @@ export class Footer extends SceneComponent {
         }, "toolbar", "reset")
 
         const nextFrame = () => {
-            if(this.playing.get()){
+            if (this.playing.get()) {
                 this.context.ctx.nextFrame()
                 setTimeout(() => {
                     nextFrame()
@@ -64,7 +72,7 @@ export class Footer extends SceneComponent {
         }
         hookButton(() => {
             this.playing.set(!this.playing.get())
-            if(this.playing.get()){
+            if (this.playing.get()) {
                 nextFrame()
             }
         }, "toolbar", "play")
@@ -72,7 +80,7 @@ export class Footer extends SceneComponent {
 
     render(): string | string[] {
         const createButtonDiv = (title, iconClasses, ...types: string[]) => {
-            return `<div id="${this.context.getIdType(...types)}" title=${title} class="button button--purple pointer"><i class='${iconClasses}'></i></div>`
+            return `<div id="${this.context.getIdType(...types)}" title=${title} class="button button--purple pointer"><i class='${iconClasses}' id="${this.context.getIdType(...types, 'icon')}"></i></div>`
         }
         const currentFrame = this.context.ctx.currentFrame
         let elements = ""
@@ -86,7 +94,7 @@ export class Footer extends SceneComponent {
                     frames += `<div id="${this.context.getId(f + 1, 'timeline', 'frame')}" class="timeline__frame ${currentFrame === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
                 }
                 elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
-                buttons.push(createButtonDiv('Play', 'bi bi-play-fill', "toolbar", "play"))
+                buttons.push(createButtonDiv('Play', this.playing.get()?'bi bi-pause-fill':'bi bi-play-fill', "toolbar", "play"))
             }
         }
         return `<div class='footer'>

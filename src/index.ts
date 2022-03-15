@@ -12,7 +12,6 @@ import {
     PropType,
     PropTypeIcons
 } from "./props/Props";
-import Coordinates = JQuery.Coordinates;
 import State, {createState} from "./state/State";
 import {convertTypeToReadable, createElement, createSVGIcon, generateDarkColor} from "./utils/Utils";
 import {PropList} from "./component/PropList";
