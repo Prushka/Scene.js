@@ -116,6 +116,16 @@
     margin-right: 12px;
 }
 
+.content__key {
+    color: #6565a1;
+    font-weight: 700;
+}
+
+.content__value {
+    color: #d96262;
+    font-weight: 600;
+}
+
 .header__button--selected{
     background-color: var(--theme-dark-gray);
     color: white !important;

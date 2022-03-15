@@ -146,7 +146,7 @@ export class Context {
             propConfig.color = propConfig.color || generateDarkColor()
             propConfig.style = propConfig.style || "default"
             propConfig.id = propConfig.id || this.ids
-            propConfig.displayName = propConfig.displayName === undefined ? true : propConfig.displayName
+            propConfig.shouldDisplayName = propConfig.shouldDisplayName === undefined ? true : propConfig.shouldDisplayName
             propConfig.name = propConfig.name || `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
             if (propConfig.frameAnimationConfig) {
                 for (let key in propConfig.frameAnimationConfig) {
@@ -478,7 +478,7 @@ export function demo() {
                 3: getRandomPosition(),
                 4: getRandomPosition(),
             },
-            displayName: false
+            shouldDisplayName: false
         }
     }
     const ctx: Context = new Context({

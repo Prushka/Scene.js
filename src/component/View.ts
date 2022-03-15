@@ -90,7 +90,7 @@ export class View extends SceneComponent {
             `${-this.context.viewportOffset.x} ${-this.context.viewportOffset.y} ${svgE.width() * this.context.viewportScale} ${svgE.height() * this.context.viewportScale}`);
         $('.view__prop').each((index, element) => {
             const prop = this.context.getPropById(this.context.extractIdType(element.id)[0])
-            if(prop.displayName) {
+            if(prop.shouldDisplayName) {
                 const pathGroups = element.querySelectorAll('g')
                 const position = this.context.getPropPositionByCurrentFrame(prop)
                 let textElement
@@ -206,7 +206,7 @@ export class View extends SceneComponent {
                 group.style.transitionTimingFunction = this.context.config.playTransition
                 group.id = this.context.getId(prop, 'view', 'prop')
                 group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree}) scale(${position.scaleX} ${position.scaleY})`)
-                if (prop.displayName) {
+                if (prop.shouldDisplayName) {
                     const text = document.createElement("text")
                     text.id = this.context.getId(prop, 'view', 'prop', 'text')
                     text.innerText = prop.name

@@ -49,11 +49,11 @@ export interface PropConfig extends HasId {
     script?: string,
     steps?: { [key: number]: string },
     note?: string,
-    displayName?: boolean
+    shouldDisplayName?: boolean
 }
 
-export const ExcludeKeys = ["name", "color", "style", "type", "frameAnimationConfig", "script",
-    "steps", "note", "displayName", "id"]
+export const ExcludeKeys = ["name", "color", "type", "frameAnimationConfig", "script",
+    "steps", "note", "shouldDisplayName", "id"]
 
 export enum PropType {
     TABLE = "TABLE",

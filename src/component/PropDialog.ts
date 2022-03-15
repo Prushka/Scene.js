@@ -26,7 +26,7 @@ export class PropDialog extends SceneComponent {
 
     listen(): State<any>[] {
         return [this.context.selectedState, this.context.props, this.context.ctx.currentFrameState,
-        this.selectedTab];
+            this.selectedTab];
     }
 
     subscribe() {
@@ -34,7 +34,7 @@ export class PropDialog extends SceneComponent {
     }
 
     actions(): StateAction<any>[] {
-        return [[this.context.selectedState, ()=>{
+        return [[this.context.selectedState, () => {
             this.selectedTab.set(Tab.GENERAL)
         }]]
     }
@@ -84,7 +84,7 @@ export class PropDialog extends SceneComponent {
                 button.title = title
                 button.classList.add(...classNames)
                 button.id = this.context.getIdType("dialog", id)
-                button.classList.add(this.selectedTab.get() === id?"header__button--selected":"header__button--not-selected")
+                button.classList.add(this.selectedTab.get() === id ? "header__button--selected" : "header__button--not-selected")
                 return button
             }
 
@@ -98,26 +98,35 @@ export class PropDialog extends SceneComponent {
             const content = document.createElement('div')
             content.classList.add("content")
 
-            switch (this.selectedTab.get()){
+            const createKeyValueContent = (key, value) => {
+                const parent = document.createElement('span')
+                const keyElement = document.createElement('span')
+                const valueElement = document.createElement('span')
+
+                keyElement.innerHTML = `${camelToDisplay(key)}: `
+                keyElement.classList.add("content__key")
+                valueElement.innerHTML = value
+                valueElement.classList.add("content__value")
+
+                parent.append(keyElement, valueElement)
+                return parent
+            }
+
+            switch (this.selectedTab.get()) {
                 case Tab.GENERAL:
                     for (let key in selectedProp) {
                         if (!ExcludeKeys.includes(key)) {
-                            const span = document.createElement('span')
-                            span.innerHTML = `${camelToDisplay(key)}: ${selectedProp[key]}`
-                            content.append(span)
+                            content.append(createKeyValueContent(key, selectedProp[key]))
                         }
+                    }
+                    if (selectedProp.note) {
+                        content.append(createKeyValueContent("Note", selectedProp.note))
                     }
                     break
                 case Tab.SCRIPTS:
-                    if(selectedProp.note){
-                        const span = document.createElement('span')
-                        span.innerText = selectedProp.note
-                        content.append(span)
-                    }
+
                     break
             }
-
-
 
 
             const footer = document.createElement('div')
