@@ -19,6 +19,8 @@ import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
 import {View} from "./component/View";
 import {Config, DefaultConfig} from "./config/Config";
+import {Snackbar} from "./component/Snackbar";
+import {CustomComponent} from "./component/Component";
 
 export * as position from './props/Position'
 
@@ -101,6 +103,19 @@ export class Context {
     props: State<PropConfig[]> = createState([])
     viewports: State<ViewPort[]> = createState([])
     public readonly config: Config
+    private _snackbarMSG: State<string> = createState('')
+
+    public get snackbarState(): State<string> {
+        return this._snackbarMSG
+    }
+
+    public get snackbar() {
+        return this._snackbarMSG.get()
+    }
+
+    public set snackbar(message: string) {
+        this._snackbarMSG.set(message)
+    }
 
     public constructor(config?: Config, context?: TimeContext) {
         this.contextId = Context.contextIds
@@ -348,10 +363,12 @@ export class Context {
         return pathGroup
     }
 
-    private register<T>(...c: Array<new(T) => T>): T[] {
+    private register<T extends CustomComponent>(...c: Array<new(T) => T>): T[] {
         const components: T[] = []
         c.forEach(cl => {
-            components.push(new cl(this))
+            const component = new cl(this)
+            component.renderComponent()
+            components.push(component)
         })
         return components
     }
@@ -363,16 +380,17 @@ export class Context {
         $(() => {
 
             $(selector).addClass("root-container")
-                .html(`<div class='prop__list-container'></div>
+                .html(`<div class='snackbar-container'></div>
+                                     <div class='prop__list-container'></div>
                                     <div class='prop__property-container'></div>
                                     <div class='view-container'></div>
                                     <div class="footer-container"></div>`)
 
             // this._selected.set(this.props[0])
             //
-            const [view, propList, propDialog, footer] = this.register(View, PropList, PropDialog, Footer)
+            const [view, propList, propDialog, footer] = this.register(View, PropList, PropDialog, Footer, Snackbar)
             this.viewComponent = view as View
-            State.renderAll()
+
             // console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
         })
     }

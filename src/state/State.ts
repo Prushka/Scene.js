@@ -10,19 +10,17 @@ export type ComponentAction<T> = [CustomComponent, Action<T>?]
 
 export default class State<T> {
     private _state: T
-    private static globalStates: State<any>[] = []
     private _components: CustomComponent[] = []
     private _componentsActions: ComponentAction<any>[] = []
 
-    public static renderAll() {
-        State.globalStates.forEach(s => {
-            s.render()
-        })
-    }
+    // public static renderAll() {
+    //     State.globalStates.forEach(s => {
+    //         s.render()
+    //     })
+    // }
 
     public constructor(defaultValue?: T) {
         this._state = defaultValue
-        State.globalStates.push(this)
     }
 
     public get(): T {

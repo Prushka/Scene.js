@@ -325,3 +325,10 @@
     left: 0;
     position: absolute;
 }
+
+.snackbar{
+    position: absolute;
+    left: 50%;
+    width: 200px;
+    background-color: var(--theme-trans-white);
+}
