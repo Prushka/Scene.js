@@ -34,9 +34,9 @@ export class Footer extends SceneComponent {
         })], [this.playing, ((_, playing) => {
             const icon = document.getElementById(this.context.getIdType("toolbar", "play", "icon"))
             if (playing) {
-                setClassList(icon, "bi","bi-pause-fill")
+                setClassList(icon, "bi", "bi-pause-fill")
             } else {
-                setClassList(icon, "bi","bi-play-fill")
+                setClassList(icon, "bi", "bi-play-fill")
             }
         })]]
     }
@@ -60,6 +60,7 @@ export class Footer extends SceneComponent {
         }, "toolbar", "collapse")
         hookButton(() => {
             this.context.viewComponent.resetViewport()
+            this.context.snackbar = "Reset Viewport"
         }, "toolbar", "reset")
 
         const nextFrame = () => {
@@ -67,7 +68,7 @@ export class Footer extends SceneComponent {
                 this.context.ctx.nextFrame()
                 setTimeout(() => {
                     nextFrame()
-                }, 1500)
+                }, 1000)
             }
         }
         hookButton(() => {
@@ -77,10 +78,7 @@ export class Footer extends SceneComponent {
             }
         }, "toolbar", "play")
         hookButton(() => {
-            navigator.clipboard.writeText(JSON.stringify(this.context.props.get())).then(r => {
-                console.log(r)
-            })
-            this.context.snackbar = "Copied to clipboard"
+            navigator.clipboard.writeText(JSON.stringify(this.context.props.get())).then(() => this.context.snackbar = "Copied to clipboard")
         }, "toolbar", "export")
     }
 
@@ -100,7 +98,7 @@ export class Footer extends SceneComponent {
                     frames += `<div id="${this.context.getId(f + 1, 'timeline', 'frame')}" class="timeline__frame ${currentFrame === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
                 }
                 elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
-                buttons.push(createButtonDiv('Play', this.playing.get()?'bi bi-pause-fill':'bi bi-play-fill', "toolbar", "play"))
+                buttons.push(createButtonDiv('Play', this.playing.get() ? 'bi bi-pause-fill' : 'bi bi-play-fill', "toolbar", "play"))
             }
         }
         return `<div class='footer'>

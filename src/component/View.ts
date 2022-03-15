@@ -144,6 +144,7 @@ export class View extends SceneComponent {
                 const selected = this.context.propSelected(prop)
                 const group = document.createElement("g")
                 group.classList.add("view__prop", selected ? 'view__prop--selected' : 'view__prop--not-selected')
+                group.style.transitionTimingFunction = this.context.config.playTransition
                 group.id = this.context.getId(prop, 'view', 'prop')
                 group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree})`)
 
