@@ -208,6 +208,7 @@
 .prop__list-container {
     display: flex;
     z-index: 1000;
+    position: absolute;
 }
 
 .hide__icon-container {
@@ -266,11 +267,6 @@
     font-weight: 700;
 }
 
-.view-container {
-    width: 100%;
-    height: 100%;
-}
-
 .view__prop {
     /*position: absolute;*/
     pointer-events: bounding-box;
@@ -300,4 +296,7 @@
 .view-svg {
     width: 100%;
     height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
 }
