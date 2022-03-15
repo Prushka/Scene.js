@@ -51,6 +51,7 @@ export class View extends SceneComponent {
                     if (newPosition) {
                         //const previousPosition = this.context.getPropPositionByFrame(prop, oldFrame, newFrame - oldFrame < 0)
                         const groupElement = document.getElementById(this.context.getId(prop, 'view', 'prop'))
+                        groupElement.style.display = newPosition.hide ? "none": "unset"
                         // console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
                         groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scale} ${newPosition.scale})`)
                         if (newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.context.ctx.totalFrames)) {
