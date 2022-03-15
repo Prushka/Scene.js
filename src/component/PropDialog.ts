@@ -3,7 +3,7 @@
  */
 
 import {SceneComponent} from "./Component";
-import State, {createState} from "../state/State";
+import State, {createState, StateAction} from "../state/State";
 import {ExcludeKeys} from "../props/Props";
 import {camelToDisplay, createSpan, positionToDisplay} from "../utils/Utils";
 
@@ -31,6 +31,12 @@ export class PropDialog extends SceneComponent {
 
     subscribe() {
         return [".prop__property-container"]
+    }
+
+    actions(): StateAction<any>[] {
+        return [[this.context.selectedState, ()=>{
+            this.selectedTab.set(Tab.GENERAL)
+        }]]
     }
 
     afterRender() {
@@ -92,18 +98,27 @@ export class PropDialog extends SceneComponent {
             const content = document.createElement('div')
             content.classList.add("content")
 
-            for (let key in selectedProp) {
-                if (!ExcludeKeys.includes(key)) {
-                    const span = document.createElement('span')
-                    span.innerHTML = `${camelToDisplay(key)}: ${selectedProp[key]}`
-                    content.append(span)
-                }
+            switch (this.selectedTab.get()){
+                case Tab.GENERAL:
+                    for (let key in selectedProp) {
+                        if (!ExcludeKeys.includes(key)) {
+                            const span = document.createElement('span')
+                            span.innerHTML = `${camelToDisplay(key)}: ${selectedProp[key]}`
+                            content.append(span)
+                        }
+                    }
+                    break
+                case Tab.SCRIPTS:
+                    if(selectedProp.note){
+                        const span = document.createElement('span')
+                        span.innerText = selectedProp.note
+                        content.append(span)
+                    }
+                    break
             }
-            if (selectedProp.note) {
-                const span = document.createElement('span')
-                span.innerText = selectedProp.note
-                content.append(span)
-            }
+
+
+
 
             const footer = document.createElement('div')
             footer.classList.add('footer')
