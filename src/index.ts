@@ -350,6 +350,8 @@ export class Context {
         return components
     }
 
+    viewComponent:View
+
     public displayRoot(selector: string) {
         this.beforeDisplay()
         $(() => {
@@ -363,7 +365,7 @@ export class Context {
             // this._selected.set(this.props[0])
             //
             const [view, propList, propDialog, footer] = this.register(View, PropList, PropDialog, Footer)
-            footer.hook("view", view)
+            this.viewComponent = view as View
             State.renderAll()
             // console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
         })

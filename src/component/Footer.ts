@@ -49,7 +49,7 @@ export class Footer extends SceneComponent {
             this.open.set(!this.open.get())
         }, "toolbar", "collapse")
         hookButton((e) => {
-            this.hookedComponents.view.resetViewport()
+            this.context.viewComponent.resetViewport()
         }, "toolbar", "reset")
     }
 
