@@ -57,19 +57,23 @@ export class View extends SceneComponent {
                     const enabledGroup = document.getElementById(this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'enabled'))
                     const disabledGroup = document.getElementById(this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'disabled'))
                     if(!newPosition.enabled){
-                        enabledGroup.style.display = "none"
-                        disabledGroup.style.display = "unset"
+                        enabledGroup.style.opacity = "0"
+                        disabledGroup.style.opacity = "1"
                     }else{
-                        disabledGroup.style.display = "none"
-                        enabledGroup.style.display = "unset"
+                        disabledGroup.style.opacity = "0"
+                        enabledGroup.style.opacity = "1"
                     }
                     // console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
                     groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scale} ${newPosition.scale})`)
+                    let transitionDuration
                     if (newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.context.ctx.totalFrames)) {
-                        groupElement.style.transitionDuration = this.context.getFrameSeconds(oldFrame) + "s"
+                        transitionDuration = this.context.getFrameSeconds(oldFrame) + "s"
                     } else {
-                        groupElement.style.transitionDuration = this.context.config.frameSelectionSpeed + "s"
+                        transitionDuration = this.context.config.frameSelectionSpeed + "s"
                     }
+                    enabledGroup.style.transitionDuration = transitionDuration
+                    disabledGroup.style.transitionDuration = transitionDuration
+                    groupElement.style.transitionDuration = transitionDuration
                 })
 
             }]]
@@ -212,9 +216,9 @@ export class View extends SceneComponent {
                 pathGroupEnabled.id = this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'enabled')
                 pathGroupDisabled.id = this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'disabled')
                 if(this.context.isPropEnabled(prop)){
-                    pathGroupDisabled.style.display = "none"
+                    pathGroupDisabled.style.opacity = "0"
                 }else{
-                    pathGroupEnabled.style.display = "none"
+                    pathGroupEnabled.style.opacity = "0"
                 }
                 group.append(pathGroupEnabled, pathGroupDisabled)
                 if (hide) {

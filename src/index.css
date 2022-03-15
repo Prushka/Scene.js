@@ -330,10 +330,15 @@
     position: absolute;
 }
 
-.snackbar{
+.view__prop g {
+    transition-property: opacity;
+}
+
+.snackbar {
     margin-top: 15px;
     padding: 8px;
-    display: inline-flex;flex-direction: row;
+    display: inline-flex;
+    flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
@@ -354,7 +359,7 @@
     opacity: 1;
 }
 
-.snackbar--closed{
+.snackbar--closed {
     top: -60px;
     opacity: 0;
 }
