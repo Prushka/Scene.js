@@ -58,6 +58,11 @@ export class PropDialog extends SceneComponent {
                     content.append(span)
                 }
             }
+            if(selectedProp.note){
+                const span = document.createElement('span')
+                span.innerText = selectedProp.note
+                content.append(span)
+            }
 
             const footer = document.createElement('div')
             footer.classList.add('footer')
