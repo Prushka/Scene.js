@@ -57,7 +57,7 @@ export default class State<T> {
         this._components.push(component)
     }
 
-    public subscribeActions(component: CustomComponent, func: () => void) {
+    public subscribeActions(component: CustomComponent, func: Action<T>) {
         this._componentsActions.push([component, func])
     }
 }

@@ -6,7 +6,7 @@ import State, {StateAction} from "../state/State";
 import {Context} from "../index";
 
 export interface HasStateAction {
-    actions?(): StateAction
+    actions?(): StateAction<any>[]
 
     subscribe(): string[]
 }
@@ -42,7 +42,7 @@ export abstract class CustomComponent implements HasStateAction {
         this.afterRender()
     }
 
-    actions(): StateAction {
+    actions(): StateAction<any>[] {
         return []
     }
 

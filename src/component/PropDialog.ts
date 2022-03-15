@@ -34,9 +34,13 @@ export class PropDialog extends SceneComponent {
     render(): string | string[] {
         const selectedProp = this.context.selected
         if (selectedProp) {
-            const isPopup = this.context.config.dialog !== 'popup'
+            const isPopup = this.context.config.dialog === 'popup'
             return `${isPopup && '<div class="prop__dialog">'}<div class="prop__dialog--${isPopup ? 'popup' : 'embedded'}">
                             <div class="header"><i id="${this.context.getId(selectedProp, 'prop', 'dialog', 'property')}" class="bi bi-x pointer prop__dialog__close"></i></div>
+                            
+                            <div class="content">
+                            
+                            </div>
                             <div class="footer"><i id="${this.context.getId(selectedProp, 'prop', 'dialog', 'property', 'icon')}" class="${PropTypeIcons[selectedProp.type][selectedProp.iconStyle][this.context.isPropEnabled(selectedProp) ? 'enabled' : 'disabled']}"></i> <span>${selectedProp.name}</span></div>
                             </div>${isPopup && '</div>'}`
         }
