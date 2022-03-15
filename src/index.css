@@ -13,6 +13,7 @@
     --theme-dark-purple: #6565a1;
     --theme-pink: #EB7777;
     --theme-dark-pink: #d96262;
+    --prop-list-width: 150px;
 }
 
 .pointer {
@@ -209,6 +210,13 @@
     display: flex;
     z-index: 1000;
     position: absolute;
+    left: 0;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in;
+}
+
+.prop__list-container--closed {
+    left: calc(var(--prop-list-width) * -1)
 }
 
 .hide__icon-container {
@@ -228,7 +236,7 @@
     display: flex;
     flex-direction: column;
 
-    max-width: 220px;
+    width: var(--prop-list-width);
     max-height: 200px;
     overflow: auto;
     background-color: white;
