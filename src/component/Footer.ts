@@ -10,8 +10,6 @@ export class Footer extends SceneComponent {
         return [this.context.ctx.currentFrameState]
     }
 
-    // prop is not a property, it's the prop used in a scene
-
     subscribe() {
         return [".footer-container"]
     }
@@ -24,16 +22,19 @@ export class Footer extends SceneComponent {
     }
 
     render(): string | string[] {
+        const createButtonDiv = (title, iconClasses) => {
+            return `<div title=${title} class="button button--purple pointer"><i class='${iconClasses}'></i></div>`
+        }
         const currentFrame = this.context.ctx.currentFrame
         let elements = ""
-        const buttons = [`<div class="button button--purple pointer"><span>Export</span></div>`]
+        const buttons = [createButtonDiv('Export','bi bi-box-arrow-up-right')]
         if (this.context.ctx.totalFrames !== 0) {
             let frames = ""
             for (let f = 0; f < this.context.ctx.totalFrames; f++) {
                 frames += `<div id="${this.context.getId(f + 1, 'timeline', 'frame')}" class="timeline__frame ${currentFrame === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
             }
             elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
-            buttons.push(`<div class="button button--purple pointer"><span>Play</span></div>`)
+            buttons.push(createButtonDiv('Play', 'bi bi-play-fill'))
         }
         return `<div class='footer'>
                      <div class="footer__button-group">${buttons.join('')}</div>
