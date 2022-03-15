@@ -69,7 +69,7 @@ export class View extends SceneComponent {
         })
     }
 
-    private resetViewport() {
+    public resetViewport() {
         const [viewRatio, viewX, viewY] = this.context.calcViewBox(this.context.findMinMaxPosition())
         this.context.viewportScale = viewRatio
         this.context.viewportOffset = {

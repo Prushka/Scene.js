@@ -5,13 +5,10 @@
 import State, {StateAction} from "../state/State";
 import {Context} from "../index";
 
-export interface HasStateAction {
-    actions?(): StateAction<any>[]
 
-    subscribe(): string[]
-}
+export abstract class CustomComponent {
 
-export abstract class CustomComponent implements HasStateAction {
+    protected hookedComponents: { [key: string]: CustomComponent }
 
     abstract render(): string | string[]
 
@@ -51,7 +48,10 @@ export abstract class CustomComponent implements HasStateAction {
     }
 
     afterConstructor() {
+    }
 
+    hook(key: string, c: CustomComponent) {
+        this.hookedComponents[key] = c
     }
 }
 

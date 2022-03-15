@@ -363,7 +363,7 @@ export class Context {
             // this._selected.set(this.props[0])
             //
             const [view, propList, propDialog, footer] = this.register(View, PropList, PropDialog, Footer)
-
+            footer.hook("view", view)
             State.renderAll()
             // console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
         })

@@ -4,6 +4,7 @@
 
 import {SceneComponent} from "./Component";
 import State, {createState, StateAction} from "../state/State";
+import ClickEvent = JQuery.ClickEvent;
 
 export class Footer extends SceneComponent {
 
@@ -21,9 +22,9 @@ export class Footer extends SceneComponent {
         return [[this.open, ((_, open) => {
             const toolbarElement = document.getElementById(this.context.getIdType("toolbar"))
             let bottom
-            if(open){
+            if (open) {
                 bottom = 0
-            }else{
+            } else {
                 bottom = -(toolbarElement.getBoundingClientRect().height - 45)
             }
             toolbarElement.style.bottom = `${bottom}px`
@@ -35,13 +36,21 @@ export class Footer extends SceneComponent {
     }
 
     afterRender() {
+        const hookButton = (action: (e: ClickEvent) => void, ...types: string[]) => {
+            $("#" + this.context.getIdType(...types)).on("click", (e) => {
+                action(e)
+            })
+        }
         $('.timeline__frame').on("click", (e) => {
             const [frame] = this.context.extractIdType(e.target.id)
             this.context.ctx.currentFrame = frame
         })
-        $("#"+this.context.getIdType("toolbar","collapse")).on("click", (e)=>{
+        hookButton((e) => {
             this.open.set(!this.open.get())
-        })
+        }, "toolbar", "collapse")
+        hookButton((e) => {
+            this.hookedComponents.view.resetViewport()
+        }, "toolbar", "reset")
     }
 
     render(): string | string[] {
@@ -52,6 +61,7 @@ export class Footer extends SceneComponent {
         let elements = ""
         const buttons = [createButtonDiv('Collapse/Expand', 'bi bi-arrows-collapse', "toolbar", "collapse")]
         if (this.open.get()) {
+            buttons.push(createButtonDiv('Reset-Viewport', 'bi bi-bootstrap-reboot', "toolbar", "reset"))
             buttons.push(createButtonDiv('Export', 'bi bi-box-arrow-up-right'))
             if (this.context.ctx.totalFrames !== 0) {
                 let frames = ""
