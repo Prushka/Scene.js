@@ -4,6 +4,7 @@
 
 import {SceneComponent} from "./Component";
 import {PropTypeIcons} from "../props/Props";
+import {createSVGIcon} from "../utils/Utils";
 
 export class PropList extends SceneComponent {
 
@@ -26,11 +27,18 @@ export class PropList extends SceneComponent {
     }
 
     render(): string | string[] {
+
         return this.context.props.get().map(prop => {
-            return `<div id="${this.context.getId(prop, 'prop', 'list')}" class='pointer prop__list__item  ${this.context.propSelected(prop) ? "prop__list__item--selected" : "prop__list__item--not-selected"}'>
-                    <i id="${this.context.getId(prop, 'prop', 'list', 'icon')}" class="${PropTypeIcons[prop.type][prop.iconStyle][this.context.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
-                    <span style="color:${prop.color}" id="${this.context.getId(prop, 'prop', 'list', 'title')}">${prop.name}</span>
-                    </div>`
+            const container = document.createElement('div')
+            container.id = this.context.getId(prop, 'prop', 'list')
+            container.classList.add("pointer", "prop__list__item",  this.context.propSelected(prop) ? "prop__list__item--selected" : "prop__list__item--not-selected")
+            const propIcon = this.context.getPropSVG(prop, 1.3)
+            propIcon.id = this.context.getId(prop, 'prop', 'list', 'icon')
+            const propText = this.context.getPropSpanText(prop)
+            propText.id = this.context.getId(prop, 'prop', 'list', 'title')
+            container.append(propIcon)
+            container.append(propText)
+            return container.outerHTML
         })
     }
 }

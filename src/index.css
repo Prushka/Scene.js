@@ -221,8 +221,7 @@
 
 .prop__list__item {
     display: flex;
-    padding: 10px 15px;
-    align-items: center;
+    padding: 14px 12px 14px 18px;
 }
 
 .prop__list__item--not-selected {
@@ -246,7 +245,7 @@
 }
 
 .prop__list__item span {
-    margin: 0 1rem;
+    margin: 0 1.2rem;
     font-size: 1rem;
     font-weight: 700;
 }

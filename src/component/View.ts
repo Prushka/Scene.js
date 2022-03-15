@@ -78,7 +78,7 @@ export class View extends SceneComponent {
             if (this.dragging) {
                 e.preventDefault()
                 this.dragging = false
-                $('.view-container').css('cursor', 'unset')
+                $('.root-container').css('cursor', 'unset')
             }
         }
 
@@ -89,11 +89,11 @@ export class View extends SceneComponent {
         }
 
         $('.view-container').on("mousedown", (e) => {
-            e.preventDefault()
             this.dragging = true
-            const c = $('.view-container')
+            const c = $('.root-container')
             this.mouse = getMouseOffset(e)
             c.css('cursor', 'grabbing')
+            e.preventDefault()
         }).on("mousemove", (e) => {
             e.preventDefault()
             if (this.dragging) {

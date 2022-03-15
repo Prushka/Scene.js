@@ -14,7 +14,7 @@ import {
 } from "./props/Props";
 import Coordinates = JQuery.Coordinates;
 import State, {createState} from "./state/State";
-import {convertTypeToReadable, createElement, generateDarkColor} from "./utils/Utils";
+import {convertTypeToReadable, createElement, createSVGIcon, generateDarkColor} from "./utils/Utils";
 import {PropList} from "./component/PropList";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
@@ -272,6 +272,21 @@ export class Context {
             viewports.push(new ViewPort())
         }
         this.viewports.set(viewports)
+    }
+
+    public getPropSpanText(prop: PropConfig) {
+        const propText = document.createElement("span")
+        propText.innerText = prop.name
+        propText.style.color = prop.color
+        return propText
+    }
+
+    public getPropSVG(prop: PropConfig, scale?: number) {
+        scale = scale ? scale : 1.4
+        const propIcon = this.getPathGroup(prop)
+        const svg = createSVGIcon(scale)
+        svg.append(propIcon)
+        return svg
     }
 
     public getPathGroup(prop: PropConfig) {

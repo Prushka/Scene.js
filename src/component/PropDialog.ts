@@ -52,14 +52,14 @@ export class PropDialog extends SceneComponent {
             headerCloseIcon.id = this.context.getId(selectedProp, 'prop', 'dialog', 'property')
             headerCloseIcon.classList.add("bi", "bi-x", "pointer", "prop__dialog__close")
             header.appendChild(headerCloseIcon)
-            const propIcon = this.context.getPathGroup(selectedProp)
+
+            const propIcon = this.context.getPropSVG(selectedProp)
             propIcon.id = this.context.getId(selectedProp, 'prop', 'dialog', 'property', 'icon')
-            const svg = createSVGIcon(1.4)
-            svg.append(propIcon)
             const propText = document.createElement("span")
             propText.innerText = selectedProp.name
             propText.style.color = selectedProp.color
-            footer.append(svg, propText)
+
+            footer.append(propIcon, propText)
             container.append(header, footer)
             return parentContainer.outerHTML
         }
