@@ -101,9 +101,9 @@ export class Footer extends SceneComponent {
                 buttons.push(createButtonDiv('Play', this.playing.get() ? 'bi bi-pause-fill' : 'bi bi-play-fill', "toolbar", "play"))
             }
         }
-        return `<div class='footer'>
-                     <div id="${this.context.getIdType("toolbar")}" class="footer__toolbar">${buttons.join('')}</div>
+        return `
+                     <div id="${this.context.getIdType("toolbar")}" class="toolbar">${buttons.join('')}</div>
                      ${elements}
-                     </div>`
+                     `
     }
 }

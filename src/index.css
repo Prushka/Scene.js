@@ -108,7 +108,6 @@
     display: flex;
     margin-top: auto;
     align-self: end;
-    /*align-items: center;*/
     justify-content: center;
     padding: 15px;
     width: 100%;
@@ -128,23 +127,18 @@
 }
 
 .footer {
-    position: absolute;
     bottom: 0;
-    width: 100%;
-    padding: 8px 10px;
-    box-sizing: border-box;
-    display: flex;
-    z-index: 1000;
 }
 
-.footer__toolbar {
+.toolbar {
     display: flex;
     flex-direction: column;
     width: var(--toolbar-button-width);
-    position: relative;
     bottom: 0;
     transition-duration: 0.3s;
     transition-timing-function: ease-in;
+    position: absolute;
+    margin: 0 0 8px 10px;
 }
 
 .button {
@@ -175,9 +169,15 @@
 
 .timeline-container {
     flex-direction: column;
-    width: 100%;
+    width: calc(100% - var(--toolbar-button-width) - 3px);
     margin-top: auto;
-    padding: 5px 20px;
+    padding: 0 20px;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 8px;
+    left: calc(var(--toolbar-button-width) + 3px);
+    box-sizing: border-box;
+    z-index: 1000;
 }
 
 .timeline {
