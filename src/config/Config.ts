@@ -1,4 +1,4 @@
-import {PropTypeIcon} from "../props/Props";
+import {LineConfig, PositionConfig, PropTypeIcon} from "../props/Props";
 
 export interface Config {
     theme?: "dark" | "light",
@@ -11,7 +11,8 @@ export interface Config {
     defaultFrameSpeed?: number,
     frameSelectionSpeed?: number, // set to 0 to disable animation while selecting
     attachment?: { [key: string]: string[] },
-    propTypes?: {[key: string]: PropTypeIcon}
+    propTypes?: {[key: string]: PropTypeIcon},
+    lines?: [PositionConfig, PositionConfig, LineConfig?][]
 }
 
 export const DefaultConfig: Config = {
@@ -25,5 +26,6 @@ export const DefaultConfig: Config = {
     frameSelectionSpeed: 1,
     defaultOpenPropList: false,
     defaultOpenToolbar: false,
-    propTypes: {}
+    propTypes: {},
+    lines: []
 }

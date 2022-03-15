@@ -480,7 +480,10 @@ export function demo() {
                     disabledPaths: `<path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>`
                 }
             }
-        }
+        },
+        lines: [
+            [{x: 40, y: 40}, {x: 80, y: 80}, {width: 2, color: "red"}]
+        ]
     })
     ctx.addProp(getDemoLight(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")
     console.log(ctx.props.get())

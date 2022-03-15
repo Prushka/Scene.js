@@ -24,6 +24,11 @@ export interface AnimationConfig extends OrientationConfig, PositionConfig, Scal
     isOffset?: boolean
 }
 
+export interface LineConfig {
+    color?: string,
+    width?: number
+}
+
 export interface HasId {
     id?: number,
 }
@@ -36,7 +41,10 @@ export interface PropConfig extends HasId {
     style?: string,
     type?: PropType | string,
     staticPosition?: AnimationConfig,
-    frameAnimationConfig?: FrameAnimationConfig
+    frameAnimationConfig?: FrameAnimationConfig,
+    script?: string,
+    steps?: { [key: number]: string },
+    note?: string
 }
 
 export enum PropType {
@@ -48,8 +56,8 @@ export enum PropType {
     CHAIR = "CHAIR",
     SHELF = "SHELF",
     MAP = "MAP",
-    // SCRIPT = "SCRIPT",
-    // STORYBOARD = "STORYBOARD"
+    SCRIPT = "SCRIPT",
+    STORYBOARD = "STORYBOARD"
 }
 
 export interface PropTypeStyleIcon {
@@ -131,17 +139,17 @@ export const PropTypeIcons: { [key in PropType]: PropTypeIcon } = {
             enabledPaths: `<path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"></path><path fill-rule="evenodd" d="M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"></path>`,
             disabledPaths: `<path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"></path><path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"></path>`
         }
-    }
-}
-
-export interface FurnitureConfig extends PropConfig {
-    brand?: string
-}
-
-export interface CharacterConfig extends PropConfig {
-    gender?: string
-}
-
-export interface LightConfig extends PropConfig {
-    colorTemperature: number
+    },
+    STORYBOARD: {
+        default: {
+            enabledPaths: ``,
+            disabledPaths: ``
+        }
+    },
+    SCRIPT: {
+        default: {
+            enabledPaths: ``,
+            disabledPaths: ``
+        }
+    },
 }

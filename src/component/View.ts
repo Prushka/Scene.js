@@ -55,10 +55,10 @@ export class View extends SceneComponent {
                     groupElement.style.display = show ? "unset" : "none"
                     const enabledGroup = document.getElementById(this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'enabled'))
                     const disabledGroup = document.getElementById(this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'disabled'))
-                    if(!newPosition.enabled){
+                    if (!newPosition.enabled) {
                         enabledGroup.style.opacity = "0"
                         disabledGroup.style.opacity = "1"
-                    }else{
+                    } else {
                         disabledGroup.style.opacity = "0"
                         enabledGroup.style.opacity = "1"
                     }
@@ -113,7 +113,7 @@ export class View extends SceneComponent {
         this.dragging = false
         this.resetViewport()
 
-        this.createConnections()
+        this.createLines()
 
         const stopDragging = (e) => {
             if (this.dragging) {
@@ -167,6 +167,18 @@ export class View extends SceneComponent {
         })
     }
 
+    private getLineGroup(startX, startY, endX, endY, width, color) {
+        return `<g stroke-width="${width}" stroke="${color}"><path d="M${startX} ${startY}  L${endX} ${endY}"/></g>`
+    }
+
+    private createLines() {
+        const gs = []
+        this.context.config.lines.forEach(([start, end, line]) => {
+            gs.push(this.getLineGroup(start.x, start.y, end.x, end.y, line.width, line.color))
+        })
+        document.getElementById(this.context.getIdType("view", "connections")).innerHTML += gs.join('')
+    }
+
     private createConnections() {
         let connections = [...this.connections.get()].map(_c => {
             const c: number[] = _c.split(",").map(s => Number(s))
@@ -214,9 +226,9 @@ export class View extends SceneComponent {
                 const pathGroupDisabled = this.context.getPathGroupByHTML(this.context.propTypeIconPool[prop.type][prop.style]['disabledPaths'], prop)
                 pathGroupEnabled.id = this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'enabled')
                 pathGroupDisabled.id = this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'disabled')
-                if(this.context.isPropEnabled(prop)){
+                if (this.context.isPropEnabled(prop)) {
                     pathGroupDisabled.style.opacity = "0"
-                }else{
+                } else {
                     pathGroupEnabled.style.opacity = "0"
                 }
                 group.append(pathGroupEnabled, pathGroupDisabled)
