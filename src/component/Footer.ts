@@ -55,8 +55,8 @@ export class Footer extends SceneComponent {
         }, "toolbar", "reset")
 
         const nextFrame = () => {
-            if(this.playing.get() && this.context.ctx.currentFrame < this.context.ctx.totalFrames){
-                this.context.ctx.currentFrame++
+            if(this.playing.get()){
+                this.context.ctx.nextFrame()
                 setTimeout(() => {
                     nextFrame()
                 }, 1500)
@@ -64,7 +64,9 @@ export class Footer extends SceneComponent {
         }
         hookButton(() => {
             this.playing.set(!this.playing.get())
-            nextFrame()
+            if(this.playing.get()){
+                nextFrame()
+            }
         }, "toolbar", "play")
     }
 

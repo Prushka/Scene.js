@@ -61,6 +61,13 @@ export class TimeContext {
         return this._currentFrame
     }
 
+    public nextFrame() {
+        if (this.currentFrame < this.totalFrames) {
+            this.currentFrame++
+        } else if (this.currentFrame === this.totalFrames) {
+            this.currentFrame = 1
+        }
+    }
 }
 
 export class ViewPort {
@@ -350,7 +357,7 @@ export class Context {
         return components
     }
 
-    viewComponent:View
+    viewComponent: View
 
     public displayRoot(selector: string) {
         this.beforeDisplay()
