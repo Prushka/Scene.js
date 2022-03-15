@@ -183,7 +183,15 @@ export class Context {
     }
 
     public extractIdType(htmlID: string): [number, string[]] {
-        const id: number = parseInt(htmlID.match(/-\d+/)[0].replace('-', ''))
+        const elementId = htmlID.match(/-\d+/)
+        const contextId = htmlID.match(/\d+-/)
+        if(!contextId){
+            return [-1, []]
+        }
+        let id = -1
+        if (elementId) {
+            id = parseInt(elementId[0].replace('-', ''))
+        }
         const type: string = htmlID.replace(/-\d+/, '').replace(/\d+-/, '')
         return [id, type.split('-')]
     }
@@ -430,7 +438,7 @@ export class Context {
 
 export function demo() {
     const getRandomPosition = () => {
-        const scale = randInclusive(5, 30)/10
+        const scale = randInclusive(5, 30) / 10
         return {
             enabled: !!randInclusive(0, 1),
             x: Math.random() * 500,
