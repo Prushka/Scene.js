@@ -13,7 +13,11 @@ export interface OrientationConfig {
     degree?: number
 }
 
-export interface AnimationConfig extends OrientationConfig, PositionConfig {
+export interface ScaleConfig {
+    scale?: number
+}
+
+export interface AnimationConfig extends OrientationConfig, PositionConfig, ScaleConfig {
     enabled?: boolean,
     hide?: boolean,
     isOffset?: boolean
@@ -30,9 +34,6 @@ export interface PropConfig extends HasId {
     color?: string,
     iconStyle?: string,
     type?: PropType,
-    enabled?: boolean,
-    hide?: boolean,
-    scale?: number,
     staticPosition?: AnimationConfig,
     frameAnimationConfig?: FrameAnimationConfig
 }

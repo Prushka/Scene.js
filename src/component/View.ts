@@ -173,33 +173,33 @@ export class View extends SceneComponent {
         console.log("render")
         const props = this.context.props.get()
         let s = props.map(prop => {
-            if (!this.context.getPropPositionByFrame(prop, this.context.ctx.currentFrame, false).hide) {
-                const position: AnimationConfig = this.context.getPropPosition(prop)
-                if (position) {
-                    const selected = this.context.propSelected(prop)
-                    const group = document.createElement("g")
-                    group.classList.add("view__prop", selected ? 'view__prop--selected' : 'view__prop--not-selected')
-                    group.style.transitionTimingFunction = this.context.config.playTransition
-                    group.id = this.context.getId(prop, 'view', 'prop')
-                    group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree})`)
+            const hide = this.context.getPropPositionByFrame(prop, this.context.ctx.currentFrame, false).hide
+            const position: AnimationConfig = this.context.getPropPosition(prop)
+            if (position) {
+                const selected = this.context.propSelected(prop)
+                const group = document.createElement("g")
+                group.classList.add("view__prop", selected ? 'view__prop--selected' : 'view__prop--not-selected')
+                group.style.transitionTimingFunction = this.context.config.playTransition
+                group.id = this.context.getId(prop, 'view', 'prop')
+                group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree})`)
 
-                    const text = document.createElement("text")
-                    text.id = this.context.getId(prop, 'view', 'prop', 'text')
-                    text.innerText = prop.name
-                    text.setAttribute("y", "-7")
-                    text.style.fill = prop.color
-                    group.appendChild(text)
-                    // It's not possible to set innerHTML to format: <path ... /><path ... />
-                    // The above line will be formatted to: <path ...><path ...></path></path>
-                    // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
-                    // (until I find a workaround or figure out what the issue is)
-                    const pathGroup = this.context.getPathGroup(prop)
-                    group.appendChild(pathGroup)
-                    //path.id = this.context.getId(prop, 'view', 'prop', 'icon')
-                    return group.outerHTML
+                const text = document.createElement("text")
+                text.id = this.context.getId(prop, 'view', 'prop', 'text')
+                text.innerText = prop.name
+                text.setAttribute("y", "-7")
+                text.style.fill = prop.color
+                group.appendChild(text)
+                // It's not possible to set innerHTML to format: <path ... /><path ... />
+                // The above line will be formatted to: <path ...><path ...></path></path>
+                // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
+                // (until I find a workaround or figure out what the issue is)
+                const pathGroup = this.context.getPathGroup(prop)
+                group.appendChild(pathGroup)
+                if(hide){
+                    group.style.display = "none"
                 }
-            } else {
-                console.log(prop.id)
+                //path.id = this.context.getId(prop, 'view', 'prop', 'icon')
+                return group.outerHTML
             }
         })
         for (let key in this.context.config.attachment) {

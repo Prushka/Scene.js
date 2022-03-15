@@ -133,14 +133,13 @@ export class Context {
             propConfig.color = propConfig.color || generateDarkColor()
             propConfig.iconStyle = propConfig.iconStyle || "default"
             propConfig.id = propConfig.id || this.ids
-            propConfig.enabled = propConfig.enabled === undefined ? true : propConfig.enabled
             propConfig.name = propConfig.name || `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
-            propConfig.scale = propConfig.scale || 1
-            propConfig.hide = propConfig.hide === undefined ? false : propConfig.hide
             if (propConfig.frameAnimationConfig) {
                 for (let key in propConfig.frameAnimationConfig) {
-                    propConfig.frameAnimationConfig[key].hide = propConfig.frameAnimationConfig[key].hide === undefined ? false : propConfig.frameAnimationConfig[key].hide
-                    propConfig.frameAnimationConfig[key].enabled = propConfig.frameAnimationConfig[key].enabled === undefined ? true : propConfig.frameAnimationConfig[key].enabled
+                    const a = propConfig.frameAnimationConfig[key]
+                    a.scale = a.scale || 1
+                    a.hide = a.hide === undefined ? false : a.hide
+                    a.enabled = a.enabled === undefined ? true : a.enabled
                 }
             }
             this.ids += 1
@@ -185,11 +184,7 @@ export class Context {
     }
 
     public isPropEnabled(prop: PropConfig): boolean {
-        if (this.ctx.isStatic) {
-            return prop.enabled
-        } else {
-            return this.getPropPositionByFrame(prop, this.ctx.currentFrame, false).enabled
-        }
+        return this.getPropPositionByFrame(prop, this.ctx.currentFrame, false).enabled
     }
 
     public getPropById(id: number): PropConfig | null {
@@ -433,11 +428,6 @@ export function demo() {
         return {
             type: PropType.LIGHT,
             colorTemperature: 5000,
-            enabled: false,
-            scale: 2,
-            staticPosition: {
-                x: 500, y: 500, degree: 30
-            },
             frameAnimationConfig: {
                 1: {
                     x: 0, y: 0, degree: 30, hide: true
@@ -455,10 +445,6 @@ export function demo() {
     const getDemoTable = () => {
         return {
             type: PropType.CHARACTER,
-            enabled: true,
-            staticPosition: {
-                x: Math.random() * 600, y: Math.random() * 600, degree: 30
-            },
             frameAnimationConfig: {
                 1: getRandomPosition(),
                 2: getRandomPosition(),
