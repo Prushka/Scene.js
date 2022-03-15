@@ -45,7 +45,34 @@
 .prop__property-container {
 }
 
-.prop__property-dialog {
+.prop__dialog {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 40%);
+    position: fixed;
+    z-index: 1250;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prop__dialog--popup {
+    background-color: white;
+    margin: 0;
+    position: absolute;
+    z-index: 1300;
+    padding: 12px 15px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+
+    width: 60%;
+    height: 73%;
+}
+
+.prop__dialog--embedded {
     display: flex;
     flex-direction: column;
     width: 400px;
@@ -57,19 +84,40 @@
     z-index: 1100;
 }
 
-.prop__property-dialog__header {
+.prop__dialog--popup .header {
     display: flex;
     align-items: center;
 }
 
-.prop__property-dialog__header i {
+.prop__dialog--popup .header i {
+    font-size: 2.9rem;
+    align-self: end;
+    padding: 10px;
+    margin-left: auto;
+}
+
+.prop__dialog--embedded .header {
+    display: flex;
+    align-items: center;
+}
+
+.prop__dialog--embedded .header i {
     font-size: 2.5rem;
     align-self: end;
     padding: 10px;
     margin-left: auto;
 }
 
-.prop__property-dialog__footer {
+.prop__dialog__content {
+    margin-top: 30px;
+    display: flex;
+    overflow: auto;
+    min-height: 0;
+    flex-direction: column;
+}
+
+.prop__dialog--popup .footer,
+.prop__dialog--embedded .footer {
     display: flex;
     margin-top: auto;
     align-self: end;
@@ -80,13 +128,15 @@
     box-sizing: border-box;
 }
 
-.prop__property-dialog__footer span {
+.prop__dialog--popup .footer span,
+.prop__dialog--embedded .footer span {
     font-size: 1.2rem;
     font-weight: 700;
     margin-left: 15px;
 }
 
-.prop__property-dialog__footer i {
+.prop__dialog--popup .footer i,
+.prop__dialog--embedded .footer i {
     font-size: 1.2rem;
 }
 
@@ -221,7 +271,7 @@
     transition-timing-function: ease-in-out;
 }
 
-.view__prop text{
+.view__prop text {
     font: normal 12px Comfortaa;
 }
 

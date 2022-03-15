@@ -1,10 +1,10 @@
 export interface Config {
     theme?: "dark" | "light",
-    dialog?: "popup" | "embed",
+    dialog?: "popup" | "embedded",
 
 }
 
 export const DefaultConfig: Config = {
     theme: "light",
-    dialog: "embed",
+    dialog: "embedded",
 }

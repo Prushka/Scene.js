@@ -86,7 +86,7 @@ export class Context {
     private _selected: State<PropConfig> = createState()
     props: State<PropConfig[]> = createState([])
     viewports: State<ViewPort[]> = createState([])
-    private readonly config: Config
+    public readonly config: Config
 
     public constructor(config?: Config, context?: TimeContext) {
         this.contextId = Context.contextIds
@@ -327,9 +327,9 @@ export function demo() {
             }
         }
     }
-    const config: Context = new Context()
-    config.addProp(getDemoLight()).displayRoot("#scene")
-    console.log(config.props.get())
+    const ctx: Context = new Context()
+    ctx.addProp(getDemoLight()).displayRoot("#scene")
+    console.log(ctx.props.get())
 
     return new Position(1, 1)
 }

@@ -15,20 +15,30 @@ export class PropDialog extends SceneComponent {
     }
 
     afterRender() {
-        $('.prop__property-dialog__close').on("click", (e) => {
+        const toggle = (e) => {
             const [id] = this.context.extractIdType(e.target.id)
             console.log(e.target.id)
             this.context.toggleSelected(id)
+        }
+        $('.prop__dialog__close').on("click", (e) => {
+            toggle(e)
+        })
+        $('.prop__dialog').on("click", (e) => {
+            this.context.selected = null
+        })
+        $('.prop__dialog--popup').on("click", (e)=>{
+            e.stopPropagation()
         })
     }
 
     render(): string | string[] {
         const selectedProp = this.context.selected
         if (selectedProp) {
-            return `<div class="prop__property-dialog">
-                            <div class="prop__property-dialog__header"><i id="${this.context.getId(selectedProp, 'prop', 'dialog', 'property')}" class="bi bi-x pointer prop__property-dialog__close"></i></div>
-                            <div class="prop__property-dialog__footer"><i id="${this.context.getId(selectedProp, 'prop', 'dialog', 'property', 'icon')}" class="${PropTypeIcons[selectedProp.type][selectedProp.iconStyle][this.context.isPropEnabled(selectedProp) ? 'enabled' : 'disabled']}"></i> <span>${selectedProp.name}</span></div>
-                            </div>`
+            const isPopup = this.context.config.dialog !== 'popup'
+            return `${isPopup && '<div class="prop__dialog">'}<div class="prop__dialog--${isPopup ? 'popup' : 'embedded'}">
+                            <div class="header"><i id="${this.context.getId(selectedProp, 'prop', 'dialog', 'property')}" class="bi bi-x pointer prop__dialog__close"></i></div>
+                            <div class="footer"><i id="${this.context.getId(selectedProp, 'prop', 'dialog', 'property', 'icon')}" class="${PropTypeIcons[selectedProp.type][selectedProp.iconStyle][this.context.isPropEnabled(selectedProp) ? 'enabled' : 'disabled']}"></i> <span>${selectedProp.name}</span></div>
+                            </div>${isPopup && '</div>'}`
         }
         return ""
     }
