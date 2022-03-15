@@ -274,22 +274,22 @@ export class Context {
         this.viewports.set(viewports)
     }
 
-    public getPropSpanText(prop: PropConfig) {
+    public getPropSpanText(prop: PropConfig, color?: string) {
         const propText = document.createElement("span")
         propText.innerText = prop.name
-        propText.style.color = prop.color
+        propText.style.color = color ? color : prop.color
         return propText
     }
 
-    public getPropSVG(prop: PropConfig, scale?: number) {
+    public getPropSVG(prop: PropConfig, color?: string, scale?: number) {
         scale = scale ? scale : 1.4
-        const propIcon = this.getPathGroup(prop)
+        const propIcon = this.getPathGroup(prop, color)
         const svg = createSVGIcon(scale)
         svg.append(propIcon)
         return svg
     }
 
-    public getPathGroup(prop: PropConfig) {
+    public getPathGroup(prop: PropConfig, color?: string) {
         const pathsHTML: string = PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths']
         let pathId = 0
         const pathGroup = document.createElement("g")
@@ -297,7 +297,7 @@ export class Context {
         pathsHTML.match(/<path.*?\/>/g).forEach(pathHTML => {
             const path = createElement(pathHTML)
             path.id = this.getId(prop, 'view', 'prop', 'icon', `[${pathId}]`)
-            path.style.fill = prop.color
+            path.style.fill = color ? color : prop.color
             pathGroup.appendChild(path)
             pathId++
         })
