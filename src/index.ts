@@ -199,6 +199,16 @@ export class Context {
         return null
     }
 
+    public getPropsByName(name: string) {
+        const props = []
+        for (const prop of this.props.get()) {
+            if (prop.name.toLowerCase() === name.toLowerCase()) {
+                props.push(prop)
+            }
+        }
+        return props
+    }
+
     public getFrameSeconds(frame: number): number {
         return frame in this.config.frameSpeed ? this.config.frameSpeed[frame] : this.config.defaultFrameSpeed
     }
@@ -412,7 +422,7 @@ export function demo() {
             type: PropType.LIGHT,
             colorTemperature: 5000,
             enabled: false,
-            scale: 0.5,
+            scale: 2,
             staticPosition: {
                 x: 500, y: 500, degree: 30
             },
@@ -452,7 +462,8 @@ export function demo() {
             4: 0.2
         },
         attachment: {
-            "table 1": ["table 2"]
+            "table 1": ["table 2"],
+            "table 2": ["table 1", "table 2"],
         }
     })
     ctx.addProp(getDemoLight(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")

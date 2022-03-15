@@ -71,7 +71,7 @@ export class View extends SceneComponent {
             const textWidth = textElement.getBBox().width
             const pathGroup = element.querySelector('g')
             const prop = this.context.getPropById(this.context.extractIdType(element.id)[0])
-            pathGroup.setAttribute("transform", `translate(${textWidth / 2 - pathGroup.getBBox().width*prop.scale / 2}, 0) scale(${prop.scale} ${prop.scale})`)
+            pathGroup.setAttribute("transform", `translate(${textWidth / 2 - pathGroup.getBBox().width * prop.scale / 2}, 0) scale(${prop.scale} ${prop.scale})`)
         })
     }
 
@@ -170,6 +170,23 @@ export class View extends SceneComponent {
                 return group.outerHTML
             }
         })
+        const connections = new Set()
+        for (let key in this.context.config.attachment) {
+            const keyProps = this.context.getPropsByName(key)
+            let valueProps = []
+            this.context.config.attachment[key].forEach(name => {
+                valueProps = valueProps.concat(this.context.getPropsByName(name))
+            })
+            keyProps.forEach(keyProp => {
+                valueProps.forEach(valueProp => {
+                    if(keyProp !== valueProp){
+                        connections.add([keyProp, valueProp])
+                    }
+                })
+            })
+        }
+
+        console.log(connections)
         return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg">${s.join('')}</svg>`
     }
 }
