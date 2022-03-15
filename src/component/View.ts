@@ -4,8 +4,9 @@
 
 import {SceneComponent} from "./Component";
 import {AnimationConfig, PositionConfig, PropConfig, PropTypeIcons} from "../props/Props";
-import State, {StateAction} from "../state/State";
+import State, {createState, StateAction} from "../state/State";
 import {createElement} from "../utils/Utils";
+import PropTupleSet from "../utils/PropTupleSet";
 
 export class View extends SceneComponent {
 
@@ -16,6 +17,12 @@ export class View extends SceneComponent {
 
     mouse: PositionConfig
     dragging: boolean
+
+    connections: State<PropTupleSet>
+
+    afterConstructor() {
+        this.connections = createState(new PropTupleSet())
+    }
 
     listen(): State<any>[] {
         return [this.context.props];
@@ -75,8 +82,8 @@ export class View extends SceneComponent {
         })
     }
 
-    public resetViewport() {
-        const [viewRatio, viewX, viewY] = this.context.calcViewBox(this.context.findMinMaxPosition())
+    public resetViewport(currentFrame?:number) {
+        const [viewRatio, viewX, viewY] = this.context.calcViewBox(this.context.findMinMaxPosition(currentFrame))
         this.context.viewportScale = viewRatio
         this.context.viewportOffset = {
             x: -viewX, y: -viewY
@@ -88,6 +95,8 @@ export class View extends SceneComponent {
         this.mouse = {x: 0, y: 0}
         this.dragging = false
         this.resetViewport()
+
+        this.createConnections()
 
         const stopDragging = (e) => {
             if (this.dragging) {
@@ -141,6 +150,24 @@ export class View extends SceneComponent {
         })
     }
 
+    private createConnections() {
+        let connections = [...this.connections.get()].map(_c => {
+            const c: number[] = _c.split(",").map(s => Number(s))
+            const propLeft = this.context.getPropById(c[0])
+            const propRight = this.context.getPropById(c[1])
+            const leftGroupElement = document.getElementById(this.context.getId(propLeft, 'view', 'prop'))
+            const rightGroupElement = document.getElementById(this.context.getId(propRight, 'view', 'prop'))
+            const propLeftPosition = this.context.getPropPositionByFrame(propLeft, this.context.ctx.currentFrame, false)
+            const propRightPosition = this.context.getPropPositionByFrame(propRight, this.context.ctx.currentFrame, false)
+            const propLeftRect = leftGroupElement.querySelector("text").getBBox()
+            const propRightRect = rightGroupElement.querySelector("text").getBBox()
+            console.log("bounding: "+propLeftPosition.x+","+propLeftPosition.y)
+            console.log(this.context.getPropPositionByFrame(propLeft, this.context.ctx.currentFrame, false))
+            return `<g class="view__prop__connection"><path d="M${propLeftPosition.x+propLeftRect.width/2} ${propLeftPosition.y+propLeftRect.height/2} L${propRightPosition.x+propRightRect.width/2} ${propRightPosition.y+propRightRect.height/2}"/></g>`
+        })
+        document.getElementById(this.context.getIdType("view","connections")).innerHTML = connections.join('')
+    }
+
     render(): string | string[] {
         console.log("render")
         const props = this.context.props.get()
@@ -170,7 +197,6 @@ export class View extends SceneComponent {
                 return group.outerHTML
             }
         })
-        const connections = new Set()
         for (let key in this.context.config.attachment) {
             const keyProps = this.context.getPropsByName(key)
             let valueProps = []
@@ -179,15 +205,16 @@ export class View extends SceneComponent {
             })
             keyProps.forEach(keyProp => {
                 valueProps.forEach(valueProp => {
-                    if(keyProp !== valueProp){
-                        connections.add([keyProp, valueProp])
+                    if (keyProp !== valueProp) {
+                        this.connections.get().addIdTuple([keyProp.id, valueProp.id])
                     }
                 })
             })
         }
 
-        console.log(connections)
-        return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg">${s.join('')}</svg>`
+
+        console.log(this.connections.get())
+        return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg">${s.join('')}<g id="${this.context.getIdType("view","connections")}"></g></svg>`
     }
 }
 

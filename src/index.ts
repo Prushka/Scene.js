@@ -300,7 +300,7 @@ export class Context {
         this.viewports.set(_viewports)
     }
 
-    public findMinMaxPosition(): [number, number, number, number] {
+    public findMinMaxPosition(currentFrame?:number): [number, number, number, number] {
         let [minX, minY, maxX, maxY] = [null, null, null, null]
         const updateMinMax = (position) => {
             if (position.x > maxX || maxX === null) {
@@ -317,12 +317,17 @@ export class Context {
             }
         }
         this.props.get().forEach(prop => {
-            for (let key in prop.frameAnimationConfig) {
-                const position = prop.frameAnimationConfig[key]
-                if (position) {
-                    updateMinMax(position)
+            if(currentFrame){
+                updateMinMax(this.getPropPositionByFrame(prop, currentFrame, false))
+            }else{
+                for (let key in prop.frameAnimationConfig) {
+                    const position = prop.frameAnimationConfig[key]
+                    if (position) {
+                        updateMinMax(position)
+                    }
                 }
             }
+
         })
         return [minX, minY, maxX, maxY]
     }

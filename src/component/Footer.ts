@@ -60,8 +60,13 @@ export class Footer extends SceneComponent {
         }, "toolbar", "collapse")
         hookButton(() => {
             this.context.viewComponent.resetViewport()
-            this.context.snackbar = "Reset Viewport"
-        }, "toolbar", "reset")
+            this.context.snackbar = "Reset Viewport - Frames Based"
+        }, "toolbar", "reset", "frames")
+
+        hookButton(() => {
+            this.context.viewComponent.resetViewport(this.context.ctx.currentFrame)
+            this.context.snackbar = "Reset Current Viewport"
+        }, "toolbar", "reset", "current")
 
         const nextFrame = () => {
             if (this.playing.get()) {
@@ -84,13 +89,14 @@ export class Footer extends SceneComponent {
 
     render(): string | string[] {
         const createButtonDiv = (title, iconClasses, ...types: string[]) => {
-            return `<div id="${this.context.getIdType(...types)}" title=${title} class="button button--purple pointer"><i class='${iconClasses}' id="${this.context.getIdType(...types, 'icon')}"></i></div>`
+            return `<div id="${this.context.getIdType(...types)}" title="${title}" class="button button--purple pointer"><i class='${iconClasses}' id="${this.context.getIdType(...types, 'icon')}"></i></div>`
         }
         const currentFrame = this.context.ctx.currentFrame
         let elements = ""
         const buttons = [createButtonDiv('Collapse/Expand', 'bi bi-arrows-collapse', "toolbar", "collapse")]
         if (this.open.get()) {
-            buttons.push(createButtonDiv('Reset-Viewport', 'bi bi-bootstrap-reboot', "toolbar", "reset"))
+            buttons.push(createButtonDiv('Reset viewport (based on current frame)', 'bi bi-arrows-move', "toolbar", "reset", "current"))
+            buttons.push(createButtonDiv("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', "toolbar", "reset", "frames"))
             buttons.push(createButtonDiv('Export', 'bi bi-box-arrow-up-right', "toolbar", "export"))
             if (this.context.ctx.totalFrames !== 0) {
                 let frames = ""
