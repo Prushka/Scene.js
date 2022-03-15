@@ -9,15 +9,20 @@ import {setClassList} from "../utils/Utils";
 
 export class Snackbar extends SceneComponent {
 
+    timeouts = []
+
     actions(): StateAction<any>[] {
         return [[this.context.snackbarState, ((_, message) => {
             const snackbar = document.getElementById(this.context.getIdType("snackbar"))
             const span = snackbar.querySelector("span")
             snackbar.classList.remove("snackbar--closed")
             span.innerText = message
-            setTimeout(() => {
+            this.timeouts.forEach(t => {
+                clearTimeout(t)
+            })
+            this.timeouts.push(setTimeout(() => {
                 snackbar.classList.add("snackbar--closed")
-            }, 4000)
+            }, 4000))
         })]]
     }
 
