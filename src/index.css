@@ -329,7 +329,8 @@
 .snackbar{
     margin-top: 15px;
     padding: 8px;
-    display: flex;
+    display: inline-flex;flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     position: absolute;
@@ -338,14 +339,18 @@
     left: 0;
     right: 0;
     top: 0;
-    width: 200px;
-    background-color: var(--theme-trans-white);
+    width: 300px;
+    background-color: var(--theme-pink);
     z-index: 1400;
     border-radius: 4px;
     font-size: 16px;
     transition-duration: .3s;
+    color: white;
+    font-weight: 600;
+    opacity: 1;
 }
 
 .snackbar--closed{
     top: -60px;
+    opacity: 0;
 }
