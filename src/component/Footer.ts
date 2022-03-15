@@ -65,10 +65,10 @@ export class Footer extends SceneComponent {
 
         const nextFrame = () => {
             if (this.playing.get()) {
-                this.context.ctx.nextFrame()
+                const previousFrame = this.context.ctx.nextFrame()
                 setTimeout(() => {
                     nextFrame()
-                }, 1000)
+                }, this.context.getFrameSeconds(previousFrame) * 1000)
             }
         }
         hookButton(() => {

@@ -46,7 +46,7 @@ export class View extends SceneComponent {
                         const groupElement = document.getElementById(this.context.getId(prop, 'view', 'prop'))
                         // console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
                         groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree})`)
-                        groupElement.style.transitionDuration = this.context.getFrameSpeed(oldFrame)
+                        groupElement.style.transitionDuration = this.context.getFrameSeconds(oldFrame) + "s"
                     }
                 })
 

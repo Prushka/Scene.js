@@ -62,12 +62,14 @@ export class TimeContext {
         return this._currentFrame
     }
 
-    public nextFrame() {
+    public nextFrame(): number {
+        const previousFrame = this.currentFrame
         if (this.currentFrame < this.totalFrames) {
             this.currentFrame++
         } else if (this.currentFrame === this.totalFrames) {
             this.currentFrame = 1
         }
+        return previousFrame
     }
 }
 
@@ -196,9 +198,8 @@ export class Context {
         return null
     }
 
-    public getFrameSpeed(frame: number):string {
-        const s= frame in this.config.frameSpeed ? this.config.frameSpeed[frame] : 1
-        return s+"s"
+    public getFrameSeconds(frame: number): number {
+        return  frame in this.config.frameSpeed ? this.config.frameSpeed[frame] : 1
     }
 
     public getPropPosition(prop: PropConfig): AnimationConfig | null {
@@ -437,11 +438,18 @@ export function demo() {
             frameAnimationConfig: {
                 1: getRandomPosition(),
                 2: getRandomPosition(),
+                3: getRandomPosition(),
                 4: getRandomPosition(),
             }
         }
     }
-    const ctx: Context = new Context({})
+    const ctx: Context = new Context({
+        frameSpeed: {
+            1: 3,
+            2: 2,
+            4: 0.2
+        }
+    })
     ctx.addProp(getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")
     console.log(ctx.props.get())
 
