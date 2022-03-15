@@ -49,6 +49,10 @@ export abstract class CustomComponent implements HasStateAction {
     subscribe(): string[] {
         return [];
     }
+
+    afterConstructor() {
+
+    }
 }
 
 export abstract class SceneComponent extends CustomComponent {
@@ -57,6 +61,7 @@ export abstract class SceneComponent extends CustomComponent {
     constructor(context: Context) {
         super();
         this.context = context
+        this.afterConstructor()
         this.mount()
     }
 }
