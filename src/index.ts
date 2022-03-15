@@ -148,10 +148,14 @@ export class Context {
         return [id, type.split('-')]
     }
 
-    public getId(id: HasId | number, ...type: string[]) {
+    public getIdType(...type: string[]) {
+        return this.getId(null, ...type)
+    }
+
+    public getId(id: HasId | number | null, ...type: string[]) {
         type.sort((a, b) => a.localeCompare(b))
-        const _id = typeof id === 'number' ? id : id.id
-        return `${this.contextId}-${type.join('-')}-${_id}`
+        const _id = id === null ? "" : (typeof id === 'number' ? "-"+id : "-"+id.id)
+        return `${this.contextId}-${type.join('-')}${_id}`
     }
 
     public isPropEnabled(prop: PropConfig): boolean {
@@ -405,7 +409,7 @@ export function demo() {
         }
     }
     const ctx: Context = new Context()
-    ctx.addProp(getDemoTable(),getDemoTable(),getDemoTable(),getDemoTable()).displayRoot("#scene")
+    ctx.addProp(getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")
     console.log(ctx.props.get())
 
     return new Position(1, 1)
