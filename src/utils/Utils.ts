@@ -13,17 +13,17 @@ export function createElement(html: string): HTMLElement {
 }
 
 // Min, Max both inclusive
-function generateColor(min: number, max: number) {
+export function randInclusive(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 export function generateDarkColor() {
-    const c = () => generateColor(0, 125)
+    const c = () => randInclusive(0, 125)
     return `rgb(${c()},${c()},${c()})`
 }
 
 export function generateLightColor() {
-    const c = () => generateColor(125, 255)
+    const c = () => randInclusive(125, 255)
     return `rgb(${c()},${c()},${c()})`
 }
 

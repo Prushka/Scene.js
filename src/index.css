@@ -358,3 +358,8 @@
     top: -60px;
     opacity: 0;
 }
+
+.view__prop__connection {
+    stroke: var(--theme-gray);
+    stroke-width: 1px;
+}

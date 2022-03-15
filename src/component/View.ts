@@ -78,7 +78,7 @@ export class View extends SceneComponent {
             const textWidth = textElement.getBBox().width
             const pathGroup = element.querySelector('g')
             const prop = this.context.getPropById(this.context.extractIdType(element.id)[0])
-            pathGroup.setAttribute("transform", `translate(${textWidth / 2 - pathGroup.getBBox().width * prop.scale / 2}, 0) scale(${prop.scale} ${prop.scale})`)
+            pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * prop.scale) / 2}, 0) scale(${prop.scale} ${prop.scale})`)
         })
     }
 
@@ -159,11 +159,12 @@ export class View extends SceneComponent {
             const rightGroupElement = document.getElementById(this.context.getId(propRight, 'view', 'prop'))
             const propLeftPosition = this.context.getPropPositionByFrame(propLeft, this.context.ctx.currentFrame, false)
             const propRightPosition = this.context.getPropPositionByFrame(propRight, this.context.ctx.currentFrame, false)
-            const propLeftRect = leftGroupElement.querySelector("text").getBBox()
-            const propRightRect = rightGroupElement.querySelector("text").getBBox()
+            const propLeftRect = leftGroupElement.querySelector("text").getBoundingClientRect()
+            const propRightRect = rightGroupElement.querySelector("text").getBoundingClientRect()
             console.log("bounding: "+propLeftPosition.x+","+propLeftPosition.y)
             console.log(this.context.getPropPositionByFrame(propLeft, this.context.ctx.currentFrame, false))
-            return `<g class="view__prop__connection"><path d="M${propLeftPosition.x+propLeftRect.width/2} ${propLeftPosition.y+propLeftRect.height/2} L${propRightPosition.x+propRightRect.width/2} ${propRightPosition.y+propRightRect.height/2}"/></g>`
+            return `<g stroke-width="1" stroke="red"><path d="M${propLeftPosition.x+propLeftRect.width/2} ${propLeftPosition.y+propLeftRect.height/2} L${propRightPosition.x+propRightRect.width/2} ${propRightPosition.y+propRightRect.height/2}"/></g>
+<g class="view__prop__connection"><path d="M${propLeftPosition.x} ${propLeftPosition.y} L${propRightPosition.x} ${propRightPosition.y}"/></g>`
         })
         document.getElementById(this.context.getIdType("view","connections")).innerHTML = connections.join('')
     }
@@ -214,7 +215,7 @@ export class View extends SceneComponent {
 
 
         console.log(this.connections.get())
-        return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg">${s.join('')}<g id="${this.context.getIdType("view","connections")}"></g></svg>`
+        return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg"><g id="${this.context.getIdType("view","connections")}"></g>${s.join('')}</svg>`
     }
 }
 

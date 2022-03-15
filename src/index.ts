@@ -13,7 +13,7 @@ import {
     PropTypeIcons
 } from "./props/Props";
 import State, {createState} from "./state/State";
-import {convertTypeToReadable, createElement, createSVGIcon, generateDarkColor} from "./utils/Utils";
+import {convertTypeToReadable, createElement, createSVGIcon, generateDarkColor, randInclusive} from "./utils/Utils";
 import {PropList} from "./component/PropList";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
@@ -186,7 +186,7 @@ export class Context {
         if (this.ctx.isStatic) {
             return prop.enabled
         } else {
-            return false
+            return this.getPropPositionByFrame(prop, this.ctx.currentFrame, false).enabled
         }
     }
 
@@ -300,7 +300,7 @@ export class Context {
         this.viewports.set(_viewports)
     }
 
-    public findMinMaxPosition(currentFrame?:number): [number, number, number, number] {
+    public findMinMaxPosition(currentFrame?: number): [number, number, number, number] {
         let [minX, minY, maxX, maxY] = [null, null, null, null]
         const updateMinMax = (position) => {
             if (position.x > maxX || maxX === null) {
@@ -317,9 +317,9 @@ export class Context {
             }
         }
         this.props.get().forEach(prop => {
-            if(currentFrame){
+            if (currentFrame) {
                 updateMinMax(this.getPropPositionByFrame(prop, currentFrame, false))
-            }else{
+            } else {
                 for (let key in prop.frameAnimationConfig) {
                     const position = prop.frameAnimationConfig[key]
                     if (position) {
@@ -420,7 +420,12 @@ export class Context {
 
 export function demo() {
     const getRandomPosition = () => {
-        return {x: Math.random() * 500, y: Math.random() * 500, degree: Math.random() * 360}
+        return {
+            enabled: !!randInclusive(0, 1),
+            x: Math.random() * 500,
+            y: Math.random() * 500,
+            degree: Math.random() * 360
+        }
     }
     const getDemoLight = () => {
         return {
@@ -447,7 +452,7 @@ export function demo() {
 
     const getDemoTable = () => {
         return {
-            type: PropType.TABLE,
+            type: PropType.CHARACTER,
             enabled: true,
             staticPosition: {
                 x: Math.random() * 600, y: Math.random() * 600, degree: 30
