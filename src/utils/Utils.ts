@@ -73,3 +73,8 @@ export function positionToDisplay(position:AnimationConfig):AnimationConfig{
     }
     return pos
 }
+
+export function camelToDisplay(input: string){
+    input = input.charAt(0).toUpperCase() + input.slice(1)
+    return input.replace(/[A-Z]/g, letter => ` ${letter}`)
+}

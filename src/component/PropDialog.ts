@@ -5,7 +5,7 @@
 import {SceneComponent} from "./Component";
 import State from "../state/State";
 import {ExcludeKeys} from "../props/Props";
-import {positionToDisplay} from "../utils/Utils";
+import {camelToDisplay, positionToDisplay} from "../utils/Utils";
 
 export class PropDialog extends SceneComponent {
 
@@ -56,7 +56,7 @@ export class PropDialog extends SceneComponent {
             for(let key in selectedProp){
                 if(!ExcludeKeys.includes(key)){
                     const span = document.createElement('span')
-                    span.innerHTML = `${key}: ${selectedProp[key]}`
+                    span.innerHTML = `${camelToDisplay(key)}: ${selectedProp[key]}`
                     content.append(span)
                 }
             }
