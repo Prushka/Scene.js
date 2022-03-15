@@ -52,7 +52,7 @@ export class View extends SceneComponent {
                         //const previousPosition = this.context.getPropPositionByFrame(prop, oldFrame, newFrame - oldFrame < 0)
                         const groupElement = document.getElementById(this.context.getId(prop, 'view', 'prop'))
                         // console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
-                        groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree})`)
+                        groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scale} ${newPosition.scale})`)
                         if (newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.context.ctx.totalFrames)) {
                             groupElement.style.transitionDuration = this.context.getFrameSeconds(oldFrame) + "s"
                         } else {
@@ -78,7 +78,8 @@ export class View extends SceneComponent {
             const textWidth = textElement.getBBox().width
             const pathGroup = element.querySelector('g')
             const prop = this.context.getPropById(this.context.extractIdType(element.id)[0])
-            pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * prop.scale) / 2}, 0) scale(${prop.scale} ${prop.scale})`)
+            const position = this.context.getPropPositionByCurrentFrame(prop)
+            pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scale) / 2}, 0) scale(${position.scale} ${position.scale})`)
         })
     }
 

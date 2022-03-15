@@ -222,6 +222,10 @@ export class Context {
         return position
     }
 
+    public getPropPositionByCurrentFrame(prop: PropConfig): AnimationConfig | null {
+        return this.getPropPositionByFrame(prop, this.ctx.currentFrame, false)
+    }
+
     public getPropPositionByFrame(prop: PropConfig, frame: number, lookForward: boolean): AnimationConfig | null {
         let position: AnimationConfig
         const frameConfig = prop.frameAnimationConfig
@@ -421,7 +425,8 @@ export function demo() {
             enabled: !!randInclusive(0, 1),
             x: Math.random() * 500,
             y: Math.random() * 500,
-            degree: Math.random() * 360
+            degree: Math.random() * 360,
+            scale: randInclusive(10, 50)/10
         }
     }
     const getDemoLight = () => {
