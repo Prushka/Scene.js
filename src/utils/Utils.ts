@@ -2,6 +2,8 @@
  * Copyright 2022 Dan Lyu.
  */
 
+import {AnimationConfig} from "../props/Props";
+
 export function convertTypeToReadable(type: string): string {
     return `${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()}`
 }
@@ -59,4 +61,15 @@ export function setClassList(element: Element, ...classes: string[]) {
 
 export function getLineGroup(startX, startY, endX, endY, width, color) {
     return `<g stroke-width="${width}" stroke="${color}"><path d="M${startX} ${startY}  L${endX} ${endY}"/></g>`
+}
+
+export function positionToDisplay(position:AnimationConfig):AnimationConfig{
+    const pos = {...position}
+    for(let key in pos){
+        const value = pos[key]
+        if(typeof value ==='number'){
+            pos[key] = Math.round(value)
+        }
+    }
+    return pos
 }

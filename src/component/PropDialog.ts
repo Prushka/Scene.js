@@ -5,6 +5,7 @@
 import {SceneComponent} from "./Component";
 import State from "../state/State";
 import {ExcludeKeys} from "../props/Props";
+import {positionToDisplay} from "../utils/Utils";
 
 export class PropDialog extends SceneComponent {
 
@@ -46,7 +47,8 @@ export class PropDialog extends SceneComponent {
 
             const titleSpan = document.createElement('span')
             const position = this.context.getPropPositionByCurrentFrame(selectedProp)
-            titleSpan.innerText = `Position: ${position.x}, ${position.y}, ${position.degree}° | Scale: ${position.scaleX}, ${position.scaleY}`
+            const positionDisplay = positionToDisplay(position)
+            titleSpan.innerText = `Position: ${positionDisplay.x}, ${positionDisplay.y}, ${positionDisplay.degree}° | Scale: ${positionDisplay.scaleX}, ${positionDisplay.scaleY}`
             header.append(titleSpan)
 
             const content = document.createElement('div')
@@ -85,6 +87,6 @@ export class PropDialog extends SceneComponent {
     }
 
     listen(): State<any>[] {
-        return [this.context.selectedState, this.context.props];
+        return [this.context.selectedState, this.context.props, this.context.ctx.currentFrameState];
     }
 }
