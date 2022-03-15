@@ -11,6 +11,7 @@ import {PropList} from "./component/PropList";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
 import {View} from "./component/View";
+import {Config, DefaultConfig} from "./config/Config";
 
 export * as position from './props/Position'
 
@@ -18,7 +19,7 @@ export interface SceneContextConfig {
     totalFrames?: number
 }
 
-export class SceneContext {
+export class TimeContext {
     protected _config: SceneContextConfig
     private _currentFrame: State<number> = createState(1)
 
@@ -81,15 +82,18 @@ export class Context {
     private static contextIds = 0
     private readonly contextId
     protected ids: number = 0
-    ctx: SceneContext
+    ctx: TimeContext
     private _selected: State<PropConfig> = createState()
     props: State<PropConfig[]> = createState([])
     viewports: State<ViewPort[]> = createState([])
+    private readonly config: Config
 
-    public constructor(context: SceneContext) {
+    public constructor(config?: Config, context?: TimeContext) {
         this.contextId = Context.contextIds
         Context.contextIds += 1
-        this.ctx = context
+        this.ctx = context ? context : new TimeContext()
+        this.config = config?{...DefaultConfig, ...config} : {...DefaultConfig}
+        console.log(this.config)
     }
 
     public addProp(...propConfigs: PropConfig[]): Context {
@@ -171,22 +175,22 @@ export class Context {
         return position
     }
 
-    public getPropPositionByFrame(prop: PropConfig, frame: number, lookForward: boolean): AnimationConfig | null{
+    public getPropPositionByFrame(prop: PropConfig, frame: number, lookForward: boolean): AnimationConfig | null {
         let position: AnimationConfig
         const frameConfig = prop.frameAnimationConfig
-        if(frameConfig){
-            if(frameConfig[frame]){
+        if (frameConfig) {
+            if (frameConfig[frame]) {
                 position = frameConfig[frame]
-            }else{
+            } else {
                 let closest = -1
                 for (let key in frameConfig) {
                     const _key = Number(key)
                     if (lookForward) {
-                        if(_key > frame && (closest === -1 || Math.abs(_key - frame) < closest)){
+                        if (_key > frame && (closest === -1 || Math.abs(_key - frame) < closest)) {
                             closest = _key
                         }
-                    }else{
-                        if(_key < frame && (closest === -1 || Math.abs(_key - frame) < closest)){
+                    } else {
+                        if (_key < frame && (closest === -1 || Math.abs(_key - frame) < closest)) {
                             closest = _key
                         }
                     }
@@ -194,7 +198,7 @@ export class Context {
                 position = frameConfig[closest]
             }
         }
-        if(position){
+        if (position) {
             return {...position}
         }
         return null
@@ -323,8 +327,7 @@ export function demo() {
             }
         }
     }
-    const context: SceneContext = new SceneContext()
-    const config: Context = new Context(context)
+    const config: Context = new Context()
     config.addProp(getDemoLight()).displayRoot("#scene")
     console.log(config.props.get())
 
