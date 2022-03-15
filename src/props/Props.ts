@@ -28,6 +28,7 @@ export interface PropConfig extends HasId {
     iconStyle?: string,
     type?: PropType,
     enabled?: boolean,
+    scale?: number,
     staticPosition?: AnimationConfig,
     frameAnimationConfig?: FrameAnimationConfig
 }

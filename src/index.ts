@@ -135,6 +135,7 @@ export class Context {
             propConfig.id = propConfig.id || this.ids
             propConfig.enabled = propConfig.enabled === undefined ? true : propConfig.enabled
             propConfig.name = propConfig.name || `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
+            propConfig.scale = propConfig.scale || 1
             if (propConfig.frameAnimationConfig) {
                 for (let key in propConfig.frameAnimationConfig) {
                     propConfig.frameAnimationConfig[key].enabled = propConfig.frameAnimationConfig[key].enabled === undefined ? true : propConfig.frameAnimationConfig[key].enabled
@@ -199,7 +200,7 @@ export class Context {
     }
 
     public getFrameSeconds(frame: number): number {
-        return  frame in this.config.frameSpeed ? this.config.frameSpeed[frame] : this.config.defaultFrameSpeed
+        return frame in this.config.frameSpeed ? this.config.frameSpeed[frame] : this.config.defaultFrameSpeed
     }
 
     public getPropPosition(prop: PropConfig): AnimationConfig | null {
@@ -404,13 +405,14 @@ export class Context {
 
 export function demo() {
     const getRandomPosition = () => {
-        return {x: Math.random() * 600, y: Math.random() * 600, degree: Math.random() * 360}
+        return {x: Math.random() * 500, y: Math.random() * 500, degree: Math.random() * 360}
     }
     const getDemoLight = () => {
         return {
             type: PropType.LIGHT,
             colorTemperature: 5000,
             enabled: false,
+            scale: 0.5,
             staticPosition: {
                 x: 500, y: 500, degree: 30
             },
@@ -450,10 +452,10 @@ export function demo() {
             4: 0.2
         },
         attachment: {
-
+            "table 1": ["table 2"]
         }
     })
-    ctx.addProp(getDemoTable(),getDemoTable(),getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")
+    ctx.addProp(getDemoLight(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")
     console.log(ctx.props.get())
 
     return new Position(1, 1)

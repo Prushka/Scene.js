@@ -70,7 +70,8 @@ export class View extends SceneComponent {
             const textElement = element.querySelector('text')
             const textWidth = textElement.getBBox().width
             const pathGroup = element.querySelector('g')
-            pathGroup.setAttribute("transform", `translate(${textWidth / 2 - pathGroup.getBBox().width / 2}, 0)`)
+            const prop = this.context.getPropById(this.context.extractIdType(element.id)[0])
+            pathGroup.setAttribute("transform", `translate(${textWidth / 2 - pathGroup.getBBox().width*prop.scale / 2}, 0) scale(${prop.scale} ${prop.scale})`)
         })
     }
 
