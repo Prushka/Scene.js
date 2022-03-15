@@ -59,8 +59,10 @@
 }
 
 .prop__dialog--embedded {
+    padding: 15px;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
     width: 400px;
     height: 500px;
     background-color: var(--theme-trans-white);
@@ -90,17 +92,21 @@
 .prop__dialog--embedded .header i {
     font-size: 2.5rem;
     align-self: end;
-    padding: 10px;
     margin-left: auto;
 }
 
 .prop__dialog--popup .content,
 .prop__dialog--embedded .content {
-    margin-top: 30px;
     display: flex;
     overflow: auto;
     min-height: 0;
     flex-direction: column;
+}
+
+.prop__dialog--popup .content span,
+.prop__dialog--embedded .content span{
+    font-size: 1.2rem;
+    padding: 4px 0 4px 6px;
 }
 
 .prop__dialog--popup .footer,
@@ -109,7 +115,6 @@
     margin-top: auto;
     align-self: end;
     justify-content: center;
-    padding: 15px;
     width: 100%;
     box-sizing: border-box;
 }

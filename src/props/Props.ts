@@ -29,7 +29,7 @@ export interface LineConfig {
     width?: number
 }
 
-export const DefaultLine:LineConfig = {
+export const DefaultLine: LineConfig = {
     color: "var(--theme-gray)",
     width: 1
 }
@@ -45,13 +45,15 @@ export interface PropConfig extends HasId {
     color?: string,
     style?: string,
     type?: PropType | string,
-    staticPosition?: AnimationConfig,
     frameAnimationConfig?: FrameAnimationConfig,
     script?: string,
     steps?: { [key: number]: string },
     note?: string,
     displayName?: boolean
 }
+
+export const ExcludeKeys = ["name", "color", "style", "type", "frameAnimationConfig", "script",
+    "steps", "note", "displayName", "id"]
 
 export enum PropType {
     TABLE = "TABLE",

@@ -4,6 +4,7 @@
 
 import {SceneComponent} from "./Component";
 import State from "../state/State";
+import {ExcludeKeys} from "../props/Props";
 
 export class PropDialog extends SceneComponent {
 
@@ -42,7 +43,18 @@ export class PropDialog extends SceneComponent {
             parentContainer.appendChild(container)
             const header = document.createElement('div')
             header.classList.add('header')
-            const content = document.createElement('content')
+
+
+            const content = document.createElement('div')
+            content.classList.add("content")
+            for(let key in selectedProp){
+                if(!ExcludeKeys.includes(key)){
+                    const span = document.createElement('span')
+                    span.innerHTML = `${key}: ${selectedProp[key]}`
+                    content.append(span)
+                }
+            }
+
             const footer = document.createElement('div')
             footer.classList.add('footer')
             const headerCloseIcon = document.createElement('i')
@@ -57,7 +69,7 @@ export class PropDialog extends SceneComponent {
             propText.style.color = selectedProp.color
 
             footer.append(propIcon, propText)
-            container.append(header, footer)
+            container.append(header, content, footer)
             return parentContainer.outerHTML
         }
         return ""

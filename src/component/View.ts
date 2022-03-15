@@ -89,21 +89,18 @@ export class View extends SceneComponent {
         svgE.attr("viewBox",
             `${-this.context.viewportOffset.x} ${-this.context.viewportOffset.y} ${svgE.width() * this.context.viewportScale} ${svgE.height() * this.context.viewportScale}`);
         $('.view__prop').each((index, element) => {
-
             const prop = this.context.getPropById(this.context.extractIdType(element.id)[0])
-            const pathGroups = element.querySelectorAll('g')
-            const position = this.context.getPropPositionByCurrentFrame(prop)
-            let textElement
-            let textWidth
-            if(prop.displayName){
+            if(prop.displayName) {
+                const pathGroups = element.querySelectorAll('g')
+                const position = this.context.getPropPositionByCurrentFrame(prop)
+                let textElement
+                let textWidth
                 textElement = element.querySelector('text')
                 textWidth = textElement.getBBox().width
+                pathGroups.forEach(pathGroup => {
+                    pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0)`)
+                })
             }
-            pathGroups.forEach(pathGroup => {
-                const translate = prop.displayName ? `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0)` : ""
-                pathGroup.setAttribute("transform", `${translate}`)
-            })
-
         })
     }
 

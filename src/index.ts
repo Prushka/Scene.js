@@ -226,12 +226,7 @@ export class Context {
     }
 
     public getPropPosition(prop: PropConfig): AnimationConfig | null {
-        let position: AnimationConfig
-        if (this.ctx.isStatic) {
-            position = prop.staticPosition
-        } else {
-            position = prop.frameAnimationConfig[this.ctx.currentFrame]
-        }
+        let position: AnimationConfig = prop.frameAnimationConfig[this.ctx.currentFrame]
         position = {...position}
         console.log(`${prop.name} (${position.x},${position.y})`)
         return position
