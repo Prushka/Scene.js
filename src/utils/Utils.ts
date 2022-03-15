@@ -26,3 +26,19 @@ export function generateLightColor() {
     const c = () => generateColor(125, 255)
     return `rgb(${c()},${c()},${c()})`
 }
+
+export function createSVGElement(width: number, height: number) {
+    const svg = document.createElement("svg")
+    svg.setAttribute('xmlns', "http://www.w3.org/2000/svg")
+    svg.setAttribute("width", String(width))
+    svg.setAttribute("height", String(height))
+    svg.setAttribute("viewBox", `0 0 ${width} ${height}`)
+    return svg
+}
+
+
+export function createSVGIcon(scale?: number) {
+    const svg = createSVGElement(16, 16)
+    svg.setAttribute("transform", `scale(${scale} ${scale})`)
+    return svg
+}

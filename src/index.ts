@@ -3,10 +3,18 @@
  */
 
 import Position from "./props/Position";
-import {AnimationConfig, FrameAnimationConfig, HasId, PositionConfig, PropConfig, PropType} from "./props/Props";
+import {
+    AnimationConfig,
+    FrameAnimationConfig,
+    HasId,
+    PositionConfig,
+    PropConfig,
+    PropType,
+    PropTypeIcons
+} from "./props/Props";
 import Coordinates = JQuery.Coordinates;
 import State, {createState} from "./state/State";
-import {convertTypeToReadable, generateDarkColor} from "./utils/Utils";
+import {convertTypeToReadable, createElement, generateDarkColor} from "./utils/Utils";
 import {PropList} from "./component/PropList";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
@@ -92,7 +100,7 @@ export class Context {
         this.contextId = Context.contextIds
         Context.contextIds += 1
         this.ctx = context ? context : new TimeContext()
-        this.config = config?{...DefaultConfig, ...config} : {...DefaultConfig}
+        this.config = config ? {...DefaultConfig, ...config} : {...DefaultConfig}
         console.log(this.config)
     }
 
@@ -264,6 +272,21 @@ export class Context {
             viewports.push(new ViewPort())
         }
         this.viewports.set(viewports)
+    }
+
+    public getPathGroup(prop: PropConfig) {
+        const pathsHTML: string = PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths']
+        let pathId = 0
+        const pathGroup = document.createElement("g")
+        pathGroup.id = this.getId(prop, 'view', 'prop', 'icon', 'group')
+        pathsHTML.match(/<path.*?\/>/g).forEach(pathHTML => {
+            const path = createElement(pathHTML)
+            path.id = this.getId(prop, 'view', 'prop', 'icon', `[${pathId}]`)
+            path.style.fill = prop.color
+            pathGroup.appendChild(path)
+            pathId++
+        })
+        return pathGroup
     }
 
     public displayRoot(selector: string) {

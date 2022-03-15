@@ -131,36 +131,28 @@ export class View extends SceneComponent {
         const props = this.context.props.get()
         let s = props.map(prop => {
             const position: AnimationConfig = this.context.getPropPosition(prop)
-            const selected = this.context.propSelected(prop)
-            const group = document.createElement("g")
-            group.classList.add("view__prop", selected ? 'view__prop--selected' : 'view__prop--not-selected')
-            group.id = this.context.getId(prop, 'view', 'prop')
-            group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree})`)
+            if (position) {
+                const selected = this.context.propSelected(prop)
+                const group = document.createElement("g")
+                group.classList.add("view__prop", selected ? 'view__prop--selected' : 'view__prop--not-selected')
+                group.id = this.context.getId(prop, 'view', 'prop')
+                group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree})`)
 
-            const text = document.createElement("text")
-            text.id = this.context.getId(prop, 'view', 'prop', 'text')
-            text.innerText = prop.name
-            text.setAttribute("y", "-7")
-            text.style.fill = prop.color
-            group.appendChild(text)
-            // It's not possible to set innerHTML to format: <path ... /><path ... />
-            // The above line will be formatted to: <path ...><path ...></path></path>
-            // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
-            // (until I find a workaround or figure out what the issue is)
-            const pathsHTML: string = PropTypeIcons[prop.type][prop.iconStyle][this.context.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths']
-            let pathId = 0
-            const pathGroup = document.createElement("g")
-            pathGroup.id = this.context.getId(prop, 'view', 'prop', 'icon', 'group')
-            pathsHTML.match(/<path.*?\/>/g).forEach(pathHTML => {
-                const path = createElement(pathHTML)
-                path.id = this.context.getId(prop, 'view', 'prop', 'icon', `[${pathId}]`)
-                path.style.fill = prop.color
-                pathGroup.appendChild(path)
-                pathId++
-            })
-            group.appendChild(pathGroup)
-            //path.id = this.context.getId(prop, 'view', 'prop', 'icon')
-            return position && group.outerHTML
+                const text = document.createElement("text")
+                text.id = this.context.getId(prop, 'view', 'prop', 'text')
+                text.innerText = prop.name
+                text.setAttribute("y", "-7")
+                text.style.fill = prop.color
+                group.appendChild(text)
+                // It's not possible to set innerHTML to format: <path ... /><path ... />
+                // The above line will be formatted to: <path ...><path ...></path></path>
+                // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
+                // (until I find a workaround or figure out what the issue is)
+                const pathGroup = this.context.getPathGroup(prop)
+                group.appendChild(pathGroup)
+                //path.id = this.context.getId(prop, 'view', 'prop', 'icon')
+                return group.outerHTML
+            }
         })
         return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg">${s.join('')}</svg>`
     }

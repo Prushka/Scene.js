@@ -5,6 +5,7 @@
 import {SceneComponent} from "./Component";
 import {PropTypeIcons} from "../props/Props";
 import State from "../state/State";
+import {createSVGIcon} from "../utils/Utils";
 
 export class PropDialog extends SceneComponent {
 
@@ -26,7 +27,7 @@ export class PropDialog extends SceneComponent {
         $('.prop__dialog').on("click", (e) => {
             this.context.selected = null
         })
-        $('.prop__dialog--popup').on("click", (e)=>{
+        $('.prop__dialog--popup').on("click", (e) => {
             e.stopPropagation()
         })
     }
@@ -35,14 +36,32 @@ export class PropDialog extends SceneComponent {
         const selectedProp = this.context.selected
         if (selectedProp) {
             const isPopup = this.context.config.dialog === 'popup'
-            return `${isPopup && '<div class="prop__dialog">'}<div class="prop__dialog--${isPopup ? 'popup' : 'embedded'}">
-                            <div class="header"><i id="${this.context.getId(selectedProp, 'prop', 'dialog', 'property')}" class="bi bi-x pointer prop__dialog__close"></i></div>
-                            
-                            <div class="content">
-                            
-                            </div>
-                            <div class="footer"><i id="${this.context.getId(selectedProp, 'prop', 'dialog', 'property', 'icon')}" class="${PropTypeIcons[selectedProp.type][selectedProp.iconStyle][this.context.isPropEnabled(selectedProp) ? 'enabled' : 'disabled']}"></i> <span>${selectedProp.name}</span></div>
-                            </div>${isPopup && '</div>'}`
+            const parentContainer = document.createElement('div')
+            if(isPopup){
+                parentContainer.classList.add("prop__dialog")
+            }
+            const container = document.createElement('div')
+            container.classList.add(`prop__dialog--${isPopup ? 'popup' : 'embedded'}`)
+            parentContainer.appendChild(container)
+            const header = document.createElement('div')
+            header.classList.add('header')
+            const content = document.createElement('content')
+            const footer = document.createElement('div')
+            footer.classList.add('footer')
+            const headerCloseIcon = document.createElement('i')
+            headerCloseIcon.id = this.context.getId(selectedProp, 'prop', 'dialog', 'property')
+            headerCloseIcon.classList.add("bi", "bi-x", "pointer", "prop__dialog__close")
+            header.appendChild(headerCloseIcon)
+            const propIcon = this.context.getPathGroup(selectedProp)
+            propIcon.id = this.context.getId(selectedProp, 'prop', 'dialog', 'property', 'icon')
+            const svg = createSVGIcon(1.4)
+            svg.append(propIcon)
+            const propText = document.createElement("span")
+            propText.innerText = selectedProp.name
+            propText.style.color = selectedProp.color
+            footer.append(svg, propText)
+            container.append(header, footer)
+            return parentContainer.outerHTML
         }
         return ""
     }
