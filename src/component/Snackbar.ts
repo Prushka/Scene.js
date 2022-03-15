@@ -11,7 +11,13 @@ export class Snackbar extends SceneComponent {
 
     actions(): StateAction<any>[] {
         return [[this.context.snackbarState, ((_, message) => {
-
+            const snackbar = document.getElementById(this.context.getIdType("snackbar"))
+            const span = snackbar.querySelector("span")
+            snackbar.classList.remove("snackbar--closed")
+            span.innerText = message
+            setTimeout(() => {
+                snackbar.classList.add("snackbar--closed")
+            }, 4000)
         })]]
     }
 
@@ -24,6 +30,6 @@ export class Snackbar extends SceneComponent {
     }
 
     render(): string | string[] {
-        return `<div class='snackbar'><span>test message</span></div>`
+        return `<div class='snackbar snackbar--closed' id="${this.context.getIdType("snackbar")}"><span></span></div>`
     }
 }

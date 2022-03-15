@@ -337,9 +337,15 @@
     margin-right: auto;
     left: 0;
     right: 0;
+    top: 0;
     width: 200px;
     background-color: var(--theme-trans-white);
     z-index: 1400;
     border-radius: 4px;
     font-size: 16px;
+    transition-duration: .3s;
+}
+
+.snackbar--closed{
+    top: -60px;
 }

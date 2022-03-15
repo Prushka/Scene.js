@@ -76,6 +76,9 @@ export class Footer extends SceneComponent {
                 nextFrame()
             }
         }, "toolbar", "play")
+        hookButton(() => {
+            this.context.snackbar = "test"
+        }, "toolbar", "export")
     }
 
     render(): string | string[] {
@@ -87,7 +90,7 @@ export class Footer extends SceneComponent {
         const buttons = [createButtonDiv('Collapse/Expand', 'bi bi-arrows-collapse', "toolbar", "collapse")]
         if (this.open.get()) {
             buttons.push(createButtonDiv('Reset-Viewport', 'bi bi-bootstrap-reboot', "toolbar", "reset"))
-            buttons.push(createButtonDiv('Export', 'bi bi-box-arrow-up-right'))
+            buttons.push(createButtonDiv('Export', 'bi bi-box-arrow-up-right', "toolbar", "export"))
             if (this.context.ctx.totalFrames !== 0) {
                 let frames = ""
                 for (let f = 0; f < this.context.ctx.totalFrames; f++) {
