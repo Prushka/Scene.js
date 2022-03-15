@@ -63,7 +63,6 @@ export class PropList extends SceneComponent {
             this.context.toggleSelected(id)
         })
         $("#" + this.context.getIdType("prop", "list", "hide")).on("click", (e) => {
-            console.log(e.target.id)
             this.open.set(!this.open.get())
         })
     }

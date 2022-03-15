@@ -56,3 +56,7 @@ export function setClassList(element: Element, ...classes: string[]) {
     element.removeAttribute("class")
     element.classList.add(...classes)
 }
+
+export function getLineGroup(startX, startY, endX, endY, width, color) {
+    return `<g stroke-width="${width}" stroke="${color}"><path d="M${startX} ${startY}  L${endX} ${endY}"/></g>`
+}

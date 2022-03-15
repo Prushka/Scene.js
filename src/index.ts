@@ -4,7 +4,7 @@
 
 import Position from "./props/Position";
 import {
-    AnimationConfig,
+    AnimationConfig, DefaultLine,
     FrameAnimationConfig,
     HasId,
     PositionConfig,
@@ -13,7 +13,14 @@ import {
     PropTypeIcons
 } from "./props/Props";
 import State, {createState} from "./state/State";
-import {convertTypeToReadable, createElement, createSVGIcon, generateDarkColor, randInclusive} from "./utils/Utils";
+import {
+    convertTypeToReadable,
+    createElement,
+    createSVGIcon,
+    generateDarkColor,
+    getLineGroup,
+    randInclusive
+} from "./utils/Utils";
 import {PropList} from "./component/PropList";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
@@ -125,8 +132,12 @@ export class Context {
         Context.contextIds += 1
         this.ctx = context ? context : new TimeContext()
         this.config = config ? {...DefaultConfig, ...config} : {...DefaultConfig}
+        this.config.lines.forEach((l) => {
+            l[2] = {...DefaultLine, ...l[2]}
+        })
         console.log(this.config)
         this.propTypeIconPool = {...PropTypeIcons, ...config.propTypes}
+
     }
 
     public addProp(...propConfigs: PropConfig[]): Context {
@@ -381,7 +392,6 @@ export class Context {
     public getPathGroupByHTML(pathsHTML: string, prop: PropConfig, color ?: string) {
         let pathId = 0
         const pathGroup = document.createElement("g")
-        console.log(pathsHTML)
         pathsHTML.match(/<path.*?\/>|<path.*?><\/path>/g).forEach(pathHTML => {
             const path = createElement(pathHTML)
             path.id = this.getId(prop, 'view', 'prop', 'icon', `[${pathId}]`)
@@ -482,7 +492,7 @@ export function demo() {
             }
         },
         lines: [
-            [{x: 40, y: 40}, {x: 80, y: 80}, {width: 2, color: "red"}]
+            [{x: 40, y: 40}, {x: 80, y: 80}, {width: 2}]
         ]
     })
     ctx.addProp(getDemoLight(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")

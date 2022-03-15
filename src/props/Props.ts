@@ -29,6 +29,11 @@ export interface LineConfig {
     width?: number
 }
 
+export const DefaultLine:LineConfig = {
+    color: "var(--theme-gray)",
+    width: 1
+}
+
 export interface HasId {
     id?: number,
 }

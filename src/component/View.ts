@@ -6,6 +6,7 @@ import {SceneComponent} from "./Component";
 import {AnimationConfig, PositionConfig, PropConfig, PropTypeIcons} from "../props/Props";
 import State, {createState, StateAction} from "../state/State";
 import PropTupleSet from "../utils/PropTupleSet";
+import {getLineGroup} from "../utils/Utils";
 
 export class View extends SceneComponent {
 
@@ -167,14 +168,12 @@ export class View extends SceneComponent {
         })
     }
 
-    private getLineGroup(startX, startY, endX, endY, width, color) {
-        return `<g stroke-width="${width}" stroke="${color}"><path d="M${startX} ${startY}  L${endX} ${endY}"/></g>`
-    }
+
 
     private createLines() {
         const gs = []
         this.context.config.lines.forEach(([start, end, line]) => {
-            gs.push(this.getLineGroup(start.x, start.y, end.x, end.y, line.width, line.color))
+            gs.push(getLineGroup(start.x, start.y, end.x, end.y, line.width, line.color))
         })
         document.getElementById(this.context.getIdType("view", "connections")).innerHTML += gs.join('')
     }
@@ -199,7 +198,6 @@ export class View extends SceneComponent {
     }
 
     render(): string | string[] {
-        console.log("render")
         const props = this.context.props.get()
         let s = props.map(prop => {
             const hide = this.context.getPropPositionByFrame(prop, this.context.ctx.currentFrame, false).hide
