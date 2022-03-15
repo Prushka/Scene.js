@@ -39,15 +39,33 @@ export class View extends SceneComponent {
                 }
             }],
             [this.context.ctx.currentFrameState, (oldFrame: number, newFrame: number) => {
+                let minX, minY, maxX, maxY
+                const updateMinMax = (position) => {
+                    if(position.x > maxX || !maxX){
+                        maxX = position.x
+                    }
+                    if(position.y > maxY || !maxY){
+                        maxY = position.y
+                    }
+                    if(position.x < minX || !minX){
+                        minX = position.x
+                    }
+                    if(position.y < minY || !minY){
+                        minY = position.y
+                    }
+                }
                 this.context.props.get().forEach(prop => {
                     const newPosition = prop.frameAnimationConfig[newFrame]
                     if (newPosition) {
                         const previousPosition = this.context.getPropPositionByFrame(prop, oldFrame, newFrame - oldFrame < 0)
+                        updateMinMax(newPosition)
+                        updateMinMax(previousPosition)
                         const groupElement = document.getElementById(this.context.getId(prop, 'view', 'prop'))
-                        console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
+                        // console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
                         groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree})`)
                     }
                 })
+
             }]]
     }
 
@@ -60,7 +78,6 @@ export class View extends SceneComponent {
             $(`.view-svg`)
         svgE.attr("viewBox",
             `${-this.context.viewportOffset.x} ${-this.context.viewportOffset.y} ${svgE.width() * this.context.viewportScale} ${svgE.height() * this.context.viewportScale}`);
-        // scale(${this.context.viewportScale} ${this.context.viewportScale}) translate(${this.context.viewportOffset.x}, ${this.context.viewportOffset.y})
         $('.view__prop').each((index, element) => {
             const textElement = element.querySelector('text')
             const textWidth = textElement.getBBox().width

@@ -264,24 +264,64 @@ export class Context {
         this.viewports.set(_viewports)
     }
 
+    private findMinMaxPosition(): [number, number, number, number] {
+        let minX, minY, maxX, maxY
+        const updateMinMax = (position) => {
+            if (position.x > maxX || !maxX) {
+                maxX = position.x
+            }
+            if (position.y > maxY || !maxY) {
+                maxY = position.y
+            }
+            if (position.x < minX || !minX) {
+                minX = position.x
+            }
+            if (position.y < minY || !minY) {
+                minY = position.y
+            }
+        }
+        this.props.get().forEach(prop => {
+            for (let key in prop.frameAnimationConfig) {
+                const position = prop.frameAnimationConfig[key]
+                if (position) {
+                    updateMinMax(position)
+                }
+            }
+        })
+        return [minX, minY, maxX, maxY]
+    }
+
+    private calcViewBox([minX, minY, maxX, maxY]) {
+        console.log(minX, minY, maxX, maxY)
+        const svgE = $(`.root-container`)
+        const viewWidthRatio = (maxX - minX) / svgE.width()
+        const viewHeightRatio = (maxY - minY) / svgE.height()
+        let viewRatio = viewWidthRatio > viewHeightRatio ? viewWidthRatio : viewHeightRatio
+        viewRatio += this.config.viewOffset
+        const viewX = minX - (this.config.viewOffset / 2) * svgE.width()
+        const viewY = minY - (this.config.viewOffset / 2) * svgE.height()
+        return [viewRatio, viewX, viewY]
+    }
+
     private beforeDisplay() {
         this.ctx.totalFrames = this.findMaxFrames()
         const viewports = []
         for (let i = 0; i <= this.ctx.totalFrames; i++) {
-            // populate one more frame since 0's used for static
-            viewports.push(new ViewPort())
+            // populate one more frame since 0's used for static/animation
+            const viewport = new ViewPort()
+            viewports.push(viewport)
         }
         this.viewports.set(viewports)
     }
 
-    public getPropSpanText(prop: PropConfig, color?: string) {
+    public getPropSpanText(prop: PropConfig, color ?: string) {
         const propText = document.createElement("span")
         propText.innerText = prop.name
         propText.style.color = color ? color : prop.color
         return propText
     }
 
-    public getPropSVG(prop: PropConfig, color?: string, scale?: number) {
+    public getPropSVG(prop: PropConfig, color ?: string, scale ?: number) {
         scale = scale ? scale : 1.4
         const propIcon = this.getPathGroup(prop, color)
         const svg = createSVGIcon(scale)
@@ -289,7 +329,7 @@ export class Context {
         return svg
     }
 
-    public getPathGroup(prop: PropConfig, color?: string) {
+    public getPathGroup(prop: PropConfig, color ?: string) {
         const pathsHTML: string = PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths']
         let pathId = 0
         const pathGroup = document.createElement("g")
@@ -318,7 +358,12 @@ export class Context {
             //
             this.register(View, PropList, PropDialog, Footer,)
             State.renderAll()
-
+            const [viewRatio, viewX, viewY] = this.calcViewBox(this.findMinMaxPosition())
+            console.log(viewRatio)
+            this.viewports.get()[0].scale = viewRatio
+            this.viewports.get()[0].offset = {
+                x:viewX, y:viewY
+            }
             // console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
         })
     }
