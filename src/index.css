@@ -13,7 +13,7 @@
     --theme-dark-purple: #6565a1;
     --theme-pink: #EB7777;
     --theme-dark-pink: #d96262;
-    --prop-list-width: 150px;
+    --prop-list-width: 172px;
     --toolbar-button-width: 40px;
     --theme-trans-white: rgba(255, 255, 255, 0.91)
 }
@@ -287,9 +287,13 @@
 }
 
 .prop__list__item span {
-    margin: 0 1.2rem;
-    font-size: 1rem;
+    width: 110px;
+    margin: 0 0.3rem 0 1.2rem;
+    font-size: 0.95rem;
     font-weight: 700;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .view__prop {

@@ -450,7 +450,7 @@ export function demo() {
             4: 0.2
         }
     })
-    ctx.addProp(getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")
+    ctx.addProp(getDemoTable(),getDemoTable(),getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")
     console.log(ctx.props.get())
 
     return new Position(1, 1)
