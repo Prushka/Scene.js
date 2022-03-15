@@ -24,12 +24,7 @@ export class Footer extends SceneComponent {
     actions(): StateAction<any>[] {
         return [[this.open, ((_, open) => {
             const toolbarElement = document.getElementById(this.context.getIdType("toolbar"))
-            let bottom
-            if (open) {
-                bottom = 0
-            } else {
-                bottom = -(toolbarElement.getBoundingClientRect().height - 45)
-            }
+            const bottom = open ? 0 : -(toolbarElement.getBoundingClientRect().height - 45)
             toolbarElement.style.bottom = `${bottom}px`
         })], [this.playing, ((_, playing) => {
             const icon = document.getElementById(this.context.getIdType("toolbar", "play", "icon"))
@@ -46,6 +41,7 @@ export class Footer extends SceneComponent {
     }
 
     afterRender() {
+        this.open.set(this.context.config.defaultOpenToolbar)
         const hookButton = (action: (e: ClickEvent) => void, ...types: string[]) => {
             $("#" + this.context.getIdType(...types)).on("click", (e) => {
                 action(e)
@@ -94,18 +90,17 @@ export class Footer extends SceneComponent {
         const currentFrame = this.context.ctx.currentFrame
         let elements = ""
         const buttons = [createButtonDiv('Collapse/Expand', 'bi bi-arrows-collapse', "toolbar", "collapse")]
-        if (this.open.get()) {
-            buttons.push(createButtonDiv('Reset viewport (based on current frame)', 'bi bi-arrows-move', "toolbar", "reset", "current"))
-            buttons.push(createButtonDiv("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', "toolbar", "reset", "frames"))
-            buttons.push(createButtonDiv('Export', 'bi bi-box-arrow-up-right', "toolbar", "export"))
-            if (this.context.ctx.totalFrames !== 0) {
-                let frames = ""
-                for (let f = 0; f < this.context.ctx.totalFrames; f++) {
-                    frames += `<div id="${this.context.getId(f + 1, 'timeline', 'frame')}" class="timeline__frame ${currentFrame === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
-                }
-                elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
-                buttons.push(createButtonDiv('Play', this.playing.get() ? 'bi bi-pause-fill' : 'bi bi-play-fill', "toolbar", "play"))
+
+        buttons.push(createButtonDiv('Reset viewport (based on current frame)', 'bi bi-arrows-move', "toolbar", "reset", "current"))
+        buttons.push(createButtonDiv("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', "toolbar", "reset", "frames"))
+        buttons.push(createButtonDiv('Export', 'bi bi-box-arrow-up-right', "toolbar", "export"))
+        if (this.context.ctx.totalFrames !== 0) {
+            let frames = ""
+            for (let f = 0; f < this.context.ctx.totalFrames; f++) {
+                frames += `<div id="${this.context.getId(f + 1, 'timeline', 'frame')}" class="timeline__frame ${currentFrame === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
             }
+            elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
+            buttons.push(createButtonDiv('Play', this.playing.get() ? 'bi bi-pause-fill' : 'bi bi-play-fill', "toolbar", "play"))
         }
         return `
                      <div id="${this.context.getIdType("toolbar")}" class="toolbar">${buttons.join('')}</div>

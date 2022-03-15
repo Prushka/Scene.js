@@ -136,8 +136,10 @@ export class Context {
             propConfig.enabled = propConfig.enabled === undefined ? true : propConfig.enabled
             propConfig.name = propConfig.name || `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
             propConfig.scale = propConfig.scale || 1
+            propConfig.hide = propConfig.hide === undefined ? false : propConfig.hide
             if (propConfig.frameAnimationConfig) {
                 for (let key in propConfig.frameAnimationConfig) {
+                    propConfig.frameAnimationConfig[key].hide = propConfig.frameAnimationConfig[key].hide === undefined ? false : propConfig.frameAnimationConfig[key].hide
                     propConfig.frameAnimationConfig[key].enabled = propConfig.frameAnimationConfig[key].enabled === undefined ? true : propConfig.frameAnimationConfig[key].enabled
                 }
             }
@@ -438,10 +440,10 @@ export function demo() {
             },
             frameAnimationConfig: {
                 1: {
-                    x: 0, y: 0, degree: 30
+                    x: 0, y: 0, degree: 30, hide: true
                 },
                 2: {
-                    x: 100, y: 100, degree: 60
+                    x: 100, y: 100, degree: 60, hide: true
                 },
                 3: {
                     x: 190, y: 150, degree: 90

@@ -2,6 +2,8 @@
  * Copyright 2022 Dan Lyu.
  */
 
+import {extend} from "jquery";
+
 export interface PositionConfig {
     x: number,
     y: number
@@ -13,6 +15,7 @@ export interface OrientationConfig {
 
 export interface AnimationConfig extends OrientationConfig, PositionConfig {
     enabled?: boolean,
+    hide?: boolean,
     isOffset?: boolean
 }
 
@@ -28,6 +31,7 @@ export interface PropConfig extends HasId {
     iconStyle?: string,
     type?: PropType,
     enabled?: boolean,
+    hide?: boolean,
     scale?: number,
     staticPosition?: AnimationConfig,
     frameAnimationConfig?: FrameAnimationConfig
