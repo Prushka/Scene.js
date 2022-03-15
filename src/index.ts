@@ -443,6 +443,8 @@ export function demo() {
             x: Math.random() * 500,
             y: Math.random() * 500,
             degree: Math.random() * 360,
+            scaleX: randInclusive(5, 30)/10,
+            scaleY: randInclusive(5, 30)/10,
         }
     }
     const getDemoLight = () => {
@@ -451,10 +453,10 @@ export function demo() {
             colorTemperature: 5000,
             frameAnimationConfig: {
                 1: {
-                    x: 0, y: 0, degree: 30, enabled: false
+                    x: 0, y: 0, degree: 30, enabled: false, scaleX: 2, scaleY: 2
                 },
                 2: {
-                    x: 100, y: 100, degree: 60, hide: true
+                    x: 100, y: 100, degree: 60
                 },
                 3: {
                     x: 190, y: 150, degree: 90
@@ -465,7 +467,8 @@ export function demo() {
 
     const getDemoTable = () => {
         return {
-            type: "HOUSE",
+            type: "TABLE",
+            style: "fillSquare",
             frameAnimationConfig: {
                 1: getRandomPosition(),
                 2: getRandomPosition(),
@@ -497,7 +500,7 @@ export function demo() {
             [{x: 40, y: 40}, {x: 80, y: 80}]
         ]
     })
-    ctx.addProp(getDemoLight(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")
+    ctx.addProp(getDemoLight(), getDemoTable()).displayRoot("#scene")
     console.log(ctx.props.get())
 
     return new Position(1, 1)

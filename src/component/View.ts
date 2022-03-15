@@ -91,15 +91,18 @@ export class View extends SceneComponent {
         $('.view__prop').each((index, element) => {
 
             const prop = this.context.getPropById(this.context.extractIdType(element.id)[0])
+            const pathGroups = element.querySelectorAll('g')
+            const position = this.context.getPropPositionByCurrentFrame(prop)
+            let textElement
+            let textWidth
             if(prop.displayName){
-                const textElement = element.querySelector('text')
-                const textWidth = textElement.getBBox().width
-                const pathGroups = element.querySelectorAll('g')
-                const position = this.context.getPropPositionByCurrentFrame(prop)
-                pathGroups.forEach(pathGroup => {
-                    pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0) scale(${position.scaleX} ${position.scaleY})`)
-                })
+                textElement = element.querySelector('text')
+                textWidth = textElement.getBBox().width
             }
+            pathGroups.forEach(pathGroup => {
+                const translate = prop.displayName ? `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0)` : ""
+                pathGroup.setAttribute("transform", `${translate}`)
+            })
 
         })
     }
@@ -173,7 +176,6 @@ export class View extends SceneComponent {
     }
 
 
-
     private createLines() {
         const gs = []
         this.context.config.lines.forEach(([start, end, line]) => {
@@ -212,8 +214,8 @@ export class View extends SceneComponent {
                 group.classList.add("view__prop", selected ? 'view__prop--selected' : 'view__prop--not-selected')
                 group.style.transitionTimingFunction = this.context.config.playTransition
                 group.id = this.context.getId(prop, 'view', 'prop')
-                group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree})`)
-                if(prop.displayName){
+                group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree}) scale(${position.scaleX} ${position.scaleY})`)
+                if (prop.displayName) {
                     const text = document.createElement("text")
                     text.id = this.context.getId(prop, 'view', 'prop', 'text')
                     text.innerText = prop.name
