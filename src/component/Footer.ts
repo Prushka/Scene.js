@@ -43,8 +43,6 @@ export class Footer extends SceneComponent {
             const frameElement = document.getElementById(this.context.getId(currentFrame, 'timeline', 'frame'))
             frameElement.classList.remove("timeline__frame--not-selected")
             frameElement.classList.add("timeline__frame--selected")
-            console.log(frameElement.id)
-
         }]]
     }
 

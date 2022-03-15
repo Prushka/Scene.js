@@ -46,10 +46,11 @@ export class View extends SceneComponent {
                 }
             }],
             [this.context.ctx.currentFrameState, (oldFrame: number, newFrame: number) => {
+                console.log(`Frame: ${oldFrame} -> ${newFrame}`)
                 this.context.props.get().forEach(prop => {
                     let newPosition = prop.frameAnimationConfig[newFrame]
                     let show = newPosition && !newPosition.hide
-                    newPosition = this.context.getPropPositionByCurrentFrame(prop)
+                    newPosition = this.context.getPropPositionByFrame(prop, newFrame, newFrame < oldFrame)
                     //const previousPosition = this.context.getPropPositionByFrame(prop, oldFrame, newFrame - oldFrame < 0)
                     const groupElement = document.getElementById(this.context.getId(prop, 'view', 'prop'))
                     groupElement.style.display = show ? "unset" : "none"
