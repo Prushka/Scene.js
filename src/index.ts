@@ -9,7 +9,7 @@ import {
     HasId,
     PositionConfig,
     PropConfig,
-    PropType,
+    PropType, PropTypeIcon,
     PropTypeIcons
 } from "./props/Props";
 import State, {createState} from "./state/State";
@@ -106,6 +106,7 @@ export class Context {
     viewports: State<ViewPort[]> = createState([])
     public readonly config: Config
     private _snackbarMSG: State<string> = createState('')
+    public readonly propTypeIconPool: { [key in PropType]: PropTypeIcon }
 
     public get snackbarState(): State<string> {
         return this._snackbarMSG
@@ -125,6 +126,7 @@ export class Context {
         this.ctx = context ? context : new TimeContext()
         this.config = config ? {...DefaultConfig, ...config} : {...DefaultConfig}
         console.log(this.config)
+        this.propTypeIconPool = {...PropTypeIcons, ...config.propTypes}
     }
 
     public addProp(...propConfigs: PropConfig[]): Context {
@@ -373,13 +375,14 @@ export class Context {
     }
 
     public getPathGroup(prop: PropConfig, color ?: string) {
-        return this.getPathGroupByHTML(PropTypeIcons[prop.type][prop.style][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths'], prop, color)
+        return this.getPathGroupByHTML(this.propTypeIconPool[prop.type][prop.style][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths'], prop, color)
     }
 
     public getPathGroupByHTML(pathsHTML: string, prop: PropConfig, color ?: string) {
         let pathId = 0
         const pathGroup = document.createElement("g")
-        pathsHTML.match(/<path.*?\/>/g).forEach(pathHTML => {
+        console.log(pathsHTML)
+        pathsHTML.match(/<path.*?\/>|<path.*?><\/path>/g).forEach(pathHTML => {
             const path = createElement(pathHTML)
             path.id = this.getId(prop, 'view', 'prop', 'icon', `[${pathId}]`)
             path.style.fill = color ? color : prop.color
@@ -429,8 +432,6 @@ export function demo() {
             x: Math.random() * 500,
             y: Math.random() * 500,
             degree: Math.random() * 360,
-            scaleX: 5,
-            scaleY: 2
         }
     }
     const getDemoLight = () => {
@@ -453,14 +454,9 @@ export function demo() {
 
     const getDemoTable = () => {
         return {
-            type: PropType.TABLE,
-            style: "fillSquare",
+            type: "HOUSE",
             frameAnimationConfig: {
-                1: {
-                    x: 0, y: 0, enabled: true,
-                    scaleX: 9,
-                    scaleY: 9
-                },
+                1: getRandomPosition(),
                 2: getRandomPosition(),
                 3: getRandomPosition(),
                 4: getRandomPosition(),
@@ -476,6 +472,14 @@ export function demo() {
         attachment: {
             "table 1": ["table 2"],
             "table 2": ["table 1", "table 2"],
+        },
+        propTypes: {
+            "HOUSE": {
+                default: {
+                    enabledPaths: `<path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09zM4.157 8.5H7a.5.5 0 0 1 .478.647L6.11 13.59l5.732-6.09H9a.5.5 0 0 1-.478-.647L9.89 2.41 4.157 8.5z"/>`,
+                    disabledPaths: `<path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>`
+                }
+            }
         }
     })
     ctx.addProp(getDemoLight(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")

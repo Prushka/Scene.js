@@ -3,9 +3,7 @@
  */
 
 import {SceneComponent} from "./Component";
-import {PropTypeIcons} from "../props/Props";
 import State from "../state/State";
-import {createSVGIcon} from "../utils/Utils";
 
 export class PropDialog extends SceneComponent {
 

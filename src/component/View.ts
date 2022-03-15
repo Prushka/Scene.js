@@ -5,7 +5,6 @@
 import {SceneComponent} from "./Component";
 import {AnimationConfig, PositionConfig, PropConfig, PropTypeIcons} from "../props/Props";
 import State, {createState, StateAction} from "../state/State";
-import {createElement} from "../utils/Utils";
 import PropTupleSet from "../utils/PropTupleSet";
 
 export class View extends SceneComponent {
@@ -211,8 +210,8 @@ export class View extends SceneComponent {
                 // The above line will be formatted to: <path ...><path ...></path></path>
                 // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
                 // (until I find a workaround or figure out what the issue is)
-                const pathGroupEnabled = this.context.getPathGroupByHTML(PropTypeIcons[prop.type][prop.style]['enabledPaths'], prop)
-                const pathGroupDisabled = this.context.getPathGroupByHTML(PropTypeIcons[prop.type][prop.style]['disabledPaths'], prop)
+                const pathGroupEnabled = this.context.getPathGroupByHTML(this.context.propTypeIconPool[prop.type][prop.style]['enabledPaths'], prop)
+                const pathGroupDisabled = this.context.getPathGroupByHTML(this.context.propTypeIconPool[prop.type][prop.style]['disabledPaths'], prop)
                 pathGroupEnabled.id = this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'enabled')
                 pathGroupDisabled.id = this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'disabled')
                 if(this.context.isPropEnabled(prop)){
@@ -248,5 +247,3 @@ export class View extends SceneComponent {
         return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg"><g id="${this.context.getIdType("view", "connections")}"></g>${s.join('')}</svg>`
     }
 }
-
-//<i id='prop-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.style][this.context.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>

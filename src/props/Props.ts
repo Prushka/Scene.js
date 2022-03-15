@@ -34,7 +34,7 @@ export interface PropConfig extends HasId {
     name?: string,
     color?: string,
     style?: string,
-    type?: PropType,
+    type?: PropType | string,
     staticPosition?: AnimationConfig,
     frameAnimationConfig?: FrameAnimationConfig
 }

@@ -1,3 +1,5 @@
+import {PropTypeIcon} from "../props/Props";
+
 export interface Config {
     theme?: "dark" | "light",
     dialog?: "popup" | "embedded",
@@ -8,7 +10,8 @@ export interface Config {
     frameSpeed?: { [key: number]: number },
     defaultFrameSpeed?: number,
     frameSelectionSpeed?: number, // set to 0 to disable animation while selecting
-    attachment?: { [key: string]: string[] }
+    attachment?: { [key: string]: string[] },
+    propTypes?: {[key: string]: PropTypeIcon}
 }
 
 export const DefaultConfig: Config = {
@@ -21,5 +24,6 @@ export const DefaultConfig: Config = {
     defaultFrameSpeed: 1,
     frameSelectionSpeed: 1,
     defaultOpenPropList: false,
-    defaultOpenToolbar: false
+    defaultOpenToolbar: false,
+    propTypes: {}
 }
