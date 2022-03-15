@@ -16,7 +16,7 @@ export class PropList extends SceneComponent {
     }
 
     listen() {
-        return [this.context.selectedState, this.context.props]
+        return [this.context.props]
     }
 
     actions(): StateAction<any>[] {
@@ -31,6 +31,23 @@ export class PropList extends SceneComponent {
                 container.classList.add("prop__list-container--closed")
                 icon.classList.remove("icon-animated-left")
                 icon.classList.add("icon-animated-right")
+            }
+        }], [this.context.selectedState, (_, selected) => {
+            const listItemContainer = document.getElementById(this.context.getId(selected, 'prop', 'list'))
+            this.context.props.get().forEach(prop => {
+                const listItemContainer = document.getElementById(this.context.getId(prop, 'prop', 'list'))
+                if(listItemContainer){
+                    listItemContainer.classList.add("prop__list__item--not-selected")
+                    listItemContainer.classList.remove("prop__list__item--selected")
+                    listItemContainer.querySelector("span").style.color = prop.color
+                    listItemContainer.querySelector("path").style.fill = prop.color
+                }
+            })
+            if(listItemContainer){
+                listItemContainer.classList.remove("prop__list__item--not-selected")
+                listItemContainer.classList.add("prop__list__item--selected")
+                listItemContainer.querySelector("span").style.color = "white"
+                listItemContainer.querySelector("path").style.fill = "white"
             }
         }]]
     }
