@@ -103,31 +103,31 @@
     margin-left: auto;
 }
 
-.header__button {
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.header span{
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 6px 10px;
+    color: var(--theme-dark-gray);
     border: 2px solid var(--theme-dark-gray);
     border-radius: 8px;
     transition-duration: .2s;
     transition-property: background-color, color;
-    padding: 7px;
-    color: var(--theme-dark-gray);
+    cursor: pointer;
     margin-right: 12px;
 }
 
-.header__button i {
-    font-size: 1.3rem;
-    font-weight: 600;
-
-    cursor: pointer;
+.header__button--selected{
+    background-color: var(--theme-dark-gray);
+    color: white !important;
 }
 
-.header__button:hover{
-    background-color: var(--theme-dark-gray);
-    color: white;
+.header__button--not-selected{
+
+}
+
+.header__button--not-selected:hover{
+    border-color: var(--theme-dark-purple);
+    color: var(--theme-dark-purple);
 }
 
 .prop__dialog--popup .content,

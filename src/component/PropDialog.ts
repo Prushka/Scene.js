@@ -3,13 +3,31 @@
  */
 
 import {SceneComponent} from "./Component";
-import State from "../state/State";
+import State, {createState} from "../state/State";
 import {ExcludeKeys} from "../props/Props";
 import {camelToDisplay, createSpan, positionToDisplay} from "../utils/Utils";
+
+enum Tab {
+    IMAGES = "IMAGES",
+    GENERAL = "GENERAL",
+    STEPS = "STEPS",
+    SCRIPTS = "SCRIPTS"
+}
 
 export class PropDialog extends SceneComponent {
 
     // prop is not a property, it's the prop used in a scene
+
+    selectedTab: State<Tab>
+
+    afterConstructor() {
+        this.selectedTab = createState(Tab.GENERAL)
+    }
+
+    listen(): State<any>[] {
+        return [this.context.selectedState, this.context.props, this.context.ctx.currentFrameState,
+        this.selectedTab];
+    }
 
     subscribe() {
         return [".prop__property-container"]
@@ -29,6 +47,9 @@ export class PropDialog extends SceneComponent {
         $('.prop__dialog--popup').on("click", (e) => {
             e.stopPropagation()
         })
+        $('.header span').on("click", (e) => {
+            this.selectedTab.set(Tab[this.context.extractIdType(e.target.id)[1][1] as keyof typeof Tab])
+        })
     }
 
     private createContent(title, contentHTML) {
@@ -43,7 +64,7 @@ export class PropDialog extends SceneComponent {
         if (selectedProp) {
             const isPopup = this.context.config.dialog === 'popup'
             const parentContainer = document.createElement('div')
-            if(isPopup){
+            if (isPopup) {
                 parentContainer.classList.add("prop__dialog")
             }
             const container = document.createElement('div')
@@ -52,32 +73,33 @@ export class PropDialog extends SceneComponent {
             const header = document.createElement('div')
             header.classList.add('header')
 
-            const createTitleButton = (id, ...classNames)=> {
-                const container = document.createElement('div')
-                container.classList.add('header__button')
-                const icon = document.createElement('i')
-                icon.classList.add(...classNames)
-                icon.id = this.context.getIdType("dialog",id)
-                container.append(icon)
-                return container
+            const createTitleButton = (id, title, ...classNames) => {
+                const button = document.createElement('span')
+                button.title = title
+                button.classList.add(...classNames)
+                button.id = this.context.getIdType("dialog", id)
+                button.classList.add(this.selectedTab.get() === id?"header__button--selected":"header__button--not-selected")
+                return button
             }
 
             const position = this.context.getPropPositionByCurrentFrame(selectedProp)
             const positionDisplay = positionToDisplay(position)
-            header.append(createTitleButton("general","bi", "bi-boxes"),
-                createTitleButton("scripts","scripts"))
+            header.append(createTitleButton(Tab.GENERAL, "General Info", "bi", "bi-boxes"),
+                createTitleButton(Tab.SCRIPTS, "Scripts", "bi", "bi-journal-bookmark-fill"),
+                createTitleButton(Tab.IMAGES, "Images", "bi", "bi-image-fill"),
+                createTitleButton(Tab.STEPS, "Steps", "bi", "bi-123"))
 
             const content = document.createElement('div')
             content.classList.add("content")
 
-            for(let key in selectedProp){
-                if(!ExcludeKeys.includes(key)){
+            for (let key in selectedProp) {
+                if (!ExcludeKeys.includes(key)) {
                     const span = document.createElement('span')
                     span.innerHTML = `${camelToDisplay(key)}: ${selectedProp[key]}`
                     content.append(span)
                 }
             }
-            if(selectedProp.note){
+            if (selectedProp.note) {
                 const span = document.createElement('span')
                 span.innerText = selectedProp.note
                 content.append(span)
@@ -103,9 +125,5 @@ export class PropDialog extends SceneComponent {
             return parentContainer.outerHTML
         }
         return ""
-    }
-
-    listen(): State<any>[] {
-        return [this.context.selectedState, this.context.props, this.context.ctx.currentFrameState];
     }
 }
