@@ -64,7 +64,7 @@ export class View extends SceneComponent {
                         enabledGroup.style.opacity = "1"
                     }
                     // console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
-                    groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scale} ${newPosition.scale})`)
+                    groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scaleX} ${newPosition.scaleY})`)
                     let transitionDuration
                     if (newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.context.ctx.totalFrames)) {
                         transitionDuration = this.context.getFrameSeconds(oldFrame) + "s"
@@ -95,7 +95,7 @@ export class View extends SceneComponent {
             const prop = this.context.getPropById(this.context.extractIdType(element.id)[0])
             const position = this.context.getPropPositionByCurrentFrame(prop)
             pathGroups.forEach(pathGroup => {
-                pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scale) / 2}, 0) scale(${position.scale} ${position.scale})`)
+                pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0) scale(${position.scaleX} ${position.scaleY})`)
             })
         })
     }
@@ -211,8 +211,8 @@ export class View extends SceneComponent {
                 // The above line will be formatted to: <path ...><path ...></path></path>
                 // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
                 // (until I find a workaround or figure out what the issue is)
-                const pathGroupEnabled = this.context.getPathGroupByHTML(PropTypeIcons[prop.type][prop.iconStyle]['enabledPaths'], prop)
-                const pathGroupDisabled = this.context.getPathGroupByHTML(PropTypeIcons[prop.type][prop.iconStyle]['disabledPaths'], prop)
+                const pathGroupEnabled = this.context.getPathGroupByHTML(PropTypeIcons[prop.type][prop.style]['enabledPaths'], prop)
+                const pathGroupDisabled = this.context.getPathGroupByHTML(PropTypeIcons[prop.type][prop.style]['disabledPaths'], prop)
                 pathGroupEnabled.id = this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'enabled')
                 pathGroupDisabled.id = this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'disabled')
                 if(this.context.isPropEnabled(prop)){
@@ -249,4 +249,4 @@ export class View extends SceneComponent {
     }
 }
 
-//<i id='prop-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.iconStyle][this.context.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>
+//<i id='prop-icon-${prop.propId}' class="${PropTypeIcons[prop.type][prop.style][this.context.isPropEnabled(prop) ? 'enabled' : 'disabled']}"></i>

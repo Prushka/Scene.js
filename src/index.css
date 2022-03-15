@@ -332,6 +332,7 @@
 
 .view__prop g {
     transition-property: opacity;
+    transition-timing-function: ease-in-out;
 }
 
 .snackbar {

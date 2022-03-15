@@ -131,13 +131,14 @@ export class Context {
         const _props = [...this.props.get()]
         propConfigs.forEach(propConfig => {
             propConfig.color = propConfig.color || generateDarkColor()
-            propConfig.iconStyle = propConfig.iconStyle || "default"
+            propConfig.style = propConfig.style || "default"
             propConfig.id = propConfig.id || this.ids
             propConfig.name = propConfig.name || `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
             if (propConfig.frameAnimationConfig) {
                 for (let key in propConfig.frameAnimationConfig) {
                     const a = propConfig.frameAnimationConfig[key]
-                    a.scale = a.scale || 1
+                    a.scaleX = a.scaleX || 1
+                    a.scaleY = a.scaleY || 1
                     a.hide = a.hide === undefined ? false : a.hide
                     a.enabled = a.enabled === undefined ? true : a.enabled
                 }
@@ -372,7 +373,7 @@ export class Context {
     }
 
     public getPathGroup(prop: PropConfig, color ?: string) {
-        return this.getPathGroupByHTML(PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths'], prop, color)
+        return this.getPathGroupByHTML(PropTypeIcons[prop.type][prop.style][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths'], prop, color)
     }
 
     public getPathGroupByHTML(pathsHTML: string, prop: PropConfig, color ?: string) {
@@ -427,7 +428,9 @@ export function demo() {
             enabled: !!randInclusive(0, 1),
             x: Math.random() * 500,
             y: Math.random() * 500,
-            degree: Math.random() * 360
+            degree: Math.random() * 360,
+            scaleX: 2,
+            scaleY: 2
         }
     }
     const getDemoLight = () => {
@@ -450,7 +453,8 @@ export function demo() {
 
     const getDemoTable = () => {
         return {
-            type: PropType.CHARACTER,
+            type: PropType.TABLE,
+            style: "fillTriangle",
             frameAnimationConfig: {
                 1: getRandomPosition(),
                 2: getRandomPosition(),
