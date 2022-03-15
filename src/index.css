@@ -232,12 +232,17 @@
 
 }
 
+.hide__icon-rotate-container {
+    transition: transform .5s;
+    transition-timing-function: ease-in;
+}
+
 .icon-animated-left {
-    transform: rotate(0deg);transition: transform .3s;
+    transform: rotate(0deg);
 }
 
 .icon-animated-right {
-    transform: rotate(-180deg);transition: transform .3s;
+    transform: rotate(-180deg);
 }
 
 .prop__list {

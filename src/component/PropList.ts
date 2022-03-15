@@ -58,7 +58,7 @@ export class PropList extends SceneComponent {
         hideIconContainer.id = this.context.getIdType("prop", "list", "hide")
         const hideIconRotateContainer = document.createElement('div')
         hideIconRotateContainer.id = this.context.getIdType("prop", "list", "hide", "icon", "container")
-        hideIconRotateContainer.classList.add("icon-animated-left")
+        hideIconRotateContainer.classList.add("icon-animated-left", "hide__icon-rotate-container")
         const hideIcon = createIconFontElement(this.context.getIdType("prop", "list", "hide", "icon"),
             "bi", "bi-arrow-bar-left")
 
