@@ -143,7 +143,7 @@
     width: var(--toolbar-button-width);
     position: relative;
     bottom: 0;
-    transition-duration: 0.3s;
+    /*transition-duration: 0.3s;*/
     transition-timing-function: ease-in;
 }
 

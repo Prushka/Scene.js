@@ -196,6 +196,11 @@ export class Context {
         return null
     }
 
+    public getFrameSpeed(frame: number):string {
+        const s= frame in this.config.frameSpeed ? this.config.frameSpeed[frame] : 1
+        return s+"s"
+    }
+
     public getPropPosition(prop: PropConfig): AnimationConfig | null {
         let position: AnimationConfig
         if (this.ctx.isStatic) {
@@ -432,12 +437,11 @@ export function demo() {
             frameAnimationConfig: {
                 1: getRandomPosition(),
                 2: getRandomPosition(),
-                3: getRandomPosition(),
                 4: getRandomPosition(),
             }
         }
     }
-    const ctx: Context = new Context()
+    const ctx: Context = new Context({})
     ctx.addProp(getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")
     console.log(ctx.props.get())
 
