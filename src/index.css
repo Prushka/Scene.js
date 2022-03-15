@@ -327,8 +327,18 @@
 }
 
 .snackbar{
+    margin-top: 15px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    left: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
     width: 200px;
     background-color: var(--theme-trans-white);
+    z-index: 1400;
+    border-radius: 4px;
 }

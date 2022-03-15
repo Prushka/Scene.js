@@ -388,7 +388,7 @@ export class Context {
 
             // this._selected.set(this.props[0])
             //
-            const [view, propList, propDialog, footer] = this.register(View, PropList, PropDialog, Footer, Snackbar)
+            const [view] = this.register(View, PropList, PropDialog, Footer, Snackbar)
             this.viewComponent = view as View
 
             // console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
