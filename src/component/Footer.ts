@@ -104,7 +104,7 @@ export class Footer extends SceneComponent {
         buttons.push(createButtonDiv('Reset viewport (based on current frame)', 'bi bi-arrows-move', "toolbar", "reset", "current"))
         buttons.push(createButtonDiv("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', "toolbar", "reset", "frames"))
         buttons.push(createButtonDiv('Export', 'bi bi-box-arrow-up-right', "toolbar", "export"))
-        if (this.context.ctx.totalFrames !== 0) {
+        if (this.context.ctx.totalFrames > 1) {
             let frames = ""
             for (let f = 0; f < this.context.ctx.totalFrames; f++) {
                 frames += `<div id="${this.context.getId(f + 1, 'timeline', 'frame')}" class="timeline__frame ${currentFrame === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
