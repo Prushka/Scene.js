@@ -154,7 +154,7 @@ export class Context {
 
     public getId(id: HasId | number | null, ...type: string[]) {
         type.sort((a, b) => a.localeCompare(b))
-        const _id = id === null ? "" : (typeof id === 'number' ? "-"+id : "-"+id.id)
+        const _id = id === null ? "" : (typeof id === 'number' ? "-" + id : "-" + id.id)
         return `${this.contextId}-${type.join('-')}${_id}`
     }
 
@@ -228,12 +228,6 @@ export class Context {
         } else {
             this.selected = _prop
         }
-    }
-
-    private register<T>(...c: Array<new(T) => T>) {
-        c.forEach(cl => {
-            new cl(this)
-        })
     }
 
     public findMaxFrames(): number {
@@ -348,6 +342,14 @@ export class Context {
         return pathGroup
     }
 
+    private register<T>(...c: Array<new(T) => T>): T[] {
+        const components: T[] = []
+        c.forEach(cl => {
+            components.push(new cl(this))
+        })
+        return components
+    }
+
     public displayRoot(selector: string) {
         this.beforeDisplay()
         $(() => {
@@ -360,7 +362,8 @@ export class Context {
 
             // this._selected.set(this.props[0])
             //
-            this.register(View, PropList, PropDialog, Footer,)
+            const [view, propList, propDialog, footer] = this.register(View, PropList, PropDialog, Footer)
+
             State.renderAll()
             // console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
         })
