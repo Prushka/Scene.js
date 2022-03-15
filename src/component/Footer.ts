@@ -9,9 +9,11 @@ import ClickEvent = JQuery.ClickEvent;
 export class Footer extends SceneComponent {
 
     open: State<boolean>
+    playing: State<boolean>
 
     afterConstructor() {
         this.open = createState(true)
+        this.playing = createState(false)
     }
 
     listen(): State<any>[] {
@@ -45,12 +47,25 @@ export class Footer extends SceneComponent {
             const [frame] = this.context.extractIdType(e.target.id)
             this.context.ctx.currentFrame = frame
         })
-        hookButton((e) => {
+        hookButton(() => {
             this.open.set(!this.open.get())
         }, "toolbar", "collapse")
-        hookButton((e) => {
+        hookButton(() => {
             this.context.viewComponent.resetViewport()
         }, "toolbar", "reset")
+
+        const nextFrame = () => {
+            if(this.playing.get() && this.context.ctx.currentFrame < this.context.ctx.totalFrames){
+                this.context.ctx.currentFrame++
+                setTimeout(() => {
+                    nextFrame()
+                }, 1500)
+            }
+        }
+        hookButton(() => {
+            this.playing.set(!this.playing.get())
+            nextFrame()
+        }, "toolbar", "play")
     }
 
     render(): string | string[] {
@@ -69,7 +84,7 @@ export class Footer extends SceneComponent {
                     frames += `<div id="${this.context.getId(f + 1, 'timeline', 'frame')}" class="timeline__frame ${currentFrame === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
                 }
                 elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
-                buttons.push(createButtonDiv('Play', 'bi bi-play-fill'))
+                buttons.push(createButtonDiv('Play', 'bi bi-play-fill', "toolbar", "play"))
             }
         }
         return `<div class='footer'>
