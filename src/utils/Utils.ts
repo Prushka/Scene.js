@@ -36,6 +36,15 @@ export function createSVGElement(width: number, height: number) {
     return svg
 }
 
+export function createIconFontElement(id?:string,...classes: string[]){
+    const icon = document.createElement('i')
+    if(id){
+        icon.id = id
+    }
+    classes.forEach(c => icon.classList.add(c))
+    return icon
+}
+
 
 export function createSVGIcon(scale?: number) {
     const svg = createSVGElement(16, 16)

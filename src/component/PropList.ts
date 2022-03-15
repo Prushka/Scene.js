@@ -4,6 +4,7 @@
 
 import {SceneComponent} from "./Component";
 import State, {createState, StateAction} from "../state/State";
+import {createIconFontElement} from "../utils/Utils";
 
 export class PropList extends SceneComponent {
 
@@ -20,10 +21,16 @@ export class PropList extends SceneComponent {
 
     actions(): StateAction<any>[] {
         return [[this.open, (oldValue, newValue) => {
+            const container = document.querySelector('.prop__list-container')
+            const icon = document.getElementById(this.context.getIdType("prop", "list", "hide", "icon", "container"))
             if (newValue) {
-                $('.prop__list-container').removeClass("prop__list-container--closed")
+                container.classList.remove("prop__list-container--closed")
+                icon.classList.remove("icon-animated-right")
+                icon.classList.add("icon-animated-left")
             } else {
-                $('.prop__list-container').addClass("prop__list-container--closed")
+                container.classList.add("prop__list-container--closed")
+                icon.classList.remove("icon-animated-left")
+                icon.classList.add("icon-animated-right")
             }
         }]]
     }
@@ -37,7 +44,7 @@ export class PropList extends SceneComponent {
             const [id] = this.context.extractIdType(e.target.id)
             this.context.toggleSelected(id)
         })
-        $("#" + this.context.getId(0, "prop", "list", "hide")).on("click", (e) => {
+        $("#" + this.context.getIdType("prop", "list", "hide")).on("click", (e) => {
             console.log(e.target.id)
             this.open.set(!this.open.get())
         })
@@ -48,11 +55,15 @@ export class PropList extends SceneComponent {
         parentContainer.classList.add('prop__list')
 
         const hideIconContainer = document.createElement('div')
-        hideIconContainer.id = this.context.getId(0, "prop", "list", "hide")
-        const hideIcon = document.createElement('i')
-        hideIcon.id = this.context.getId(0, "prop", "list", "hide", "icon")
-        hideIcon.classList.add("bi", "bi-arrow-bar-left")
-        hideIconContainer.append(hideIcon)
+        hideIconContainer.id = this.context.getIdType("prop", "list", "hide")
+        const hideIconRotateContainer = document.createElement('div')
+        hideIconRotateContainer.id = this.context.getIdType("prop", "list", "hide", "icon", "container")
+        hideIconRotateContainer.classList.add("icon-animated-left")
+        const hideIcon = createIconFontElement(this.context.getIdType("prop", "list", "hide", "icon"),
+            "bi", "bi-arrow-bar-left")
+
+        hideIconRotateContainer.append(hideIcon)
+        hideIconContainer.append(hideIconRotateContainer)
         hideIconContainer.classList.add('hide__icon-container', 'pointer')
         this.context.props.get().forEach(prop => {
             const isSelected = this.context.propSelected(prop)
