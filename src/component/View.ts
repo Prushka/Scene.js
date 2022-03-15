@@ -49,7 +49,7 @@ export class View extends SceneComponent {
                         if (newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.context.ctx.totalFrames)) {
                             groupElement.style.transitionDuration = this.context.getFrameSeconds(oldFrame) + "s"
                         } else {
-                            groupElement.style.transitionDuration = "1s"
+                            groupElement.style.transitionDuration = this.context.config.frameSelectionSpeed + "s"
                         }
                     }
                 })

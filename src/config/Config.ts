@@ -3,7 +3,9 @@ export interface Config {
     dialog?: "popup" | "embedded",
     viewOffset?: number,
     playTransition?: string,
-    frameSpeed?: { [key: number]: number }
+    frameSpeed?: { [key: number]: number },
+    defaultFrameSpeed?: number,
+    frameSelectionSpeed?: number // set to 0 to disable animation while selecting
 }
 
 export const DefaultConfig: Config = {
@@ -11,5 +13,7 @@ export const DefaultConfig: Config = {
     dialog: "embedded",
     viewOffset: 0.2,
     playTransition: "linear",
-    frameSpeed: {}
+    frameSpeed: {},
+    defaultFrameSpeed: 1,
+    frameSelectionSpeed: 1
 }

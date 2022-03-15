@@ -199,7 +199,7 @@ export class Context {
     }
 
     public getFrameSeconds(frame: number): number {
-        return  frame in this.config.frameSpeed ? this.config.frameSpeed[frame] : 1
+        return  frame in this.config.frameSpeed ? this.config.frameSpeed[frame] : this.config.defaultFrameSpeed
     }
 
     public getPropPosition(prop: PropConfig): AnimationConfig | null {
