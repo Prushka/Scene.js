@@ -33,6 +33,7 @@ export class View extends SceneComponent {
                 if (newProp) {
                     const propDOM = $(`#${this.context.getId(newProp, 'view', 'prop')}`)
                     if (propDOM) {
+                        propDOM.removeClass("view__prop--not-selected")
                         propDOM.addClass("view__prop--selected")
                     }
                 }

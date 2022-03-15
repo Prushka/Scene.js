@@ -108,7 +108,8 @@
     margin-left: auto;
 }
 
-.prop__dialog__content {
+.prop__dialog--popup .content,
+.prop__dialog--embedded .content {
     margin-top: 30px;
     display: flex;
     overflow: auto;
@@ -244,6 +245,8 @@
 }
 
 .prop__list__item--selected :is(span,i) {
+
+    mix-blend-mode: difference;
     color: white
 }
 

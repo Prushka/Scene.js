@@ -328,7 +328,7 @@ export function demo() {
         }
     }
     const ctx: Context = new Context()
-    ctx.addProp(getDemoLight()).displayRoot("#scene")
+    ctx.addProp(getDemoTable(), getDemoTable()).displayRoot("#scene")
     console.log(ctx.props.get())
 
     return new Position(1, 1)
