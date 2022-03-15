@@ -54,6 +54,15 @@ export class View extends SceneComponent {
                     //const previousPosition = this.context.getPropPositionByFrame(prop, oldFrame, newFrame - oldFrame < 0)
                     const groupElement = document.getElementById(this.context.getId(prop, 'view', 'prop'))
                     groupElement.style.display = show ? "unset" : "none"
+                    const enabledGroup = document.getElementById(this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'enabled'))
+                    const disabledGroup = document.getElementById(this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'disabled'))
+                    if(!newPosition.enabled){
+                        enabledGroup.style.display = "none"
+                        disabledGroup.style.display = "unset"
+                    }else{
+                        disabledGroup.style.display = "none"
+                        enabledGroup.style.display = "unset"
+                    }
                     // console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
                     groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scale} ${newPosition.scale})`)
                     if (newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.context.ctx.totalFrames)) {
@@ -78,10 +87,12 @@ export class View extends SceneComponent {
         $('.view__prop').each((index, element) => {
             const textElement = element.querySelector('text')
             const textWidth = textElement.getBBox().width
-            const pathGroup = element.querySelector('g')
+            const pathGroups = element.querySelectorAll('g')
             const prop = this.context.getPropById(this.context.extractIdType(element.id)[0])
             const position = this.context.getPropPositionByCurrentFrame(prop)
-            pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scale) / 2}, 0) scale(${position.scale} ${position.scale})`)
+            pathGroups.forEach(pathGroup => {
+                pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scale) / 2}, 0) scale(${position.scale} ${position.scale})`)
+            })
         })
     }
 
@@ -196,8 +207,16 @@ export class View extends SceneComponent {
                 // The above line will be formatted to: <path ...><path ...></path></path>
                 // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
                 // (until I find a workaround or figure out what the issue is)
-                const pathGroup = this.context.getPathGroup(prop)
-                group.appendChild(pathGroup)
+                const pathGroupEnabled = this.context.getPathGroupByHTML(PropTypeIcons[prop.type][prop.iconStyle]['enabledPaths'], prop)
+                const pathGroupDisabled = this.context.getPathGroupByHTML(PropTypeIcons[prop.type][prop.iconStyle]['disabledPaths'], prop)
+                pathGroupEnabled.id = this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'enabled')
+                pathGroupDisabled.id = this.context.getId(prop, 'view', 'prop', 'icon', 'group', 'disabled')
+                if(this.context.isPropEnabled(prop)){
+                    pathGroupDisabled.style.display = "none"
+                }else{
+                    pathGroupEnabled.style.display = "none"
+                }
+                group.append(pathGroupEnabled, pathGroupDisabled)
                 if (hide) {
                     group.style.display = "none"
                 }

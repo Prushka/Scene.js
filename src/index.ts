@@ -372,10 +372,12 @@ export class Context {
     }
 
     public getPathGroup(prop: PropConfig, color ?: string) {
-        const pathsHTML: string = PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths']
+        return this.getPathGroupByHTML(PropTypeIcons[prop.type][prop.iconStyle][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths'], prop, color)
+    }
+
+    public getPathGroupByHTML(pathsHTML: string, prop: PropConfig, color ?: string) {
         let pathId = 0
         const pathGroup = document.createElement("g")
-        pathGroup.id = this.getId(prop, 'view', 'prop', 'icon', 'group')
         pathsHTML.match(/<path.*?\/>/g).forEach(pathHTML => {
             const path = createElement(pathHTML)
             path.id = this.getId(prop, 'view', 'prop', 'icon', `[${pathId}]`)
@@ -434,7 +436,7 @@ export function demo() {
             colorTemperature: 5000,
             frameAnimationConfig: {
                 1: {
-                    x: 0, y: 0, degree: 30, hide: true
+                    x: 0, y: 0, degree: 30, enabled: false
                 },
                 2: {
                     x: 100, y: 100, degree: 60, hide: true
