@@ -49,7 +49,8 @@ export interface PropConfig extends HasId {
     frameAnimationConfig?: FrameAnimationConfig,
     script?: string,
     steps?: { [key: number]: string },
-    note?: string
+    note?: string,
+    displayName?: boolean
 }
 
 export enum PropType {

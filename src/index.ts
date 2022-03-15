@@ -146,6 +146,7 @@ export class Context {
             propConfig.color = propConfig.color || generateDarkColor()
             propConfig.style = propConfig.style || "default"
             propConfig.id = propConfig.id || this.ids
+            propConfig.displayName = propConfig.displayName === undefined ? true : propConfig.displayName
             propConfig.name = propConfig.name || `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
             if (propConfig.frameAnimationConfig) {
                 for (let key in propConfig.frameAnimationConfig) {
@@ -470,7 +471,8 @@ export function demo() {
                 2: getRandomPosition(),
                 3: getRandomPosition(),
                 4: getRandomPosition(),
-            }
+            },
+            displayName: false
         }
     }
     const ctx: Context = new Context({
@@ -492,7 +494,7 @@ export function demo() {
             }
         },
         lines: [
-            [{x: 40, y: 40}, {x: 80, y: 80}, {width: 2}]
+            [{x: 40, y: 40}, {x: 80, y: 80}]
         ]
     })
     ctx.addProp(getDemoLight(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")

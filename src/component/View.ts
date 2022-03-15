@@ -89,14 +89,18 @@ export class View extends SceneComponent {
         svgE.attr("viewBox",
             `${-this.context.viewportOffset.x} ${-this.context.viewportOffset.y} ${svgE.width() * this.context.viewportScale} ${svgE.height() * this.context.viewportScale}`);
         $('.view__prop').each((index, element) => {
-            const textElement = element.querySelector('text')
-            const textWidth = textElement.getBBox().width
-            const pathGroups = element.querySelectorAll('g')
+
             const prop = this.context.getPropById(this.context.extractIdType(element.id)[0])
-            const position = this.context.getPropPositionByCurrentFrame(prop)
-            pathGroups.forEach(pathGroup => {
-                pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0) scale(${position.scaleX} ${position.scaleY})`)
-            })
+            if(prop.displayName){
+                const textElement = element.querySelector('text')
+                const textWidth = textElement.getBBox().width
+                const pathGroups = element.querySelectorAll('g')
+                const position = this.context.getPropPositionByCurrentFrame(prop)
+                pathGroups.forEach(pathGroup => {
+                    pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0) scale(${position.scaleX} ${position.scaleY})`)
+                })
+            }
+
         })
     }
 
@@ -209,13 +213,14 @@ export class View extends SceneComponent {
                 group.style.transitionTimingFunction = this.context.config.playTransition
                 group.id = this.context.getId(prop, 'view', 'prop')
                 group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree})`)
-
-                const text = document.createElement("text")
-                text.id = this.context.getId(prop, 'view', 'prop', 'text')
-                text.innerText = prop.name
-                text.setAttribute("y", "-7")
-                text.style.fill = prop.color
-                group.appendChild(text)
+                if(prop.displayName){
+                    const text = document.createElement("text")
+                    text.id = this.context.getId(prop, 'view', 'prop', 'text')
+                    text.innerText = prop.name
+                    text.setAttribute("y", "-7")
+                    text.style.fill = prop.color
+                    group.appendChild(text)
+                }
                 // It's not possible to set innerHTML to format: <path ... /><path ... />
                 // The above line will be formatted to: <path ...><path ...></path></path>
                 // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
