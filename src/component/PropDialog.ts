@@ -18,7 +18,6 @@ export class PropDialog extends SceneComponent {
     afterRender() {
         const toggle = (e) => {
             const [id] = this.context.extractIdType(e.target.id)
-            console.log(e.target.id)
             this.context.toggleSelected(id)
         }
         $('.prop__dialog__close').on("click", (e) => {

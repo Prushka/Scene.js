@@ -20,7 +20,6 @@ export class PropList extends SceneComponent {
 
     afterRender() {
         $('.prop__list__item').on("click", (e) => {
-            console.log(this.context.extractIdType(e.target.id))
             const [id] = this.context.extractIdType(e.target.id)
             this.context.toggleSelected(id)
         })

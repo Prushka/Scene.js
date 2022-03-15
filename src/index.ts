@@ -264,19 +264,19 @@ export class Context {
         this.viewports.set(_viewports)
     }
 
-    private findMinMaxPosition(): [number, number, number, number] {
-        let minX, minY, maxX, maxY
+    public findMinMaxPosition(): [number, number, number, number] {
+        let [minX, minY, maxX, maxY] = [null, null, null, null]
         const updateMinMax = (position) => {
-            if (position.x > maxX || !maxX) {
+            if (position.x > maxX || maxX === null) {
                 maxX = position.x
             }
-            if (position.y > maxY || !maxY) {
+            if (position.y > maxY || maxY === null) {
                 maxY = position.y
             }
-            if (position.x < minX || !minX) {
+            if (position.x < minX || minX === null) {
                 minX = position.x
             }
-            if (position.y < minY || !minY) {
+            if (position.y < minY || minY === null) {
                 minY = position.y
             }
         }
@@ -291,7 +291,7 @@ export class Context {
         return [minX, minY, maxX, maxY]
     }
 
-    private calcViewBox([minX, minY, maxX, maxY]) {
+    public calcViewBox([minX, minY, maxX, maxY]) {
         console.log(minX, minY, maxX, maxY)
         const svgE = $(`.root-container`)
         const viewWidthRatio = (maxX - minX) / svgE.width()
@@ -358,12 +358,6 @@ export class Context {
             //
             this.register(View, PropList, PropDialog, Footer,)
             State.renderAll()
-            const [viewRatio, viewX, viewY] = this.calcViewBox(this.findMinMaxPosition())
-            console.log(viewRatio)
-            this.viewports.get()[0].scale = viewRatio
-            this.viewports.get()[0].offset = {
-                x:viewX, y:viewY
-            }
             // console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
         })
     }
@@ -383,7 +377,7 @@ export function demo() {
             },
             frameAnimationConfig: {
                 1: {
-                    x: 50, y: 50, degree: 30
+                    x: 0, y: 0, degree: 30
                 },
                 2: {
                     x: 100, y: 100, degree: 60
@@ -411,7 +405,7 @@ export function demo() {
         }
     }
     const ctx: Context = new Context()
-    ctx.addProp(getDemoTable(), getDemoTable()).displayRoot("#scene")
+    ctx.addProp(getDemoTable(),getDemoTable(),getDemoTable(),getDemoTable()).displayRoot("#scene")
     console.log(ctx.props.get())
 
     return new Position(1, 1)

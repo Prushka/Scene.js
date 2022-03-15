@@ -89,6 +89,12 @@ export class View extends SceneComponent {
     afterRender() {
         this.mouse = {x: 0, y: 0}
         this.dragging = false
+
+        const [viewRatio, viewX, viewY] = this.context.calcViewBox(this.context.findMinMaxPosition())
+        this.context.viewportScale = viewRatio
+        this.context.viewportOffset = {
+            x:-viewX, y:-viewY
+        }
         this.applyViewportAttrs()
 
         const stopDragging = (e) => {
