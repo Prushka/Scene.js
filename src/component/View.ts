@@ -121,8 +121,6 @@ export class View extends SceneComponent {
         this.dragging = false
         this.resetViewport()
 
-        this.createLines()
-
         const stopDragging = (e) => {
             if (this.dragging) {
                 e.preventDefault()
@@ -175,15 +173,6 @@ export class View extends SceneComponent {
         })
     }
 
-
-    private createLines() {
-        const gs = []
-        this.context.config.lines.forEach(([start, end, line]) => {
-            gs.push(getLineGroup(start.x, start.y, end.x, end.y, line.width, line.color))
-        })
-        document.getElementById(this.context.getIdType("view", "connections")).innerHTML += gs.join('')
-    }
-
     private createConnections() {
         let connections = [...this.connections.get()].map(_c => {
             const c: number[] = _c.split(",").map(s => Number(s))
@@ -205,6 +194,11 @@ export class View extends SceneComponent {
 
     render(): string | string[] {
         const props = this.context.props.get()
+
+        const gs = []
+        this.context.config.lines.forEach(([start, end, line]) => {
+            gs.push(getLineGroup(start.x, start.y, end.x, end.y, line.width, line.color))
+        })
         let s = props.map(prop => {
             const hide = this.context.getPropPositionByFrame(prop, this.context.ctx.currentFrame, false).hide
             const position: AnimationConfig = this.context.getPropPosition(prop)
@@ -261,6 +255,7 @@ export class View extends SceneComponent {
 
 
         console.log(this.connections.get())
-        return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg"><g id="${this.context.getIdType("view", "connections")}"></g>${s.join('')}</svg>`
+        return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg"><g id="${this.context.getIdType("view", "connections")}"></g>${s.join('')}
+<g id="${this.context.getIdType("view", "lines", "group")}">${gs.join('')}</g></svg>`
     }
 }

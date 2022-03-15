@@ -443,8 +443,8 @@ export function demo() {
             x: Math.random() * 500,
             y: Math.random() * 500,
             degree: Math.random() * 360,
-            scaleX: randInclusive(5, 30)/10,
-            scaleY: randInclusive(5, 30)/10,
+            scaleX: 15,
+            scaleY: 15
         }
     }
     const getDemoLight = () => {
@@ -469,8 +469,11 @@ export function demo() {
         return {
             type: "TABLE",
             style: "fillSquare",
+            color: "rgb(10,200,20)",
             frameAnimationConfig: {
-                1: getRandomPosition(),
+                1: {
+                    x: 0, y: 0, degree: 30, scaleX: 20, scaleY: 20
+                },
                 2: getRandomPosition(),
                 3: getRandomPosition(),
                 4: getRandomPosition(),
@@ -500,7 +503,8 @@ export function demo() {
             [{x: 40, y: 40}, {x: 80, y: 80}]
         ]
     })
-    ctx.addProp(getDemoLight(), getDemoTable()).displayRoot("#scene")
+    // svg order is determined by declaration order
+    ctx.addProp(getDemoTable(), getDemoLight()).displayRoot("#scene")
     console.log(ctx.props.get())
 
     return new Position(1, 1)
