@@ -3,15 +3,19 @@
  */
 
 import {SceneComponent} from "./Component";
-import {PropTypeIcons} from "../props/Props";
-import {createSVGIcon} from "../utils/Utils";
+import State, {createState} from "../state/State";
 
 export class PropList extends SceneComponent {
 
     // prop is not a property, it's the prop used in a scene
+    open: State<boolean>
+
+    afterConstructor() {
+        this.open = createState(true)
+    }
 
     listen() {
-        return [this.context.selectedState, this.context.props]
+        return [this.context.selectedState, this.context.props, this.open]
     }
 
     subscribe() {
@@ -23,6 +27,10 @@ export class PropList extends SceneComponent {
             const [id] = this.context.extractIdType(e.target.id)
             this.context.toggleSelected(id)
         })
+        $("#" + this.context.getId(0, "prop", "list", "hide")).on("click", (e) => {
+            console.log(e.target.id)
+            this.open.set(false)
+        })
     }
 
     render(): string | string[] {
@@ -30,11 +38,12 @@ export class PropList extends SceneComponent {
         parentContainer.classList.add('prop__list')
 
         const hideIconContainer = document.createElement('div')
+        hideIconContainer.id = this.context.getId(0, "prop", "list", "hide")
         const hideIcon = document.createElement('i')
-        hideIcon.id = "prop__list__hide"
+        hideIcon.id = this.context.getId(0, "prop", "list", "hide", "icon")
         hideIcon.classList.add("bi", "bi-arrow-bar-left")
         hideIconContainer.append(hideIcon)
-        hideIconContainer.classList.add('hide__icon-container')
+        hideIconContainer.classList.add('hide__icon-container', 'pointer')
         this.context.props.get().forEach(prop => {
             const isSelected = this.context.propSelected(prop)
             const color = isSelected ? "white" : prop.color
@@ -49,6 +58,6 @@ export class PropList extends SceneComponent {
             parentContainer.append(listItemContainer)
         })
 
-        return parentContainer.outerHTML + hideIconContainer.outerHTML
+        return this.open.get() && parentContainer.outerHTML + hideIconContainer.outerHTML
     }
 }
