@@ -429,7 +429,7 @@ export function demo() {
             x: Math.random() * 500,
             y: Math.random() * 500,
             degree: Math.random() * 360,
-            scaleX: 2,
+            scaleX: 5,
             scaleY: 2
         }
     }
@@ -454,9 +454,13 @@ export function demo() {
     const getDemoTable = () => {
         return {
             type: PropType.TABLE,
-            style: "fillTriangle",
+            style: "fillSquare",
             frameAnimationConfig: {
-                1: getRandomPosition(),
+                1: {
+                    x: 0, y: 0, enabled: true,
+                    scaleX: 9,
+                    scaleY: 9
+                },
                 2: getRandomPosition(),
                 3: getRandomPosition(),
                 4: getRandomPosition(),
