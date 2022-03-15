@@ -448,6 +448,9 @@ export function demo() {
             1: 3,
             2: 2,
             4: 0.2
+        },
+        attachment: {
+
         }
     })
     ctx.addProp(getDemoTable(),getDemoTable(),getDemoTable(), getDemoTable(), getDemoTable(), getDemoTable()).displayRoot("#scene")

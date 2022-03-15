@@ -5,7 +5,8 @@ export interface Config {
     playTransition?: string,
     frameSpeed?: { [key: number]: number },
     defaultFrameSpeed?: number,
-    frameSelectionSpeed?: number // set to 0 to disable animation while selecting
+    frameSelectionSpeed?: number, // set to 0 to disable animation while selecting
+    attachment?: { [key: string]: string[] }
 }
 
 export const DefaultConfig: Config = {
@@ -14,6 +15,7 @@ export const DefaultConfig: Config = {
     viewOffset: 0.2,
     playTransition: "linear",
     frameSpeed: {},
+    attachment: {},
     defaultFrameSpeed: 1,
     frameSelectionSpeed: 1
 }
