@@ -28,20 +28,6 @@
     overflow: hidden;
 }
 
-.prop__list-container {
-    display: flex;
-    flex-direction: column;
-
-    max-width: 220px;
-    max-height: 200px;
-    overflow: auto;
-    background-color: white;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-}
-
 .prop__dialog {
     width: 100%;
     height: 100%;
@@ -219,6 +205,36 @@
     transition-duration: 0.3s;
 }
 
+.prop__list-container {
+    display: flex;
+    z-index: 1000;
+}
+
+.hide__icon-container {
+    background-color: white;
+    align-self: start;
+    padding: 10px 6px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.hide__icon-container i {
+    font-size: 1.45rem;
+    color: var(--theme-dark-gray);
+}
+
+.prop__list {
+    display: flex;
+    flex-direction: column;
+
+    max-width: 220px;
+    max-height: 200px;
+    overflow: auto;
+    background-color: white;
+    top: 0;
+    left: 0;
+}
+
 .prop__list__item {
     display: flex;
     padding: 14px 12px 14px 18px;
@@ -228,7 +244,7 @@
     color: black;
 }
 
-.prop__list__item--not-selected :is(span,i) {
+.prop__list__item--not-selected span {
     color: black;
 }
 
@@ -240,7 +256,7 @@
     background-color: var(--theme-dark-gray);
 }
 
-.prop__list__item--selected :is(span,i) {
+.prop__list__item--selected span {
     color: white
 }
 
@@ -248,10 +264,6 @@
     margin: 0 1.2rem;
     font-size: 1rem;
     font-weight: 700;
-}
-
-.prop__list__item i {
-    font-size: 1.6rem;
 }
 
 .view-container {
