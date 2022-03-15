@@ -14,6 +14,7 @@
     --theme-pink: #EB7777;
     --theme-dark-pink: #d96262;
     --prop-list-width: 150px;
+    --toolbar-button-width: 40px;
     --theme-trans-white: rgba(255, 255, 255, 0.91)
 }
 
@@ -136,10 +137,14 @@
     z-index: 1000;
 }
 
-.footer__button-group {
+.footer__toolbar {
     display: flex;
     flex-direction: column;
-    width: 40px;
+    width: var(--toolbar-button-width);
+    position: relative;
+    bottom: 0;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in;
 }
 
 .button {

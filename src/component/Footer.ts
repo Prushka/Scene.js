@@ -3,7 +3,7 @@
  */
 
 import {SceneComponent} from "./Component";
-import State, {createState} from "../state/State";
+import State, {createState, StateAction} from "../state/State";
 
 export class Footer extends SceneComponent {
 
@@ -17,6 +17,19 @@ export class Footer extends SceneComponent {
         return [this.context.ctx.currentFrameState]
     }
 
+    actions(): StateAction<any>[] {
+        return [[this.open, ((_, open) => {
+            const toolbarElement = document.getElementById(this.context.getIdType("toolbar"))
+            let bottom
+            if(open){
+                bottom = 0
+            }else{
+                bottom = -(toolbarElement.getBoundingClientRect().height - 45)
+            }
+            toolbarElement.style.bottom = `${bottom}px`
+        })]]
+    }
+
     subscribe() {
         return [".footer-container"]
     }
@@ -26,17 +39,19 @@ export class Footer extends SceneComponent {
             const [frame] = this.context.extractIdType(e.target.id)
             this.context.ctx.currentFrame = frame
         })
-
+        $("#"+this.context.getIdType("toolbar","collapse")).on("click", (e)=>{
+            this.open.set(!this.open.get())
+        })
     }
 
     render(): string | string[] {
-        const createButtonDiv = (title, iconClasses) => {
-            return `<div title=${title} class="button button--purple pointer"><i class='${iconClasses}'></i></div>`
+        const createButtonDiv = (title, iconClasses, ...types: string[]) => {
+            return `<div id="${this.context.getIdType(...types)}" title=${title} class="button button--purple pointer"><i class='${iconClasses}'></i></div>`
         }
         const currentFrame = this.context.ctx.currentFrame
         let elements = ""
-        const buttons = [createButtonDiv('Collapse/Expand', 'bi bi-arrows-collapse')]
-        if(this.open.get()){
+        const buttons = [createButtonDiv('Collapse/Expand', 'bi bi-arrows-collapse', "toolbar", "collapse")]
+        if (this.open.get()) {
             buttons.push(createButtonDiv('Export', 'bi bi-box-arrow-up-right'))
             if (this.context.ctx.totalFrames !== 0) {
                 let frames = ""
@@ -48,7 +63,7 @@ export class Footer extends SceneComponent {
             }
         }
         return `<div class='footer'>
-                     <div class="footer__button-group">${buttons.join('')}</div>
+                     <div id="${this.context.getIdType("toolbar")}" class="footer__toolbar">${buttons.join('')}</div>
                      ${elements}
                      </div>`
     }

@@ -20,10 +20,10 @@ export class PropList extends SceneComponent {
     }
 
     actions(): StateAction<any>[] {
-        return [[this.open, (oldValue, newValue) => {
+        return [[this.open, (_, open) => {
             const container = document.querySelector('.prop__list-container')
             const icon = document.getElementById(this.context.getIdType("prop", "list", "hide", "icon", "container"))
-            if (newValue) {
+            if (open) {
                 container.classList.remove("prop__list-container--closed")
                 icon.classList.remove("icon-animated-right")
                 icon.classList.add("icon-animated-left")
