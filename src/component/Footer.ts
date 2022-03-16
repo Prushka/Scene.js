@@ -89,7 +89,7 @@ export class Footer extends SceneComponent {
             }
         }, "toolbar", "play")
         hookButton(() => {
-            navigator.clipboard.writeText(JSON.stringify(this.ctx.propsState.get())).then(() => this.snackbarCtx.snackbar = "Copied to clipboard")
+            navigator.clipboard.writeText(JSON.stringify(this.ctx.config, null, 2)).then(() => this.snackbarCtx.snackbar = "Copied to clipboard")
         }, "toolbar", "export")
     }
 
