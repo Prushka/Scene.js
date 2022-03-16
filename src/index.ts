@@ -59,10 +59,12 @@ export class Context {
         })
         console.log(this.config)
         this.propTypeIconPool = {...PropTypeIcons, ...config.propTypes}
-
+        this.config.props.forEach(propConfig => {
+            this.addProp(propConfig)
+        })
     }
 
-    public addProp(...propConfigs: PropConfig[]): Context {
+    private addProp(...propConfigs: PropConfig[]): Context {
         const _props = [...this.propsState.get()]
         propConfigs.forEach(propConfig => {
             propConfig.color = propConfig.color || generateDarkColor()
@@ -458,10 +460,11 @@ export function demo(rootId: string) {
         },
         lines: [
             [{x: 40, y: 40}, {x: 80, y: 80}]
-        ]
+        ],
+        props: [getDemoTable(), getDemoLight()]
     })
     // svg order is determined by declaration order
-    ctx.addProp(getDemoTable(), getDemoLight()).display()
+    ctx.display()
     console.log(ctx.propsState.get())
 }
 

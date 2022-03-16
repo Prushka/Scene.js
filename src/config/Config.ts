@@ -1,4 +1,4 @@
-import {LineConfig, PositionConfig, PropTypeIcon} from "../props/Props";
+import {LineConfig, PositionConfig, PropConfig, PropTypeIcon} from "../props/Props";
 
 export interface Config {
     theme?: "dark" | "light",
@@ -13,7 +13,8 @@ export interface Config {
     attachment?: { [key: string]: string[] },
     propTypes?: { [key: string]: PropTypeIcon },
     lines?: [PositionConfig, PositionConfig, LineConfig?][],
-    alwaysShowAllDialogTabs?: boolean
+    alwaysShowAllDialogTabs?: boolean,
+    props?: PropConfig[]
 }
 
 export const DefaultConfig: Config = {
@@ -29,5 +30,6 @@ export const DefaultConfig: Config = {
     defaultOpenToolbar: false,
     propTypes: {},
     lines: [],
-    alwaysShowAllDialogTabs: false
+    alwaysShowAllDialogTabs: false,
+    props: []
 }
