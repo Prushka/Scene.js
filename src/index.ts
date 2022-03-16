@@ -210,7 +210,7 @@ export class Context {
     }
 
     public isPropEnabled(prop: PropConfig): boolean {
-        return this.getPropPositionByFrame(prop, this.ctx.currentFrame, false).enabled
+        return this.getPropPositionByCurrentFrame(prop).enabled
     }
 
     public getPropById(id: number): PropConfig | null {
@@ -340,7 +340,7 @@ export class Context {
         }
         this.props.get().forEach(prop => {
             if (currentFrame) {
-                updateMinMax(this.getPropPositionByFrame(prop, currentFrame, false))
+                updateMinMax(this.getPropPositionByCurrentFrame(prop))
             } else {
                 for (let key in prop.frameAnimationConfig) {
                     const position = prop.frameAnimationConfig[key]

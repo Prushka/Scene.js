@@ -177,12 +177,12 @@ export class View extends SceneComponent {
             const propRight = this.context.getPropById(c[1])
             const leftGroupElement = document.getElementById(this.context.getId(propLeft, 'view', 'prop'))
             const rightGroupElement = document.getElementById(this.context.getId(propRight, 'view', 'prop'))
-            const propLeftPosition = this.context.getPropPositionByFrame(propLeft, this.context.ctx.currentFrame, false)
-            const propRightPosition = this.context.getPropPositionByFrame(propRight, this.context.ctx.currentFrame, false)
+            const propLeftPosition = this.context.getPropPositionByCurrentFrame(propLeft)
+            const propRightPosition = this.context.getPropPositionByCurrentFrame(propRight)
             const propLeftRect = leftGroupElement.querySelector("text").getBoundingClientRect()
             const propRightRect = rightGroupElement.querySelector("text").getBoundingClientRect()
             console.log("bounding: " + propLeftPosition.x + "," + propLeftPosition.y)
-            console.log(this.context.getPropPositionByFrame(propLeft, this.context.ctx.currentFrame, false))
+            console.log(this.context.getPropPositionByCurrentFrame(propLeft))
             return `<g stroke-width="1" stroke="red"><path d="M${propLeftPosition.x + propLeftRect.width / 2} ${propLeftPosition.y + propLeftRect.height / 2} L${propRightPosition.x + propRightRect.width / 2} ${propRightPosition.y + propRightRect.height / 2}"/></g>
 <g class="view__prop__connection"><path d="M${propLeftPosition.x} ${propLeftPosition.y} L${propRightPosition.x} ${propRightPosition.y}"/></g>`
         })
@@ -197,7 +197,7 @@ export class View extends SceneComponent {
             gs.push(getLineGroup(start.x, start.y, end.x, end.y, line.width, line.color))
         })
         let s = props.map(prop => {
-            const hide = this.context.getPropPositionByFrame(prop, this.context.ctx.currentFrame, false).hide
+            const hide = this.context.getPropPositionByCurrentFrame(prop).hide
             const position: AnimationConfig = this.context.getPropPosition(prop)
             if (position) {
                 const selected = this.context.propSelected(prop)

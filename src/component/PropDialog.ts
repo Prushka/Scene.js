@@ -35,16 +35,16 @@ export class PropDialog extends SceneComponent {
     actions(): StateAction<any>[] {
         return [[this.context.selectedState, () => {
             this.selectedTabState.set(Tab.GENERAL)
-        }], [this.context.ctx.currentFrameState, (_, newFrame) => {
+        }], [this.context.ctx.currentFrameState, (oldFrame, newFrame) => {
             const selectedProp = this.context.selected
             const positionElement = document.getElementById(this.context.getId(selectedProp, "position", "dialog"))
             const scaleElement = document.getElementById(this.context.getId(selectedProp, "scale", "dialog"))
-            this.updatePositionScaleElements(positionElement, scaleElement, selectedProp)
+            this.updatePositionScaleElements(positionElement, scaleElement, selectedProp, newFrame, newFrame < oldFrame)
         }]]
     }
 
-    private updatePositionScaleElements(positionElement, scaleElement, prop) {
-        const position = this.context.getPropPositionByCurrentFrame(prop)
+    private updatePositionScaleElements(positionElement, scaleElement, prop, frame?: number, lookForward?: boolean) {
+        const position = frame === undefined ? this.context.getPropPositionByCurrentFrame(prop) : this.context.getPropPositionByFrame(prop, frame, lookForward)
         const positionDisplay = positionToDisplay(position)
         if (positionElement) {
             positionElement.innerText = `(${positionDisplay.x}, ${positionDisplay.y}, ${positionDisplay.degree}°)`
