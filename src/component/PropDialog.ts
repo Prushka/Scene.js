@@ -25,8 +25,7 @@ export class PropDialog extends SceneComponent {
     }
 
     listen(): State<any>[] {
-        return [this.context.selectedState, this.context.props, this.context.ctx.currentFrameState,
-            this.selectedTabState];
+        return [this.context.selectedState, this.context.props, this.selectedTabState];
     }
 
     subscribe() {
@@ -36,7 +35,25 @@ export class PropDialog extends SceneComponent {
     actions(): StateAction<any>[] {
         return [[this.context.selectedState, () => {
             this.selectedTabState.set(Tab.GENERAL)
+        }], [this.context.ctx.currentFrameState, (_, newFrame) => {
+            const selectedProp = this.context.selected
+            const positionElement = document.getElementById(this.context.getId(selectedProp, "position", "dialog"))
+            const scaleElement = document.getElementById(this.context.getId(selectedProp, "scale", "dialog"))
+            this.updatePositionScaleElements(positionElement, scaleElement, selectedProp)
         }]]
+    }
+
+    private updatePositionScaleElements(positionElement, scaleElement, prop) {
+        const position = this.context.getPropPositionByCurrentFrame(prop)
+        const positionDisplay = positionToDisplay(position)
+        if (positionElement) {
+            positionElement.innerText = `(${positionDisplay.x}, ${positionDisplay.y}, ${positionDisplay.degree}°)`
+            positionElement.style.color = prop.color
+        }
+        if (scaleElement) {
+            scaleElement.innerText = `(${positionDisplay.scaleX}x, ${positionDisplay.scaleY}x)`
+            scaleElement.style.color = prop.color
+        }
     }
 
     afterRender() {
@@ -87,8 +104,7 @@ export class PropDialog extends SceneComponent {
                 }
             }
 
-            const position = this.context.getPropPositionByCurrentFrame(selectedProp)
-            const positionDisplay = positionToDisplay(position)
+
             addTitleTab(Tab.GENERAL, "General Info", true, "bi", "bi-boxes")
             addTitleTab(Tab.SCRIPTS, "Scripts", selectedProp.script, "bi", "bi-journal-bookmark-fill")
             addTitleTab(Tab.STEPS, "Steps", selectedProp.steps, "bi", "bi-123")
@@ -193,8 +209,12 @@ export class PropDialog extends SceneComponent {
             propText.innerText = selectedProp.name
             propText.style.color = selectedProp.color
 
-            const positionText = createSpan(`(${positionDisplay.x}, ${positionDisplay.y}, ${positionDisplay.degree}°)`, selectedProp.color)
-            const scaleText = createSpan(`(${positionDisplay.scaleX}x, ${positionDisplay.scaleY}x)`, selectedProp.color)
+            const positionText = document.createElement('span')
+            const scaleText = document.createElement('span')
+            this.updatePositionScaleElements(positionText, scaleText, selectedProp)
+            positionText.id = this.context.getId(selectedProp, "position", "dialog")
+            scaleText.id = this.context.getId(selectedProp, "scale", "dialog")
+
             footer.append(propIcon, propText, positionText, scaleText)
             container.append(header, contentElement, footer)
             return parentContainer.outerHTML
