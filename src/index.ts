@@ -149,15 +149,15 @@ export class Context {
             propConfig.color = propConfig.color || generateDarkColor()
             propConfig.style = propConfig.style || "default"
             propConfig.id = propConfig.id || this.ids
-            propConfig.shouldDisplayName = propConfig.shouldDisplayName === undefined ? true : propConfig.shouldDisplayName
+            propConfig.shouldDisplayName = propConfig.shouldDisplayName ?? true
             propConfig.name = propConfig.name || `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
             if (propConfig.frameAnimationConfig) {
                 for (let key in propConfig.frameAnimationConfig) {
                     const a = propConfig.frameAnimationConfig[key]
                     a.scaleX = a.scaleX || 1
                     a.scaleY = a.scaleY || 1
-                    a.hide = a.hide === undefined ? false : a.hide
-                    a.enabled = a.enabled === undefined ? true : a.enabled
+                    a.hide = a.hide ?? false
+                    a.enabled = a.enabled ?? true
                 }
             }
             this.ids += 1
@@ -325,16 +325,16 @@ export class Context {
     public findMinMaxPosition(currentFrame?: number): [number, number, number, number] {
         let [minX, minY, maxX, maxY] = [null, null, null, null]
         const updateMinMax = (position) => {
-            if (position.x > maxX || maxX === null) {
+            if (position.x > maxX || maxX == null) {
                 maxX = position.x
             }
-            if (position.y > maxY || maxY === null) {
+            if (position.y > maxY || maxY == null) {
                 maxY = position.y
             }
-            if (position.x < minX || minX === null) {
+            if (position.x < minX || minX == null) {
                 minX = position.x
             }
-            if (position.y < minY || minY === null) {
+            if (position.y < minY || minY == null) {
                 minY = position.y
             }
         }

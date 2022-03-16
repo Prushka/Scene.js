@@ -46,7 +46,7 @@ export class PropDialog extends SceneComponent {
     }
 
     private updatePositionScaleElements(positionElement, scaleElement, prop, frame?: number, lookForward?: boolean) {
-        const position = frame === undefined ? this.context.getPropPositionByCurrentFrame(prop) : this.context.getPropPositionByFrame(prop, frame, lookForward)
+        const position = frame == null ? this.context.getPropPositionByCurrentFrame(prop) : this.context.getPropPositionByFrame(prop, frame, lookForward)
         const positionDisplay = positionToDisplay(position)
         if (positionElement) {
             positionElement.innerText = `(${positionDisplay.x}, ${positionDisplay.y}, ${positionDisplay.degree}°)`
