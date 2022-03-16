@@ -505,6 +505,15 @@ export function demo() {
                 2: {
                     title: "Here's step 2",
                     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris"
+                },
+                22: {
+                    content: "aha"
+                },
+                21: {
+
+                },
+                1: {
+
                 }
             }
         }

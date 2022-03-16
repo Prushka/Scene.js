@@ -145,7 +145,6 @@
     flex-direction: column;
 
     padding: 8px 0 16px 0;
-    border-bottom: 2px solid var(--theme-gray);
 }
 
 .content .image__container span {
@@ -473,11 +472,17 @@
 .step-card {
     display: flex;
     flex-direction: column;
+    padding: 12px 0 14px 0;
+}
+
+.bottom-gray-border {
+    border-bottom: 2px solid var(--theme-gray);
 }
 
 .step-card > div {
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .step-card__step {
@@ -489,5 +494,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px 10px 10px 0;
+    margin-right: 10px;
 }

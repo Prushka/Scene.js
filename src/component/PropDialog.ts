@@ -111,7 +111,7 @@ export class PropDialog extends SceneComponent {
 
             const createImage = (imageConfig: ImageConfig) => {
                 const containerElement = document.createElement('div')
-                containerElement.classList.add('image__container')
+                containerElement.classList.add('image__container', 'bottom-gray-border')
                 const imageElement = document.createElement('img')
                 const titleElement = document.createElement('span')
                 titleElement.innerText = imageConfig.title ? imageConfig.title : ''
@@ -125,7 +125,7 @@ export class PropDialog extends SceneComponent {
 
             const createStepCard = (stepNumber: number, stepConfig: StepConfig): HTMLElement => {
                 const containerElement = document.createElement('div')
-                containerElement.classList.add('step-card')
+                containerElement.classList.add('step-card', 'bottom-gray-border')
                 const headerElement = document.createElement('div')
 
                 const stepNumberElement = document.createElement('span')
@@ -169,9 +169,10 @@ export class PropDialog extends SceneComponent {
                     break
                 case Tab.STEPS:
                     if (selectedProp.steps) {
-                        for (let key in selectedProp.steps) {
+                        console.log(Object.keys(selectedProp.steps))
+                        Object.keys(selectedProp.steps).sort((a, b)=> Number(a) - Number(b)).forEach(key => {
                             contentElement.append(createStepCard(Number(key), selectedProp.steps[key]))
-                        }
+                        })
                     }
                     break
             }
