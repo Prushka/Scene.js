@@ -13,12 +13,6 @@ export default class State<T> {
     private _components: CustomComponent[] = []
     private _componentsActions: ComponentAction<any>[] = []
 
-    // public static renderAll() {
-    //     State.globalStates.forEach(s => {
-    //         s.render()
-    //     })
-    // }
-
     public constructor(defaultValue?: T) {
         this._state = defaultValue
     }
@@ -31,14 +25,6 @@ export default class State<T> {
         this._components.forEach(component => {
             component.renderComponent()
         })
-        // this.withSelectorPopulate((selector, populate, afterRender) => {
-        //     const html: string | string[] = populate(this.get())
-        //     $(selector).html(Array.isArray(html) ? html.join('') : html)
-        //     if (afterRender) {
-        //         afterRender()
-        //     }
-        // })
-
     }
 
     public set(value: T, forceUpdate?:boolean) {

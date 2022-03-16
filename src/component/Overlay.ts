@@ -3,9 +3,7 @@
  */
 
 import {SceneComponent} from "./Component";
-import State, {createState, StateAction} from "../state/State";
-import ClickEvent = JQuery.ClickEvent;
-import {setClassList} from "../utils/Utils";
+import State from "../state/State";
 
 export class Overlay extends SceneComponent {
 

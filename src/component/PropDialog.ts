@@ -189,7 +189,6 @@ export class PropDialog extends SceneComponent {
                     break
                 case Tab.STEPS:
                     if (selectedProp.steps) {
-                        console.log(Object.keys(selectedProp.steps))
                         Object.keys(selectedProp.steps).sort((a, b) => Number(a) - Number(b)).forEach(key => {
                             contentElement.append(createStepCard(Number(key), selectedProp.steps[key]))
                         })

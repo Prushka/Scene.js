@@ -2,7 +2,6 @@
  * Copyright 2022 Dan Lyu.
  */
 
-import Position from "./props/Position";
 import {
     AnimationConfig, DefaultLine,
     FrameAnimationConfig,
@@ -28,76 +27,8 @@ import {Config, DefaultConfig} from "./config/Config";
 import {Snackbar} from "./component/Snackbar";
 import {CustomComponent} from "./component/Component";
 import {Overlay} from "./component/Overlay";
-
-export * as position from './props/Position'
-
-export interface SceneContextConfig {
-    totalFrames?: number
-}
-
-export class TimeContext {
-    protected _config: SceneContextConfig
-    public currentFrameState: State<number> = createState(1)
-
-    public constructor(config?: SceneContextConfig) {
-        config = config || {}
-        config.totalFrames = config.totalFrames || 5
-        this._config = config
-    }
-
-    public get isStatic() {
-        return this._config.totalFrames <= 1
-    }
-
-    public get totalFrames() {
-        return this._config.totalFrames
-    }
-
-    public set totalFrames(f: number) {
-        this._config.totalFrames = f
-    }
-
-    public get currentFrame() {
-        return this.currentFrameState.get()
-    }
-
-    public set currentFrame(f: number) {
-        this.currentFrameState.set(f)
-    }
-
-    public nextFrame(): number {
-        const previousFrame = this.currentFrame
-        if (this.currentFrame < this.totalFrames) {
-            this.currentFrame++
-        } else if (this.currentFrame === this.totalFrames) {
-            this.currentFrame = 1
-        }
-        return previousFrame
-    }
-}
-
-export class ViewPort {
-    private offsetState: State<PositionConfig> = createState({
-        x: 0, y: 0
-    })
-    private scaleState: State<number> = createState(0.75)
-
-    public get offset() {
-        return this.offsetState.get()
-    }
-
-    public set offset(offset) {
-        this.offsetState.set(offset)
-    }
-
-    public get scale() {
-        return this.scaleState.get()
-    }
-
-    public set scale(scale) {
-        this.scaleState.set(scale)
-    }
-}
+import TimeContext from "./context/TimeContext";
+import ViewPort from "./context/Viewport";
 
 export class Context {
     private static contextIds = 0
@@ -242,7 +173,6 @@ export class Context {
     public getPropPosition(prop: PropConfig): AnimationConfig | null {
         let position: AnimationConfig = prop.frameAnimationConfig[this.timeCtx.currentFrame]
         position = {...position}
-        console.log(`${prop.name} (${position.x},${position.y})`)
         return position
     }
 
@@ -358,7 +288,6 @@ export class Context {
     }
 
     public calcViewBox([minX, minY, maxX, maxY]) {
-        console.log(minX, minY, maxX, maxY)
         const svgE = $(`${this.rootContainerIdSymbol}`)
         const viewWidthRatio = (maxX - minX) / svgE.width()
         const viewHeightRatio = (maxY - minY) / svgE.height()
@@ -425,7 +354,7 @@ export class Context {
         return $(`${this.rootContainerIdSymbol} ${selector}`)
     }
 
-    public displayRoot() {
+    public display() {
         this.beforeDisplay()
         $(() => {
             $(`${this.rootContainerIdSymbol}`).addClass("root-container")
@@ -543,9 +472,7 @@ export function demo(rootId: string) {
         ]
     })
     // svg order is determined by declaration order
-    ctx.addProp(getDemoTable(), getDemoLight()).displayRoot()
+    ctx.addProp(getDemoTable(), getDemoLight()).display()
     console.log(ctx.propsState.get())
-
-    return new Position(1, 1)
 }
 
