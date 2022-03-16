@@ -9,7 +9,7 @@ import PropTupleSet from "../utils/PropTupleSet";
 import {getLineGroup} from "../utils/Utils";
 import View from "./View";
 
-export class ViewSVG extends SceneComponent implements View{
+export class ViewSVG extends View{
 
     // I can't find a way to add animation while re-rendering the entire content
     // This means:

@@ -370,14 +370,9 @@ export class Context {
                                     <div id="${this.getIdType('view', 'root__container')}" class='view-container'></div>
                                     <div id="${this.getIdType('footer', 'root__container')}" class="footer-container"></div>
                                     <div id="${this.getIdType('overlay', 'root__container')}" class="overlay-container"></div>`)
-
-            this.register(PropList, PropDialog, Footer, Snackbar, Overlay)
-            if(this.config.renderMethod === 'canvas'){
-
-                this.viewComponent = new ViewCanvas(this)
-            }else{
-                this.viewComponent = new ViewSVG(this)
-            }
+            const v =  this.config.renderMethod === 'canvas' ? ViewCanvas : ViewSVG
+            const [view] = this.register(v, PropList, PropDialog, Footer, Snackbar, Overlay)
+            this.viewComponent = view as View
         })
     }
 }
