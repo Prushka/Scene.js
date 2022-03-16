@@ -37,9 +37,11 @@ export class PropDialog extends SceneComponent {
             this.selectedTabState.set(Tab.GENERAL)
         }], [this.context.ctx.currentFrameState, (oldFrame, newFrame) => {
             const selectedProp = this.context.selected
-            const positionElement = document.getElementById(this.context.getId(selectedProp, "position", "dialog"))
-            const scaleElement = document.getElementById(this.context.getId(selectedProp, "scale", "dialog"))
-            this.updatePositionScaleElements(positionElement, scaleElement, selectedProp, newFrame, newFrame < oldFrame)
+            if(selectedProp){
+                const positionElement = document.getElementById(this.context.getId(selectedProp, "position", "dialog"))
+                const scaleElement = document.getElementById(this.context.getId(selectedProp, "scale", "dialog"))
+                this.updatePositionScaleElements(positionElement, scaleElement, selectedProp, newFrame, newFrame < oldFrame)
+            }
         }]]
     }
 

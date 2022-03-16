@@ -115,8 +115,8 @@ export class Context {
     public readonly config: Config
     private _snackbarMSG: State<string> = createState('')
     public readonly propTypeIconPool: { [key in PropType]: PropTypeIcon }
-    public overlayOpenState : State<boolean> = createState(false)
-    public overlayHTMLState : State<string> = createState('')
+    public overlayOpenState: State<boolean> = createState(false)
+    public overlayHTMLState: State<string> = createState('')
 
     public get snackbarState(): State<string> {
         return this._snackbarMSG
@@ -205,7 +205,7 @@ export class Context {
 
     public getId(id: HasId | number | null, ...type: string[]) {
         type.sort((a, b) => a.localeCompare(b))
-        const _id = id === null ? "" : (typeof id === 'number' ? "-" + id : "-" + id.id)
+        const _id = id === null || undefined ? "" : (typeof id === 'number' ? "-" + id : (id.id === null || undefined) ? "" : "-" + id.id)
         return `${this.contextId}-${type.join('-')}${_id}`
     }
 
@@ -509,12 +509,8 @@ export function demo() {
                 22: {
                     content: "aha"
                 },
-                21: {
-
-                },
-                1: {
-
-                }
+                21: {},
+                1: {}
             }
         }
     }
