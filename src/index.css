@@ -483,9 +483,11 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    font-weight: 600;
 }
 
 .step-card__step {
+    font-weight: 500;
     border-radius: 50%;
     background-color: var(--theme-dark-gray);
     color: white;
