@@ -10,7 +10,7 @@ import {setClassList} from "../utils/Utils";
 export class Overlay extends SceneComponent {
 
     subscribe() {
-        return [".overlay-container"]
+        return [this.getRootId('overlay')]
     }
 
     listen(): State<any>[] {

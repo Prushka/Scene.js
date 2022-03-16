@@ -5,7 +5,7 @@
 import {SceneComponent} from "./Component";
 import State, {createState, StateAction} from "../state/State";
 import {ExcludeKeys, ImageConfig, StepConfig} from "../props/Props";
-import {camelToDisplay, createSpan, positionToDisplay} from "../utils/Utils";
+import {camelToDisplay, positionToDisplay} from "../utils/Utils";
 
 enum Tab {
     IMAGES = "IMAGES",
@@ -29,7 +29,7 @@ export class PropDialog extends SceneComponent {
     }
 
     subscribe() {
-        return [".prop__property-container"]
+        return [this.getRootId("prop__property")]
     }
 
     actions(): StateAction<any>[] {

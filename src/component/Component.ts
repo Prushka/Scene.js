@@ -58,6 +58,10 @@ export abstract class CustomComponent {
 export abstract class SceneComponent extends CustomComponent {
     protected context: Context
 
+    protected getRootId(type) {
+        return '#' + this.context.getIdType(type, 'root__container')
+    }
+
     constructor(context: Context) {
         super();
         this.context = context

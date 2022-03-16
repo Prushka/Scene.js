@@ -80,7 +80,7 @@ export class View extends SceneComponent {
     }
 
     subscribe() {
-        return [".view-container"]
+        return [this.getRootId("view")]
     }
 
     private applyViewportAttrs() {
@@ -122,19 +122,19 @@ export class View extends SceneComponent {
             if (this.dragging) {
                 e.preventDefault()
                 this.dragging = false
-                $('.root-container').css('cursor', 'unset')
+                $(this.getRootId('view')).css('cursor', 'unset')
             }
         }
 
 
         const getMouseOffset = (e) => {
-            const c = $('.view-container')
+            const c = $(this.getRootId('view'))
             return {x: e.clientX - c[0].getBoundingClientRect().left, y: e.clientY - c[0].getBoundingClientRect().top}
         }
 
-        $('.view-container').on("mousedown", (e) => {
+        $(this.getRootId('view')).on("mousedown", (e) => {
             this.dragging = true
-            const c = $('.root-container')
+            const c = $(this.getRootId('view'))
             this.mouse = getMouseOffset(e)
             c.css('cursor', 'grabbing')
             e.preventDefault()

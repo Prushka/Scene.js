@@ -117,6 +117,7 @@ export class Context {
     public readonly propTypeIconPool: { [key in PropType]: PropTypeIcon }
     public overlayOpenState: State<boolean> = createState(false)
     public overlayHTMLState: State<string> = createState('')
+    private readonly rootContainerId: string
 
     public get snackbarState(): State<string> {
         return this._snackbarMSG
@@ -130,7 +131,8 @@ export class Context {
         this._snackbarMSG.set(message, true)
     }
 
-    public constructor(config?: Config, context?: TimeContext) {
+    public constructor(rootContainerId: string, config?: Config, context?: TimeContext) {
+        this.rootContainerId = rootContainerId
         this.contextId = Context.contextIds
         Context.contextIds += 1
         this.ctx = context ? context : new TimeContext()
@@ -356,7 +358,7 @@ export class Context {
 
     public calcViewBox([minX, minY, maxX, maxY]) {
         console.log(minX, minY, maxX, maxY)
-        const svgE = $(`.root-container`)
+        const svgE = $(`#${this.rootContainerId}`)
         const viewWidthRatio = (maxX - minX) / svgE.width()
         const viewHeightRatio = (maxY - minY) / svgE.height()
         let viewRatio = viewWidthRatio > viewHeightRatio ? viewWidthRatio : viewHeightRatio
@@ -418,17 +420,16 @@ export class Context {
 
     viewComponent: View
 
-    public displayRoot(selector: string) {
+    public displayRoot() {
         this.beforeDisplay()
         $(() => {
-
-            $(selector).addClass("root-container")
-                .html(`<div class='snackbar-container'></div>
-                                     <div class='prop__list-container'></div>
-                                    <div class='prop__property-container'></div>
-                                    <div class='view-container'></div>
-                                    <div class="footer-container"></div>
-                                    <div class="overlay-container"></div>`)
+            $(`#${this.rootContainerId}`).addClass("root-container")
+                .html(`<div id="${this.getIdType('snackbar', 'root__container')}" class='snackbar-container'></div>
+                                     <div id="${this.getIdType('prop__list', 'root__container')}" class='prop__list-container'></div>
+                                    <div id="${this.getIdType('prop__property', 'root__container')}" class='prop__property-container'></div>
+                                    <div id="${this.getIdType('view', 'root__container')}" class='view-container'></div>
+                                    <div id="${this.getIdType('footer', 'root__container')}" class="footer-container"></div>
+                                    <div id="${this.getIdType('overlay', 'root__container')}" class="overlay-container"></div>`)
 
             // this._selected.set(this.props[0])
             //
@@ -514,7 +515,7 @@ export function demo() {
             }
         }
     }
-    const ctx: Context = new Context({
+    const ctx: Context = new Context('root-1', {
         frameSpeed: {
             1: 3,
             2: 2,
@@ -537,7 +538,7 @@ export function demo() {
         ]
     })
     // svg order is determined by declaration order
-    ctx.addProp(getDemoTable(), getDemoLight()).displayRoot("#scene")
+    ctx.addProp(getDemoTable(), getDemoLight()).displayRoot()
     console.log(ctx.props.get())
 
     return new Position(1, 1)

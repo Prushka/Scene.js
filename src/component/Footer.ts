@@ -47,7 +47,7 @@ export class Footer extends SceneComponent {
     }
 
     subscribe() {
-        return [".footer-container"]
+        return [this.getRootId("footer")]
     }
 
     afterRender() {
