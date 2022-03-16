@@ -110,6 +110,14 @@ export class Context {
         return document.getElementById(this.rootContainerId)
     }
 
+    public getRootWidth() {
+        return this.getRootDocument().getBoundingClientRect().width
+    }
+
+    public getRootHeight() {
+        return this.getRootDocument().getBoundingClientRect().height
+    }
+
     public extractIdType(htmlID: string): [number, string[]] {
         const elementId = htmlID.match(/-\d+/)
         const contextId = htmlID.match(/\d+-/)
@@ -356,12 +364,8 @@ export class Context {
                                     <div id="${this.getIdType('footer', 'root__container')}" class="footer-container"></div>
                                     <div id="${this.getIdType('overlay', 'root__container')}" class="overlay-container"></div>`)
 
-            // this._selected.set(this.props[0])
-            //
             const [view] = this.register(View, PropList, PropDialog, Footer, Snackbar, Overlay)
             this.viewComponent = view as View
-
-            // console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)
         })
     }
 }

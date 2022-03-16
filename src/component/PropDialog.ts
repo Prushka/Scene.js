@@ -89,9 +89,10 @@ export class PropDialog extends SceneComponent {
             if (isPopup) {
                 parentContainer.classList.add("prop__dialog")
             }
-            const container = document.createElement('div')
-            container.classList.add(`prop__dialog--${isPopup ? 'popup' : 'embedded'}`)
-            parentContainer.appendChild(container)
+            const dialogContainerElement = document.createElement('div')
+            dialogContainerElement.classList.add(`prop__dialog--${isPopup ? 'popup' : 'embedded'}`,
+                this.ctx.getRootWidth() < 500 ? 'prop__dialog--embedded--full-size':'prop__dialog--embedded--normal')
+            parentContainer.appendChild(dialogContainerElement)
             const header = document.createElement('div')
             header.classList.add('header')
 
@@ -217,7 +218,7 @@ export class PropDialog extends SceneComponent {
             scaleText.id = this.ctx.getId(selectedProp, "scale", "dialog")
 
             footer.append(propIcon, propText, positionText, scaleText)
-            container.append(header, contentElement, footer)
+            dialogContainerElement.append(header, contentElement, footer)
             return parentContainer.outerHTML
         }
         return ""
