@@ -496,7 +496,17 @@ export function demo() {
                     imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png"
                 }
             ],
-            shouldDisplayName: false
+            shouldDisplayName: false,
+            steps: {
+                11: {
+                    title: "Here's step 1",
+                    content: "Here's some content"
+                },
+                2: {
+                    title: "Here's step 2",
+                    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris"
+                }
+            }
         }
     }
     const ctx: Context = new Context({

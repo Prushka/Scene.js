@@ -4,7 +4,7 @@
 
 import {SceneComponent} from "./Component";
 import State, {createState, StateAction} from "../state/State";
-import {ExcludeKeys, ImageConfig} from "../props/Props";
+import {ExcludeKeys, ImageConfig, StepConfig} from "../props/Props";
 import {camelToDisplay, createSpan, positionToDisplay} from "../utils/Utils";
 
 enum Tab {
@@ -104,7 +104,7 @@ export class PropDialog extends SceneComponent {
                 keyElement.classList.add("content__key")
                 valueElement.innerHTML = value
                 valueElement.classList.add("content__value")
-
+                parentElement.classList.add('content__key-value')
                 parentElement.append(keyElement, valueElement)
                 return parentElement
             }
@@ -123,6 +123,25 @@ export class PropDialog extends SceneComponent {
                 return containerElement
             }
 
+            const createStepCard = (stepNumber: number, stepConfig: StepConfig): HTMLElement => {
+                const containerElement = document.createElement('div')
+                containerElement.classList.add('step-card')
+                const headerElement = document.createElement('div')
+
+                const stepNumberElement = document.createElement('span')
+                stepNumberElement.innerText = String(stepNumber)
+                stepNumberElement.classList.add('step-card__step')
+
+                const titleElement = document.createElement('span')
+                titleElement.innerText = stepConfig.title ? stepConfig.title : ""
+                headerElement.append(stepNumberElement, titleElement)
+
+                const contentElement = document.createElement('span')
+                contentElement.innerText = stepConfig.content ? stepConfig.content : ""
+                containerElement.append(headerElement, contentElement)
+                return containerElement
+            }
+
             switch (this.selectedTabState.get()) {
                 case Tab.GENERAL:
                     for (let key in selectedProp) {
@@ -135,7 +154,7 @@ export class PropDialog extends SceneComponent {
                     }
                     break
                 case Tab.SCRIPTS:
-                    if(selectedProp.script){
+                    if (selectedProp.script) {
                         const scriptElement = document.createElement('span')
                         scriptElement.innerText = selectedProp.script
                         contentElement.append(scriptElement)
@@ -146,6 +165,13 @@ export class PropDialog extends SceneComponent {
                         selectedProp.images.forEach(imageConfig => {
                             contentElement.append(createImage(imageConfig))
                         })
+                    }
+                    break
+                case Tab.STEPS:
+                    if (selectedProp.steps) {
+                        for (let key in selectedProp.steps) {
+                            contentElement.append(createStepCard(Number(key), selectedProp.steps[key]))
+                        }
                     }
                     break
             }

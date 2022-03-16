@@ -484,6 +484,10 @@
     border-radius: 50%;
     background-color: var(--theme-dark-gray);
     color: white;
-    padding: 10px;
-    margin-right: 10px;
+    height: 34px;
+    width: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 10px 10px 0;
 }

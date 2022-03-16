@@ -45,6 +45,11 @@ export interface ImageConfig {
     imageURL: string
 }
 
+export interface StepConfig {
+    title?: string,
+    content?: string
+}
+
 export interface PropConfig extends HasId {
     name?: string,
     color?: string,
@@ -52,7 +57,7 @@ export interface PropConfig extends HasId {
     type?: PropType | string,
     frameAnimationConfig?: FrameAnimationConfig,
     script?: string,
-    steps?: { [key: number]: string },
+    steps?: { [key: number]: StepConfig },
     note?: string,
     shouldDisplayName?: boolean,
     images?: ImageConfig[]
