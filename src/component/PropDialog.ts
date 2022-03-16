@@ -91,7 +91,7 @@ export class PropDialog extends SceneComponent {
             }
             const dialogContainerElement = document.createElement('div')
             dialogContainerElement.classList.add(`prop__dialog--${isPopup ? 'popup' : 'embedded'}`,
-                this.ctx.getRootWidth() < 500 ? 'prop__dialog--embedded--full-size':'prop__dialog--embedded--normal')
+                this.ctx.isRootMobile() ? 'prop__dialog--embedded--mobile':'prop__dialog--embedded--normal')
             parentContainer.appendChild(dialogContainerElement)
             const header = document.createElement('div')
             header.classList.add('header')

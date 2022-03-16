@@ -118,6 +118,10 @@ export class Context {
         return this.getRootDocument().getBoundingClientRect().height
     }
 
+    public isRootMobile() {
+        return this.getRootWidth() < 500
+    }
+
     public extractIdType(htmlID: string): [number, string[]] {
         const elementId = htmlID.match(/-\d+/)
         const contextId = htmlID.match(/\d+-/)

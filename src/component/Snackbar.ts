@@ -33,6 +33,6 @@ export class Snackbar extends SceneComponent {
     }
 
     render(): string | string[] {
-        return `<div class='snackbar snackbar--closed' id="${this.ctx.getIdType("snackbar")}"><span></span></div>`
+        return `<div class='snackbar snackbar--closed ${this.ctx.isRootMobile()?'snackbar--mobile':'snackbar--normal'}' id="${this.ctx.getIdType("snackbar")}"><span></span></div>`
     }
 }

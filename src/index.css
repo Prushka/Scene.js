@@ -99,7 +99,7 @@
     bottom: 80px;
 }
 
-.prop__dialog--embedded--full-size {
+.prop__dialog--embedded--mobile {
     padding: 12px 6px;
     width: 100%;
     height: 100%;
@@ -459,15 +459,23 @@
     left: 0;
     right: 0;
     top: 0;
-    width: 300px;
     background-color: var(--theme-pink);
     z-index: 1400;
     border-radius: 4px;
-    font-size: 16px;
     transition-duration: .3s;
     color: white;
     font-weight: 600;
     opacity: 1;
+}
+
+.snackbar--normal{
+    width: 300px;
+    font-size: 16px;
+}
+
+.snackbar--mobile{
+    width: 85%;
+    font-size: 14px;
 }
 
 .snackbar--closed {
