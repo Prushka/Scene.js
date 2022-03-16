@@ -56,7 +56,7 @@ export class PropDialog extends SceneComponent {
         $('.header span').on("click", (e) => {
             this.selectedTabState.set(Tab[this.context.extractIdType(e.target.id)[1][1] as keyof typeof Tab])
         })
-        $('.content .image__container img').on("click", (e)=>{
+        $('.content .image__container img').on("click", (e) => {
             this.context.overlayOpenState.set(true)
             this.context.overlayHTMLState.set(`<img src='${e.target.getAttribute('src')}' alt=""/>`)
         })
@@ -113,12 +113,10 @@ export class PropDialog extends SceneComponent {
                 const containerElement = document.createElement('div')
                 containerElement.classList.add('image__container')
                 const imageElement = document.createElement('img')
-                if (imageConfig.title) {
-                    const titleElement = document.createElement('span')
-                    titleElement.innerText = imageConfig.title
-                    titleElement.classList.add("image__container__title")
-                    containerElement.append(titleElement)
-                }
+                const titleElement = document.createElement('span')
+                titleElement.innerText = imageConfig.title ? imageConfig.title : ''
+                titleElement.classList.add("image__container__title")
+                containerElement.append(titleElement)
                 imageElement.src = imageConfig.imageURL
 
                 containerElement.append(imageElement)
