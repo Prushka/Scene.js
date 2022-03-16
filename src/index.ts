@@ -28,6 +28,7 @@ import {View} from "./component/View";
 import {Config, DefaultConfig} from "./config/Config";
 import {Snackbar} from "./component/Snackbar";
 import {CustomComponent} from "./component/Component";
+import {Overlay} from "./component/Overlay";
 
 export * as position from './props/Position'
 
@@ -114,6 +115,8 @@ export class Context {
     public readonly config: Config
     private _snackbarMSG: State<string> = createState('')
     public readonly propTypeIconPool: { [key in PropType]: PropTypeIcon }
+    public overlayOpenState : State<boolean> = createState(false)
+    public overlayHTMLState : State<string> = createState('')
 
     public get snackbarState(): State<string> {
         return this._snackbarMSG
@@ -424,11 +427,12 @@ export class Context {
                                      <div class='prop__list-container'></div>
                                     <div class='prop__property-container'></div>
                                     <div class='view-container'></div>
-                                    <div class="footer-container"></div>`)
+                                    <div class="footer-container"></div>
+                                    <div class="overlay-container"></div>`)
 
             // this._selected.set(this.props[0])
             //
-            const [view] = this.register(View, PropList, PropDialog, Footer, Snackbar)
+            const [view] = this.register(View, PropList, PropDialog, Footer, Snackbar, Overlay)
             this.viewComponent = view as View
 
             // console.log(`offset: left ${this.offset.left}, top ${this.offset.top}`)

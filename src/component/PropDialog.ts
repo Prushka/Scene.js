@@ -18,15 +18,15 @@ export class PropDialog extends SceneComponent {
 
     // prop is not a property, it's the prop used in a scene
 
-    selectedTab: State<Tab>
+    selectedTabState: State<Tab>
 
     afterConstructor() {
-        this.selectedTab = createState(Tab.GENERAL)
+        this.selectedTabState = createState(Tab.GENERAL)
     }
 
     listen(): State<any>[] {
         return [this.context.selectedState, this.context.props, this.context.ctx.currentFrameState,
-            this.selectedTab];
+            this.selectedTabState];
     }
 
     subscribe() {
@@ -35,7 +35,7 @@ export class PropDialog extends SceneComponent {
 
     actions(): StateAction<any>[] {
         return [[this.context.selectedState, () => {
-            this.selectedTab.set(Tab.GENERAL)
+            this.selectedTabState.set(Tab.GENERAL)
         }]]
     }
 
@@ -54,15 +54,11 @@ export class PropDialog extends SceneComponent {
             e.stopPropagation()
         })
         $('.header span').on("click", (e) => {
-            this.selectedTab.set(Tab[this.context.extractIdType(e.target.id)[1][1] as keyof typeof Tab])
+            this.selectedTabState.set(Tab[this.context.extractIdType(e.target.id)[1][1] as keyof typeof Tab])
         })
-    }
-
-    private createContent(title, contentHTML) {
-        const titleElement = document.createElement("div")
-        titleElement.classList.add("title")
-        titleElement.innerText = title
-        return titleElement.outerHTML + contentHTML
+        $('.content .image__container img').on("click", (e)=>{
+            this.context.overlayOpenState.set(true)
+        })
     }
 
     render(): string | string[] {
@@ -84,7 +80,7 @@ export class PropDialog extends SceneComponent {
                 button.title = title
                 button.classList.add(...classNames)
                 button.id = this.context.getIdType("dialog", id)
-                button.classList.add(this.selectedTab.get() === id ? "header__button--selected" : "header__button--not-selected")
+                button.classList.add(this.selectedTabState.get() === id ? "header__button--selected" : "header__button--not-selected")
                 return button
             }
 
@@ -128,7 +124,7 @@ export class PropDialog extends SceneComponent {
                 return containerElement
             }
 
-            switch (this.selectedTab.get()) {
+            switch (this.selectedTabState.get()) {
                 case Tab.GENERAL:
                     for (let key in selectedProp) {
                         if (!ExcludeKeys.includes(key)) {
