@@ -45,6 +45,13 @@
     justify-content: center;
 }
 
+.overlay > img{
+    height: auto;
+    width: auto;
+    max-width: 92%;
+    max-height: 92%;
+}
+
 /* TODO: clean this up */
 
 .prop__dialog {

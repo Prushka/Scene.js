@@ -58,6 +58,7 @@ export class PropDialog extends SceneComponent {
         })
         $('.content .image__container img').on("click", (e)=>{
             this.context.overlayOpenState.set(true)
+            this.context.overlayHTMLState.set(`<img src='${e.target.getAttribute('src')}' alt=""/>`)
         })
     }
 

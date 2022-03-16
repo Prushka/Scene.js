@@ -24,7 +24,6 @@ export class Overlay extends SceneComponent {
                 this.context.overlayOpenState.set(false)
             }
         }
-
     }
 
     render(): string | string[] {
