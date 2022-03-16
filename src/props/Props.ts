@@ -40,6 +40,11 @@ export interface HasId {
 
 export type FrameAnimationConfig = { [key: number]: AnimationConfig }
 
+export interface ImageConfig {
+    title: string,
+    imageURL: string
+}
+
 export interface PropConfig extends HasId {
     name?: string,
     color?: string,
@@ -49,7 +54,8 @@ export interface PropConfig extends HasId {
     script?: string,
     steps?: { [key: number]: string },
     note?: string,
-    shouldDisplayName?: boolean
+    shouldDisplayName?: boolean,
+    images?: ImageConfig[]
 }
 
 export const ExcludeKeys = ["name", "color", "type", "frameAnimationConfig", "script",
@@ -72,6 +78,7 @@ export interface PropTypeStyleIcon {
     enabledPaths: string,
     disabledPaths: string
 }
+
 
 export type PropTypeIcon = { [key: string]: PropTypeStyleIcon }
 
