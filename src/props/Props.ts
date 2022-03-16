@@ -41,7 +41,7 @@ export interface HasId {
 export type FrameAnimationConfig = { [key: number]: AnimationConfig }
 
 export interface ImageConfig {
-    title: string,
+    title?: string,
     imageURL: string
 }
 
@@ -59,7 +59,7 @@ export interface PropConfig extends HasId {
 }
 
 export const ExcludeKeys = ["name", "color", "type", "frameAnimationConfig", "script",
-    "steps", "note", "shouldDisplayName", "id"]
+    "steps", "note", "shouldDisplayName", "id", "images"]
 
 export enum PropType {
     TABLE = "TABLE",

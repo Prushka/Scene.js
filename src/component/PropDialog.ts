@@ -4,7 +4,7 @@
 
 import {SceneComponent} from "./Component";
 import State, {createState, StateAction} from "../state/State";
-import {ExcludeKeys} from "../props/Props";
+import {ExcludeKeys, ImageConfig} from "../props/Props";
 import {camelToDisplay, createSpan, positionToDisplay} from "../utils/Utils";
 
 enum Tab {
@@ -95,11 +95,11 @@ export class PropDialog extends SceneComponent {
                 createTitleButton(Tab.IMAGES, "Images", "bi", "bi-image-fill"),
                 createTitleButton(Tab.STEPS, "Steps", "bi", "bi-123"))
 
-            const content = document.createElement('div')
-            content.classList.add("content")
+            const contentElement = document.createElement('div')
+            contentElement.classList.add("content")
 
             const createKeyValueContent = (key, value) => {
-                const parent = document.createElement('span')
+                const parentElement = document.createElement('span')
                 const keyElement = document.createElement('span')
                 const valueElement = document.createElement('span')
 
@@ -108,23 +108,46 @@ export class PropDialog extends SceneComponent {
                 valueElement.innerHTML = value
                 valueElement.classList.add("content__value")
 
-                parent.append(keyElement, valueElement)
-                return parent
+                parentElement.append(keyElement, valueElement)
+                return parentElement
+            }
+
+            const createImage = (imageConfig: ImageConfig) => {
+                const containerElement = document.createElement('div')
+                containerElement.classList.add('image__container')
+                const imageElement = document.createElement('img')
+                if (imageConfig.title) {
+                    const titleElement = document.createElement('span')
+                    titleElement.innerText = imageConfig.title
+                    titleElement.classList.add("image__container__title")
+                    containerElement.append(titleElement)
+                }
+                imageElement.src = imageConfig.imageURL
+
+                containerElement.append(imageElement)
+                return containerElement
             }
 
             switch (this.selectedTab.get()) {
                 case Tab.GENERAL:
                     for (let key in selectedProp) {
                         if (!ExcludeKeys.includes(key)) {
-                            content.append(createKeyValueContent(key, selectedProp[key]))
+                            contentElement.append(createKeyValueContent(key, selectedProp[key]))
                         }
                     }
                     if (selectedProp.note) {
-                        content.append(createKeyValueContent("Note", selectedProp.note))
+                        contentElement.append(createKeyValueContent("Note", selectedProp.note))
                     }
                     break
                 case Tab.SCRIPTS:
 
+                    break
+                case Tab.IMAGES:
+                    if (selectedProp.images) {
+                        selectedProp.images.forEach(imageConfig => {
+                            contentElement.append(createImage(imageConfig))
+                        })
+                    }
                     break
             }
 
@@ -145,7 +168,7 @@ export class PropDialog extends SceneComponent {
             const positionText = createSpan(`(${positionDisplay.x}, ${positionDisplay.y}, ${positionDisplay.degree}°)`, selectedProp.color)
             const scaleText = createSpan(`(${positionDisplay.scaleX}x, ${positionDisplay.scaleY}x)`, selectedProp.color)
             footer.append(propIcon, propText, positionText, scaleText)
-            container.append(header, content, footer)
+            container.append(header, contentElement, footer)
             return parentContainer.outerHTML
         }
         return ""

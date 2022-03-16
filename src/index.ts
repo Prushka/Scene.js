@@ -185,7 +185,7 @@ export class Context {
     public extractIdType(htmlID: string): [number, string[]] {
         const elementId = htmlID.match(/-\d+/)
         const contextId = htmlID.match(/\d+-/)
-        if(!contextId){
+        if (!contextId) {
             return [-1, []]
         }
         let id = -1
@@ -478,6 +478,19 @@ export function demo() {
                 3: getRandomPosition(),
                 4: getRandomPosition(),
             },
+            images: [
+                {
+                    title: "test",
+                    imageURL: "https://s2.loli.net/2022/02/10/grldkO4LeDjxmY8.png"
+                },
+                {
+                    imageURL: "https://s2.loli.net/2022/03/16/KZw7yAWXudMGL21.png"
+                },
+                {
+                    title: "A long picture",
+                    imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png"
+                }
+            ],
             shouldDisplayName: false
         }
     }

@@ -116,6 +116,28 @@
     margin-right: 12px;
 }
 
+.content .image__container {
+    align-items: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+
+    padding: 8px 0 16px 0;
+    border-bottom: 2px solid var(--theme-gray);
+}
+
+.content .image__container span {
+    padding: 0 0 8px 0 !important;
+    font-weight: 500;
+}
+
+.content .image__container img {
+    width: 95%;
+}
+
+.content .image__container__title {
+}
+
 .content__key {
     color: #6565a1;
     font-weight: 700;
