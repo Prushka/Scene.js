@@ -25,7 +25,7 @@ export class PropDialog extends SceneComponent {
     }
 
     listen(): State<any>[] {
-        return [this.context.selectedState, this.context.props, this.selectedTabState];
+        return [this.ctx.selectedState, this.ctx.props, this.selectedTabState];
     }
 
     subscribe() {
@@ -33,20 +33,20 @@ export class PropDialog extends SceneComponent {
     }
 
     actions(): StateAction<any>[] {
-        return [[this.context.selectedState, () => {
+        return [[this.ctx.selectedState, () => {
             this.selectedTabState.set(Tab.GENERAL)
-        }], [this.context.ctx.currentFrameState, (oldFrame, newFrame) => {
-            const selectedProp = this.context.selected
+        }], [this.ctx.ctx.currentFrameState, (oldFrame, newFrame) => {
+            const selectedProp = this.ctx.selected
             if(selectedProp){
-                const positionElement = document.getElementById(this.context.getId(selectedProp, "position", "dialog"))
-                const scaleElement = document.getElementById(this.context.getId(selectedProp, "scale", "dialog"))
+                const positionElement = document.getElementById(this.ctx.getId(selectedProp, "position", "dialog"))
+                const scaleElement = document.getElementById(this.ctx.getId(selectedProp, "scale", "dialog"))
                 this.updatePositionScaleElements(positionElement, scaleElement, selectedProp, newFrame, newFrame < oldFrame)
             }
         }]]
     }
 
     private updatePositionScaleElements(positionElement, scaleElement, prop, frame?: number, lookForward?: boolean) {
-        const position = frame == null ? this.context.getPropPositionByCurrentFrame(prop) : this.context.getPropPositionByFrame(prop, frame, lookForward)
+        const position = frame == null ? this.ctx.getPropPositionByCurrentFrame(prop) : this.ctx.getPropPositionByFrame(prop, frame, lookForward)
         const positionDisplay = positionToDisplay(position)
         if (positionElement) {
             positionElement.innerText = `(${positionDisplay.x}, ${positionDisplay.y}, ${positionDisplay.degree}°)`
@@ -60,31 +60,31 @@ export class PropDialog extends SceneComponent {
 
     afterRender() {
         const toggle = (e) => {
-            const [id] = this.context.extractIdType(e.target.id)
-            this.context.toggleSelected(id)
+            const [id] = this.ctx.extractIdType(e.target.id)
+            this.ctx.toggleSelected(id)
         }
-        $('.prop__dialog__close').on("click", (e) => {
+        this.ctx.$('.prop__dialog__close').on("click", (e) => {
             toggle(e)
         })
-        $('.prop__dialog').on("click", (e) => {
-            this.context.selected = null
+        this.ctx.$('.prop__dialog').on("click", (e) => {
+            this.ctx.selected = null
         })
-        $('.prop__dialog--popup').on("click", (e) => {
+        this.ctx.$('.prop__dialog--popup').on("click", (e) => {
             e.stopPropagation()
         })
-        $('.header span').on("click", (e) => {
-            this.selectedTabState.set(Tab[this.context.extractIdType(e.target.id)[1][1] as keyof typeof Tab])
+        this.ctx.$('.header span').on("click", (e) => {
+            this.selectedTabState.set(Tab[this.ctx.extractIdType(e.target.id)[1][1] as keyof typeof Tab])
         })
-        $('.content .image__container img').on("click", (e) => {
-            this.context.overlayOpenState.set(true)
-            this.context.overlayHTMLState.set(`<img src='${e.target.getAttribute('src')}' alt=""/>`)
+        this.ctx.$('.content .image__container img').on("click", (e) => {
+            this.ctx.overlayOpenState.set(true)
+            this.ctx.overlayHTMLState.set(`<img src='${e.target.getAttribute('src')}' alt=""/>`)
         })
     }
 
     render(): string | string[] {
-        const selectedProp = this.context.selected
+        const selectedProp = this.ctx.selected
         if (selectedProp) {
-            const isPopup = this.context.config.dialog === 'popup'
+            const isPopup = this.ctx.config.dialog === 'popup'
             const parentContainer = document.createElement('div')
             if (isPopup) {
                 parentContainer.classList.add("prop__dialog")
@@ -96,11 +96,11 @@ export class PropDialog extends SceneComponent {
             header.classList.add('header')
 
             const addTitleTab = (id, title, check, ...classNames) => {
-                if (this.context.config.alwaysShowAllDialogTabs || check) {
+                if (this.ctx.config.alwaysShowAllDialogTabs || check) {
                     const button = document.createElement('span')
                     button.title = title
                     button.classList.add(...classNames)
-                    button.id = this.context.getIdType("dialog", id)
+                    button.id = this.ctx.getIdType("dialog", id)
                     button.classList.add(this.selectedTabState.get() === id ? "header__button--selected" : "header__button--not-selected")
                     header.append(button)
                 }
@@ -201,12 +201,12 @@ export class PropDialog extends SceneComponent {
             const footer = document.createElement('div')
             footer.classList.add('footer')
             const headerCloseIcon = document.createElement('i')
-            headerCloseIcon.id = this.context.getId(selectedProp, 'prop', 'dialog', 'property')
+            headerCloseIcon.id = this.ctx.getId(selectedProp, 'prop', 'dialog', 'property')
             headerCloseIcon.classList.add("bi", "bi-x", "pointer", "prop__dialog__close")
             header.appendChild(headerCloseIcon)
 
-            const propIcon = this.context.getPropSVG(selectedProp)
-            propIcon.id = this.context.getId(selectedProp, 'prop', 'dialog', 'property', 'icon')
+            const propIcon = this.ctx.getPropSVG(selectedProp)
+            propIcon.id = this.ctx.getId(selectedProp, 'prop', 'dialog', 'property', 'icon')
             const propText = document.createElement("span")
             propText.innerText = selectedProp.name
             propText.style.color = selectedProp.color
@@ -214,8 +214,8 @@ export class PropDialog extends SceneComponent {
             const positionText = document.createElement('span')
             const scaleText = document.createElement('span')
             this.updatePositionScaleElements(positionText, scaleText, selectedProp)
-            positionText.id = this.context.getId(selectedProp, "position", "dialog")
-            scaleText.id = this.context.getId(selectedProp, "scale", "dialog")
+            positionText.id = this.ctx.getId(selectedProp, "position", "dialog")
+            scaleText.id = this.ctx.getId(selectedProp, "scale", "dialog")
 
             footer.append(propIcon, propText, positionText, scaleText)
             container.append(header, contentElement, footer)

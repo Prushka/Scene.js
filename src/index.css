@@ -319,7 +319,7 @@
 }
 
 .prop__list-container--closed {
-    left: calc(var(--prop-list-width) * -1)
+    left: calc(var(--prop-list-width) * -1) !important
 }
 
 .hide__icon-container {

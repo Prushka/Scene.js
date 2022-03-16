@@ -10,12 +10,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="build/bundle.js"></script>
     <script>
-        sceneBlocking.demo()
+        sceneBlocking.demo('root-1')
+        sceneBlocking.demo('root-2')
     </script>
 </head>
 <body>
-<div style="width: 1000px; height: 600px;">
-    <div style="top:200px" id="root-1"></div>
+<div style="display: flex; flex-direction: column">
+    <div style="width: 1000px; height: 600px;">
+        <div id="root-1"></div>
+    </div>
+    <div style="width: 1000px; height: 600px;">
+        <div id="root-2"></div>
+    </div>
 </div>
 </body>
 </html>

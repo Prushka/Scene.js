@@ -117,7 +117,8 @@ export class Context {
     public readonly propTypeIconPool: { [key in PropType]: PropTypeIcon }
     public overlayOpenState: State<boolean> = createState(false)
     public overlayHTMLState: State<string> = createState('')
-    private readonly rootContainerId: string
+    public readonly rootContainerId: string
+    public readonly rootContainerIdSymbol: string
 
     public get snackbarState(): State<string> {
         return this._snackbarMSG
@@ -133,6 +134,7 @@ export class Context {
 
     public constructor(rootContainerId: string, config?: Config, context?: TimeContext) {
         this.rootContainerId = rootContainerId
+        this.rootContainerIdSymbol = '#' + this.rootContainerId
         this.contextId = Context.contextIds
         Context.contextIds += 1
         this.ctx = context ? context : new TimeContext()
@@ -185,6 +187,10 @@ export class Context {
         const selectedProp: PropConfig = this.selected
         const propId: number = typeof prop === 'number' ? prop : prop.id
         return selectedProp && selectedProp.id === propId;
+    }
+
+    public getRootDocument() {
+        return document.getElementById(this.rootContainerId)
     }
 
     public extractIdType(htmlID: string): [number, string[]] {
@@ -358,7 +364,7 @@ export class Context {
 
     public calcViewBox([minX, minY, maxX, maxY]) {
         console.log(minX, minY, maxX, maxY)
-        const svgE = $(`#${this.rootContainerId}`)
+        const svgE = $(`${this.rootContainerIdSymbol}`)
         const viewWidthRatio = (maxX - minX) / svgE.width()
         const viewHeightRatio = (maxY - minY) / svgE.height()
         let viewRatio = viewWidthRatio > viewHeightRatio ? viewWidthRatio : viewHeightRatio
@@ -420,10 +426,14 @@ export class Context {
 
     viewComponent: View
 
+    public $(selector){
+        return $(`${this.rootContainerIdSymbol} ${selector}`)
+    }
+
     public displayRoot() {
         this.beforeDisplay()
         $(() => {
-            $(`#${this.rootContainerId}`).addClass("root-container")
+            $(`${this.rootContainerIdSymbol}`).addClass("root-container")
                 .html(`<div id="${this.getIdType('snackbar', 'root__container')}" class='snackbar-container'></div>
                                      <div id="${this.getIdType('prop__list', 'root__container')}" class='prop__list-container'></div>
                                     <div id="${this.getIdType('prop__property', 'root__container')}" class='prop__property-container'></div>
@@ -441,7 +451,7 @@ export class Context {
     }
 }
 
-export function demo() {
+export function demo(rootId: string) {
     const getRandomPosition = () => {
         const scale = randInclusive(5, 30) / 10
         return {
@@ -515,7 +525,7 @@ export function demo() {
             }
         }
     }
-    const ctx: Context = new Context('root-1', {
+    const ctx: Context = new Context(rootId, {
         frameSpeed: {
             1: 3,
             2: 2,
