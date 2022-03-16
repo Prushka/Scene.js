@@ -3,7 +3,7 @@
  */
 
 import {SceneComponent} from "./Component";
-import {AnimationConfig, PositionConfig, PropConfig, PropTypeIcons} from "../props/Props";
+import {AnimationConfig, PositionConfig, PropConfig} from "../props/Props";
 import State, {createState, StateAction} from "../state/State";
 import PropTupleSet from "../utils/PropTupleSet";
 import {getLineGroup} from "../utils/Utils";
@@ -25,7 +25,7 @@ export class View extends SceneComponent {
     }
 
     listen(): State<any>[] {
-        return [this.ctx.props];
+        return [this.ctx.propsState];
     }
 
     actions(): StateAction<any>[] {
@@ -45,9 +45,9 @@ export class View extends SceneComponent {
                     }
                 }
             }],
-            [this.ctx.ctx.currentFrameState, (oldFrame: number, newFrame: number) => {
+            [this.ctx.timeCtx.currentFrameState, (oldFrame: number, newFrame: number) => {
                 console.log(`Frame: ${oldFrame} -> ${newFrame}`)
-                this.ctx.props.get().forEach(prop => {
+                this.ctx.propsState.get().forEach(prop => {
                     let newPosition = prop.frameAnimationConfig[newFrame]
                     let show = newPosition && !newPosition.hide
                     newPosition = this.ctx.getPropPositionByFrame(prop, newFrame, newFrame < oldFrame)
@@ -66,7 +66,7 @@ export class View extends SceneComponent {
                     // console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
                     groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scaleX} ${newPosition.scaleY})`)
                     let transitionDuration
-                    if (newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.ctx.ctx.totalFrames)) {
+                    if (newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.ctx.timeCtx.totalFrames)) {
                         transitionDuration = this.ctx.getFrameSeconds(oldFrame) + "s"
                     } else {
                         transitionDuration = this.ctx.config.frameSelectionSpeed + "s"
@@ -190,7 +190,7 @@ export class View extends SceneComponent {
     }
 
     render(): string | string[] {
-        const props = this.ctx.props.get()
+        const props = this.ctx.propsState.get()
 
         const gs = []
         this.ctx.config.lines.forEach(([start, end, line]) => {

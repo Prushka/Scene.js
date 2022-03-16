@@ -34,8 +34,8 @@ export class Footer extends SceneComponent {
                 setClassList(icon, "bi", "bi-play-fill")
             }
         })],
-        [this.ctx.ctx.currentFrameState, (_, currentFrame)=>{
-            for (let f = 0; f < this.ctx.ctx.totalFrames; f++) {
+        [this.ctx.timeCtx.currentFrameState, (_, currentFrame)=>{
+            for (let f = 0; f < this.ctx.timeCtx.totalFrames; f++) {
                 const fElement = document.getElementById(this.ctx.getId(f + 1, 'timeline', 'frame'))
                 fElement.classList.remove("timeline__frame--selected")
                 fElement.classList.add("timeline__frame--not-selected")
@@ -59,7 +59,7 @@ export class Footer extends SceneComponent {
         }
         this.ctx.$('.timeline__frame').on("click", (e) => {
             const [frame] = this.ctx.extractIdType(e.target.id)
-            this.ctx.ctx.currentFrame = frame
+            this.ctx.timeCtx.currentFrame = frame
         })
         hookButton(() => {
             this.open.set(!this.open.get())
@@ -70,13 +70,13 @@ export class Footer extends SceneComponent {
         }, "toolbar", "reset", "frames")
 
         hookButton(() => {
-            this.ctx.viewComponent.resetViewport(this.ctx.ctx.currentFrame)
+            this.ctx.viewComponent.resetViewport(this.ctx.timeCtx.currentFrame)
             this.ctx.snackbar = "Reset Current Viewport"
         }, "toolbar", "reset", "current")
 
         const nextFrame = () => {
             if (this.playing.get()) {
-                const previousFrame = this.ctx.ctx.nextFrame()
+                const previousFrame = this.ctx.timeCtx.nextFrame()
                 setTimeout(() => {
                     nextFrame()
                 }, this.ctx.getFrameSeconds(previousFrame) * 1000)
@@ -89,7 +89,7 @@ export class Footer extends SceneComponent {
             }
         }, "toolbar", "play")
         hookButton(() => {
-            navigator.clipboard.writeText(JSON.stringify(this.ctx.props.get())).then(() => this.ctx.snackbar = "Copied to clipboard")
+            navigator.clipboard.writeText(JSON.stringify(this.ctx.propsState.get())).then(() => this.ctx.snackbar = "Copied to clipboard")
         }, "toolbar", "export")
     }
 
@@ -97,16 +97,16 @@ export class Footer extends SceneComponent {
         const createButtonDiv = (title, iconClasses, ...types: string[]) => {
             return `<div id="${this.ctx.getIdType(...types)}" title="${title}" class="button button--purple pointer"><i class='${iconClasses}' id="${this.ctx.getIdType(...types, 'icon')}"></i></div>`
         }
-        const currentFrame = this.ctx.ctx.currentFrame
+        const currentFrame = this.ctx.timeCtx.currentFrame
         let elements = ""
         const buttons = [createButtonDiv('Collapse/Expand', 'bi bi-arrows-collapse', "toolbar", "collapse")]
 
         buttons.push(createButtonDiv('Reset viewport (based on current frame)', 'bi bi-arrows-move', "toolbar", "reset", "current"))
         buttons.push(createButtonDiv("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', "toolbar", "reset", "frames"))
         buttons.push(createButtonDiv('Export', 'bi bi-box-arrow-up-right', "toolbar", "export"))
-        if (this.ctx.ctx.totalFrames > 1) {
+        if (!this.ctx.timeCtx.isStatic) {
             let frames = ""
-            for (let f = 0; f < this.ctx.ctx.totalFrames; f++) {
+            for (let f = 0; f < this.ctx.timeCtx.totalFrames; f++) {
                 frames += `<div id="${this.ctx.getId(f + 1, 'timeline', 'frame')}" class="timeline__frame ${currentFrame === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
             }
             elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`

@@ -18,7 +18,6 @@ import {
     createElement, createSpan,
     createSVGIcon,
     generateDarkColor,
-    getLineGroup,
     randInclusive
 } from "./utils/Utils";
 import {PropList} from "./component/PropList";
@@ -38,7 +37,7 @@ export interface SceneContextConfig {
 
 export class TimeContext {
     protected _config: SceneContextConfig
-    private _currentFrame: State<number> = createState(1)
+    public currentFrameState: State<number> = createState(1)
 
     public constructor(config?: SceneContextConfig) {
         config = config || {}
@@ -47,7 +46,7 @@ export class TimeContext {
     }
 
     public get isStatic() {
-        return this._config.totalFrames == 0
+        return this._config.totalFrames <= 1
     }
 
     public get totalFrames() {
@@ -59,15 +58,11 @@ export class TimeContext {
     }
 
     public get currentFrame() {
-        return this._currentFrame.get()
+        return this.currentFrameState.get()
     }
 
     public set currentFrame(f: number) {
-        this._currentFrame.set(f)
-    }
-
-    public get currentFrameState() {
-        return this._currentFrame
+        this.currentFrameState.set(f)
     }
 
     public nextFrame(): number {
@@ -82,25 +77,25 @@ export class TimeContext {
 }
 
 export class ViewPort {
-    _offset: State<PositionConfig> = createState({
+    private offsetState: State<PositionConfig> = createState({
         x: 0, y: 0
     })
-    _scale: State<number> = createState(0.75)
+    private scaleState: State<number> = createState(0.75)
 
     public get offset() {
-        return this._offset.get()
+        return this.offsetState.get()
     }
 
     public set offset(offset) {
-        this._offset.set(offset)
+        this.offsetState.set(offset)
     }
 
     public get scale() {
-        return this._scale.get()
+        return this.scaleState.get()
     }
 
     public set scale(scale) {
-        this._scale.set(scale)
+        this.scaleState.set(scale)
     }
 }
 
@@ -108,12 +103,12 @@ export class Context {
     private static contextIds = 0
     private readonly contextId
     protected ids: number = 0
-    ctx: TimeContext
+    timeCtx: TimeContext
     private _selected: State<PropConfig> = createState()
-    props: State<PropConfig[]> = createState([])
-    viewports: State<ViewPort[]> = createState([])
+    propsState: State<PropConfig[]> = createState([])
+    viewportsState: State<ViewPort[]> = createState([])
     public readonly config: Config
-    private _snackbarMSG: State<string> = createState('')
+    private snackbarMessageState: State<string> = createState('')
     public readonly propTypeIconPool: { [key in PropType]: PropTypeIcon }
     public overlayOpenState: State<boolean> = createState(false)
     public overlayHTMLState: State<string> = createState('')
@@ -121,15 +116,15 @@ export class Context {
     public readonly rootContainerIdSymbol: string
 
     public get snackbarState(): State<string> {
-        return this._snackbarMSG
+        return this.snackbarMessageState
     }
 
     public get snackbar() {
-        return this._snackbarMSG.get()
+        return this.snackbarMessageState.get()
     }
 
     public set snackbar(message: string) {
-        this._snackbarMSG.set(message, true)
+        this.snackbarMessageState.set(message, true)
     }
 
     public constructor(rootContainerId: string, config?: Config, context?: TimeContext) {
@@ -137,7 +132,7 @@ export class Context {
         this.rootContainerIdSymbol = '#' + this.rootContainerId
         this.contextId = Context.contextIds
         Context.contextIds += 1
-        this.ctx = context ? context : new TimeContext()
+        this.timeCtx = context ? context : new TimeContext()
         this.config = config ? {...DefaultConfig, ...config} : {...DefaultConfig}
         this.config.lines.forEach((l) => {
             l[2] = {...DefaultLine, ...l[2]}
@@ -148,7 +143,7 @@ export class Context {
     }
 
     public addProp(...propConfigs: PropConfig[]): Context {
-        const _props = [...this.props.get()]
+        const _props = [...this.propsState.get()]
         propConfigs.forEach(propConfig => {
             propConfig.color = propConfig.color || generateDarkColor()
             propConfig.style = propConfig.style || "default"
@@ -167,7 +162,7 @@ export class Context {
             this.ids += 1
             _props.push(propConfig)
         })
-        this.props.set(_props)
+        this.propsState.set(_props)
         return this
     }
 
@@ -222,7 +217,7 @@ export class Context {
     }
 
     public getPropById(id: number): PropConfig | null {
-        for (const prop of this.props.get()) {
+        for (const prop of this.propsState.get()) {
             if (prop.id === id) {
                 return prop
             }
@@ -232,7 +227,7 @@ export class Context {
 
     public getPropsByName(name: string) {
         const props = []
-        for (const prop of this.props.get()) {
+        for (const prop of this.propsState.get()) {
             if (prop.name.toLowerCase() === name.toLowerCase()) {
                 props.push(prop)
             }
@@ -245,14 +240,14 @@ export class Context {
     }
 
     public getPropPosition(prop: PropConfig): AnimationConfig | null {
-        let position: AnimationConfig = prop.frameAnimationConfig[this.ctx.currentFrame]
+        let position: AnimationConfig = prop.frameAnimationConfig[this.timeCtx.currentFrame]
         position = {...position}
         console.log(`${prop.name} (${position.x},${position.y})`)
         return position
     }
 
     public getPropPositionByCurrentFrame(prop: PropConfig): AnimationConfig | null {
-        return this.getPropPositionByFrame(prop, this.ctx.currentFrame, false)
+        return this.getPropPositionByFrame(prop, this.timeCtx.currentFrame, false)
     }
 
     public getPropPositionByFrame(prop: PropConfig, frame: number, lookForward: boolean): AnimationConfig | null {
@@ -300,7 +295,7 @@ export class Context {
 
     public findMaxFrames(): number {
         let max = 0
-        this.props.get().forEach(prop => {
+        this.propsState.get().forEach(prop => {
             const frameConfig: FrameAnimationConfig = prop.frameAnimationConfig
             const _max: number = Number(Object.keys(frameConfig).reduce((a, b) => frameConfig[a] > frameConfig[b] ? a : b))
             if (_max > max) {
@@ -311,23 +306,23 @@ export class Context {
     }
 
     public get viewportOffset() {
-        return this.viewports.get()[0].offset
+        return this.viewportsState.get()[0].offset
     }
 
     public set viewportOffset(offset: PositionConfig) {
-        const _viewports = [...this.viewports.get()]
+        const _viewports = [...this.viewportsState.get()]
         _viewports[0].offset = offset
-        this.viewports.set(_viewports)
+        this.viewportsState.set(_viewports)
     }
 
     public get viewportScale() {
-        return this.viewports.get()[0].scale
+        return this.viewportsState.get()[0].scale
     }
 
     public set viewportScale(scale: number) {
-        const _viewports = [...this.viewports.get()]
+        const _viewports = [...this.viewportsState.get()]
         _viewports[0].scale = scale
-        this.viewports.set(_viewports)
+        this.viewportsState.set(_viewports)
     }
 
     public findMinMaxPosition(currentFrame?: number): [number, number, number, number] {
@@ -346,7 +341,7 @@ export class Context {
                 minY = position.y
             }
         }
-        this.props.get().forEach(prop => {
+        this.propsState.get().forEach(prop => {
             if (currentFrame) {
                 updateMinMax(this.getPropPositionByCurrentFrame(prop))
             } else {
@@ -375,14 +370,14 @@ export class Context {
     }
 
     private beforeDisplay() {
-        this.ctx.totalFrames = this.findMaxFrames()
+        this.timeCtx.totalFrames = this.findMaxFrames()
         const viewports = []
-        for (let i = 0; i <= this.ctx.totalFrames; i++) {
+        for (let i = 0; i <= this.timeCtx.totalFrames; i++) {
             // populate one more frame since 0's used for static/animation
             const viewport = new ViewPort()
             viewports.push(viewport)
         }
-        this.viewports.set(viewports)
+        this.viewportsState.set(viewports)
     }
 
     public getPropSpanText(prop: PropConfig, color ?: string) {
@@ -426,7 +421,7 @@ export class Context {
 
     viewComponent: View
 
-    public $(selector){
+    public $(selector) {
         return $(`${this.rootContainerIdSymbol} ${selector}`)
     }
 
@@ -549,7 +544,7 @@ export function demo(rootId: string) {
     })
     // svg order is determined by declaration order
     ctx.addProp(getDemoTable(), getDemoLight()).displayRoot()
-    console.log(ctx.props.get())
+    console.log(ctx.propsState.get())
 
     return new Position(1, 1)
 }

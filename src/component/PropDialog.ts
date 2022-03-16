@@ -25,7 +25,7 @@ export class PropDialog extends SceneComponent {
     }
 
     listen(): State<any>[] {
-        return [this.ctx.selectedState, this.ctx.props, this.selectedTabState];
+        return [this.ctx.selectedState, this.ctx.propsState, this.selectedTabState];
     }
 
     subscribe() {
@@ -35,7 +35,7 @@ export class PropDialog extends SceneComponent {
     actions(): StateAction<any>[] {
         return [[this.ctx.selectedState, () => {
             this.selectedTabState.set(Tab.GENERAL)
-        }], [this.ctx.ctx.currentFrameState, (oldFrame, newFrame) => {
+        }], [this.ctx.timeCtx.currentFrameState, (oldFrame, newFrame) => {
             const selectedProp = this.ctx.selected
             if(selectedProp){
                 const positionElement = document.getElementById(this.ctx.getId(selectedProp, "position", "dialog"))
@@ -66,7 +66,7 @@ export class PropDialog extends SceneComponent {
         this.ctx.$('.prop__dialog__close').on("click", (e) => {
             toggle(e)
         })
-        this.ctx.$('.prop__dialog').on("click", (e) => {
+        this.ctx.$('.prop__dialog').on("click", () => {
             this.ctx.selected = null
         })
         this.ctx.$('.prop__dialog--popup').on("click", (e) => {

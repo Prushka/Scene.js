@@ -20,7 +20,7 @@ export class Overlay extends SceneComponent {
     afterRender() {
         const overlay = document.getElementById(this.ctx.getIdType("overlay"))
         if(overlay){
-            overlay.onclick = (e) => {
+            overlay.onclick = () => {
                 this.ctx.overlayOpenState.set(false)
             }
         }

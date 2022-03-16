@@ -16,7 +16,7 @@ export class PropList extends SceneComponent {
     }
 
     listen() {
-        return [this.ctx.props]
+        return [this.ctx.propsState]
     }
 
     actions(): StateAction<any>[] {
@@ -34,7 +34,7 @@ export class PropList extends SceneComponent {
             }
         }], [this.ctx.selectedState, (_, selected) => {
             const listItemContainer = document.getElementById(this.ctx.getId(selected, 'prop', 'list'))
-            this.ctx.props.get().forEach(prop => {
+            this.ctx.propsState.get().forEach(prop => {
                 const listItemContainer = document.getElementById(this.ctx.getId(prop, 'prop', 'list'))
                 if(listItemContainer){
                     listItemContainer.classList.add("prop__list__item--not-selected")
@@ -62,7 +62,7 @@ export class PropList extends SceneComponent {
             const [id] = this.ctx.extractIdType(e.target.id)
             this.ctx.toggleSelected(id)
         })
-        this.ctx.$('#' + this.ctx.getIdType("prop", "list", "hide")).on("click", (e) => {
+        this.ctx.$('#' + this.ctx.getIdType("prop", "list", "hide")).on("click", () => {
             this.open.set(!this.open.get())
         })
     }
@@ -81,7 +81,7 @@ export class PropList extends SceneComponent {
         hideIconRotateContainer.append(hideIcon)
         hideIconContainer.append(hideIconRotateContainer)
         hideIconContainer.classList.add('hide__icon-container', 'pointer')
-        this.ctx.props.get().forEach(prop => {
+        this.ctx.propsState.get().forEach(prop => {
             const isSelected = this.ctx.propSelected(prop)
             const color = isSelected ? "white" : prop.color
             const listItemContainer = document.createElement('div')

@@ -2,8 +2,6 @@
  * Copyright 2022 Dan Lyu.
  */
 
-import {extend} from "jquery";
-
 export interface PositionConfig {
     x: number,
     y: number
