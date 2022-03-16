@@ -10,7 +10,7 @@ export class Snackbar extends SceneComponent {
     timeouts = []
 
     actions(): StateAction<any>[] {
-        return [[this.ctx.snackbarState, ((_, message) => {
+        return [[this.snackbarCtx.snackbarState, ((_, message) => {
             const snackbar = document.getElementById(this.ctx.getIdType("snackbar"))
             const span = snackbar.querySelector("span")
             snackbar.classList.remove("snackbar--closed")

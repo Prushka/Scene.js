@@ -12,21 +12,21 @@ export class Overlay extends SceneComponent {
     }
 
     listen(): State<any>[] {
-        return [this.ctx.overlayOpenState, this.ctx.overlayHTMLState]
+        return [this.overlayCtx.overlayOpenState, this.overlayCtx.overlayHTMLState]
     }
 
     afterRender() {
         const overlay = document.getElementById(this.ctx.getIdType("overlay"))
         if(overlay){
             overlay.onclick = () => {
-                this.ctx.overlayOpenState.set(false)
+                this.overlayCtx.overlayOpenState.set(false)
             }
         }
     }
 
     render(): string | string[] {
-        return this.ctx.overlayOpenState.get() && `<div class='overlay' id="${this.ctx.getIdType("overlay")}">
-        ${this.ctx.overlayHTMLState.get()}
+        return this.overlayCtx.overlayOpenState.get() && `<div class='overlay' id="${this.ctx.getIdType("overlay")}">
+        ${this.overlayCtx.overlayHTMLState.get()}
         </div>`
     }
 }

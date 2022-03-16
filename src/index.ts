@@ -29,6 +29,8 @@ import {CustomComponent} from "./component/Component";
 import {Overlay} from "./component/Overlay";
 import TimeContext from "./context/TimeContext";
 import ViewPort from "./context/Viewport";
+import SnackbarContext from "./context/SnackbarContext";
+import OverlayContext from "./context/OverlayContext";
 
 export class Context {
     private static contextIds = 0
@@ -39,24 +41,11 @@ export class Context {
     propsState: State<PropConfig[]> = createState([])
     viewportsState: State<ViewPort[]> = createState([])
     public readonly config: Config
-    private snackbarMessageState: State<string> = createState('')
     public readonly propTypeIconPool: { [key in PropType]: PropTypeIcon }
-    public overlayOpenState: State<boolean> = createState(false)
-    public overlayHTMLState: State<string> = createState('')
     public readonly rootContainerId: string
     public readonly rootContainerIdSymbol: string
-
-    public get snackbarState(): State<string> {
-        return this.snackbarMessageState
-    }
-
-    public get snackbar() {
-        return this.snackbarMessageState.get()
-    }
-
-    public set snackbar(message: string) {
-        this.snackbarMessageState.set(message, true)
-    }
+    public readonly snackbarCtx = new SnackbarContext()
+    public readonly overlayCtx = new OverlayContext()
 
     public constructor(rootContainerId: string, config?: Config, context?: TimeContext) {
         this.rootContainerId = rootContainerId

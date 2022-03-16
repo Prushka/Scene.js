@@ -66,12 +66,12 @@ export class Footer extends SceneComponent {
         }, "toolbar", "collapse")
         hookButton(() => {
             this.ctx.viewComponent.resetViewport()
-            this.ctx.snackbar = "Reset Viewport - Frames Based"
+            this.snackbarCtx.snackbar = "Reset Viewport - Frames Based"
         }, "toolbar", "reset", "frames")
 
         hookButton(() => {
             this.ctx.viewComponent.resetViewport(this.ctx.timeCtx.currentFrame)
-            this.ctx.snackbar = "Reset Current Viewport"
+            this.snackbarCtx.snackbar = "Reset Current Viewport"
         }, "toolbar", "reset", "current")
 
         const nextFrame = () => {
@@ -89,7 +89,7 @@ export class Footer extends SceneComponent {
             }
         }, "toolbar", "play")
         hookButton(() => {
-            navigator.clipboard.writeText(JSON.stringify(this.ctx.propsState.get())).then(() => this.ctx.snackbar = "Copied to clipboard")
+            navigator.clipboard.writeText(JSON.stringify(this.ctx.propsState.get())).then(() => this.snackbarCtx.snackbar = "Copied to clipboard")
         }, "toolbar", "export")
     }
 

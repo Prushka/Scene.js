@@ -4,6 +4,8 @@
 
 import State, {StateAction} from "../state/State";
 import {Context} from "../index";
+import SnackbarContext from "../context/SnackbarContext";
+import OverlayContext from "../context/OverlayContext";
 
 
 export abstract class CustomComponent {
@@ -57,6 +59,8 @@ export abstract class CustomComponent {
 
 export abstract class SceneComponent extends CustomComponent {
     protected ctx: Context
+    protected snackbarCtx: SnackbarContext
+    protected overlayCtx: OverlayContext
 
     protected getRootId(type) {
         return '#' + this.ctx.getIdType(type, 'root__container')
@@ -65,6 +69,8 @@ export abstract class SceneComponent extends CustomComponent {
     constructor(context: Context) {
         super();
         this.ctx = context
+        this.snackbarCtx = this.ctx.snackbarCtx
+        this.overlayCtx = this.ctx.overlayCtx
         this.afterConstructor()
         this.mount()
     }

@@ -76,8 +76,8 @@ export class PropDialog extends SceneComponent {
             this.selectedTabState.set(Tab[this.ctx.extractIdType(e.target.id)[1][1] as keyof typeof Tab])
         })
         this.ctx.$('.content .image__container img').on("click", (e) => {
-            this.ctx.overlayOpenState.set(true)
-            this.ctx.overlayHTMLState.set(`<img src='${e.target.getAttribute('src')}' alt=""/>`)
+            this.overlayCtx.overlayOpenState.set(true)
+            this.overlayCtx.overlayHTMLState.set(`<img src='${e.target.getAttribute('src')}' alt=""/>`)
         })
     }
 
