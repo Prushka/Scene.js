@@ -129,16 +129,18 @@ export class View extends SceneComponent {
 
         const getMouseOffset = (e) => {
             const c = $(this.getRootId('view'))
-            return {x: e.clientX - c[0].getBoundingClientRect().left, y: e.clientY - c[0].getBoundingClientRect().top}
+            const interactX = e.touches == null? e.clientX : e.touches[0].pageX
+            const interactY = e.touches == null? e.clientY : e.touches[0].pageY
+            return {x: interactX - c[0].getBoundingClientRect().left, y: interactY - c[0].getBoundingClientRect().top}
         }
 
-        $(this.getRootId('view')).on("mousedown", (e) => {
+        $(this.getRootId('view')).on("mousedown touchstart", (e) => {
+            e.preventDefault()
             this.dragging = true
             const c = $(this.getRootId('view'))
             this.mouse = getMouseOffset(e)
             c.css('cursor', 'grabbing')
-            e.preventDefault()
-        }).on("mousemove", (e) => {
+        }).on("mousemove touchmove", (e) => {
             e.preventDefault()
             if (this.dragging) {
                 const previous = this.ctx.viewportOffset
@@ -151,7 +153,7 @@ export class View extends SceneComponent {
                 }
                 this.applyViewportAttrs()
             }
-        }).on("mouseup mouseleave", (e) => {
+        }).on("mouseup mouseleave touchend touchcancel", (e) => {
             stopDragging(e)
         }).on('wheel', (e) => {
             e.preventDefault()
@@ -164,7 +166,7 @@ export class View extends SceneComponent {
             this.applyViewportAttrs()
         })
 
-        this.ctx.$('.view__prop').on('click', (e) => {
+        this.ctx.$('.view__prop').on('click touchend', (e) => {
             const [id] = this.ctx.extractIdType(e.target.id)
             this.ctx.toggleSelected(id)
         })
