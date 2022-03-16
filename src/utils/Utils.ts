@@ -76,7 +76,7 @@ export function positionToDisplay(position:AnimationConfig):AnimationConfig{
 
 export function camelToDisplay(input: string){
     input = input.charAt(0).toUpperCase() + input.slice(1)
-    return input.replace(/[A-Z]/g, letter => ` ${letter}`)
+    return input.replace(/[A-Z]/g, letter => ` ${letter}`).trim()
 }
 
 export function createSpan(text:string, color?:string){

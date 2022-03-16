@@ -103,7 +103,7 @@ export class PropDialog extends SceneComponent {
                 const keyElement = document.createElement('span')
                 const valueElement = document.createElement('span')
 
-                keyElement.innerHTML = `${camelToDisplay(key)}: `
+                keyElement.innerHTML = `【${camelToDisplay(key)}】 `
                 keyElement.classList.add("content__key")
                 valueElement.innerHTML = value
                 valueElement.classList.add("content__value")
