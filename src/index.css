@@ -45,7 +45,7 @@
     justify-content: center;
 }
 
-.overlay > img{
+.overlay > img {
     height: auto;
     width: auto;
     max-width: 92%;
@@ -116,7 +116,7 @@
 .prop__dialog--embedded .header {
     display: flex;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 9px;
 }
 
 .prop__dialog--embedded .header i {
@@ -149,7 +149,7 @@
 }
 
 .content .image__container span {
-    padding: 0 0 8px 0 !important;
+    padding: 0 0 8px 0;
     font-weight: 500;
 }
 
@@ -159,6 +159,10 @@
 }
 
 .content .image__container__title {
+}
+
+.content__key-value {
+    padding: 3px 0;
 }
 
 .content__key {
@@ -196,7 +200,6 @@
 .prop__dialog--popup .content span,
 .prop__dialog--embedded .content span {
     font-size: 1.1rem;
-    padding: 4px 0;
 }
 
 .prop__dialog--popup .footer,
@@ -465,4 +468,22 @@
 .view__prop__connection {
     stroke: var(--theme-gray);
     stroke-width: 1px;
+}
+
+.step-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.step-card > div {
+    display: flex;
+    align-items: center;
+}
+
+.step-card__step {
+    border-radius: 50%;
+    background-color: var(--theme-dark-gray);
+    color: white;
+    padding: 10px;
+    margin-right: 10px;
 }
