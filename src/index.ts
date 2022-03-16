@@ -482,6 +482,7 @@ export function demo() {
                 3: getRandomPosition(),
                 4: getRandomPosition(),
             },
+            script: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\n123\n\na: c",
             images: [
                 {
                     title: "test",

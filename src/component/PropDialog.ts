@@ -135,7 +135,11 @@ export class PropDialog extends SceneComponent {
                     }
                     break
                 case Tab.SCRIPTS:
-
+                    if(selectedProp.script){
+                        const scriptElement = document.createElement('span')
+                        scriptElement.innerText = selectedProp.script
+                        contentElement.append(scriptElement)
+                    }
                     break
                 case Tab.IMAGES:
                     if (selectedProp.images) {
