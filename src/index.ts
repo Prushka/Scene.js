@@ -22,7 +22,7 @@ import {
 import {PropList} from "./component/PropList";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
-import {View} from "./component/View";
+import {ViewSVG} from "./component/ViewSVG";
 import {Config, DefaultConfig} from "./config/Config";
 import {Snackbar} from "./component/Snackbar";
 import {CustomComponent} from "./component/Component";
@@ -31,6 +31,8 @@ import TimeContext from "./context/TimeContext";
 import ViewPort from "./context/Viewport";
 import SnackbarContext from "./context/SnackbarContext";
 import OverlayContext from "./context/OverlayContext";
+import {ViewCanvas} from "./component/ViewCanvas";
+import View from "./component/View";
 
 export class Context {
     private static contextIds = 0
@@ -353,6 +355,7 @@ export class Context {
 
     viewComponent: View
 
+
     public $(selector) {
         return $(`${this.rootContainerIdSymbol} ${selector}`)
     }
@@ -368,13 +371,18 @@ export class Context {
                                     <div id="${this.getIdType('footer', 'root__container')}" class="footer-container"></div>
                                     <div id="${this.getIdType('overlay', 'root__container')}" class="overlay-container"></div>`)
 
-            const [view] = this.register(View, PropList, PropDialog, Footer, Snackbar, Overlay)
-            this.viewComponent = view as View
+            this.register(PropList, PropDialog, Footer, Snackbar, Overlay)
+            if(this.config.renderMethod === 'canvas'){
+
+                this.viewComponent = new ViewCanvas(this)
+            }else{
+                this.viewComponent = new ViewSVG(this)
+            }
         })
     }
 }
 
-export function demo(rootId: string) {
+export function demo(rootId: string, renderMethod: 'canvas'|'svg') {
     const getRandomPosition = () => {
         const scale = randInclusive(5, 30) / 10
         return {
@@ -449,6 +457,7 @@ export function demo(rootId: string) {
         }
     }
     const ctx: Context = new Context(rootId, {
+        renderMethod: renderMethod,
         frameSpeed: {
             1: 3,
             2: 2,

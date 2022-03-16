@@ -14,7 +14,8 @@ export interface Config {
     propTypes?: { [key: string]: PropTypeIcon },
     lines?: [PositionConfig, PositionConfig, LineConfig?][],
     alwaysShowAllDialogTabs?: boolean,
-    props?: PropConfig[]
+    props?: PropConfig[],
+    renderMethod?: "canvas" | "svg"
 }
 
 export const DefaultConfig: Config = {
@@ -31,5 +32,6 @@ export const DefaultConfig: Config = {
     propTypes: {},
     lines: [],
     alwaysShowAllDialogTabs: false,
-    props: []
+    props: [],
+    renderMethod: "canvas"
 }
