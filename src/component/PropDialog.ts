@@ -76,21 +76,23 @@ export class PropDialog extends SceneComponent {
             const header = document.createElement('div')
             header.classList.add('header')
 
-            const createTitleButton = (id, title, ...classNames) => {
-                const button = document.createElement('span')
-                button.title = title
-                button.classList.add(...classNames)
-                button.id = this.context.getIdType("dialog", id)
-                button.classList.add(this.selectedTabState.get() === id ? "header__button--selected" : "header__button--not-selected")
-                return button
+            const addTitleTab = (id, title, check, ...classNames) => {
+                if (this.context.config.alwaysShowAllDialogTabs || check) {
+                    const button = document.createElement('span')
+                    button.title = title
+                    button.classList.add(...classNames)
+                    button.id = this.context.getIdType("dialog", id)
+                    button.classList.add(this.selectedTabState.get() === id ? "header__button--selected" : "header__button--not-selected")
+                    header.append(button)
+                }
             }
 
             const position = this.context.getPropPositionByCurrentFrame(selectedProp)
             const positionDisplay = positionToDisplay(position)
-            header.append(createTitleButton(Tab.GENERAL, "General Info", "bi", "bi-boxes"),
-                createTitleButton(Tab.SCRIPTS, "Scripts", "bi", "bi-journal-bookmark-fill"),
-                createTitleButton(Tab.IMAGES, "Images", "bi", "bi-image-fill"),
-                createTitleButton(Tab.STEPS, "Steps", "bi", "bi-123"))
+            addTitleTab(Tab.GENERAL, "General Info", true, "bi", "bi-boxes")
+            addTitleTab(Tab.SCRIPTS, "Scripts", selectedProp.script, "bi", "bi-journal-bookmark-fill")
+            addTitleTab(Tab.IMAGES, "Images", selectedProp.images, "bi", "bi-image-fill")
+            addTitleTab(Tab.STEPS, "Steps", selectedProp.steps, "bi", "bi-123")
 
             const contentElement = document.createElement('div')
             contentElement.classList.add("content")
@@ -170,7 +172,7 @@ export class PropDialog extends SceneComponent {
                 case Tab.STEPS:
                     if (selectedProp.steps) {
                         console.log(Object.keys(selectedProp.steps))
-                        Object.keys(selectedProp.steps).sort((a, b)=> Number(a) - Number(b)).forEach(key => {
+                        Object.keys(selectedProp.steps).sort((a, b) => Number(a) - Number(b)).forEach(key => {
                             contentElement.append(createStepCard(Number(key), selectedProp.steps[key]))
                         })
                     }

@@ -11,8 +11,9 @@ export interface Config {
     defaultFrameSpeed?: number,
     frameSelectionSpeed?: number, // set to 0 to disable animation while selecting
     attachment?: { [key: string]: string[] },
-    propTypes?: {[key: string]: PropTypeIcon},
-    lines?: [PositionConfig, PositionConfig, LineConfig?][]
+    propTypes?: { [key: string]: PropTypeIcon },
+    lines?: [PositionConfig, PositionConfig, LineConfig?][],
+    alwaysShowAllDialogTabs?: boolean
 }
 
 export const DefaultConfig: Config = {
@@ -27,5 +28,6 @@ export const DefaultConfig: Config = {
     defaultOpenPropList: false,
     defaultOpenToolbar: false,
     propTypes: {},
-    lines: []
+    lines: [],
+    alwaysShowAllDialogTabs: false
 }
