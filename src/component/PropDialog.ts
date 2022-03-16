@@ -91,8 +91,8 @@ export class PropDialog extends SceneComponent {
             const positionDisplay = positionToDisplay(position)
             addTitleTab(Tab.GENERAL, "General Info", true, "bi", "bi-boxes")
             addTitleTab(Tab.SCRIPTS, "Scripts", selectedProp.script, "bi", "bi-journal-bookmark-fill")
-            addTitleTab(Tab.IMAGES, "Images", selectedProp.images, "bi", "bi-image-fill")
             addTitleTab(Tab.STEPS, "Steps", selectedProp.steps, "bi", "bi-123")
+            addTitleTab(Tab.IMAGES, "Images", selectedProp.images, "bi", "bi-image-fill")
 
             const contentElement = document.createElement('div')
             contentElement.classList.add("content")
