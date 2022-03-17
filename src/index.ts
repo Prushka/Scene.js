@@ -120,7 +120,7 @@ export class Context {
         return this.getRootWidth() < 500
     }
 
-    public extractIdType(htmlID: string): [number, string[]] {
+    public extractIdType(htmlID: string, ...exclude: string[]): [number, string[]] {
         const elementId = htmlID.match(/-\d+/)
         const contextId = htmlID.match(/\d+-/)
         if (!contextId) {
@@ -131,7 +131,7 @@ export class Context {
             id = parseInt(elementId[0].replace('-', ''))
         }
         const type: string = htmlID.replace(/-\d+/, '').replace(/\d+-/, '')
-        return [id, type.split('-')]
+        return [id, type.split('-').filter(t => !exclude.includes(t))]
     }
 
     public getIdType(...type: string[]) {
@@ -278,11 +278,11 @@ export class Context {
             viewports.push(viewport)
         }
         this.viewportsState.set(viewports)
-        this.propsState.set(this.propsState.get().sort((a,b)=>{
-            if(a.orderIndex < b.orderIndex){
+        this.propsState.set(this.propsState.get().sort((a, b) => {
+            if (a.orderIndex < b.orderIndex) {
                 return -1
             }
-            if(a.orderIndex > b.orderIndex){
+            if (a.orderIndex > b.orderIndex) {
                 return 1
             }
             return 0
@@ -381,8 +381,7 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
             orderIndex: order,
             shouldDisplayName: true,
             nameScale: 0.8,
-            nameColor: "red",
-            excludeKeys: ['style', 'orderIndex']
+            nameColor: "red"
         }
     }
 
@@ -454,7 +453,7 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
         lines: [
             [{x: 40, y: 40}, {x: 80, y: 80}]
         ],
-        props: [generateTable(2,{x: 0, y: 0, scaleX: 2, scaleY: 2}),
+        props: [getDemoTable(), generateTable(2, {x: 0, y: 0, scaleX: 2, scaleY: 2}),
             generateTable(1, {x: 0, y: 0, scaleX: 5, scaleY: 5, degree: 20}),
             generateTable(3, {x: 0, y: 0, scaleX: 1, scaleY: 1})]
     })

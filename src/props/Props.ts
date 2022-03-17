@@ -89,7 +89,9 @@ export const DefaultPropConfig: PropConfig = {
 }
 
 export const ExcludeKeys = ["name", "color", "type", "frameAnimationConfig", "script",
-    "steps", "note", "shouldDisplayName", "id", "images"]
+    "steps", "note", "shouldDisplayName", "id", "images", "orderIndex",
+    "namePosition", "nameScale", "nameXOffset", "nameYOffset", "excludeKeys",
+    "nameColor"]
 
 export enum PropType {
     TABLE = "TABLE",

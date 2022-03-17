@@ -11,7 +11,8 @@ enum Tab {
     IMAGES = "IMAGES",
     GENERAL = "GENERAL",
     STEPS = "STEPS",
-    SCRIPTS = "SCRIPTS"
+    SCRIPTS = "SCRIPTS",
+    DEBUG = "DEBUG"
 }
 
 export class PropDialog extends SceneComponent {
@@ -37,7 +38,7 @@ export class PropDialog extends SceneComponent {
             this.selectedTabState.set(Tab.GENERAL)
         }], [this.ctx.timeCtx.currentFrameState, (oldFrame, newFrame) => {
             const selectedProp = this.ctx.selected
-            if(selectedProp){
+            if (selectedProp) {
                 const positionElement = document.getElementById(this.ctx.getId(selectedProp, "position", "dialog"))
                 const scaleElement = document.getElementById(this.ctx.getId(selectedProp, "scale", "dialog"))
                 this.updatePositionScaleElements(positionElement, scaleElement, selectedProp, newFrame, newFrame < oldFrame)
@@ -73,7 +74,7 @@ export class PropDialog extends SceneComponent {
             e.stopPropagation()
         })
         this.ctx.$('.header span').on("click", (e) => {
-            this.selectedTabState.set(Tab[this.ctx.extractIdType(e.target.id)[1][1] as keyof typeof Tab])
+            this.selectedTabState.set(Tab[this.ctx.extractIdType(e.target.id,'dialog')[1][0] as keyof typeof Tab])
         })
         this.ctx.$('.content .image__container img').on("click", (e) => {
             this.overlayCtx.overlayOpenState.set(true)
@@ -91,13 +92,13 @@ export class PropDialog extends SceneComponent {
             }
             const dialogContainerElement = document.createElement('div')
             dialogContainerElement.classList.add(`prop__dialog--${isPopup ? 'popup' : 'embedded'}`,
-                this.ctx.isRootMobile() ? 'prop__dialog--embedded--mobile':'prop__dialog--embedded--normal')
+                this.ctx.isRootMobile() ? 'prop__dialog--embedded--mobile' : 'prop__dialog--embedded--normal')
             parentContainer.appendChild(dialogContainerElement)
             const header = document.createElement('div')
             header.classList.add('header')
 
-            const addTitleTab = (id, title, check, ...classNames) => {
-                if (this.ctx.config.alwaysShowAllDialogTabs || check) {
+            const addTitleTab = (id, title, enableTab, ...classNames) => {
+                if (this.ctx.config.alwaysShowAllDialogTabs || enableTab) {
                     const button = document.createElement('span')
                     button.title = title
                     button.classList.add(...classNames)
@@ -108,10 +109,11 @@ export class PropDialog extends SceneComponent {
             }
 
 
-            addTitleTab(Tab.GENERAL, "General Info", true, "bi", "bi-boxes")
+            addTitleTab(Tab.GENERAL, "General Information", true, "bi", "bi-boxes")
             addTitleTab(Tab.SCRIPTS, "Scripts", selectedProp.script, "bi", "bi-journal-bookmark-fill")
             addTitleTab(Tab.STEPS, "Steps", selectedProp.steps, "bi", "bi-123")
             addTitleTab(Tab.IMAGES, "Images", selectedProp.images, "bi", "bi-image-fill")
+            addTitleTab(Tab.DEBUG, "Debug Information", this.ctx.config.dialogShowAllProperties, "bi", "bi-bug")
 
             const contentElement = document.createElement('div')
             contentElement.classList.add("content")
@@ -162,7 +164,6 @@ export class PropDialog extends SceneComponent {
                 containerElement.append(headerElement, contentElement)
                 return containerElement
             }
-
             switch (this.selectedTabState.get()) {
                 case Tab.GENERAL:
                     for (let key in selectedProp) {
@@ -193,6 +194,11 @@ export class PropDialog extends SceneComponent {
                         Object.keys(selectedProp.steps).sort((a, b) => Number(a) - Number(b)).forEach(key => {
                             contentElement.append(createStepCard(Number(key), selectedProp.steps[key]))
                         })
+                    }
+                    break
+                case Tab.DEBUG:
+                    for (let key in selectedProp) {
+                        contentElement.append(createKeyValueContent(key, selectedProp[key]))
                     }
                     break
             }

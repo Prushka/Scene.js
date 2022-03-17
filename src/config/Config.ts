@@ -18,7 +18,8 @@ export interface Config {
     renderMethod?: "canvas" | "svg",
     zoomLowerBound?: number,
     zoomUpperBound?: number,
-    zoomFactor?:number
+    zoomFactor?: number,
+    dialogShowAllProperties?: boolean // add an extra tab to dialog, which shows all properties of the selected prop
 }
 
 export const DefaultConfig: Config = {
@@ -39,5 +40,6 @@ export const DefaultConfig: Config = {
     renderMethod: "canvas",
     zoomLowerBound: 0.15,
     zoomUpperBound: 2,
-    zoomFactor: 1.02
+    zoomFactor: 1.02,
+    dialogShowAllProperties: true
 }
