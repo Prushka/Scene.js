@@ -84,25 +84,28 @@ export class ViewSVG extends View{
         return [this.getRootId("view")]
     }
 
-    private applyViewportAttrs() {
+    private applyViewportAttrs(viewBoxChange?:boolean) {
         const svgE =
             this.ctx.$(`.view-svg`)
         svgE.attr("viewBox",
             `${-this.getViewportCtx().x} ${-this.getViewportCtx().y} ${svgE.width() * this.getViewportCtx().scale} ${svgE.height() * this.getViewportCtx().scale}`);
-        this.ctx.$(`.view__prop`).each((index, element) => {
-            const prop = this.ctx.getPropById(this.ctx.extractIdType(element.id)[0])
-            if(prop.shouldDisplayName) {
-                const pathGroups = element.querySelectorAll('g')
-                const position = this.ctx.getPropPositionByCurrentFrame(prop)
-                let textElement
-                let textWidth
-                textElement = element.querySelector('text')
-                textWidth = textElement.getBBox().width
-                pathGroups.forEach(pathGroup => {
-                    pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0)`)
-                })
-            }
-        })
+        if(!viewBoxChange){
+            this.ctx.$(`.view__prop`).each((index, element) => {
+                const prop = this.ctx.getPropById(this.ctx.extractIdType(element.id)[0])
+                if(prop.shouldDisplayName) {
+                    const pathGroups = element.querySelectorAll('g')
+                    const position = this.ctx.getPropPositionByCurrentFrame(prop)
+                    let textElement
+                    let textWidth
+                    textElement = element.querySelector('text')
+                    textWidth = textElement.getBBox().width
+                    pathGroups.forEach(pathGroup => {
+                        pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0)`)
+                    })
+                }
+            })
+        }
+
     }
 
     public resetViewport(currentFrame?: number) {
@@ -148,7 +151,7 @@ export class ViewSVG extends View{
                     x: previous.x + currMouse.x - previousMouse.x,
                     y: previous.y + currMouse.y - previousMouse.y,
                 }
-                this.applyViewportAttrs()
+                this.applyViewportAttrs(true)
             }
         }).on("mouseup mouseleave touchend touchcancel", (e) => {
             stopDragging(e)
@@ -160,7 +163,7 @@ export class ViewSVG extends View{
             } else { // zoom out
                 this.getViewportCtx().zoomOut()
             }
-            this.applyViewportAttrs()
+            this.applyViewportAttrs(true)
         })
 
         this.ctx.$('.view__prop').on('click touchend', (e) => {
