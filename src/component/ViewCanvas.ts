@@ -16,9 +16,6 @@ export class ViewCanvas extends View {
     // view will be updated only when props config changed
     // the rest of state changes will dispatch actions that modify the DOM
 
-    mouse: PositionConfig
-    dragging: boolean
-
     connections: State<PropTupleSet>
 
     afterConstructor() {

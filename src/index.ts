@@ -6,7 +6,6 @@ import {
     AnimationConfig, DefaultLine,
     FrameAnimationConfig,
     HasId,
-    PositionConfig,
     PropConfig,
     PropType, PropTypeIcon,
     PropTypeIcons
@@ -14,12 +13,11 @@ import {
 import State, {createState} from "./state/State";
 import {
     convertTypeToReadable,
-    createElement, createSpan,
+    createSpan,
     createSVGIcon,
     generateDarkColor, getPathGroupByHTML,
     randInclusive
 } from "./utils/Utils";
-import {PropList} from "./component/PropList";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
 import {ViewSVG} from "./component/ViewSVG";

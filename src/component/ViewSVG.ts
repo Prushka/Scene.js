@@ -50,19 +50,12 @@ export class ViewSVG extends View {
                     let newPosition = prop.frameAnimationConfig[newFrame]
                     let show = newPosition && !newPosition.hide
                     newPosition = this.ctx.getPropPositionByFrame(prop, newFrame, newFrame < oldFrame)
-                    //const previousPosition = this.context.getPropPositionByFrame(prop, oldFrame, newFrame - oldFrame < 0)
                     const groupElement = document.getElementById(this.ctx.getId(prop, 'view', 'prop'))
                     groupElement.style.display = show ? "unset" : "none"
                     const enabledGroup = document.getElementById(this.ctx.getId(prop, 'view', 'prop', 'icon', 'group', 'enabled'))
                     const disabledGroup = document.getElementById(this.ctx.getId(prop, 'view', 'prop', 'icon', 'group', 'disabled'))
-                    if (!newPosition.enabled) {
-                        enabledGroup.style.opacity = "0"
-                        disabledGroup.style.opacity = "1"
-                    } else {
-                        disabledGroup.style.opacity = "0"
-                        enabledGroup.style.opacity = "1"
-                    }
-                    // console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
+                    enabledGroup.style.opacity = !newPosition.enabled ? "0" : "1"
+                    disabledGroup.style.opacity = !newPosition.enabled ? "1" : "0"
                     groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scaleX} ${newPosition.scaleY})`)
                     let transitionDuration
                     if (this.getTimeCtx().ifJumpOne(oldFrame, newFrame)) {
@@ -99,10 +92,8 @@ export class ViewSVG extends View {
                 if (prop.shouldDisplayName) {
                     const pathGroups = element.querySelectorAll('g')
                     const position = this.ctx.getPropPositionByCurrentFrame(prop)
-                    let textElement
-                    let textWidth
-                    textElement = element.querySelector('text')
-                    textWidth = textElement.getBBox().width
+                    const textElement = element.querySelector('text')
+                    const textWidth = textElement.getBBox().width
                     pathGroups.forEach(pathGroup => {
                         pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0)`)
                     })
@@ -197,8 +188,6 @@ export class ViewSVG extends View {
     }
 
     render(): string | string[] {
-        const props = this.ctx.propsState.get()
-
         const gs = []
         this.ctx.config.lines.forEach(([start, end, line]) => {
             gs.push(getLineGroup(start.x, start.y, end.x, end.y, line.width, line.color))
