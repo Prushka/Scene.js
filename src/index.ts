@@ -379,7 +379,8 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
                 1: position,
             },
             orderIndex: order,
-            shouldDisplayName: true
+            shouldDisplayName: true,
+            nameScale: 0.2
         }
     }
 

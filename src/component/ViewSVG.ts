@@ -93,7 +93,7 @@ export class ViewSVG extends View {
                     const pathGroups = element.querySelectorAll('g')
                     const position = this.ctx.getPropPositionByCurrentFrame(prop)
                     const textElement = element.querySelector('text')
-                    const textWidth = textElement.getBBox().width
+                    const textWidth = textElement.getBBox().width * prop.nameScale
                     const pathGroup = document.getElementById(this.ctx.getId(prop, 'view', 'prop', 'icon', 'group', position.enabled?'enabled':'disable')) as any
                     // pathGroups.forEach(pathGroup => {
                     //     pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0)`)
@@ -102,7 +102,7 @@ export class ViewSVG extends View {
                     const shift = pathGroupWidth / 2 - textWidth / 2
                     console.log(`Path: ${pathGroupWidth} | Text: ${textWidth} | Shift: ${shift*position.scaleX}`)
                     textElement.setAttribute("transform",
-                        `translate(${shift}, 0)`)
+                        `translate(${shift}, 0) scale(${prop.nameScale} ${prop.nameScale})`)
                 }
             })
         }

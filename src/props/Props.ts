@@ -66,15 +66,19 @@ export interface PropConfig extends HasId {
     script?: string,
     steps?: { [key: number]: StepConfig },
     note?: string,
-    shouldDisplayName?: boolean,
     images?: ImageConfig[],
-    orderIndex?: number
+    orderIndex?: number,
+    shouldDisplayName?: boolean,
+    namePosition?: 'center' | 'top' | 'right' | 'left' | 'bottom',
+    nameScale?: number
 }
 
 export const DefaultPropConfig: PropConfig = {
     style: "default",
     shouldDisplayName: true,
-    orderIndex: 0
+    orderIndex: 0,
+    namePosition: 'top',
+    nameScale: 1
 }
 
 export const ExcludeKeys = ["name", "color", "type", "frameAnimationConfig", "script",
