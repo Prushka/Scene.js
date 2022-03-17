@@ -3,7 +3,7 @@
  */
 
 import {
-    AnimationConfig, DefaultLine,
+    AnimationConfig, DefaultAnimationConfig, DefaultLine, DefaultPropConfig,
     FrameAnimationConfig,
     HasId,
     PropConfig,
@@ -67,19 +67,16 @@ export class Context {
     private addProp(...propConfigs: PropConfig[]): Context {
         const _props = [...this.propsState.get()]
         propConfigs.forEach(propConfig => {
-            propConfig.color = propConfig.color || generateDarkColor()
-            propConfig.style = propConfig.style || "default"
-            propConfig.id = propConfig.id || this.ids
-            propConfig.shouldDisplayName = propConfig.shouldDisplayName ?? true
-            propConfig.name = propConfig.name || `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
+            propConfig = {...DefaultPropConfig, ...propConfig}
+            propConfig.color = propConfig.color ?? generateDarkColor()
+            propConfig.id = propConfig.id ?? this.ids
+            propConfig.name = propConfig.name ?? `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
             if (propConfig.frameAnimationConfig) {
+                propConfig.frameAnimationConfig
                 for (let key in propConfig.frameAnimationConfig) {
-                    const a = propConfig.frameAnimationConfig[key]
-                    a.scaleX = a.scaleX || 1
-                    a.scaleY = a.scaleY || 1
-                    a.hide = a.hide ?? false
-                    a.enabled = a.enabled ?? true
+                    const a = {...DefaultAnimationConfig, ...propConfig.frameAnimationConfig[key]}
                     a.transitionTimingFunction = a.transitionTimingFunction || this.config.transitionTimingFunction
+                    propConfig.frameAnimationConfig[key] = a
                 }
             }
             this.ids += 1
@@ -239,17 +236,18 @@ export class Context {
         return max
     }
 
-    public getViewportGetter():()=>ViewPortContext {
-        return ()=>{
+    public getViewportGetter(): () => ViewPortContext {
+        return () => {
             return this.viewportsState.get()[0]
         }
     }
 
-    public getTimeContextGetter():()=>TimeContext {
-        return ()=>{
+    public getTimeContextGetter(): () => TimeContext {
+        return () => {
             return this.timeCtx
         }
     }
+
     //
     // public get viewportOffset() {
     //     return this.viewportsState.get()[0].offset
@@ -325,14 +323,14 @@ export class Context {
                                     <div id="${this.getIdType('view', 'root__container')}" class='view-container'></div>
                                     <div id="${this.getIdType('footer', 'root__container')}" class="footer-container"></div>
                                     <div id="${this.getIdType('overlay', 'root__container')}" class="overlay-container"></div>`)
-            const v =  this.config.renderMethod === 'canvas' ? ViewCanvas : ViewSVG
+            const v = this.config.renderMethod === 'canvas' ? ViewCanvas : ViewSVG
             const [view] = this.register(v, PropDialog, Footer, Snackbar, Overlay)
             this.viewComponent = view as View
         })
     }
 }
 
-export function demo(rootId: string, renderMethod: 'canvas'|'svg') {
+export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
     const getRandomPosition = () => {
         const scale = randInclusive(5, 30) / 10
         return {
@@ -363,10 +361,23 @@ export function demo(rootId: string, renderMethod: 'canvas'|'svg') {
         }
     }
 
+    const generateTable = (position) => {
+        return {
+            type: "TABLE",
+            brand: "Random",
+            style: "fillSquare",
+            frameAnimationConfig: {
+                1: position,
+            },
+            shouldDisplayName: false
+        }
+    }
+
     const getDemoTable = () => {
         return {
-            type: "MAP",
+            type: "TABLE",
             brand: "Random",
+            style: "fillSquare",
             note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             frameAnimationConfig: {
                 1: {
@@ -430,7 +441,8 @@ export function demo(rootId: string, renderMethod: 'canvas'|'svg') {
         lines: [
             [{x: 40, y: 40}, {x: 80, y: 80}]
         ],
-        props: [getDemoTable(),getDemoTable(),getDemoTable(), getDemoLight()]
+        props: [generateTable({x: 0, y: 0, scaleX: 2, scaleY: 2}),
+            generateTable({x: 0, y: 0, scaleX: 5, scaleY: 5})]
     })
     // svg order is determined by declaration order
     ctx.display()

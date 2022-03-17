@@ -3,8 +3,8 @@
  */
 
 export interface PositionConfig {
-    x: number,
-    y: number
+    x?: number,
+    y?: number
 }
 
 export interface OrientationConfig {
@@ -21,6 +21,14 @@ export interface AnimationConfig extends OrientationConfig, PositionConfig, Scal
     hide?: boolean,
     isOffset?: boolean,
     transitionTimingFunction?: string,
+}
+
+export const DefaultAnimationConfig: AnimationConfig = {
+    degree: 0,
+    scaleX: 1,
+    scaleY: 1,
+    hide: false,
+    enabled: true
 }
 
 export interface LineConfig {
@@ -59,7 +67,14 @@ export interface PropConfig extends HasId {
     steps?: { [key: number]: StepConfig },
     note?: string,
     shouldDisplayName?: boolean,
-    images?: ImageConfig[]
+    images?: ImageConfig[],
+    order?: number
+}
+
+export const DefaultPropConfig: PropConfig = {
+    style: "default",
+    shouldDisplayName: true,
+    order: 0
 }
 
 export const ExcludeKeys = ["name", "color", "type", "frameAnimationConfig", "script",
