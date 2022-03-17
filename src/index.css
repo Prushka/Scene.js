@@ -297,26 +297,28 @@
 
 .timeline__frame-container {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: row-reverse;
 }
 
 .timeline__frame-container .progress-container {
+    align-self: end;
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 
 .timeline__frame-container .progress {
-    border-bottom: 2px solid;
+    border-bottom: 3px solid;
 }
 
 .timeline__frame-container .progress-finished {
     border-bottom-color: var(--theme-dark-purple);
-    width: 50%;
+    width: 0;
 }
 
 .timeline__frame-container .progress-not {
     border-bottom-color: var(--theme-dark-pink);
-    width: 50%;
+    width: 100%;
 }
 
 .timeline__frame {

@@ -31,6 +31,10 @@ export default class TimeContext {
         this.currentFrameState.set(f)
     }
 
+    public ifJumpOne(oldFrame, newFrame){
+        return newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.totalFrames)
+    }
+
     public nextFrame(): number {
         const previousFrame = this.currentFrame
         if (this.currentFrame < this.totalFrames) {

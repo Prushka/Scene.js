@@ -34,15 +34,29 @@ export class Footer extends SceneComponent {
                 setClassList(icon, "bi", "bi-play-fill")
             }
         })],
-            [this.ctx.timeCtx.currentFrameState, (oldFrame, currentFrame) => {
+            [this.ctx.timeCtx.currentFrameState, (oldFrame, newFrame) => {
                 if (oldFrame != null) {
                     const fElement = document.getElementById(this.ctx.getId(oldFrame, 'timeline', 'frame'))
                     fElement.classList.remove("timeline__frame--selected")
                     fElement.classList.add("timeline__frame--not-selected")
                 }
-                const frameElement = document.getElementById(this.ctx.getId(currentFrame, 'timeline', 'frame'))
+                const frameElement = document.getElementById(this.ctx.getId(newFrame, 'timeline', 'frame'))
                 frameElement.classList.remove("timeline__frame--not-selected")
                 frameElement.classList.add("timeline__frame--selected")
+                if(this.getTimeCtx().ifJumpOne(oldFrame, newFrame)){
+                    const progressFinished = document.getElementById(this.ctx.getId(oldFrame, 'frame', 'progress', 'finished'))
+                    const progressUnFinished = document.getElementById(this.ctx.getId(oldFrame, 'frame', 'progress', 'unfinished'))
+                    if(progressFinished && progressUnFinished){
+                        const oldFrameSeconds = this.ctx.getFrameSeconds(oldFrame)+'s'
+                        progressFinished.style.width = '100%'
+                        progressUnFinished.style.width = '0%'
+                        progressFinished.style.transitionDuration = oldFrameSeconds
+                        progressUnFinished.style.transitionDuration = oldFrameSeconds
+                        progressFinished.style.transitionTimingFunction = this.ctx.config.transitionTimingFunction
+                        progressUnFinished.style.transitionTimingFunction = this.ctx.config.transitionTimingFunction
+                    }
+                }
+
             }]]
     }
 
@@ -135,13 +149,13 @@ export class Footer extends SceneComponent {
                 const progress = document.createElement('div')
                 progress.classList.add('progress-container')
                 const progressFinished = document.createElement('div')
-                const progressNotFinished = document.createElement('div')
+                const progressUnfinished = document.createElement('div')
                 progressFinished.classList.add('progress', 'progress-finished')
-                progressNotFinished.classList.add('progress', 'progress-not')
+                progressUnfinished.classList.add('progress', 'progress-not')
                 progressFinished.setAttribute('max', '100')
                 progressFinished.id = this.ctx.getId(frame, 'frame', 'progress', 'finished')
-                progressNotFinished.id = this.ctx.getId(frame, 'frame', 'progress', 'unfinished')
-                progress.append(progressFinished, progressNotFinished)
+                progressUnfinished.id = this.ctx.getId(frame, 'frame', 'progress', 'unfinished')
+                progress.append(progressFinished, progressUnfinished)
                 frameContainer.append(progress)
                 const frameButton = document.createElement('div')
                 frameButton.id = this.ctx.getId(frame, 'timeline', 'frame')

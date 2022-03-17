@@ -67,7 +67,7 @@ export class ViewSVG extends View{
                     // console.log(`${previousPosition.x},${previousPosition.y} => ${newPosition.x},${newPosition.y}`)
                     groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scaleX} ${newPosition.scaleY})`)
                     let transitionDuration
-                    if (newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.ctx.timeCtx.totalFrames)) {
+                    if (this.getTimeCtx().ifJumpOne(oldFrame, newFrame)) {
                         transitionDuration = this.ctx.getFrameSeconds(oldFrame) + "s"
                     } else {
                         transitionDuration = this.ctx.config.frameSelectionSpeed + "s"
@@ -203,7 +203,7 @@ export class ViewSVG extends View{
                 const selected = this.ctx.propSelected(prop)
                 const group = document.createElement("g")
                 group.classList.add("view__prop", selected ? 'view__prop--selected' : 'view__prop--not-selected')
-                group.style.transitionTimingFunction = this.ctx.config.playTransition
+                group.style.transitionTimingFunction = this.ctx.config.transitionTimingFunction
                 group.id = this.ctx.getId(prop, 'view', 'prop')
                 group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree}) scale(${position.scaleX} ${position.scaleY})`)
                 if (prop.shouldDisplayName) {
