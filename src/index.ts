@@ -452,7 +452,8 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
             [{x: 40, y: 40}, {x: 80, y: 80}]
         ],
         props: [generateTable(2,{x: 0, y: 0, scaleX: 2, scaleY: 2}),
-            generateTable(1, {x: 0, y: 0, scaleX: 5, scaleY: 5})]
+            generateTable(1, {x: 0, y: 0, scaleX: 5, scaleY: 5}),
+            generateTable(3, {x: 0, y: 0, scaleX: 1, scaleY: 1})]
     })
     // svg order is determined by declaration order
     ctx.display()

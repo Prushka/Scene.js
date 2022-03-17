@@ -80,7 +80,9 @@ export default class ViewPortContext {
     }
 
     public set scale(scale) {
-        this.scaleState.set(scale)
+        if(scale > this.ctx.config.zoomLowerBound && scale < this.ctx.config.zoomUpperBound){
+            this.scaleState.set(scale)
+        }
     }
 
     public get x() {
@@ -92,10 +94,12 @@ export default class ViewPortContext {
     }
 
     public zoomIn() {
-        this.scale = Math.min(3, this.scale * 1.02)
+        console.log(this.scale)
+        this.scale = this.scale * this.ctx.config.zoomFactor
     }
 
     public zoomOut() {
-        this.scale = Math.max(0.4, this.scale * (1 / 1.02))
+        console.log(this.scale)
+        this.scale = this.scale * (1 / this.ctx.config.zoomFactor)
     }
 }

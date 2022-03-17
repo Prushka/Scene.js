@@ -15,7 +15,10 @@ export interface Config {
     lines?: [PositionConfig, PositionConfig, LineConfig?][],
     alwaysShowAllDialogTabs?: boolean,
     props?: PropConfig[],
-    renderMethod?: "canvas" | "svg"
+    renderMethod?: "canvas" | "svg",
+    zoomLowerBound?: number,
+    zoomUpperBound?: number,
+    zoomFactor?:number
 }
 
 export const DefaultConfig: Config = {
@@ -33,5 +36,8 @@ export const DefaultConfig: Config = {
     lines: [],
     alwaysShowAllDialogTabs: false,
     props: [],
-    renderMethod: "canvas"
+    renderMethod: "canvas",
+    zoomLowerBound: 0.15,
+    zoomUpperBound: 2,
+    zoomFactor: 1.02
 }
