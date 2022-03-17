@@ -68,13 +68,13 @@ export interface PropConfig extends HasId {
     note?: string,
     shouldDisplayName?: boolean,
     images?: ImageConfig[],
-    order?: number
+    orderIndex?: number
 }
 
 export const DefaultPropConfig: PropConfig = {
     style: "default",
     shouldDisplayName: true,
-    order: 0
+    orderIndex: 0
 }
 
 export const ExcludeKeys = ["name", "color", "type", "frameAnimationConfig", "script",

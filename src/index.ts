@@ -278,6 +278,15 @@ export class Context {
             viewports.push(viewport)
         }
         this.viewportsState.set(viewports)
+        this.propsState.set(this.propsState.get().sort((a,b)=>{
+            if(a.orderIndex < b.orderIndex){
+                return -1
+            }
+            if(a.orderIndex > b.orderIndex){
+                return 1
+            }
+            return 0
+        }));
     }
 
     public getPropSpanText(prop: PropConfig, color ?: string) {
@@ -361,7 +370,7 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
         }
     }
 
-    const generateTable = (position) => {
+    const generateTable = (order, position) => {
         return {
             type: "TABLE",
             brand: "Random",
@@ -369,6 +378,7 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
             frameAnimationConfig: {
                 1: position,
             },
+            orderIndex: order,
             shouldDisplayName: false
         }
     }
@@ -441,8 +451,8 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
         lines: [
             [{x: 40, y: 40}, {x: 80, y: 80}]
         ],
-        props: [generateTable({x: 0, y: 0, scaleX: 2, scaleY: 2}),
-            generateTable({x: 0, y: 0, scaleX: 5, scaleY: 5})]
+        props: [generateTable(2,{x: 0, y: 0, scaleX: 2, scaleY: 2}),
+            generateTable(1, {x: 0, y: 0, scaleX: 5, scaleY: 5})]
     })
     // svg order is determined by declaration order
     ctx.display()
