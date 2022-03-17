@@ -9,7 +9,7 @@ import PropTupleSet from "../utils/PropTupleSet";
 import {getLineGroup, getPathGroupByHTML} from "../utils/Utils";
 import View from "./View";
 
-export class ViewSVG extends View{
+export class ViewSVG extends View {
 
     // I can't find a way to add animation while re-rendering the entire content
     // This means:
@@ -47,7 +47,6 @@ export class ViewSVG extends View{
                 }
             }],
             [this.ctx.timeCtx.currentFrameState, (oldFrame: number, newFrame: number) => {
-                console.log(`Frame: ${oldFrame} -> ${newFrame}`)
                 this.ctx.propsState.get().forEach(prop => {
                     let newPosition = prop.frameAnimationConfig[newFrame]
                     let show = newPosition && !newPosition.hide
@@ -84,15 +83,15 @@ export class ViewSVG extends View{
         return [this.getRootId("view")]
     }
 
-    private applyViewportAttrs(viewBoxChange?:boolean) {
+    private applyViewportAttrs(viewBoxChange?: boolean) {
         const svgE =
             this.ctx.$(`.view-svg`)
         svgE.attr("viewBox",
             `${-this.getViewportCtx().x} ${-this.getViewportCtx().y} ${svgE.width() * this.getViewportCtx().scale} ${svgE.height() * this.getViewportCtx().scale}`);
-        if(!viewBoxChange){
+        if (!viewBoxChange) {
             this.ctx.$(`.view__prop`).each((index, element) => {
                 const prop = this.ctx.getPropById(this.ctx.extractIdType(element.id)[0])
-                if(prop.shouldDisplayName) {
+                if (prop.shouldDisplayName) {
                     const pathGroups = element.querySelectorAll('g')
                     const position = this.ctx.getPropPositionByCurrentFrame(prop)
                     let textElement
@@ -129,8 +128,8 @@ export class ViewSVG extends View{
 
         const getMouseOffset = (e) => {
             const c = $(this.getRootId('view'))
-            const interactX = e.touches == null? e.clientX : e.touches[0].pageX
-            const interactY = e.touches == null? e.clientY : e.touches[0].pageY
+            const interactX = e.touches == null ? e.clientX : e.touches[0].pageX
+            const interactY = e.touches == null ? e.clientY : e.touches[0].pageY
             return {x: interactX - c[0].getBoundingClientRect().left, y: interactY - c[0].getBoundingClientRect().top}
         }
 
@@ -167,7 +166,7 @@ export class ViewSVG extends View{
         })
 
         this.ctx.$('.view__prop').on('click touchend', (e) => {
-            const elementId = e.target.id ? e.target.id:e.target.parentElement.id
+            const elementId = e.target.id ? e.target.id : e.target.parentElement.id
             let [id] = this.ctx.extractIdType(elementId)
             this.ctx.toggleSelected(id)
         })
