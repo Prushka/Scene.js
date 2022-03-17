@@ -90,33 +90,34 @@ export class ViewCanvas extends View {
     afterRender() {
         const canvas = document.getElementById(this.ctx.getIdType('canvas')) as HTMLCanvasElement
         const ctx = canvas.getContext('2d')
-// Set display size (css pixels).
         canvas.style.width = Math.floor(this.ctx.getRootWidth())+ "px";
         canvas.style.height = Math.floor(this.ctx.getRootHeight()) + "px";
-
-// Set actual size in memory (scaled to account for extra pixel density).
         const scale = window.devicePixelRatio; // <--- Change to 1 on retina screens to see blurry canvas.
         canvas.width = Math.floor(this.ctx.getRootWidth()) * scale;
         canvas.height = Math.floor(this.ctx.getRootHeight()) * scale;
-
-// Normalize coordinate system to use css pixels.
-        ctx.scale(scale, scale)
-        this.forEachPropWithPosition((prop, position) => {
+        console.log(scale)
+        const applyContext = (prop, position) => {
+            ctx.setTransform(1, 0, 0, 1, 0, 0)
             ctx.fillStyle = prop.color
+            ctx.scale(scale+position.scaleX, scale+position.scaleY)
+        }
+        this.forEachPropWithPosition((prop, position) => {
+            applyContext(prop, position)
             ctx.lineWidth = 0.5
-            ctx.scale(position.scaleX, position.scaleY)
+            ctx.font = '12px Comfortaa'
+            const name = prop.name
+            const textRect = ctx.measureText(name)
+            ctx.translate(textRect.width, textRect.actualBoundingBoxAscent + textRect.actualBoundingBoxDescent)
             ctx.rotate(position.degree * Math.PI / 180)
+            ctx.fillText(prop.name, position.x, position.y)
             forEachPathHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], (pathHTML)=>{
-
+                applyContext(prop, position)
                 const path = extractPathD(pathHTML)
                 let p = new Path2D(path)
-                console.log(position)
-                const p1 = new Path2D()
-                p1.addPath(p, {e: position.x, f: position.y})
-                ctx.fill(p1)
+                ctx.translate(position.x, position.y + 10)
+                ctx.fill(p)
             })
 
-            ctx.setTransform(1, 0, 0, 1, 0, 0)
         })
     }
 
