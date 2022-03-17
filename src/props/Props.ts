@@ -71,15 +71,19 @@ export interface PropConfig extends HasId {
     shouldDisplayName?: boolean,
     namePosition?: 'center' | 'top' | 'right' | 'left' | 'bottom',
     nameScale?: number,
-    nameColor?: string
+    nameColor?: string,
+    nameXOffset?: number,
+    nameYOffset?: number
 }
 
 export const DefaultPropConfig: PropConfig = {
     style: "default",
     shouldDisplayName: true,
     orderIndex: 0,
-    namePosition: 'center',
-    nameScale: 1
+    namePosition: 'top',
+    nameScale: 1,
+    nameXOffset: 0,
+    nameYOffset: 0
 }
 
 export const ExcludeKeys = ["name", "color", "type", "frameAnimationConfig", "script",

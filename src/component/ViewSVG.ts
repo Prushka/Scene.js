@@ -103,29 +103,31 @@ export class ViewSVG extends View {
                     let shiftXVertical = pathGroupBBox.width / 2 - textWidth / 2
                     let shiftYHorizontal = pathGroupBBox.height / 2 + textHeight / 2
                     console.log(`Path: ${pathGroupBBox.width} | Text: ${textWidth} | Shift: ${shiftYHorizontal}`)
+                    let shiftX, shiftY
                     switch (prop.namePosition){
                         case "top":
-                            textElement.setAttribute("y", "-7")
-                            textElement.setAttribute("x", String(shiftXVertical))
+                            shiftY = -7
+                            shiftX = shiftXVertical
                             break
                         case "bottom":
-                            textElement.setAttribute("y", String(pathGroupBBox.height+textHeight+7))
-                            textElement.setAttribute("x", String(shiftXVertical))
+                            shiftY = pathGroupBBox.height+textHeight+7
+                            shiftX = shiftXVertical
                             break
                         case "left":
-                            textElement.setAttribute("y", String(shiftYHorizontal))
-                            textElement.setAttribute("x", String(Math.floor(-textWidth-pathGroupBBox.width)))
+                            shiftY = shiftYHorizontal
+                            shiftX = Math.floor(-textWidth-pathGroupBBox.width)
                             break
                         case "right":
-                            textElement.setAttribute("y", String(shiftYHorizontal))
-                            textElement.setAttribute("x", String(Math.floor(pathGroupBBox.width+7)))
+                            shiftY = shiftYHorizontal
+                            shiftX = Math.floor(pathGroupBBox.width+7)
                             break
                         case "center":
-
-                            textElement.setAttribute("y", String(shiftYHorizontal))
-                            textElement.setAttribute("x", String(shiftXVertical))
+                            shiftY = shiftYHorizontal
+                            shiftX = shiftXVertical
                             break
                     }
+                    textElement.setAttribute("y", String(prop.nameYOffset+shiftY))
+                    textElement.setAttribute("x", String(prop.nameXOffset+shiftX))
                     textElement.setAttribute("transform",`scale(${prop.nameScale} ${prop.nameScale})`)
                 }
             })
