@@ -232,13 +232,7 @@ export class ViewSVG extends View {
                 group.style.transitionTimingFunction = position.transitionTimingFunction
                 group.id = this.ctx.getId(prop, 'view', 'prop')
                 group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree}) scale(${position.scaleX} ${position.scaleY})`)
-                if (prop.shouldDisplayName) {
-                    const text = document.createElement("text")
-                    text.id = this.ctx.getId(prop, 'view', 'prop', 'text')
-                    text.innerText = prop.name
-                    text.style.fill = prop.nameColor ?? prop.color
-                    group.appendChild(text)
-                }
+
                 // It's not possible to set innerHTML to format: <path ... /><path ... />
                 // The above line will be formatted to: <path ...><path ...></path></path>
                 // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
@@ -253,6 +247,13 @@ export class ViewSVG extends View {
                     pathGroupEnabled.style.opacity = "0"
                 }
                 group.append(pathGroupEnabled, pathGroupDisabled)
+                if (prop.shouldDisplayName) {
+                    const text = document.createElement("text")
+                    text.id = this.ctx.getId(prop, 'view', 'prop', 'text')
+                    text.innerText = prop.name
+                    text.style.fill = prop.nameColor ?? prop.color
+                    group.appendChild(text)
+                }
                 if (hide) {
                     group.style.display = "none"
                 }
