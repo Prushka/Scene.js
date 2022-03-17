@@ -297,10 +297,17 @@
 
 .timeline__frame-container {
     display: flex;
-    border-bottom: 4px solid var(--theme-pink);
+    flex-direction: column-reverse;
 }
-
+.timeline__frame-container progress {
+    border-radius: 0;
+    height: 3px;
+    background-color: var(--theme-pink);
+    width: 100%;
+}
+.timeline__frame-container progress::-webkit-progress-bar {background-color: var(--theme-dark-pink); width: 100%;}
 .timeline__frame {
+    align-self: start;
     /*height: 20px;*/
     /*border-left: 4px solid var(--theme-pink);*/
     background-color: var(--theme-pink);

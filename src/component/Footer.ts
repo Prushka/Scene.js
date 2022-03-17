@@ -130,6 +130,9 @@ export class Footer extends SceneComponent {
                 if (frame != this.getTimeCtx().totalFrames) {
                     frameContainer.style.flexGrow = String(Math.floor(this.ctx.getFrameSeconds(frame) * 10))
                 }
+                const progress = document.createElement('progress')
+                progress.max = 100
+                frameContainer.append(progress)
                 const frameButton = document.createElement('div')
                 frameButton.id = this.ctx.getId(frame, 'timeline', 'frame')
                 frameButton.classList.add(`timeline__frame`, currentFrame === frame ? 'timeline__frame--selected' : 'timeline__frame--not-selected', `pointer`)
