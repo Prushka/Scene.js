@@ -84,34 +84,7 @@ export class ViewCanvas extends View {
         return [this.getRootId("view")]
     }
 
-    private applyViewportAttrs() {
-        const svgE =
-            this.ctx.$(`.view-svg`)
-        svgE.attr("viewBox",
-            `${-this.ctx.viewportOffset.x} ${-this.ctx.viewportOffset.y} ${svgE.width() * this.ctx.viewportScale} ${svgE.height() * this.ctx.viewportScale}`);
-        this.ctx.$(`.view__prop`).each((index, element) => {
-            const prop = this.ctx.getPropById(this.ctx.extractIdType(element.id)[0])
-            if(prop.shouldDisplayName) {
-                const pathGroups = element.querySelectorAll('g')
-                const position = this.ctx.getPropPositionByCurrentFrame(prop)
-                let textElement
-                let textWidth
-                textElement = element.querySelector('text')
-                textWidth = textElement.getBBox().width
-                pathGroups.forEach(pathGroup => {
-                    pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0)`)
-                })
-            }
-        })
-    }
-
     public resetViewport(currentFrame?: number) {
-        const [viewRatio, viewX, viewY] = this.ctx.calcViewBox(this.ctx.findMinMaxPosition(currentFrame))
-        this.ctx.viewportScale = viewRatio
-        this.ctx.viewportOffset = {
-            x: -viewX, y: -viewY
-        }
-        this.applyViewportAttrs()
     }
 
     afterRender() {
@@ -129,19 +102,21 @@ export class ViewCanvas extends View {
 // Normalize coordinate system to use css pixels.
         ctx.scale(scale, scale)
         this.forEachPropWithPosition((prop, position) => {
+            ctx.fillStyle = prop.color
+            ctx.lineWidth = 0.5
+            ctx.scale(position.scaleX, position.scaleY)
+            ctx.rotate(position.degree * Math.PI / 180)
             forEachPathHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], (pathHTML)=>{
-                ctx.fillStyle = prop.color
-                ctx.lineWidth = 0.5
-                ctx.scale(position.scaleX, position.scaleY)
-                ctx.rotate(position.degree * Math.PI / 180)
+
                 const path = extractPathD(pathHTML)
                 let p = new Path2D(path)
                 console.log(position)
                 const p1 = new Path2D()
                 p1.addPath(p, {e: position.x, f: position.y})
                 ctx.fill(p1)
-                ctx.setTransform(1, 0, 0, 1, 0, 0)
             })
+
+            ctx.setTransform(1, 0, 0, 1, 0, 0)
         })
     }
 

@@ -28,7 +28,7 @@ import {Snackbar} from "./component/Snackbar";
 import {CustomComponent} from "./component/Component";
 import {Overlay} from "./component/Overlay";
 import TimeContext from "./context/TimeContext";
-import ViewPort from "./context/Viewport";
+import ViewPortContext from "./context/ViewPortContext";
 import SnackbarContext from "./context/SnackbarContext";
 import OverlayContext from "./context/OverlayContext";
 import {ViewCanvas} from "./component/ViewCanvas";
@@ -41,7 +41,7 @@ export class Context {
     timeCtx: TimeContext
     private _selected: State<PropConfig> = createState()
     propsState: State<PropConfig[]> = createState([])
-    viewportsState: State<ViewPort[]> = createState([])
+    viewportsState: State<ViewPortContext[]> = createState([])
     public readonly config: Config
     public readonly propTypeIconPool: { [key in PropType]: PropTypeIcon }
     public readonly rootContainerId: string
@@ -241,75 +241,38 @@ export class Context {
         return max
     }
 
-    public get viewportOffset() {
-        return this.viewportsState.get()[0].offset
-    }
-
-    public set viewportOffset(offset: PositionConfig) {
-        const _viewports = [...this.viewportsState.get()]
-        _viewports[0].offset = offset
-        this.viewportsState.set(_viewports)
-    }
-
-    public get viewportScale() {
-        return this.viewportsState.get()[0].scale
-    }
-
-    public set viewportScale(scale: number) {
-        const _viewports = [...this.viewportsState.get()]
-        _viewports[0].scale = scale
-        this.viewportsState.set(_viewports)
-    }
-
-    public findMinMaxPosition(currentFrame?: number): [number, number, number, number] {
-        let [minX, minY, maxX, maxY] = [null, null, null, null]
-        const updateMinMax = (position) => {
-            if (position.x > maxX || maxX == null) {
-                maxX = position.x
-            }
-            if (position.y > maxY || maxY == null) {
-                maxY = position.y
-            }
-            if (position.x < minX || minX == null) {
-                minX = position.x
-            }
-            if (position.y < minY || minY == null) {
-                minY = position.y
-            }
+    public getViewportGetter():()=>ViewPortContext {
+        return ()=>{
+            return this.viewportsState.get()[0]
         }
-        this.propsState.get().forEach(prop => {
-            if (currentFrame) {
-                updateMinMax(this.getPropPositionByCurrentFrame(prop))
-            } else {
-                for (let key in prop.frameAnimationConfig) {
-                    const position = prop.frameAnimationConfig[key]
-                    if (position) {
-                        updateMinMax(position)
-                    }
-                }
-            }
-
-        })
-        return [minX, minY, maxX, maxY]
     }
-
-    public calcViewBox([minX, minY, maxX, maxY]) {
-        const svgE = $(`${this.rootContainerIdSymbol}`)
-        const viewWidthRatio = (maxX - minX) / svgE.width()
-        const viewHeightRatio = (maxY - minY) / svgE.height()
-        let viewRatio = viewWidthRatio > viewHeightRatio ? viewWidthRatio : viewHeightRatio
-        viewRatio += this.config.viewOffset
-        const viewX = minX - (this.config.viewOffset / 2) * svgE.width()
-        const viewY = minY - (this.config.viewOffset / 2) * svgE.height()
-        return [viewRatio, viewX, viewY]
-    }
+    //
+    // public get viewportOffset() {
+    //     return this.viewportsState.get()[0].offset
+    // }
+    //
+    // public set viewportOffset(offset: PositionConfig) {
+    //     const _viewports = [...this.viewportsState.get()]
+    //     _viewports[0].offset = offset
+    //     this.viewportsState.set(_viewports)
+    // }
+    //
+    // public get viewportScale() {
+    //     return this.viewportsState.get()[0].scale
+    // }
+    //
+    // public set viewportScale(scale: number) {
+    //     const _viewports = [...this.viewportsState.get()]
+    //     _viewports[0].scale = scale
+    //     this.viewportsState.set(_viewports)
+    // }
 
     private beforeDisplay() {
         this.timeCtx.totalFrames = this.findMaxFrames()
         const viewports = []
         for (let i = 0; i <= this.timeCtx.totalFrames; i++) {
             // populate one more frame since 0's used for static/animation
-            const viewport = new ViewPort()
+            const viewport = new ViewPortContext(this)
             viewports.push(viewport)
         }
         this.viewportsState.set(viewports)

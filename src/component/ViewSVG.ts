@@ -88,7 +88,7 @@ export class ViewSVG extends View{
         const svgE =
             this.ctx.$(`.view-svg`)
         svgE.attr("viewBox",
-            `${-this.ctx.viewportOffset.x} ${-this.ctx.viewportOffset.y} ${svgE.width() * this.ctx.viewportScale} ${svgE.height() * this.ctx.viewportScale}`);
+            `${-this.getViewportCtx().x} ${-this.getViewportCtx().y} ${svgE.width() * this.getViewportCtx().scale} ${svgE.height() * this.getViewportCtx().scale}`);
         this.ctx.$(`.view__prop`).each((index, element) => {
             const prop = this.ctx.getPropById(this.ctx.extractIdType(element.id)[0])
             if(prop.shouldDisplayName) {
@@ -106,11 +106,7 @@ export class ViewSVG extends View{
     }
 
     public resetViewport(currentFrame?: number) {
-        const [viewRatio, viewX, viewY] = this.ctx.calcViewBox(this.ctx.findMinMaxPosition(currentFrame))
-        this.ctx.viewportScale = viewRatio
-        this.ctx.viewportOffset = {
-            x: -viewX, y: -viewY
-        }
+        this.getViewportCtx().resetViewport(currentFrame)
         this.applyViewportAttrs()
     }
 
@@ -144,11 +140,11 @@ export class ViewSVG extends View{
         }).on("mousemove touchmove", (e) => {
             e.preventDefault()
             if (this.dragging) {
-                const previous = this.ctx.viewportOffset
+                const previous = this.getViewportCtx().offset
                 const previousMouse = {...this.mouse}
                 const currMouse = getMouseOffset(e)
                 this.mouse = currMouse
-                this.ctx.viewportOffset = {
+                this.getViewportCtx().offset = {
                     x: previous.x + currMouse.x - previousMouse.x,
                     y: previous.y + currMouse.y - previousMouse.y,
                 }
@@ -160,9 +156,9 @@ export class ViewSVG extends View{
             e.preventDefault()
             const deltaY = (<WheelEvent>e.originalEvent).deltaY
             if (deltaY > 0) { // zoom in
-                this.ctx.viewportScale = Math.min(3, this.ctx.viewportScale * 1.02)
+                this.getViewportCtx().zoomIn()
             } else { // zoom out
-                this.ctx.viewportScale = Math.max(0.4, this.ctx.viewportScale * (1 / 1.02))
+                this.getViewportCtx().zoomOut()
             }
             this.applyViewportAttrs()
         })
