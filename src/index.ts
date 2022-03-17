@@ -382,6 +382,7 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
             shouldDisplayName: true,
             nameScale: 0.8,
             nameColor: "red",
+            excludeKeys: ['style', 'orderIndex']
         }
     }
 

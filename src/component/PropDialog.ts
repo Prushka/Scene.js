@@ -166,7 +166,7 @@ export class PropDialog extends SceneComponent {
             switch (this.selectedTabState.get()) {
                 case Tab.GENERAL:
                     for (let key in selectedProp) {
-                        if (!ExcludeKeys.includes(key)) {
+                        if (!ExcludeKeys.includes(key) && !selectedProp.excludeKeys.includes(key)) {
                             contentElement.append(createKeyValueContent(key, selectedProp[key]))
                         }
                     }

@@ -73,7 +73,8 @@ export interface PropConfig extends HasId {
     nameScale?: number,
     nameColor?: string,
     nameXOffset?: number,
-    nameYOffset?: number
+    nameYOffset?: number,
+    excludeKeys?: string[]
 }
 
 export const DefaultPropConfig: PropConfig = {
@@ -83,7 +84,8 @@ export const DefaultPropConfig: PropConfig = {
     namePosition: 'top',
     nameScale: 1,
     nameXOffset: 0,
-    nameYOffset: 0
+    nameYOffset: 0,
+    excludeKeys: []
 }
 
 export const ExcludeKeys = ["name", "color", "type", "frameAnimationConfig", "script",
