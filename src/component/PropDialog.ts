@@ -5,7 +5,7 @@
 import {SceneComponent} from "./Component";
 import State, {createState, StateAction} from "../state/State";
 import {ExcludeKeys, ImageConfig, StepConfig} from "../props/Props";
-import {camelToDisplay, positionToDisplay} from "../utils/Utils";
+import {camelToDisplay, flatObject, positionToDisplay} from "../utils/Utils";
 
 enum Tab {
     IMAGES = "IMAGES",
@@ -118,14 +118,13 @@ export class PropDialog extends SceneComponent {
             const contentElement = document.createElement('div')
             contentElement.classList.add("content")
 
-            const createKeyValueContent = (key, value) => {
+            const createKeyValueContent = (key, value, displayFormat?:boolean) => {
                 const parentElement = document.createElement('span')
                 const keyElement = document.createElement('span')
                 const valueElement = document.createElement('span')
-
-                keyElement.innerHTML = `【${camelToDisplay(key)}】 `
+                keyElement.innerHTML = displayFormat ? `【${camelToDisplay(String(key))}】 ` : `【${String(key)}】 `
                 keyElement.classList.add("content__key")
-                valueElement.innerHTML = value
+                valueElement.innerHTML = String(value)
                 valueElement.classList.add("content__value")
                 parentElement.classList.add('content__key-value')
                 parentElement.append(keyElement, valueElement)
@@ -197,8 +196,9 @@ export class PropDialog extends SceneComponent {
                     }
                     break
                 case Tab.DEBUG:
-                    for (let key in selectedProp) {
-                        contentElement.append(createKeyValueContent(key, selectedProp[key]))
+                    const flat = flatObject(selectedProp)
+                    for (let key in flat) {
+                        contentElement.append(createKeyValueContent(key, flat[key], false))
                     }
                     break
             }

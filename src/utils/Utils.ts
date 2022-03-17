@@ -111,15 +111,19 @@ export function extractPathD(pathHTML) {
 
 export function flatObject(obj) {
     const newObj = {}
-    const _flatValues = (_obj) => {
-        for (let key in _obj) {
+    const _flatValues = (_obj, rootKeys) => {
+        Object.keys(_obj).sort().forEach(key => {
+            const _rootKeys = rootKeys
+            rootKeys = rootKeys + `.${key}`
             if (typeof _obj[key] === "object") {
-                _flatValues(_obj[key]);
+                _flatValues(_obj[key], rootKeys)
             } else {
-                newObj[key] = _obj[key]
+                newObj[rootKeys.slice(1)] = _obj[key]
             }
-        }
+            rootKeys = _rootKeys
+        })
     }
-    _flatValues(obj)
+    _flatValues(obj, "")
+    console.log(newObj)
     return newObj
 }
