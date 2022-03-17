@@ -34,9 +34,9 @@ export class Footer extends SceneComponent {
                 setClassList(icon, "bi", "bi-play-fill")
             }
         })],
-            [this.ctx.timeCtx.currentFrameState, (_, currentFrame) => {
-                for (let f = 0; f < this.ctx.timeCtx.totalFrames; f++) {
-                    const fElement = document.getElementById(this.ctx.getId(f + 1, 'timeline', 'frame'))
+            [this.ctx.timeCtx.currentFrameState, (oldFrame, currentFrame) => {
+                if (oldFrame != null) {
+                    const fElement = document.getElementById(this.ctx.getId(oldFrame, 'timeline', 'frame'))
                     fElement.classList.remove("timeline__frame--selected")
                     fElement.classList.add("timeline__frame--not-selected")
                 }
@@ -139,6 +139,8 @@ export class Footer extends SceneComponent {
                 progressFinished.classList.add('progress', 'progress-finished')
                 progressNotFinished.classList.add('progress', 'progress-not')
                 progressFinished.setAttribute('max', '100')
+                progressFinished.id = this.ctx.getId(frame, 'frame', 'progress', 'finished')
+                progressNotFinished.id = this.ctx.getId(frame, 'frame', 'progress', 'unfinished')
                 progress.append(progressFinished, progressNotFinished)
                 frameContainer.append(progress)
                 const frameButton = document.createElement('div')
