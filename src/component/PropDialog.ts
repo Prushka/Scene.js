@@ -196,10 +196,20 @@ export class PropDialog extends SceneComponent {
                     }
                     break
                 case Tab.DEBUG:
-                    const flat = flatObject(selectedProp)
-                    for (let key in flat) {
-                        contentElement.append(createKeyValueContent(key, flat[key], false))
+                    switch (this.ctx.config.dialogAllPropertiesFormat){
+                        case "flat":
+                            const flat = flatObject(selectedProp)
+                            for (let key in flat) {
+                                contentElement.append(createKeyValueContent(key, flat[key], false))
+                            }
+                            break
+                        case "json":
+                            const jsonElement = document.createElement('p')
+                            jsonElement.innerText = JSON.stringify(selectedProp, null, 2)
+                            contentElement.append(jsonElement)
+                            break
                     }
+
                     break
             }
 

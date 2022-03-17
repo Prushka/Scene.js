@@ -19,7 +19,8 @@ export interface Config {
     zoomLowerBound?: number,
     zoomUpperBound?: number,
     zoomFactor?: number,
-    dialogShowAllProperties?: boolean // add an extra tab to dialog, which shows all properties of the selected prop
+    dialogShowAllProperties?: boolean, // add an extra tab to dialog, which shows all properties of the selected prop
+    dialogAllPropertiesFormat?: 'json' | 'flat'
 }
 
 export const DefaultConfig: Config = {
@@ -41,5 +42,6 @@ export const DefaultConfig: Config = {
     zoomLowerBound: 0.15,
     zoomUpperBound: 2,
     zoomFactor: 1.02,
-    dialogShowAllProperties: true
+    dialogShowAllProperties: true,
+    dialogAllPropertiesFormat: 'json'
 }
