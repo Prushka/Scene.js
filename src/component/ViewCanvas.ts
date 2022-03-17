@@ -6,10 +6,10 @@ import {SceneComponent} from "./Component";
 import {AnimationConfig, PositionConfig, PropConfig} from "../props/Props";
 import State, {createState, StateAction} from "../state/State";
 import PropTupleSet from "../utils/PropTupleSet";
-import {getLineGroup} from "../utils/Utils";
+import {extractPathD, forEachPathHTML, getLineGroup} from "../utils/Utils";
 import View from "./View";
 
-export class ViewCanvas extends SceneComponent implements View {
+export class ViewCanvas extends View {
 
     // I can't find a way to add animation while re-rendering the entire content
     // This means:
@@ -118,8 +118,18 @@ export class ViewCanvas extends SceneComponent implements View {
         const canvas = document.getElementById(this.ctx.getIdType('canvas')) as HTMLCanvasElement
         const ctx = canvas.getContext('2d')
 
-        ctx.fillStyle = 'green'
-        ctx.fillRect(10, 10, 150, 100)
+        // ctx.fillStyle = 'green'
+        // ctx.fillRect(10, 10, 150, 100)
+        this.forEachPropWithPosition((prop, position) => {
+            console.log(prop)
+            forEachPathHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], (pathHTML)=>{
+                const path = extractPathD(pathHTML)
+                let p = new Path2D(path)
+                console.log(path)
+                p.moveTo(position.x, position.y)
+                ctx.fill(p);
+            })
+        })
     }
 
     render(): string | string[] {

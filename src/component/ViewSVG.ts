@@ -6,7 +6,7 @@ import {SceneComponent} from "./Component";
 import {AnimationConfig, PositionConfig, PropConfig} from "../props/Props";
 import State, {createState, StateAction} from "../state/State";
 import PropTupleSet from "../utils/PropTupleSet";
-import {getLineGroup} from "../utils/Utils";
+import {getLineGroup, getPathGroupByHTML} from "../utils/Utils";
 import View from "./View";
 
 export class ViewSVG extends View{
@@ -199,9 +199,9 @@ export class ViewSVG extends View{
         this.ctx.config.lines.forEach(([start, end, line]) => {
             gs.push(getLineGroup(start.x, start.y, end.x, end.y, line.width, line.color))
         })
-        let s = props.map(prop => {
-            const hide = this.ctx.getPropPositionByCurrentFrame(prop).hide
-            const position: AnimationConfig = this.ctx.getPropPosition(prop)
+        let s = []
+        this.forEachPropWithPosition((prop, position) => {
+            const hide = position.hide
             if (position) {
                 const selected = this.ctx.propSelected(prop)
                 const group = document.createElement("g")
@@ -221,8 +221,8 @@ export class ViewSVG extends View{
                 // The above line will be formatted to: <path ...><path ...></path></path>
                 // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
                 // (until I find a workaround or figure out what the issue is)
-                const pathGroupEnabled = this.ctx.getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['enabledPaths'], prop)
-                const pathGroupDisabled = this.ctx.getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], prop)
+                const pathGroupEnabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['enabledPaths'], prop)
+                const pathGroupDisabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], prop)
                 pathGroupEnabled.id = this.ctx.getId(prop, 'view', 'prop', 'icon', 'group', 'enabled')
                 pathGroupDisabled.id = this.ctx.getId(prop, 'view', 'prop', 'icon', 'group', 'disabled')
                 if (this.ctx.isPropEnabled(prop)) {
@@ -235,7 +235,7 @@ export class ViewSVG extends View{
                     group.style.display = "none"
                 }
                 //path.id = this.context.getId(prop, 'view', 'prop', 'icon')
-                return group.outerHTML
+                s.push(group.outerHTML)
             }
         })
         for (let key in this.ctx.config.attachment) {

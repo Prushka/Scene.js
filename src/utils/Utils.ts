@@ -63,23 +63,23 @@ export function getLineGroup(startX, startY, endX, endY, width, color) {
     return `<g stroke-width="${width}" stroke="${color}"><path d="M${startX} ${startY}  L${endX} ${endY}"/></g>`
 }
 
-export function positionToDisplay(position:AnimationConfig):AnimationConfig{
+export function positionToDisplay(position: AnimationConfig): AnimationConfig {
     const pos = {...position}
-    for(let key in pos){
+    for (let key in pos) {
         const value = pos[key]
-        if(typeof value ==='number'){
+        if (typeof value === 'number') {
             pos[key] = Math.round(value)
         }
     }
     return pos
 }
 
-export function camelToDisplay(input: string){
+export function camelToDisplay(input: string) {
     input = input.charAt(0).toUpperCase() + input.slice(1)
     return input.replace(/[A-Z]/g, letter => ` ${letter}`).trim()
 }
 
-export function createSpan(text:string, color?:string){
+export function createSpan(text: string, color?: string) {
     const span = document.createElement("span")
     span.innerText = text
     span.style.color = color ? color : "black"
@@ -98,12 +98,13 @@ export function getPathGroupByHTML(pathsHTML: string, prop: PropConfig, color ?:
     return pathGroup
 }
 
-export function forEachPathHTML(pathsHTML, f:(pathHTML:string)=>void){
+export function forEachPathHTML(pathsHTML, f: (pathHTML: string) => void) {
     pathsHTML.match(/<path.*?\/>|<path.*?><\/path>/g).forEach(pathHTML => {
         f(pathHTML)
     })
 }
 
 export function extractPathD(pathHTML) {
-    return pathHTML.match(/d=["'`](.*?)["'`]/)[1]
+    const res = pathHTML.match(/d=["'`](.*?)["'`]/)
+    return res == null ? "" : res[1]
 }
