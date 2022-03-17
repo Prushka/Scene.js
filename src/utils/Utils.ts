@@ -2,7 +2,7 @@
  * Copyright 2022 Dan Lyu.
  */
 
-import {AnimationConfig} from "../props/Props";
+import {AnimationConfig, PropConfig} from "../props/Props";
 
 export function convertTypeToReadable(type: string): string {
     return `${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()}`
@@ -84,4 +84,26 @@ export function createSpan(text:string, color?:string){
     span.innerText = text
     span.style.color = color ? color : "black"
     return span
+}
+
+export function getPathGroupByHTML(pathsHTML: string, prop: PropConfig, color ?: string) {
+    let pathId = 0
+    const pathGroup = document.createElement("g")
+    forEachPathHTML(pathsHTML, (pathHTML) => {
+        const path = createElement(pathHTML)
+        path.style.fill = color ? color : prop.color
+        pathGroup.appendChild(path)
+        pathId++
+    })
+    return pathGroup
+}
+
+export function forEachPathHTML(pathsHTML, f:(pathHTML:string)=>void){
+    pathsHTML.match(/<path.*?\/>|<path.*?><\/path>/g).forEach(pathHTML => {
+        f(pathHTML)
+    })
+}
+
+export function extractPathD(pathHTML) {
+    return pathHTML.match(/d=["'`](.*?)["'`]/)[1]
 }
