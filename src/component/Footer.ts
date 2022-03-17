@@ -7,6 +7,35 @@ import State, {createState, StateAction} from "../state/State";
 import ClickEvent = JQuery.ClickEvent;
 import {setClassList} from "../utils/Utils";
 
+
+export class ProgressBarTupleElements {
+    private readonly progressFinished: HTMLElement
+    private readonly progressUnfinished: HTMLElement
+
+    public constructor(progressFinished: HTMLElement, progressUnfinished: HTMLElement) {
+        this.progressFinished = progressFinished
+        this.progressUnfinished = progressUnfinished
+    }
+
+    private static setStyles(element: HTMLElement, width: string, transitionDuration: string, transitionFunction?: string) {
+        element.style.width = width
+        element.style.transitionDuration = transitionDuration
+        if (transitionFunction) {
+            element.style.transitionTimingFunction = transitionFunction
+        }
+    }
+
+    public reset() {
+        ProgressBarTupleElements.setStyles(this.progressFinished, '0%', '0s')
+        ProgressBarTupleElements.setStyles(this.progressUnfinished, '100%', '0s')
+    }
+
+    public setTransition(duration, transitionFunction, finished: boolean) {
+        ProgressBarTupleElements.setStyles(this.progressFinished, finished ? "100%" : "0%", duration, transitionFunction)
+        ProgressBarTupleElements.setStyles(this.progressUnfinished, finished ? "0%" : "100%", duration, transitionFunction)
+    }
+}
+
 export class Footer extends SceneComponent {
 
     open: State<boolean>
@@ -19,6 +48,15 @@ export class Footer extends SceneComponent {
 
     listen(): State<any>[] {
         return []
+    }
+
+    private getProgressBars(frame) {
+        const progressFinished = document.getElementById(this.ctx.getId(frame, 'frame', 'progress', 'finished'))
+        const progressUnfinished = document.getElementById(this.ctx.getId(frame, 'frame', 'progress', 'unfinished'))
+        if (progressUnfinished && progressFinished) {
+            return new ProgressBarTupleElements(progressFinished, progressUnfinished)
+        }
+        return null
     }
 
     actions(): StateAction<any>[] {
@@ -43,18 +81,19 @@ export class Footer extends SceneComponent {
                 const frameElement = document.getElementById(this.ctx.getId(newFrame, 'timeline', 'frame'))
                 frameElement.classList.remove("timeline__frame--not-selected")
                 frameElement.classList.add("timeline__frame--selected")
-                if(this.getTimeCtx().ifJumpOne(oldFrame, newFrame)){
-                    const progressFinished = document.getElementById(this.ctx.getId(oldFrame, 'frame', 'progress', 'finished'))
-                    const progressUnFinished = document.getElementById(this.ctx.getId(oldFrame, 'frame', 'progress', 'unfinished'))
-                    if(progressFinished && progressUnFinished){
-                        const oldFrameSeconds = this.ctx.getFrameSeconds(oldFrame)+'s'
-                        progressFinished.style.width = '100%'
-                        progressUnFinished.style.width = '0%'
-                        progressFinished.style.transitionDuration = oldFrameSeconds
-                        progressUnFinished.style.transitionDuration = oldFrameSeconds
-                        progressFinished.style.transitionTimingFunction = this.ctx.config.transitionTimingFunction
-                        progressUnFinished.style.transitionTimingFunction = this.ctx.config.transitionTimingFunction
+                if (this.getTimeCtx().ifJumpOne(oldFrame, newFrame)) {
+                    const progressBars = this.getProgressBars(oldFrame)
+                    if (progressBars) {
+                        progressBars.setTransition(this.ctx.getFrameSeconds(oldFrame) + 's', this.ctx.config.transitionTimingFunction, true)
                     }
+                } else {
+                    for (let frame = 0; frame < this.getTimeCtx().totalFrames; frame++) {
+                        const progressBars = this.getProgressBars(frame)
+                        if (progressBars) {
+                            progressBars.reset()
+                        }
+                    }
+
                 }
 
             }]]

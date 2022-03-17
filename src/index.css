@@ -298,10 +298,11 @@
 .timeline__frame-container {
     display: flex;
     flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
 }
 
 .timeline__frame-container .progress-container {
-    align-self: end;
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -326,8 +327,7 @@
     background-color: var(--theme-pink);
     color: white;
     padding: 7px 15px 4px 15px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-radius: 4px;
     font-weight: 600;
 }
 
