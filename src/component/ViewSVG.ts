@@ -2,8 +2,7 @@
  * Copyright 2022 Dan Lyu.
  */
 
-import {SceneComponent} from "./Component";
-import {AnimationConfig, PositionConfig, PropConfig} from "../props/Props";
+import {PositionConfig, PropConfig} from "../props/Props";
 import State, {createState, StateAction} from "../state/State";
 import PropTupleSet from "../utils/PropTupleSet";
 import {getLineGroup, getPathGroupByHTML} from "../utils/Utils";
@@ -74,6 +73,12 @@ export class ViewSVG extends View {
                     enabledGroup.style.transitionDuration = transitionDuration
                     disabledGroup.style.transitionDuration = transitionDuration
                     groupElement.style.transitionDuration = transitionDuration
+                    const oldPosition = this.ctx.getPropPositionByFrame(prop, oldFrame, false)
+                    if(oldPosition){
+                        enabledGroup.style.transitionTimingFunction = oldPosition.transitionTimingFunction
+                        disabledGroup.style.transitionTimingFunction = oldPosition.transitionTimingFunction
+                        groupElement.style.transitionTimingFunction = oldPosition.transitionTimingFunction
+                    }
                 })
 
             }]]
@@ -205,7 +210,7 @@ export class ViewSVG extends View {
                 const selected = this.ctx.propSelected(prop)
                 const group = document.createElement("g")
                 group.classList.add("view__prop", selected ? 'view__prop--selected' : 'view__prop--not-selected')
-                group.style.transitionTimingFunction = this.ctx.config.transitionTimingFunction
+                group.style.transitionTimingFunction = position.transitionTimingFunction
                 group.id = this.ctx.getId(prop, 'view', 'prop')
                 group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree}) scale(${position.scaleX} ${position.scaleY})`)
                 if (prop.shouldDisplayName) {

@@ -19,7 +19,8 @@ export interface ScaleConfig {
 export interface AnimationConfig extends OrientationConfig, PositionConfig, ScaleConfig {
     enabled?: boolean,
     hide?: boolean,
-    isOffset?: boolean
+    isOffset?: boolean,
+    transitionTimingFunction?: string,
 }
 
 export interface LineConfig {

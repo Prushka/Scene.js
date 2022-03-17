@@ -430,9 +430,7 @@
     /*position: absolute;*/
     pointer-events: bounding-box;
     cursor: pointer;
-    /*transition-duration: 1s;*/
     transition-property: transform;
-    /*transition-timing-function: ease-in-out;*/
 }
 
 .view__prop text {

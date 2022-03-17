@@ -81,6 +81,7 @@ export class Context {
                     a.scaleY = a.scaleY || 1
                     a.hide = a.hide ?? false
                     a.enabled = a.enabled ?? true
+                    a.transitionTimingFunction = a.transitionTimingFunction || this.config.transitionTimingFunction
                 }
             }
             this.ids += 1
@@ -371,7 +372,8 @@ export function demo(rootId: string, renderMethod: 'canvas'|'svg') {
             note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             frameAnimationConfig: {
                 1: {
-                    x: 140, y: 140, degree: 60, enabled: true
+                    x: 140, y: 140, degree: 60, enabled: true,
+                    transitionTimingFunction: "ease-in-out"
                 },
                 2: getRandomPosition(),
                 3: getRandomPosition(),
@@ -405,7 +407,7 @@ export function demo(rootId: string, renderMethod: 'canvas'|'svg') {
                 },
                 21: {},
                 1: {}
-            }
+            },
         }
     }
     const ctx: Context = new Context(rootId, {
