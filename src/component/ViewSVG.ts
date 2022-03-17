@@ -168,7 +168,8 @@ export class ViewSVG extends View{
         })
 
         this.ctx.$('.view__prop').on('click touchend', (e) => {
-            const [id] = this.ctx.extractIdType(e.target.id)
+            const elementId = e.target.id ? e.target.id:e.target.parentElement.id
+            let [id] = this.ctx.extractIdType(elementId)
             this.ctx.toggleSelected(id)
         })
     }

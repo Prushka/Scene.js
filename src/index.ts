@@ -16,7 +16,7 @@ import {
     convertTypeToReadable,
     createElement, createSpan,
     createSVGIcon,
-    generateDarkColor,
+    generateDarkColor, getPathGroupByHTML,
     randInclusive
 } from "./utils/Utils";
 import {PropList} from "./component/PropList";
@@ -127,6 +127,7 @@ export class Context {
     public extractIdType(htmlID: string): [number, string[]] {
         const elementId = htmlID.match(/-\d+/)
         const contextId = htmlID.match(/\d+-/)
+        console.log(contextId, elementId)
         if (!contextId) {
             return [-1, []]
         }
@@ -327,20 +328,7 @@ export class Context {
     }
 
     public getPathGroup(prop: PropConfig, color ?: string) {
-        return this.getPathGroupByHTML(this.propTypeIconPool[prop.type][prop.style][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths'], prop, color)
-    }
-
-    public getPathGroupByHTML(pathsHTML: string, prop: PropConfig, color ?: string) {
-        let pathId = 0
-        const pathGroup = document.createElement("g")
-        pathsHTML.match(/<path.*?\/>|<path.*?><\/path>/g).forEach(pathHTML => {
-            const path = createElement(pathHTML)
-            path.id = this.getId(prop, 'view', 'prop', 'icon', `[${pathId}]`)
-            path.style.fill = color ? color : prop.color
-            pathGroup.appendChild(path)
-            pathId++
-        })
-        return pathGroup
+        return getPathGroupByHTML(this.propTypeIconPool[prop.type][prop.style][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths'], prop, color)
     }
 
     private register(...c: Array<new(T) => CustomComponent>): CustomComponent[] {
@@ -473,10 +461,9 @@ export function demo(rootId: string, renderMethod: 'canvas'|'svg') {
         lines: [
             [{x: 40, y: 40}, {x: 80, y: 80}]
         ],
-        props: [getDemoTable(), getDemoLight()]
+        props: [getDemoTable(),getDemoTable(),getDemoTable(), getDemoLight()]
     })
     // svg order is determined by declaration order
     ctx.display()
-    console.log(ctx.propsState.get())
 }
 

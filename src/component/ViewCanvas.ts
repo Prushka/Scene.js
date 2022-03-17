@@ -117,24 +117,37 @@ export class ViewCanvas extends View {
     afterRender() {
         const canvas = document.getElementById(this.ctx.getIdType('canvas')) as HTMLCanvasElement
         const ctx = canvas.getContext('2d')
+// Set display size (css pixels).
+        canvas.style.width = Math.floor(this.ctx.getRootWidth())+ "px";
+        canvas.style.height = Math.floor(this.ctx.getRootHeight()) + "px";
 
-        // ctx.fillStyle = 'green'
-        // ctx.fillRect(10, 10, 150, 100)
+// Set actual size in memory (scaled to account for extra pixel density).
+        const scale = window.devicePixelRatio; // <--- Change to 1 on retina screens to see blurry canvas.
+        canvas.width = Math.floor(this.ctx.getRootWidth()) * scale;
+        canvas.height = Math.floor(this.ctx.getRootHeight()) * scale;
+
+// Normalize coordinate system to use css pixels.
+        ctx.scale(scale, scale)
         this.forEachPropWithPosition((prop, position) => {
-            console.log(prop)
             forEachPathHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], (pathHTML)=>{
+                ctx.fillStyle = prop.color
+                ctx.lineWidth = 0.5
+                ctx.scale(position.scaleX, position.scaleY)
+                ctx.rotate(position.degree * Math.PI / 180)
                 const path = extractPathD(pathHTML)
                 let p = new Path2D(path)
-                console.log(path)
-                p.moveTo(position.x, position.y)
-                ctx.fill(p);
+                console.log(position)
+                const p1 = new Path2D()
+                p1.addPath(p, {e: position.x, f: position.y})
+                ctx.fill(p1)
+                ctx.setTransform(1, 0, 0, 1, 0, 0)
             })
         })
     }
 
     render(): string | string[] {
 
-        return `<canvas width="${this.ctx.getRootWidth()}" height="${this.ctx.getRootHeight()}"
+        return `<canvas width="${Math.floor(this.ctx.getRootWidth())}" height="${Math.floor(this.ctx.getRootHeight())}"
 id="${this.ctx.getIdType('canvas')}"></canvas>`
     }
 }
