@@ -130,8 +130,16 @@ export class Footer extends SceneComponent {
                 if (frame != this.getTimeCtx().totalFrames) {
                     frameContainer.style.flexGrow = String(Math.floor(this.ctx.getFrameSeconds(frame) * 10))
                 }
-                const progress = document.createElement('progress')
-                progress.max = 100
+                // The styling (e.g., color etc.,) of a standard html <progress> tag cannot be standardized,
+                // that's why a custom div was used
+                const progress = document.createElement('div')
+                progress.classList.add('progress-container')
+                const progressFinished = document.createElement('div')
+                const progressNotFinished = document.createElement('div')
+                progressFinished.classList.add('progress', 'progress-finished')
+                progressNotFinished.classList.add('progress', 'progress-not')
+                progressFinished.setAttribute('max', '100')
+                progress.append(progressFinished, progressNotFinished)
                 frameContainer.append(progress)
                 const frameButton = document.createElement('div')
                 frameButton.id = this.ctx.getId(frame, 'timeline', 'frame')
