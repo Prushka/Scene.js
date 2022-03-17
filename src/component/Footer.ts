@@ -25,6 +25,11 @@ export class ProgressBarTupleElements {
         }
     }
 
+    public full(){
+        ProgressBarTupleElements.setStyles(this.progressFinished, '100%', '0s')
+        ProgressBarTupleElements.setStyles(this.progressUnfinished, '0%', '0s')
+    }
+
     public reset() {
         ProgressBarTupleElements.setStyles(this.progressFinished, '0%', '0s')
         ProgressBarTupleElements.setStyles(this.progressUnfinished, '100%', '0s')
@@ -40,6 +45,7 @@ export class Footer extends SceneComponent {
 
     open: State<boolean>
     playing: State<boolean>
+    timeouts = []
 
     afterConstructor() {
         this.open = createState(true)
@@ -60,6 +66,11 @@ export class Footer extends SceneComponent {
     }
 
     actions(): StateAction<any>[] {
+        const setFrameButton = (frame:number, selected:boolean) => {
+            const frameElement = document.getElementById(this.ctx.getId(frame, 'timeline', 'frame'))
+            frameElement.classList.remove(!selected?"timeline__frame--selected":"timeline__frame--not-selected")
+            frameElement.classList.add(selected?"timeline__frame--selected":"timeline__frame--not-selected")
+        }
         return [[this.open, ((_, open) => {
             const toolbarElement = document.getElementById(this.ctx.getIdType("toolbar"))
             const bottom = open ? 0 : -(toolbarElement.getBoundingClientRect().height - 45)
@@ -78,28 +89,30 @@ export class Footer extends SceneComponent {
                 }
                 const frameSeconds = this.ctx.getFrameSeconds(oldFrame)
                 if (this.getTimeCtx().ifJumpOneLiterally(oldFrame, newFrame)) {
-                    setTimeout(()=>{
-                        const frameElement = document.getElementById(this.ctx.getId(newFrame, 'timeline', 'frame'))
-                        frameElement.classList.remove("timeline__frame--not-selected")
-                        frameElement.classList.add("timeline__frame--selected")
-                    }, frameSeconds*1000)
+                    setFrameButton(oldFrame,true)
+                    this.timeouts.push(setTimeout(()=>{
+                        setFrameButton(newFrame,true)
+                    }, frameSeconds*1000))
+                    const previousProgressBars = this.getProgressBars(oldFrame-1)
+                    if(previousProgressBars){
+                        previousProgressBars.full()
+                    }
                     const progressBars = this.getProgressBars(oldFrame)
                     if (progressBars) {
                         progressBars.setTransition(frameSeconds + 's', this.ctx.config.transitionTimingFunction, true)
                     }
                 } else {
+                    this.timeouts.forEach(t => {
+                        clearTimeout(t)
+                    })
                     for (let frame = 1; frame <= this.getTimeCtx().totalFrames; frame++) {
-                        const fElement = document.getElementById(this.ctx.getId(frame, 'timeline', 'frame'))
-                        fElement.classList.remove("timeline__frame--selected")
-                        fElement.classList.add("timeline__frame--not-selected")
+                        setFrameButton(frame,false)
                         const progressBars = this.getProgressBars(frame)
                         if (progressBars) {
                             progressBars.reset()
                         }
                     }
-                    const frameElement = document.getElementById(this.ctx.getId(newFrame, 'timeline', 'frame'))
-                    frameElement.classList.remove("timeline__frame--not-selected")
-                    frameElement.classList.add("timeline__frame--selected")
+                    setFrameButton(newFrame,true)
                 }
             }]]
     }
