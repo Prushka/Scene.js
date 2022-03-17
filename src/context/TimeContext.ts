@@ -35,6 +35,10 @@ export default class TimeContext {
         return newFrame - oldFrame === 1 || (newFrame === 1 && oldFrame === this.totalFrames)
     }
 
+    public ifJumpOneLiterally(oldFrame, newFrame){
+        return newFrame - oldFrame === 1
+    }
+
     public nextFrame(): number {
         const previousFrame = this.currentFrame
         if (this.currentFrame < this.totalFrames) {

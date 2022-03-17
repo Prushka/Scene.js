@@ -73,29 +73,34 @@ export class Footer extends SceneComponent {
             }
         })],
             [this.ctx.timeCtx.currentFrameState, (oldFrame, newFrame) => {
-                if (oldFrame != null) {
-                    const fElement = document.getElementById(this.ctx.getId(oldFrame, 'timeline', 'frame'))
-                    fElement.classList.remove("timeline__frame--selected")
-                    fElement.classList.add("timeline__frame--not-selected")
+                if (oldFrame == null) {
+                    return
                 }
-                const frameElement = document.getElementById(this.ctx.getId(newFrame, 'timeline', 'frame'))
-                frameElement.classList.remove("timeline__frame--not-selected")
-                frameElement.classList.add("timeline__frame--selected")
-                if (this.getTimeCtx().ifJumpOne(oldFrame, newFrame)) {
+                const frameSeconds = this.ctx.getFrameSeconds(oldFrame)
+                if (this.getTimeCtx().ifJumpOneLiterally(oldFrame, newFrame)) {
+                    setTimeout(()=>{
+                        const frameElement = document.getElementById(this.ctx.getId(newFrame, 'timeline', 'frame'))
+                        frameElement.classList.remove("timeline__frame--not-selected")
+                        frameElement.classList.add("timeline__frame--selected")
+                    }, frameSeconds*1000)
                     const progressBars = this.getProgressBars(oldFrame)
                     if (progressBars) {
-                        progressBars.setTransition(this.ctx.getFrameSeconds(oldFrame) + 's', this.ctx.config.transitionTimingFunction, true)
+                        progressBars.setTransition(frameSeconds + 's', this.ctx.config.transitionTimingFunction, true)
                     }
                 } else {
-                    for (let frame = 0; frame < this.getTimeCtx().totalFrames; frame++) {
+                    for (let frame = 1; frame <= this.getTimeCtx().totalFrames; frame++) {
+                        const fElement = document.getElementById(this.ctx.getId(frame, 'timeline', 'frame'))
+                        fElement.classList.remove("timeline__frame--selected")
+                        fElement.classList.add("timeline__frame--not-selected")
                         const progressBars = this.getProgressBars(frame)
                         if (progressBars) {
                             progressBars.reset()
                         }
                     }
-
+                    const frameElement = document.getElementById(this.ctx.getId(newFrame, 'timeline', 'frame'))
+                    frameElement.classList.remove("timeline__frame--not-selected")
+                    frameElement.classList.add("timeline__frame--selected")
                 }
-
             }]]
     }
 
