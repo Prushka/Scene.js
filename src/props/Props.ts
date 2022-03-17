@@ -70,14 +70,15 @@ export interface PropConfig extends HasId {
     orderIndex?: number,
     shouldDisplayName?: boolean,
     namePosition?: 'center' | 'top' | 'right' | 'left' | 'bottom',
-    nameScale?: number
+    nameScale?: number,
+    nameColor?: string
 }
 
 export const DefaultPropConfig: PropConfig = {
     style: "default",
     shouldDisplayName: true,
     orderIndex: 0,
-    namePosition: 'top',
+    namePosition: 'center',
     nameScale: 1
 }
 

@@ -94,15 +94,39 @@ export class ViewSVG extends View {
                     const position = this.ctx.getPropPositionByCurrentFrame(prop)
                     const textElement = element.querySelector('text')
                     const textWidth = textElement.getBBox().width * prop.nameScale
+                    const textHeight = textElement.getBBox().height * prop.nameScale
                     const pathGroup = document.getElementById(this.ctx.getId(prop, 'view', 'prop', 'icon', 'group', position.enabled?'enabled':'disable')) as any
                     // pathGroups.forEach(pathGroup => {
                     //     pathGroup.setAttribute("transform", `translate(${textWidth / 2 - (pathGroup.getBBox().width * position.scaleX) / 2}, 0)`)
                     // })
-                    const pathGroupWidth = pathGroup.getBBox().width
-                    const shift = pathGroupWidth / 2 - textWidth / 2
-                    console.log(`Path: ${pathGroupWidth} | Text: ${textWidth} | Shift: ${shift*position.scaleX}`)
-                    textElement.setAttribute("transform",
-                        `translate(${shift}, 0) scale(${prop.nameScale} ${prop.nameScale})`)
+                    const pathGroupBBox = pathGroup.getBBox()
+                    let shiftXVertical = pathGroupBBox.width / 2 - textWidth / 2
+                    let shiftYHorizontal = pathGroupBBox.height / 2 + textHeight / 2
+                    console.log(`Path: ${pathGroupBBox.width} | Text: ${textWidth} | Shift: ${shiftYHorizontal}`)
+                    switch (prop.namePosition){
+                        case "top":
+                            textElement.setAttribute("y", "-7")
+                            textElement.setAttribute("x", String(shiftXVertical))
+                            break
+                        case "bottom":
+                            textElement.setAttribute("y", String(pathGroupBBox.height+textHeight+7))
+                            textElement.setAttribute("x", String(shiftXVertical))
+                            break
+                        case "left":
+                            textElement.setAttribute("y", String(shiftYHorizontal))
+                            textElement.setAttribute("x", String(Math.floor(-textWidth-pathGroupBBox.width)))
+                            break
+                        case "right":
+                            textElement.setAttribute("y", String(shiftYHorizontal))
+                            textElement.setAttribute("x", String(Math.floor(pathGroupBBox.width+7)))
+                            break
+                        case "center":
+
+                            textElement.setAttribute("y", String(shiftYHorizontal))
+                            textElement.setAttribute("x", String(shiftXVertical))
+                            break
+                    }
+                    textElement.setAttribute("transform",`scale(${prop.nameScale} ${prop.nameScale})`)
                 }
             })
         }
@@ -212,8 +236,7 @@ export class ViewSVG extends View {
                     const text = document.createElement("text")
                     text.id = this.ctx.getId(prop, 'view', 'prop', 'text')
                     text.innerText = prop.name
-                    text.setAttribute("y", "-7")
-                    text.style.fill = prop.color
+                    text.style.fill = prop.nameColor ?? prop.color
                     group.appendChild(text)
                 }
                 // It's not possible to set innerHTML to format: <path ... /><path ... />
