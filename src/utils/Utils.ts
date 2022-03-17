@@ -108,3 +108,18 @@ export function extractPathD(pathHTML) {
     const res = pathHTML.match(/d=["'`](.*?)["'`]/)
     return res == null ? "" : res[1]
 }
+
+export function flatObject(obj) {
+    const newObj = {}
+    const _flatValues = (_obj) => {
+        for (let key in _obj) {
+            if (typeof _obj[key] === "object") {
+                _flatValues(_obj[key]);
+            } else {
+                newObj[key] = _obj[key]
+            }
+        }
+    }
+    _flatValues(obj)
+    return newObj
+}
