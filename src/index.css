@@ -537,3 +537,11 @@
     align-items: center;
     margin-right: 10px;
 }
+
+/* https://stackoverflow.com/questions/11131875/what-is-the-cleanest-way-to-disable-css-transition-effects-temporarily */
+.no-transition {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+}

@@ -20,6 +20,11 @@ export class ProgressBarTupleElements {
     private static setStyles(element: HTMLElement, width: string, transitionDuration: string, transitionFunction?: string) {
         element.style.width = width
         element.style.transitionDuration = transitionDuration
+        if(transitionDuration == '0s'){
+            element.classList.add('no-transition')
+        }else{
+            element.classList.remove('no-transition')
+        }
         if (transitionFunction) {
             element.style.transitionTimingFunction = transitionFunction
         }
@@ -209,7 +214,6 @@ export class Footer extends SceneComponent {
                 const progressUnfinished = document.createElement('div')
                 progressFinished.classList.add('progress', 'progress-finished')
                 progressUnfinished.classList.add('progress', 'progress-not')
-                progressFinished.setAttribute('max', '100')
                 progressFinished.id = this.ctx.getId(frame, 'frame', 'progress', 'finished')
                 progressUnfinished.id = this.ctx.getId(frame, 'frame', 'progress', 'unfinished')
                 progress.append(progressFinished, progressUnfinished)
