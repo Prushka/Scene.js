@@ -277,7 +277,7 @@
 }
 
 .timeline-container {
-    flex-direction: column;
+    display: flex;
     width: calc(100% - var(--toolbar-button-width) - 3px);
     margin-top: auto;
     padding: 0 20px;
@@ -291,13 +291,13 @@
 }
 
 .timeline {
+    display: flex;
     width: 100%;
-    border-top: 4px solid var(--theme-pink);
 }
 
 .timeline__frame-container {
     display: flex;
-    justify-content: space-between;
+    border-bottom: 4px solid var(--theme-pink);
 }
 
 .timeline__frame {

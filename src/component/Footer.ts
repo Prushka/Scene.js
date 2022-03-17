@@ -34,16 +34,16 @@ export class Footer extends SceneComponent {
                 setClassList(icon, "bi", "bi-play-fill")
             }
         })],
-        [this.ctx.timeCtx.currentFrameState, (_, currentFrame)=>{
-            for (let f = 0; f < this.ctx.timeCtx.totalFrames; f++) {
-                const fElement = document.getElementById(this.ctx.getId(f + 1, 'timeline', 'frame'))
-                fElement.classList.remove("timeline__frame--selected")
-                fElement.classList.add("timeline__frame--not-selected")
-            }
-            const frameElement = document.getElementById(this.ctx.getId(currentFrame, 'timeline', 'frame'))
-            frameElement.classList.remove("timeline__frame--not-selected")
-            frameElement.classList.add("timeline__frame--selected")
-        }]]
+            [this.ctx.timeCtx.currentFrameState, (_, currentFrame) => {
+                for (let f = 0; f < this.ctx.timeCtx.totalFrames; f++) {
+                    const fElement = document.getElementById(this.ctx.getId(f + 1, 'timeline', 'frame'))
+                    fElement.classList.remove("timeline__frame--selected")
+                    fElement.classList.add("timeline__frame--not-selected")
+                }
+                const frameElement = document.getElementById(this.ctx.getId(currentFrame, 'timeline', 'frame'))
+                frameElement.classList.remove("timeline__frame--not-selected")
+                frameElement.classList.add("timeline__frame--selected")
+            }]]
     }
 
     subscribe() {
@@ -94,27 +94,52 @@ export class Footer extends SceneComponent {
     }
 
     render(): string | string[] {
-        const createButtonDiv = (title, iconClasses, ...types: string[]) => {
-            return `<div id="${this.ctx.getIdType(...types)}" title="${title}" class="button button--purple pointer"><i class='${iconClasses}' id="${this.ctx.getIdType(...types, 'icon')}"></i></div>`
+        const footerContainer = document.createElement('div')
+        const toolbarContainer = document.createElement('div')
+        toolbarContainer.id = this.ctx.getIdType("toolbar")
+        toolbarContainer.classList.add('toolbar')
+        const addButtonToToolbar = (title, iconClasses, ...types: string[]) => {
+            const toolbarButton = document.createElement('div')
+            toolbarButton.id = this.ctx.getIdType(...types)
+            toolbarButton.title = title
+            toolbarButton.classList.add('button', 'button--purple', 'pointer')
+            const icon = document.createElement('i')
+            icon.classList.add(...iconClasses.split(' '))
+            icon.id = this.ctx.getIdType(...types, 'icon')
+            toolbarButton.append(icon)
+            toolbarContainer.append(toolbarButton)
         }
         const currentFrame = this.ctx.timeCtx.currentFrame
         let elements = ""
-        const buttons = [createButtonDiv('Collapse/Expand', 'bi bi-arrows-collapse', "toolbar", "collapse")]
+        addButtonToToolbar('Collapse/Expand', 'bi bi-arrows-collapse', "toolbar", "collapse")
+        addButtonToToolbar('Reset viewport (based on current frame)', 'bi bi-arrows-move', "toolbar", "reset", "current")
+        addButtonToToolbar("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', "toolbar", "reset", "frames")
+        addButtonToToolbar('Export', 'bi bi-box-arrow-up-right', "toolbar", "export")
 
-        buttons.push(createButtonDiv('Reset viewport (based on current frame)', 'bi bi-arrows-move', "toolbar", "reset", "current"))
-        buttons.push(createButtonDiv("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', "toolbar", "reset", "frames"))
-        buttons.push(createButtonDiv('Export', 'bi bi-box-arrow-up-right', "toolbar", "export"))
+        footerContainer.append(toolbarContainer)
         if (!this.ctx.timeCtx.isStatic) {
+            // create a timeline since it's not static
             let frames = ""
-            for (let f = 0; f < this.ctx.timeCtx.totalFrames; f++) {
-                frames += `<div id="${this.ctx.getId(f + 1, 'timeline', 'frame')}" class="timeline__frame ${currentFrame === f + 1 ? 'timeline__frame--selected' : 'timeline__frame--not-selected'} pointer">${f + 1}</div>`
+
+            const timelineContainer = document.createElement('div')
+            timelineContainer.classList.add('timeline-container')
+            for (let f = 0; f < this.getTimeCtx().totalFrames; f++) {
+                const frame = f + 1
+                const frameContainer = document.createElement('div')
+                frameContainer.classList.add('timeline__frame-container')
+                if (frame != this.getTimeCtx().totalFrames) {
+                    frameContainer.style.flexGrow = String(frame)
+                }
+                const frameButton = document.createElement('div')
+                frameButton.id = this.ctx.getId(frame, 'timeline', 'frame')
+                frameButton.classList.add(`timeline__frame`, currentFrame === frame ? 'timeline__frame--selected' : 'timeline__frame--not-selected', `pointer`)
+                frameButton.innerText = String(frame)
+                frameContainer.append(frameButton)
+                timelineContainer.append(frameContainer)
             }
-            elements = `<div class="timeline-container"><div class="timeline__frame-container">${frames}</div><div class="timeline"></div></div>`
-            buttons.push(createButtonDiv('Play', this.playing.get() ? 'bi bi-pause-fill' : 'bi bi-play-fill', "toolbar", "play"))
+            addButtonToToolbar('Play', this.playing.get() ? 'bi bi-pause-fill' : 'bi bi-play-fill', "toolbar", "play")
+            footerContainer.append(timelineContainer)
         }
-        return `
-                     <div id="${this.ctx.getIdType("toolbar")}" class="toolbar">${buttons.join('')}</div>
-                     ${elements}
-                     `
+        return footerContainer.outerHTML
     }
 }

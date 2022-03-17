@@ -127,7 +127,6 @@ export class Context {
     public extractIdType(htmlID: string): [number, string[]] {
         const elementId = htmlID.match(/-\d+/)
         const contextId = htmlID.match(/\d+-/)
-        console.log(contextId, elementId)
         if (!contextId) {
             return [-1, []]
         }
@@ -246,6 +245,12 @@ export class Context {
             return this.viewportsState.get()[0]
         }
     }
+
+    public getTimeContextGetter():()=>TimeContext {
+        return ()=>{
+            return this.timeCtx
+        }
+    }
     //
     // public get viewportOffset() {
     //     return this.viewportsState.get()[0].offset
@@ -322,7 +327,7 @@ export class Context {
                                     <div id="${this.getIdType('footer', 'root__container')}" class="footer-container"></div>
                                     <div id="${this.getIdType('overlay', 'root__container')}" class="overlay-container"></div>`)
             const v =  this.config.renderMethod === 'canvas' ? ViewCanvas : ViewSVG
-            const [view] = this.register(v, PropList, PropDialog, Footer, Snackbar, Overlay)
+            const [view] = this.register(v, PropDialog, Footer, Snackbar, Overlay)
             this.viewComponent = view as View
         })
     }
@@ -347,7 +352,7 @@ export function demo(rootId: string, renderMethod: 'canvas'|'svg') {
             lightType: "hard",
             frameAnimationConfig: {
                 1: {
-                    x: 0, y: 0, degree: 30, enabled: false
+                    x: 140, y: 140, degree: 30, enabled: false
                 },
                 2: {
                     x: 100, y: 100, degree: 60
@@ -365,7 +370,9 @@ export function demo(rootId: string, renderMethod: 'canvas'|'svg') {
             brand: "Random",
             note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             frameAnimationConfig: {
-                1: getRandomPosition(),
+                1: {
+                    x: 140, y: 140, degree: 60, enabled: true
+                },
                 2: getRandomPosition(),
                 3: getRandomPosition(),
                 4: getRandomPosition(),
@@ -384,7 +391,6 @@ export function demo(rootId: string, renderMethod: 'canvas'|'svg') {
                     imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png"
                 }
             ],
-            shouldDisplayName: false,
             steps: {
                 11: {
                     title: "Here's step 1",
