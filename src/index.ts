@@ -182,28 +182,32 @@ export class Context {
     }
 
     public getPropPositionByFrame(prop: PropConfig, frame: number, lookForward: boolean): AnimationConfig | null {
-        let position: AnimationConfig
-        const frameConfig = prop.frameAnimationConfig
-        if (frameConfig) {
-            if (frameConfig[frame]) {
-                position = frameConfig[frame]
-            } else {
-                let closest = -1
-                for (let key in frameConfig) {
-                    const _key = Number(key)
-                    if (lookForward) {
-                        if (_key > frame && (closest === -1 || Math.abs(_key - frame) < closest)) {
-                            closest = _key
-                        }
-                    } else {
-                        if (_key < frame && (closest === -1 || Math.abs(_key - frame) < closest)) {
-                            closest = _key
+        const _get = (_lookForward: boolean) => {
+            let position: AnimationConfig
+            const frameConfig = prop.frameAnimationConfig
+            if (frameConfig) {
+                if (frameConfig[frame]) {
+                    position = frameConfig[frame]
+                } else {
+                    let closest = -1
+                    for (let key in frameConfig) {
+                        const _key = Number(key)
+                        if (_lookForward) {
+                            if (_key > frame && (closest === -1 || Math.abs(_key - frame) < closest)) {
+                                closest = _key
+                            }
+                        } else {
+                            if (_key < frame && (closest === -1 || Math.abs(_key - frame) < closest)) {
+                                closest = _key
+                            }
                         }
                     }
+                    position = frameConfig[closest]
                 }
-                position = frameConfig[closest]
             }
+            return position
         }
+        const position = _get(lookForward) ?? _get(!lookForward)
         if (position) {
             return {...position}
         }
