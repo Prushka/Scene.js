@@ -94,12 +94,10 @@ export default class ViewPortContext {
     }
 
     public zoomIn() {
-        console.log(this.scale)
         this.scale = this.scale * this.ctx.config.zoomFactor
     }
 
     public zoomOut() {
-        console.log(this.scale)
         this.scale = this.scale * (1 / this.ctx.config.zoomFactor)
     }
 }
