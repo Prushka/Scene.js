@@ -161,7 +161,7 @@
     margin-right: 12px;
 }
 
-.content span {
+.content-text--normal {
     color: var(--scene-dialog-content)
 }
 
@@ -182,9 +182,6 @@
 .content .image__container img {
     width: 95%;
     cursor: pointer;
-}
-
-.content .image__container__title {
 }
 
 .content__key-value {

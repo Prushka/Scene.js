@@ -137,7 +137,7 @@ export class PropDialog extends SceneComponent {
                 const imageElement = document.createElement('img')
                 const titleElement = document.createElement('span')
                 titleElement.innerText = imageConfig.title ? imageConfig.title : ''
-                titleElement.classList.add("image__container__title")
+                titleElement.classList.add("content-text--normal")
                 containerElement.append(titleElement)
                 imageElement.src = imageConfig.imageURL
 
@@ -156,10 +156,12 @@ export class PropDialog extends SceneComponent {
 
                 const titleElement = document.createElement('span')
                 titleElement.innerText = stepConfig.title ? stepConfig.title : ""
+                titleElement.classList.add('content-text--normal')
                 headerElement.append(stepNumberElement, titleElement)
 
                 const contentElement = document.createElement('span')
                 contentElement.innerText = stepConfig.content ? stepConfig.content : ""
+                contentElement.classList.add('content-text--normal')
                 containerElement.append(headerElement, contentElement)
                 return containerElement
             }
@@ -178,6 +180,7 @@ export class PropDialog extends SceneComponent {
                     if (selectedProp.script) {
                         const scriptElement = document.createElement('span')
                         scriptElement.innerText = selectedProp.script
+                        scriptElement.classList.add('content-text--normal')
                         contentElement.append(scriptElement)
                     }
                     break
@@ -206,6 +209,7 @@ export class PropDialog extends SceneComponent {
                         case "json":
                             const jsonElement = document.createElement('p')
                             jsonElement.innerText = JSON.stringify(selectedProp, null, 2)
+                            jsonElement.classList.add('content-text--normal')
                             contentElement.append(jsonElement)
                             break
                     }

@@ -54,7 +54,7 @@ const ThemeConstants: { [key: string]: Theme } = {
             "--scene-snackbar-text": "#ffffff",
             "--scene-dialog-key": "#a3a3c7",
             "--scene-dialog-value": "#ea9090",
-            "--scene-dialog-content": "#000000",
+            "--scene-dialog-content": "#ffffff",
             "--scene-button-text": "#ffffff",
             "--scene-button-color": "#8688BC",
             "--scene-button-hover": "#6565a1",
