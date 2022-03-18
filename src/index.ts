@@ -37,8 +37,8 @@ import {useTheme} from "./context/ThemeContext";
 export class Context {
     protected propIds: number = 0
     private _selected: State<PropConfig> = createState()
-    propsState: State<PropConfig[]> = createState([])
-    viewportsState: State<ViewPortContext[]> = createState([])
+    public propsState: State<PropConfig[]> = createState([])
+    public viewportsState: State<ViewPortContext[]> = createState([])
     public readonly config: Config
     public readonly propTypeIconPool: { [key in PropType]: PropTypeIcon }
     public readonly rootContainerId: string
@@ -50,6 +50,8 @@ export class Context {
     public readonly themeCtx
     public readonly ids
     public readonly idContext
+
+    public viewComponent: View
 
     public constructor(rootContainerId: string, config?: Config) {
         [this.ids, this.idContext] = useId()
@@ -233,27 +235,6 @@ export class Context {
         }
     }
 
-    //
-    // public get viewportOffset() {
-    //     return this.viewportsState.get()[0].offset
-    // }
-    //
-    // public set viewportOffset(offset: PositionConfig) {
-    //     const _viewports = [...this.viewportsState.get()]
-    //     _viewports[0].offset = offset
-    //     this.viewportsState.set(_viewports)
-    // }
-    //
-    // public get viewportScale() {
-    //     return this.viewportsState.get()[0].scale
-    // }
-    //
-    // public set viewportScale(scale: number) {
-    //     const _viewports = [...this.viewportsState.get()]
-    //     _viewports[0].scale = scale
-    //     this.viewportsState.set(_viewports)
-    // }
-
     private beforeDisplay() {
         this.frameContext.totalFrames = this.findMaxFrames()
         const viewports = []
@@ -299,9 +280,6 @@ export class Context {
         })
         return components
     }
-
-    viewComponent: View
-
 
     public $(selector) {
         return $(`${this.rootContainerIdSymbol} ${selector}`)

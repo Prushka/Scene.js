@@ -242,7 +242,7 @@ export class PropDialog extends SceneComponent {
 
             return parentContainer.outerHTML
             // appending the element will set svg's Viewbox to viewbox
-            // and it's case-sensitive, that's why outerHTML's used
+            // attributes are case-sensitive, that's why outerHTML's used
         }
         return ""
     }
