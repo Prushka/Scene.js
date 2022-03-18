@@ -16,11 +16,19 @@ export interface ScaleConfig {
     scaleY?: number
 }
 
+export interface ImageConfig {
+    title?: string,
+    imageURL: string,
+    width?: number,
+    height?: number
+}
+
 export interface AnimationConfig extends OrientationConfig, PositionConfig, ScaleConfig {
     enabled?: boolean,
     hide?: boolean,
     isOffset?: boolean,
     transitionTimingFunction?: string,
+    thumbnail?: ImageConfig,
 }
 
 export const DefaultAnimationConfig: AnimationConfig = {
@@ -47,10 +55,6 @@ export interface HasId {
 
 export type FrameAnimationConfig = { [key: number]: AnimationConfig }
 
-export interface ImageConfig {
-    title?: string,
-    imageURL: string
-}
 
 export interface StepConfig {
     title?: string,

@@ -92,14 +92,16 @@ export class ViewSVG extends View {
                 if (prop.shouldDisplayName) {
                     const position = this.ctx.getPropPositionByCurrentFrame(prop)
                     const textElement = element.querySelector('text')
-                    const textWidth = textElement.getBBox().width * prop.nameScale
-                    const textHeight = textElement.getBBox().height * prop.nameScale
                     const pathGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP(prop, position.enabled ? 'enabled' : 'disable')) as any
-                    if (pathGroup) {
-                        const pathGroupBBox = pathGroup.getBBox()
-                        let shiftXVertical = pathGroupBBox.width / 2 - textWidth / 2
-                        let shiftYHorizontal = pathGroupBBox.height / 2 + textHeight / 2
-                        console.log(`Path: ${pathGroupBBox.width} | Text: ${textWidth} | Shift: ${shiftYHorizontal}`)
+                    const storyboard = document.querySelector('image') as any
+
+                    if (textElement) {
+                        const textWidth = textElement.getBBox().width * prop.nameScale
+                        const textHeight = textElement.getBBox().height * prop.nameScale
+                        const elementBBox = storyboard.getBBox() ?? pathGroup.getBBox()
+                        let shiftXVertical = elementBBox.width / 2 - textWidth / 2
+                        let shiftYHorizontal = elementBBox.height / 2 + textHeight / 2
+                        console.log(`Path: ${elementBBox.width} | Text: ${textWidth} | Shift: ${shiftYHorizontal}`)
                         let shiftX, shiftY
                         switch (prop.namePosition) {
                             case "top":
@@ -107,16 +109,16 @@ export class ViewSVG extends View {
                                 shiftX = shiftXVertical
                                 break
                             case "bottom":
-                                shiftY = pathGroupBBox.height + textHeight + 7
+                                shiftY = elementBBox.height + textHeight + 7
                                 shiftX = shiftXVertical
                                 break
                             case "left":
                                 shiftY = shiftYHorizontal
-                                shiftX = Math.floor(-textWidth - pathGroupBBox.width)
+                                shiftX = Math.floor(-textWidth - elementBBox.width)
                                 break
                             case "right":
                                 shiftY = shiftYHorizontal
-                                shiftX = Math.floor(pathGroupBBox.width + 7)
+                                shiftX = Math.floor(elementBBox.width + 7)
                                 break
                             case "center":
                                 shiftY = shiftYHorizontal
@@ -127,6 +129,12 @@ export class ViewSVG extends View {
                         textElement.setAttribute("x", String(prop.nameXOffset + shiftX))
                         textElement.setAttribute("transform", `scale(${prop.nameScale} ${prop.nameScale})`)
 
+                    }else{
+                        switch (prop.type){
+                            case PropType.STORYBOARD:
+                                //textElement.setAttribute("y", String(textHeight))
+                                break
+                        }
                     }
                 }
             })
@@ -233,24 +241,41 @@ export class ViewSVG extends View {
                 group.style.transitionTimingFunction = position.transitionTimingFunction
                 group.id = this.idCtx.VIEW_GROUP(prop)
                 group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree}) scale(${position.scaleX} ${position.scaleY})`)
+                switch (prop.type){
+                    case PropType.STORYBOARD:
+                        if(position.thumbnail){
+                            const img = document.createElementNS('http://www.w3.org/2000/svg','image')
+                            if(position.thumbnail.width == null && position.thumbnail.height == null){
+                                position.thumbnail.width = 50
+                            }
+                            if(position.thumbnail.height){
+                                img.setAttributeNS(null,'height',String(position.thumbnail.height))
+                            }
+                            if(position.thumbnail.width){
+                                img.setAttributeNS(null,'width',String(position.thumbnail.width))
+                            }
+                            img.setAttributeNS('http://www.w3.org/1999/xlink','href',position.thumbnail.imageURL)
+                            img.setAttributeNS(null,'x',String(position.x))
+                            img.setAttributeNS(null,'y',String(position.y))
+                            group.append(img)
+                        }
+                        break
+                    default:
+                        // It's not possible to set innerHTML to format: <path ... /><path ... />
+                        // The above line will be formatted to: <path ...><path ...></path></path>
+                        // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
+                        // (until I find a workaround or figure out what the issue is)
+                        const pathGroupEnabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['enabledPaths'], prop)
+                        const pathGroupDisabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], prop)
+                        pathGroupEnabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_ENABLED(prop)
+                        pathGroupDisabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_DISABLED(prop)
+                        if (this.ctx.isPropEnabled(prop)) {
+                            pathGroupDisabled.style.opacity = "0"
+                        } else {
+                            pathGroupEnabled.style.opacity = "0"
+                        }
+                        group.append(pathGroupEnabled, pathGroupDisabled)
 
-                if (prop.type === PropType.STORYBOARD) {
-
-                } else {
-                    // It's not possible to set innerHTML to format: <path ... /><path ... />
-                    // The above line will be formatted to: <path ...><path ...></path></path>
-                    // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
-                    // (until I find a workaround or figure out what the issue is)
-                    const pathGroupEnabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['enabledPaths'], prop)
-                    const pathGroupDisabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], prop)
-                    pathGroupEnabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_ENABLED(prop)
-                    pathGroupDisabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_DISABLED(prop)
-                    if (this.ctx.isPropEnabled(prop)) {
-                        pathGroupDisabled.style.opacity = "0"
-                    } else {
-                        pathGroupEnabled.style.opacity = "0"
-                    }
-                    group.append(pathGroupEnabled, pathGroupDisabled)
                 }
                 if (prop.shouldDisplayName) {
                     const text = document.createElement("text")

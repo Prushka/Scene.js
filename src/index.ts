@@ -344,7 +344,6 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
             orderIndex: order,
             shouldDisplayName: true,
             nameScale: 0.8,
-            nameColor: "red"
         }
     }
 
@@ -352,9 +351,14 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
         return {
             type: "STORYBOARD",
             script: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+            orderIndex:20,
             frameAnimationConfig: {
                 1: {
-                    x: 0, y: 0
+                    x: 0, y: 0, thumbnail: {
+                        title: "something",
+                        imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png",
+                        width: 50
+                    }
                 }
             }
         }
