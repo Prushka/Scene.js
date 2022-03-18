@@ -68,7 +68,7 @@ export function positionToDisplay(position: AnimationConfig): AnimationConfig {
     for (let key in pos) {
         const value = pos[key]
         if (typeof value === 'number') {
-            pos[key] = Math.round(value)
+            pos[key] = key.includes('scale') ? Math.round(value * 10) / 10 : Math.round(value)
         }
     }
     return pos
