@@ -352,6 +352,7 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
             type: "STORYBOARD",
             script: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
             orderIndex:20,
+            namePosition: 'bottom',
             frameAnimationConfig: {
                 1: {
                     x: 0, y: 0, thumbnail: {

@@ -87,7 +87,7 @@ export const ThemeConstants: Themes = {
             "--scene-button-hover": "#557a81",
             "--scene-trans-base": "rgba(40,40,40,0.95)",
         },
-        icon: 'bi bi-moon-stars-fill'
+        icon: 'bi bi-balloon-heart-fill'
     }
 }
 

@@ -73,7 +73,7 @@ export interface PropConfig extends HasId {
     images?: ImageConfig[],
     orderIndex?: number,
     shouldDisplayName?: boolean,
-    namePosition?: 'center' | 'top' | 'right' | 'left' | 'bottom',
+    namePosition?: string | 'center' | 'top' | 'right' | 'left' | 'bottom',
     nameScale?: number,
     nameColor?: string,
     nameXOffset?: number,
