@@ -24,7 +24,7 @@ import {Config, DefaultConfig} from "./config/Config";
 import {Snackbar} from "./component/Snackbar";
 import {CustomComponent} from "./component/Component";
 import {Overlay} from "./component/Overlay";
-import TimeContext from "./context/TimeContext";
+import FrameContext, {useFrames} from "./context/FrameContext";
 import ViewPortContext from "./context/ViewPortContext";
 import {useSnackbar} from "./context/SnackbarContext";
 import {useOverlay} from "./context/OverlayContext";
@@ -32,10 +32,10 @@ import {ViewCanvas} from "./component/ViewCanvas";
 import View from "./component/View";
 import {useId} from "./context/IdContext";
 import {PropList} from "./component/PropList";
+import {useTheme} from "./context/ThemeContext";
 
 export class Context {
     protected propIds: number = 0
-    timeCtx: TimeContext
     private _selected: State<PropConfig> = createState()
     propsState: State<PropConfig[]> = createState([])
     viewportsState: State<ViewPortContext[]> = createState([])
@@ -43,16 +43,18 @@ export class Context {
     public readonly propTypeIconPool: { [key in PropType]: PropTypeIcon }
     public readonly rootContainerId: string
     public readonly rootContainerIdSymbol: string
+
+    public readonly frameContext = useFrames()
     public readonly snackbarCtx = useSnackbar()
     public readonly overlayCtx = useOverlay()
+    public readonly themeCtx = useTheme()
     public readonly ids
     public readonly idContext
 
-    public constructor(rootContainerId: string, config?: Config, context?: TimeContext) {
+    public constructor(rootContainerId: string, config?: Config) {
         [this.ids, this.idContext] = useId()
         this.rootContainerId = rootContainerId
         this.rootContainerIdSymbol = '#' + this.rootContainerId
-        this.timeCtx = context ? context : new TimeContext()
         this.config = config ? {...DefaultConfig, ...config} : {...DefaultConfig}
         this.config.lines.forEach((l) => {
             l[2] = {...DefaultLine, ...l[2]}
@@ -148,13 +150,13 @@ export class Context {
     }
 
     public getPropPosition(prop: PropConfig): AnimationConfig | null {
-        let position: AnimationConfig = prop.frameAnimationConfig[this.timeCtx.currentFrame]
+        let position: AnimationConfig = prop.frameAnimationConfig[this.frameContext.currentFrame]
         position = {...position}
         return position
     }
 
     public getPropPositionByCurrentFrame(prop: PropConfig): AnimationConfig | null {
-        return this.getPropPositionByFrame(prop, this.timeCtx.currentFrame, false)
+        return this.getPropPositionByFrame(prop, this.frameContext.currentFrame, false)
     }
 
     public getPropPositionByFrame(prop: PropConfig, frame: number, lookForward: boolean): AnimationConfig | null {
@@ -222,9 +224,9 @@ export class Context {
         }
     }
 
-    public getTimeContextGetter(): () => TimeContext {
+    public getTimeContextGetter(): () => FrameContext {
         return () => {
-            return this.timeCtx
+            return this.frameContext
         }
     }
 
@@ -250,9 +252,9 @@ export class Context {
     // }
 
     private beforeDisplay() {
-        this.timeCtx.totalFrames = this.findMaxFrames()
+        this.frameContext.totalFrames = this.findMaxFrames()
         const viewports = []
-        for (let i = 0; i <= this.timeCtx.totalFrames; i++) {
+        for (let i = 0; i <= this.frameContext.totalFrames; i++) {
             // populate one more frame since 0's used for static/animation
             const viewport = new ViewPortContext(this)
             viewports.push(viewport)

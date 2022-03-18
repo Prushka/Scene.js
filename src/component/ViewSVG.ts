@@ -45,7 +45,7 @@ export class ViewSVG extends View {
                     }
                 }
             }],
-            [this.ctx.timeCtx.currentFrameState, (oldFrame: number, newFrame: number) => {
+            [this.ctx.frameContext.currentFrameState, (oldFrame: number, newFrame: number) => {
                 this.ctx.propsState.get().forEach(prop => {
                     let newPosition = prop.frameAnimationConfig[newFrame]
                     let show = newPosition && !newPosition.hide

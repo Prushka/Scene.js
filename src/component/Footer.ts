@@ -88,7 +88,7 @@ export class Footer extends SceneComponent {
                 setClassList(icon, "bi", "bi-play-fill")
             }
         })],
-            [this.ctx.timeCtx.currentFrameState, (oldFrame, newFrame, previousFrame) => {
+            [this.ctx.frameContext.currentFrameState, (oldFrame, newFrame, previousFrame) => {
                 console.log(`Frame: ${previousFrame} | ${oldFrame} -> ${newFrame}`)
                 if (oldFrame == null) {
                     return
@@ -141,7 +141,7 @@ export class Footer extends SceneComponent {
         }
         this.ctx.$('.timeline__frame').on("click", (e) => {
             const [frame] = this.idCtx.extractIdType(e.target.id)
-            this.ctx.timeCtx.currentFrame = frame
+            this.ctx.frameContext.currentFrame = frame
         })
         hookButton(() => {
             this.open.set(!this.open.get())
@@ -152,13 +152,13 @@ export class Footer extends SceneComponent {
         }, "toolbar", "reset", "frames")
 
         hookButton(() => {
-            this.ctx.viewComponent.resetViewport(this.ctx.timeCtx.currentFrame)
+            this.ctx.viewComponent.resetViewport(this.ctx.frameContext.currentFrame)
             this.snackbarCtx.snackbar = "Reset Current Viewport"
         }, "toolbar", "reset", "current")
 
         const nextFrame = () => {
             if (this.playing.get()) {
-                const previousFrame = this.ctx.timeCtx.nextFrame()
+                const previousFrame = this.ctx.frameContext.nextFrame()
                 setTimeout(() => {
                     nextFrame()
                 }, this.ctx.getFrameSeconds(previousFrame) * 1000)
@@ -195,7 +195,7 @@ export class Footer extends SceneComponent {
             toolbarButton.append(icon)
             toolbarContainer.append(toolbarButton)
         }
-        const currentFrame = this.ctx.timeCtx.currentFrame
+        const currentFrame = this.ctx.frameContext.currentFrame
         addButtonToToolbar('Collapse/Expand', 'bi bi-arrows-collapse', "toolbar", "collapse")
         addButtonToToolbar('Reset viewport (based on current frame)', 'bi bi-arrows-move', "toolbar", "reset", "current")
         addButtonToToolbar("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', "toolbar", "reset", "frames")
@@ -203,7 +203,7 @@ export class Footer extends SceneComponent {
         addButtonToToolbar('Theme', 'bi bi-moon-stars-fill', "toolbar", "theme")
 
         footerContainer.append(toolbarContainer)
-        if (!this.ctx.timeCtx.isStatic) {
+        if (!this.ctx.frameContext.isStatic) {
             // create a timeline since it's not static
             const timelineContainer = document.createElement('div')
             timelineContainer.classList.add('timeline-container')

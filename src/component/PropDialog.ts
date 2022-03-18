@@ -36,7 +36,7 @@ export class PropDialog extends SceneComponent {
     actions(): StateAction<any>[] {
         return [[this.ctx.selectedState, () => {
             this.selectedTabState.set(Tab.GENERAL)
-        }], [this.ctx.timeCtx.currentFrameState, (oldFrame, newFrame) => {
+        }], [this.ctx.frameContext.currentFrameState, (oldFrame, newFrame) => {
             const selectedProp = this.ctx.selected
             if (selectedProp) {
                 const positionElement = document.getElementById(this.idCtx.PROP_DIALOG_FOOTER_POSITION(selectedProp))

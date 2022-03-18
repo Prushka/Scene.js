@@ -4,12 +4,13 @@
 
 import State, {createState} from "../state/State";
 
-export default class TimeContext {
+export function useFrames(){
+    return new FrameContext()
+}
+
+export default class FrameContext {
     public currentFrameState: State<number> = createState(1)
     protected totalFramesState: State<number> = createState(0)
-
-    public constructor() {
-    }
 
     public get isStatic() {
         return this.totalFrames <= 1
