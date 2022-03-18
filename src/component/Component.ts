@@ -9,6 +9,7 @@ import OverlayContext from "../context/OverlayContext";
 import ViewPortContext from "../context/ViewPortContext";
 import FrameContext from "../context/FrameContext";
 import {IdContext, useId} from "../context/IdContext";
+import ThemeContext from "../context/ThemeContext";
 
 
 export abstract class CustomComponent {
@@ -74,6 +75,7 @@ export abstract class SceneComponent extends CustomComponent {
     protected ctx: Context
     protected snackbarCtx: SnackbarContext
     protected overlayCtx: OverlayContext
+    protected themeCtx: ThemeContext
     protected getViewportCtx: () => ViewPortContext
     protected getTimeCtx: () => FrameContext
     protected readonly ids
@@ -85,6 +87,7 @@ export abstract class SceneComponent extends CustomComponent {
         [this.ids, this.idCtx] = [this.ctx.ids, this.ctx.idContext]
         this.snackbarCtx = this.ctx.snackbarCtx
         this.overlayCtx = this.ctx.overlayCtx
+        this.themeCtx = this.ctx.themeCtx
         this.getViewportCtx = this.ctx.getViewportGetter()
         this.getTimeCtx = this.ctx.getTimeContextGetter()
 

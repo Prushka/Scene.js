@@ -100,7 +100,7 @@ export class Footer extends SceneComponent {
                     this.timeouts.push(setTimeout(() => {
                         setFrameButton(newFrame, true)
                     }, frameSeconds * 1000))
-                    if(previousFrame==null || this.getTimeCtx().ifJumpOne(previousFrame, oldFrame)){
+                    if (previousFrame == null || this.getTimeCtx().ifJumpOne(previousFrame, oldFrame)) {
                         // force the previous progress bar to be full if the user jumps another frame ahead
                         const previousProgressBars = this.getProgressBars(oldFrame - 1)
                         if (previousProgressBars) {
@@ -175,7 +175,7 @@ export class Footer extends SceneComponent {
         }, "toolbar", "export")
 
         hookButton(() => {
-            document.documentElement.style.setProperty('--theme-dark-pink', '#000000');
+            this.themeCtx.next()
         }, "toolbar", "theme")
     }
 
