@@ -76,8 +76,8 @@ export class Footer extends SceneComponent {
             frameElement.classList.remove(!selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
             frameElement.classList.add(selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
         }
-        return [[this.themeCtx.currentState, ((_, next) => {
-            const theme = this.themeCtx.getThemeByIndex(next)
+        return [[this.themeCtx.currentState,null, () => {
+            const theme = this.themeCtx.currentTheme
             const themeButton = document.getElementById(this.ids.TOOLBAR_THEME_BUTTON)
             const iconEl = themeButton.querySelector('i')
             const spanEl = themeButton.parentElement.querySelector('span')
@@ -85,23 +85,23 @@ export class Footer extends SceneComponent {
                 setClassList(iconEl, ...theme.icon.split(' '))
             }
             if (spanEl) {
-                spanEl.innerText = `Theme (${this.themeCtx.getThemeName(next)})`
+                spanEl.innerText = `Theme (${this.themeCtx.themeToDisplay})`
             }
-        })], [this.open, ((_, open) => {
+        }], [this.open, (_, open) => {
             const toolbarElement = document.getElementById(this.ids.TOOLBAR)
             // TODO: y does the bounding rect have a ~10px random offset?
             if (toolbarElement) {
                 const bottom = open ? 0 : -(toolbarElement.getBoundingClientRect().height - 45)
                 toolbarElement.style.bottom = `${bottom}px`
             }
-        })], [this.playing, ((_, playing) => {
+        }], [this.playing, (_, playing) => {
             const icon = document.getElementById(this.ids.TOOLBAR_PLAY_BUTTON).querySelector('i')
             if (playing) {
                 setClassList(icon, "bi", "bi-pause-fill")
             } else {
                 setClassList(icon, "bi", "bi-play-fill")
             }
-        })],
+        }],
             [this.ctx.frameContext.currentFrameState, (oldFrame, newFrame, previousFrame) => {
                 console.log(`Frame: ${previousFrame} | ${oldFrame} -> ${newFrame}`)
                 if (oldFrame == null) {
@@ -224,7 +224,7 @@ export class Footer extends SceneComponent {
         addButtonToToolbar('Reset viewport (based on current frame)', 'bi bi-arrows-move', this.ids.TOOLBAR_RESET_CURRENT_BUTTON)
         addButtonToToolbar("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', this.ids.TOOLBAR_RESET_FRAMES_BUTTON)
         addButtonToToolbar('Export', 'bi bi-box-arrow-up-right', this.ids.TOOLBAR_EXPORT_BUTTON)
-        addButtonToToolbar('Theme', this.themeCtx.currentTheme.icon, this.ids.TOOLBAR_THEME_BUTTON)
+        addButtonToToolbar(`Theme (${this.themeCtx.themeToDisplay})`, this.themeCtx.currentTheme.icon, this.ids.TOOLBAR_THEME_BUTTON)
 
         footerContainer.append(toolbarContainer)
         if (!this.ctx.frameContext.isStatic) {

@@ -122,7 +122,7 @@ export default class ThemeContext {
         return next
     }
 
-    public getThemeToDisplay(){
+    public get themeToDisplay(){
         return `${this.getThemeName(this._current.get())} -> ${this.getThemeName(this.nextThemeIndex)}`
     }
 
