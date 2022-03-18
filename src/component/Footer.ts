@@ -95,11 +95,15 @@ export class Footer extends SceneComponent {
                 toolbarElement.style.bottom = `${bottom}px`
             }
         }], [this.playing, (_, playing) => {
-            const icon = document.getElementById(this.ids.TOOLBAR_PLAY_BUTTON).querySelector('i')
+            const playButton = document.getElementById(this.ids.TOOLBAR_PLAY_BUTTON)
+            const iconEl = playButton.querySelector('i')
+            const spanEl = playButton.parentElement.querySelector('span')
             if (playing) {
-                setClassList(icon, "bi", "bi-pause-fill")
+                setClassList(iconEl, "bi", "bi-pause-fill")
+                spanEl.innerText = 'Pause'
             } else {
-                setClassList(icon, "bi", "bi-play-fill")
+                setClassList(iconEl, "bi", "bi-play-fill")
+                spanEl.innerText = 'Play'
             }
         }],
             [this.ctx.frameContext.currentFrameState, (oldFrame, newFrame, previousFrame) => {
