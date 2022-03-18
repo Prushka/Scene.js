@@ -358,7 +358,16 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
                         title: "something",
                         imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png",
                         width: 50
-                    }
+                    },
+                    degree:20
+                },
+                2: {
+                    x: 0, y: 0, thumbnail: {
+                        title: "something",
+                        imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png",
+                        width: 50
+                    },
+                    degree:40
                 }
             }
         }

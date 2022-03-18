@@ -63,6 +63,14 @@ export function getLineGroup(startX, startY, endX, endY, width, color) {
     return `<g stroke-width="${width}" stroke="${color}"><path d="M${startX} ${startY}  L${endX} ${endY}"/></g>`
 }
 
+export function setStyles(styleKey, styleValue, ...elements) {
+    elements.forEach(e => {
+        if (e) {
+            e.style[styleKey] = styleValue
+        }
+    })
+}
+
 export function positionToDisplay(position: AnimationConfig): AnimationConfig {
     const pos = {...position}
     for (let key in pos) {

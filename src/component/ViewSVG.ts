@@ -5,7 +5,7 @@
 import {PositionConfig, PropConfig, PropType} from "../props/Props";
 import State, {createState, StateAction} from "../state/State";
 import PropTupleSet from "../utils/PropTupleSet";
-import {getLineGroup, getPathGroupByHTML} from "../utils/Utils";
+import {getLineGroup, getPathGroupByHTML, setStyles} from "../utils/Utils";
 import View from "./View";
 
 export class ViewSVG extends View {
@@ -54,8 +54,13 @@ export class ViewSVG extends View {
                     groupElement.style.display = show ? "unset" : "none"
                     const enabledGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP_ENABLED(prop))
                     const disabledGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP_DISABLED(prop))
-                    enabledGroup.style.opacity = !newPosition.enabled ? "0" : "1"
-                    disabledGroup.style.opacity = !newPosition.enabled ? "1" : "0"
+                    const storyboard = document.querySelector('image')
+                    if(enabledGroup){
+                        enabledGroup.style.opacity = !newPosition.enabled ? "0" : "1"
+                    }
+                    if(disabledGroup){
+                        disabledGroup.style.opacity = !newPosition.enabled ? "1" : "0"
+                    }
                     groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scaleX} ${newPosition.scaleY})`)
                     let transitionDuration
                     if (this.getTimeCtx().ifJumpOne(oldFrame, newFrame)) {
@@ -63,14 +68,11 @@ export class ViewSVG extends View {
                     } else {
                         transitionDuration = this.ctx.config.frameSelectionSpeed + "s"
                     }
-                    enabledGroup.style.transitionDuration = transitionDuration
-                    disabledGroup.style.transitionDuration = transitionDuration
-                    groupElement.style.transitionDuration = transitionDuration
+                    setStyles('transitionDuration', transitionDuration, enabledGroup, disabledGroup, groupElement, storyboard)
                     const oldPosition = this.ctx.getPropPositionByFrame(prop, oldFrame, false)
                     if (oldPosition) {
-                        enabledGroup.style.transitionTimingFunction = oldPosition.transitionTimingFunction
-                        disabledGroup.style.transitionTimingFunction = oldPosition.transitionTimingFunction
-                        groupElement.style.transitionTimingFunction = oldPosition.transitionTimingFunction
+                        setStyles('transitionTimingFunction', oldPosition.transitionTimingFunction,
+                            enabledGroup, disabledGroup, groupElement, storyboard)
                     }
                 })
 
