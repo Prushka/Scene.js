@@ -7,36 +7,29 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css");
 
 :root {
+    --scene-base: #ffffff;
+    --scene-base-s1: #F5F5F5;
+    --scene-base-inv: #000000;
+    --scene-base-inv-s1: #1c1c1c;
+    --scene-base-inv-s2: #696969;
     --prop-list-width: 172px;
     --toolbar-button-width: 40px;
-    /*--theme-purple: #8688BC;*/
-    /*--theme-dark-purple: #6565a1;*/
-    --theme-button-hover: #6565a1;
-    --theme-dialog-header-button-not-selected-hover: #6565a1;
-    --theme-dialog-header-button-not-selected-text-hover: #6565a1;
-    /*--theme-pink: #EB7777;*/
-    /*--theme-dark-pink: #d96262;*/
-    --theme-snackbar: #EB7777;
-
-    --theme-timeline-button-selected: #8688BC;
-    --theme-timeline-button-selected-hover: #6565a1;
-    --theme-timeline-button-not-selected: #EB7777;
-    --theme-timeline-button-not-selected-hover: #d96262;
-    --theme-timeline-button-text: white;
-
-    --theme-snackbar-text: white;
-    --theme-base: white;
-    --theme-base-s1: #F5F5F5;
-    --theme-trans-base: rgba(255, 255, 255, 0.95);
-
-    --theme-base-inv: black;
-    --theme-base-inv-s1: #1c1c1c;
-    --theme-base-inv-s2: #696969;
-    --theme-dialog-key: #6565a1;
-    --theme-dialog-value: #EB7777;
-    --theme-dialog-content: #0;
-    --theme-button-text: white;
-    --theme-button-color: #8688BC;
+    --scene-dialog-header-button-not-selected-hover: #6565a1;
+    --scene-dialog-header-button-not-selected-text-hover: #6565a1;
+    --scene-snackbar: #EB7777;
+    --scene-timeline-button-selected: #8688BC;
+    --scene-timeline-button-selected-hover: #6565a1;
+    --scene-timeline-button-not-selected: #EB7777;
+    --scene-timeline-button-not-selected-hover: #d96262;
+    --scene-timeline-button-text: #ffffff;
+    --scene-snackbar-text: #ffffff;
+    --scene-dialog-key: #6565a1;
+    --scene-dialog-value: #EB7777;
+    --scene-dialog-content: #000000;
+    --scene-button-text: #ffffff;
+    --scene-button-color: #8688BC;
+    --scene-button-hover: #6565a1;
+    --scene-trans-base: rgba(255, 255, 255, 0.95);
 }
 
 .pointer {
@@ -46,7 +39,7 @@
 .root-container {
     width: 100%;
     height: 100%;
-    background-color: var(--theme-base-s1);
+    background-color: var(--scene-base-s1);
     font-family: Comfortaa, serif;
     position: relative;
     overflow: hidden;
@@ -88,7 +81,7 @@
 }
 
 .prop__dialog--popup {
-    background-color: var(--theme-base);
+    background-color: var(--scene-base);
     margin: 0;
     position: absolute;
     z-index: 1300;
@@ -105,7 +98,7 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    background-color: var(--theme-trans-base);
+    background-color: var(--scene-trans-base);
     position: absolute;
     z-index: 1100;
 }
@@ -159,8 +152,8 @@
     font-size: 1.5rem;
     font-weight: 600;
     padding: 6px 10px;
-    color: var(--theme-base-inv-s1);
-    border: 2px solid var(--theme-base-inv-s1);
+    color: var(--scene-base-inv-s1);
+    border: 2px solid var(--scene-base-inv-s1);
     border-radius: 8px;
     transition-duration: .2s;
     transition-property: background-color, color;
@@ -169,7 +162,7 @@
 }
 
 .content span {
-    color: var(--theme-dialog-content)
+    color: var(--scene-dialog-content)
 }
 
 .content .image__container {
@@ -199,18 +192,18 @@
 }
 
 .content__key {
-    color: var(--theme-dialog-key) !important;
+    color: var(--scene-dialog-key) !important;
     font-weight: 700;
 }
 
 .content__value {
-    color: var(--theme-dialog-value) !important;
+    color: var(--scene-dialog-value) !important;
     font-weight: 600;
 }
 
 .header__button--selected {
-    background-color: var(--theme-base-inv-s1);
-    color: var(--theme-base) !important;
+    background-color: var(--scene-base-inv-s1);
+    color: var(--scene-base) !important;
 }
 
 .header__button--not-selected {
@@ -218,8 +211,8 @@
 }
 
 .header__button--not-selected:hover {
-    border-color: var(--theme-dialog-header-button-not-selected-hover);
-    color: var(--theme-dialog-header-button-not-selected-text-hover);
+    border-color: var(--scene-dialog-header-button-not-selected-hover);
+    color: var(--scene-dialog-header-button-not-selected-text-hover);
 }
 
 .prop__dialog--popup .content,
@@ -292,12 +285,12 @@
 }
 
 .button--purple:hover {
-    background-color: var(--theme-button-hover);
+    background-color: var(--scene-button-hover);
 }
 
 .button--purple {
-    color: var(--theme-button-text);
-    background-color: var(--theme-button-color);
+    color: var(--scene-button-text);
+    background-color: var(--scene-button-color);
 }
 
 .timeline-container {
@@ -337,19 +330,19 @@
 }
 
 .timeline__frame-container .progress-finished {
-    border-bottom-color: var(--theme-timeline-button-selected);
+    border-bottom-color: var(--scene-timeline-button-selected);
     width: 0;
 }
 
 .timeline__frame-container .progress-not {
-    border-bottom-color: var(--theme-timeline-button-not-selected);
+    border-bottom-color: var(--scene-timeline-button-not-selected);
     width: 100%;
 }
 
 .timeline__frame {
     align-self: start;
-    background-color: var(--theme-timeline-button-not-selected);
-    color: var(--theme-timeline-button-text);
+    background-color: var(--scene-timeline-button-not-selected);
+    color: var(--scene-timeline-button-text);
     padding: 7px 15px 4px 15px;
     border-radius: 4px;
     font-weight: 600;
@@ -357,15 +350,15 @@
 }
 
 .timeline__frame--selected {
-    background-color: var(--theme-timeline-button-selected);
+    background-color: var(--scene-timeline-button-selected);
 }
 
 .timeline__frame--selected:hover {
-    background-color: var(--theme-timeline-button-selected-hover);
+    background-color: var(--scene-timeline-button-selected-hover);
 }
 
 .timeline__frame--not-selected:hover {
-    background-color: var(--theme-timeline-button-not-selected-hover);
+    background-color: var(--scene-timeline-button-not-selected-hover);
 }
 
 .prop__list-container {
@@ -382,7 +375,7 @@
 }
 
 .hide__icon-container {
-    background-color: var(--theme-trans-base);
+    background-color: var(--scene-trans-base);
     align-self: start;
     padding: 10px 6px;
     border-top-right-radius: 8px;
@@ -391,7 +384,7 @@
 
 .hide__icon-container i {
     font-size: 1.45rem;
-    color: var(--theme-base-inv-s1);
+    color: var(--scene-base-inv-s1);
 
 }
 
@@ -414,7 +407,7 @@
     width: var(--prop-list-width);
     max-height: 200px;
     overflow: auto;
-    background-color: var(--theme-trans-base);
+    background-color: var(--scene-trans-base);
     top: 0;
     left: 0;
 }
@@ -425,23 +418,23 @@
 }
 
 .prop__list__item--not-selected {
-    color: var(--theme-base-inv);
+    color: var(--scene-base-inv);
 }
 
 .prop__list__item--not-selected span {
-    color: var(--theme-base-inv);
+    color: var(--scene-base-inv);
 }
 
 .prop__list__item--not-selected:hover {
-    background-color: var(--theme-base-s1);
+    background-color: var(--scene-base-s1);
 }
 
 .prop__list__item--selected {
-    background-color: var(--theme-base-inv-s1);
+    background-color: var(--scene-base-inv-s1);
 }
 
 .prop__list__item--selected span {
-    color: var(--theme-base)
+    color: var(--scene-base)
 }
 
 .prop__list__item span {
@@ -466,10 +459,10 @@
 }
 
 .view__prop--selected {
-    outline: 1px solid var(--theme-base-inv-s2);
+    outline: 1px solid var(--scene-base-inv-s2);
     outline-offset: 7px;
     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .09));
-    /*stroke: var(--theme-base-inv-s2);*/
+    /*stroke: var(--scene-base-inv-s2);*/
     /*stroke-width: 1px;*/
     /*stroke-dasharray: 2,2;*/
 }
@@ -505,8 +498,8 @@
     left: 0;
     right: 0;
     top: 0;
-    background-color: var(--theme-snackbar);
-    color: var(--theme-snackbar-text);
+    background-color: var(--scene-snackbar);
+    color: var(--scene-snackbar-text);
     z-index: 1400;
     border-radius: 4px;
     transition-duration: .3s;
@@ -530,7 +523,7 @@
 }
 
 .view__prop__connection {
-    stroke: var(--theme-base-inv-s2);
+    stroke: var(--scene-base-inv-s2);
     stroke-width: 1px;
 }
 
@@ -541,7 +534,7 @@
 }
 
 .bottom-gray-border {
-    border-bottom: 2px solid var(--theme-base-inv-s2);
+    border-bottom: 2px solid var(--scene-base-inv-s2);
 }
 
 .step-card > div {
@@ -554,8 +547,8 @@
 .step-card__step {
     font-weight: 500;
     border-radius: 50%;
-    background-color: var(--theme-base-inv-s1);
-    color: var(--theme-base);
+    background-color: var(--scene-base-inv-s1);
+    color: var(--scene-base);
     height: 34px;
     width: 34px;
     display: flex;

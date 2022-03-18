@@ -37,7 +37,7 @@ export interface LineConfig {
 }
 
 export const DefaultLine: LineConfig = {
-    color: "var(--theme-gray)",
+    color: "var(--scene-base-inv-s2)",
     width: 1
 }
 
