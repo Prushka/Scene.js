@@ -304,7 +304,7 @@ export class Context {
         this.beforeDisplay()
         $(() => {
             $(`${this.rootContainerIdSymbol}`).addClass("root-container")
-                .html(`<div id="${this.idCtx.getId(IdTypes.ROOT_SNACKBAR)}" class='snackbar-container'></div>
+                .html(`<div id="${this.idCtx.ROOT_SNACKBAR}" class='snackbar-container'></div>
                                      <div id="${this.idCtx.getId(IdTypes.ROOT_PROP_LIST)}" class='prop__list-container'></div>
                                     <div id="${this.getIdType('prop__property', 'root__container')}" class='prop__property-container'></div>
                                     <div id="${this.getIdType('view', 'root__container')}" class='view-container'></div>

@@ -5,7 +5,6 @@
 import {HasId} from "../props/Props";
 
 export const IdTypes: { [key: string]: string[] } = {
-    ROOT_SNACKBAR: ['snackbar', 'root__container'],
     ROOT_PROP_LIST: ['prop__list', 'root__container'],
     ROOT_PROP_DIALOG: ['prop__property', 'root__container'],
     ROOT_VIEW: ['view', 'root__container'],
@@ -16,8 +15,20 @@ export const IdTypes: { [key: string]: string[] } = {
 // (i.e.,) unique ids across different instances in the same page
 // I don't know if there's a better way to achieve this
 
-export function useId(){
-    return new IdContext()
+export function useId() {
+    const idContext = new IdContext()
+    return new Proxy(IdTypes, {
+        get(target, prop, receiver) {
+            if (Reflect.has(target, prop)) {
+                const returnValue = typeof prop === 'string' ? IdTypes[prop] ?? Reflect.get(target, prop, receiver) : Reflect.get(target, prop, receiver)
+                if (Array.isArray(returnValue)) {
+                    return idContext.getId(returnValue)
+                }
+                return returnValue;
+            }
+            return null;
+        }
+    })
 }
 
 export class IdContext {
@@ -31,7 +42,7 @@ export class IdContext {
 
     public getId(type: string[], id?: HasId | number | null) {
         type.sort((a, b) => a.localeCompare(b))
-        const _id = id === null || undefined ? "" : (typeof id === 'number' ? "-" + id : (id.id === null || undefined) ? "" : "-" + id.id)
+        const _id = id == null ? "" : (typeof id === 'number' ? "-" + id : (id.id === null || undefined) ? "" : "-" + id.id)
         return `${this.contextId}-${type.join('-')}${_id}`
     }
 
@@ -49,3 +60,5 @@ export class IdContext {
         return [id, type.split('-').filter(t => !exclude.includes(t))]
     }
 }
+
+const s = useId()
