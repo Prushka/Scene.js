@@ -17,7 +17,9 @@ const ThemeConstants: { [key: string]: Theme } = {
             "--theme-dark-purple": "#6565a1",
             "--theme-pink": "#EB7777",
             "--theme-dark-pink": "#d96262",
-            "--theme-trans-white": "rgba(255, 255, 255, 0.95)"
+            "--theme-trans-white": "rgba(255, 255, 255, 0.95)",
+            "--theme-base": "white",
+            "--theme-base-inv": "black",
         },
         icon: 'bi bi-brightness-high'
     },
@@ -30,7 +32,9 @@ const ThemeConstants: { [key: string]: Theme } = {
             "--theme-dark-purple": "#e1e1f3",
             "--theme-pink": "#f6a2a2",
             "--theme-dark-pink": "#f8cfcf",
-            "--theme-trans-white": "rgba(0,0,0,0.95)"
+            "--theme-trans-white": "rgba(0,0,0,0.95)",
+            "--theme-base": "black",
+            "--theme-base-inv": "white",
         },
         icon: 'bi bi-moon-stars-fill'
     }

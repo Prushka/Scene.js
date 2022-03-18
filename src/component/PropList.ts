@@ -46,8 +46,8 @@ export class PropList extends SceneComponent {
             if (listItemContainer) {
                 listItemContainer.classList.remove("prop__list__item--not-selected")
                 listItemContainer.classList.add("prop__list__item--selected")
-                listItemContainer.querySelector("span").style.color = "white"
-                listItemContainer.querySelector("path").style.fill = "white"
+                listItemContainer.querySelector("span").style.color = "var(--theme-base)"
+                listItemContainer.querySelector("path").style.fill = "var(--theme-base)"
             }
         }]]
     }
@@ -83,7 +83,7 @@ export class PropList extends SceneComponent {
         hideIconContainer.classList.add('hide__icon-container', 'pointer')
         this.ctx.propsState.get().forEach(prop => {
             const isSelected = this.ctx.propSelected(prop)
-            const color = isSelected ? "white" : prop.color
+            const color = isSelected ? "var(--theme-base)" : prop.color
             const listItemContainer = document.createElement('div')
             listItemContainer.id = this.idCtx.PROP_LIST(prop)
             listItemContainer.classList.add("pointer", "prop__list__item", this.ctx.propSelected(prop) ? "prop__list__item--selected" : "prop__list__item--not-selected")

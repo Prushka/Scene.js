@@ -16,7 +16,9 @@
     --theme-dark-purple: #6565a1;
     --theme-pink: #EB7777;
     --theme-dark-pink: #d96262;
-    --theme-trans-white: rgba(255, 255, 255, 0.95)
+    --theme-trans-white: rgba(255, 255, 255, 0.95);
+    --theme-base: white;
+    --theme-base-inv: black;
 }
 
 .pointer {
@@ -68,7 +70,7 @@
 }
 
 .prop__dialog--popup {
-    background-color: white;
+    background-color: var(--theme-base);
     margin: 0;
     position: absolute;
     z-index: 1300;
@@ -186,7 +188,7 @@
 
 .header__button--selected {
     background-color: var(--theme-dark-gray);
-    color: white !important;
+    color: var(--theme-base) !important;
 }
 
 .header__button--not-selected {
@@ -272,7 +274,7 @@
 }
 
 .button--purple {
-    color: white;
+    color: var(--theme-base);
     background-color: var(--theme-purple);
 }
 
@@ -325,7 +327,7 @@
 .timeline__frame {
     align-self: start;
     background-color: var(--theme-pink);
-    color: white;
+    color: var(--theme-base);
     padding: 7px 15px 4px 15px;
     border-radius: 4px;
     font-weight: 600;
@@ -397,11 +399,11 @@
 }
 
 .prop__list__item--not-selected {
-    color: black;
+    color: var(--theme-base-inv);
 }
 
 .prop__list__item--not-selected span {
-    color: black;
+    color: var(--theme-base-inv);
 }
 
 .prop__list__item--not-selected:hover {
@@ -413,7 +415,7 @@
 }
 
 .prop__list__item--selected span {
-    color: white
+    color: var(--theme-base)
 }
 
 .prop__list__item span {
@@ -481,7 +483,7 @@
     z-index: 1400;
     border-radius: 4px;
     transition-duration: .3s;
-    color: white;
+    color: var(--theme-base);
     font-weight: 600;
     opacity: 1;
 }
@@ -527,7 +529,7 @@
     font-weight: 500;
     border-radius: 50%;
     background-color: var(--theme-dark-gray);
-    color: white;
+    color: var(--theme-base);
     height: 34px;
     width: 34px;
     display: flex;
