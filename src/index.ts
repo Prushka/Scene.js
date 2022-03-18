@@ -383,10 +383,7 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
             style: "fillSquare",
             note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             frameAnimationConfig: {
-                1: {
-                    x: 140, y: 140, degree: 60, enabled: true,
-                    transitionTimingFunction: "ease-in-out"
-                },
+                1: getRandomPosition(),
                 2: getRandomPosition(),
                 3: getRandomPosition(),
                 4: getRandomPosition(),
@@ -472,11 +469,9 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
             }
         },
         lines: [
-            [{x: 40, y: 40}, {x: 80, y: 80}]
+            // [{x: 40, y: 40}, {x: 80, y: 80}]
         ],
-        props: [getStoryBoard(), getDemoTable(), generateTable(2, {x: 0, y: 0, scaleX: 2, scaleY: 2}),
-            generateTable(1, {x: 0, y: 0, scaleX: 5, scaleY: 5, degree: 20}),
-            generateTable(3, {x: 0, y: 0, scaleX: 1, scaleY: 1})]
+        props: [getDemoTable(), getDemoTable(), getDemoTable()]
     })
     // svg order is determined by declaration order
     ctx.display()
