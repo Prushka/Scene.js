@@ -157,14 +157,14 @@ export class Footer extends SceneComponent {
                 action(document.getElementById(id), e)
             })
         }
-        this.ctx.$(".toolbar__button").on("mouseover", (e) => {
+        this.ctx.$(".toolbar__button").on("mouseenter", (e) => {
             const span = e.target.parentElement.querySelector('span')
             if (span) {
                 span.classList.add('toolbar__tooltip--visible')
             }
         })
 
-        this.ctx.$(".toolbar__button").on("mouseleave fullscreenchange", (e) => {
+        this.ctx.$(".toolbar__button").on("mouseleave", (e) => {
             const span = e.target.parentElement.querySelector('span')
             if (span) {
                 span.classList.remove('toolbar__tooltip--visible')
@@ -208,7 +208,9 @@ export class Footer extends SceneComponent {
         hookButton(() => {
             this.themeCtx.next()
         }, this.ids.TOOLBAR_THEME_BUTTON)
-        hookButton(() => {
+        hookButton((e) => {
+            // binding a fullscreenchange doesn't always work
+            e.parentElement.querySelector('span').classList.remove('toolbar__tooltip--visible')
             if (document.fullscreenElement) {
                 document.exitFullscreen().then()
             } else {

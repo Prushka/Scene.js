@@ -109,9 +109,9 @@
 .prop__dialog--embedded--normal {
     padding: 15px 15px 15px 21px;
     width: 400px;
-    height: 500px;
+    height: 85%;
     right: 20px;
-    bottom: 80px;
+    top: 20px;
 }
 
 .prop__dialog--embedded--mobile {
