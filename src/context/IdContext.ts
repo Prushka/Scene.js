@@ -31,12 +31,7 @@ export function useId() {
             return null;
         }
     })
-    const getIdProxy: any = new Proxy(idContext, {
-        apply(target, prop, args) {
-            console.log(target, prop, args)
-        }
-    })
-    return [idTypesProxy, getIdProxy]
+    return [idTypesProxy, idContext]
 }
 
 export class IdContext {
@@ -46,6 +41,9 @@ export class IdContext {
     public constructor() {
         this.contextId = IdContext.contextIds
         IdContext.contextIds += 1
+        for (let key in IdTypes) {
+            this[key] = (id) => this.getId(id, ...IdTypes[key])
+        }
     }
 
     public getId(id: HasId | number | null, ...type: string[]) {
@@ -69,5 +67,5 @@ export class IdContext {
     }
 }
 
-const [ids, getIdProxy] = useId()
-console.log(ids.ROOT_SNACKBAR, getIdProxy.getId(2, ids.ROOT_SNACKBAR))
+const [ids, idContext] = useId()
+console.log(ids.ROOT_SNACKBAR, idContext.ROOT_SNACKBAR(2, ids.ROOT_SNACKBAR))
