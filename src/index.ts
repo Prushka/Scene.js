@@ -31,10 +31,9 @@ import SnackbarContext from "./context/SnackbarContext";
 import OverlayContext from "./context/OverlayContext";
 import {ViewCanvas} from "./component/ViewCanvas";
 import View from "./component/View";
+import {IdContext} from "./context/IdContext";
 
 export class Context {
-    private static contextIds = 0
-    private readonly contextId
     protected ids: number = 0
     timeCtx: TimeContext
     private _selected: State<PropConfig> = createState()
@@ -46,12 +45,11 @@ export class Context {
     public readonly rootContainerIdSymbol: string
     public readonly snackbarCtx = new SnackbarContext()
     public readonly overlayCtx = new OverlayContext()
+    public readonly idCtx = new IdContext()
 
     public constructor(rootContainerId: string, config?: Config, context?: TimeContext) {
         this.rootContainerId = rootContainerId
         this.rootContainerIdSymbol = '#' + this.rootContainerId
-        this.contextId = Context.contextIds
-        Context.contextIds += 1
         this.timeCtx = context ? context : new TimeContext()
         this.config = config ? {...DefaultConfig, ...config} : {...DefaultConfig}
         this.config.lines.forEach((l) => {
@@ -132,16 +130,6 @@ export class Context {
         }
         const type: string = htmlID.replace(/-\d+/, '').replace(/\d+-/, '')
         return [id, type.split('-').filter(t => !exclude.includes(t))]
-    }
-
-    public getIdType(...type: string[]) {
-        return this.getId(null, ...type)
-    }
-
-    public getId(id: HasId | number | null, ...type: string[]) {
-        type.sort((a, b) => a.localeCompare(b))
-        const _id = id === null || undefined ? "" : (typeof id === 'number' ? "-" + id : (id.id === null || undefined) ? "" : "-" + id.id)
-        return `${this.contextId}-${type.join('-')}${_id}`
     }
 
     public isPropEnabled(prop: PropConfig): boolean {
