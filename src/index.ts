@@ -34,7 +34,7 @@ import View from "./component/View";
 import {IdContext, IdTypes, useId} from "./context/IdContext";
 
 export class Context {
-    protected ids: number = 0
+    protected propIds: number = 0
     timeCtx: TimeContext
     private _selected: State<PropConfig> = createState()
     propsState: State<PropConfig[]> = createState([])
@@ -45,9 +45,11 @@ export class Context {
     public readonly rootContainerIdSymbol: string
     public readonly snackbarCtx = useSnackbar()
     public readonly overlayCtx = useOverlay()
-    public readonly idCtx = useId()
+    public readonly ids
+    public readonly idContext
 
     public constructor(rootContainerId: string, config?: Config, context?: TimeContext) {
+        [this.ids, this.idContext] = useId()
         this.rootContainerId = rootContainerId
         this.rootContainerIdSymbol = '#' + this.rootContainerId
         this.timeCtx = context ? context : new TimeContext()
@@ -67,7 +69,7 @@ export class Context {
         propConfigs.forEach(propConfig => {
             propConfig = {...DefaultPropConfig, ...propConfig}
             propConfig.color = propConfig.color ?? generateDarkColor()
-            propConfig.id = propConfig.id ?? this.ids
+            propConfig.id = propConfig.id ?? this.propIds
             propConfig.name = propConfig.name ?? `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
             if (propConfig.frameAnimationConfig) {
                 propConfig.frameAnimationConfig
@@ -77,7 +79,7 @@ export class Context {
                     propConfig.frameAnimationConfig[key] = a
                 }
             }
-            this.ids += 1
+            this.propIds += 1
             _props.push(propConfig)
         })
         this.propsState.set(_props)
@@ -304,12 +306,12 @@ export class Context {
         this.beforeDisplay()
         $(() => {
             $(`${this.rootContainerIdSymbol}`).addClass("root-container")
-                .html(`<div id="${this.idCtx.ROOT_SNACKBAR}" class='snackbar-container'></div>
-                                     <div id="${this.idCtx.getId(IdTypes.ROOT_PROP_LIST)}" class='prop__list-container'></div>
-                                    <div id="${this.getIdType('prop__property', 'root__container')}" class='prop__property-container'></div>
-                                    <div id="${this.getIdType('view', 'root__container')}" class='view-container'></div>
-                                    <div id="${this.getIdType('footer', 'root__container')}" class="footer-container"></div>
-                                    <div id="${this.getIdType('overlay', 'root__container')}" class="overlay-container"></div>`)
+                .html(`<div id="${this.ids.ROOT_SNACKBAR}" class='snackbar-container'></div>
+                                     <div id="${this.ids.ROOT_PROP_LIST}" class='prop__list-container'></div>
+                                    <div id="${this.ids.ROOT_PROP_DIALOG}" class='prop__property-container'></div>
+                                    <div id="${this.ids.ROOT_VIEW}" class='view-container'></div>
+                                    <div id="${this.ids.ROOT_FOOTER}" class="footer-container"></div>
+                                    <div id="${this.ids.ROOT_OVERLAY}" class="overlay-container"></div>`)
             const v = this.config.renderMethod === 'canvas' ? ViewCanvas : ViewSVG
             const [view] = this.register(v, PropDialog, Footer, Snackbar, Overlay)
             this.viewComponent = view as View

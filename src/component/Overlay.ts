@@ -7,8 +7,8 @@ import State from "../state/State";
 
 export class Overlay extends SceneComponent {
 
-    renderIn() {
-        return [this.getRootId('overlay')]
+    renderInIds() {
+        return [this.ids.OVERLAY]
     }
 
     listen(): State<any>[] {
@@ -16,7 +16,7 @@ export class Overlay extends SceneComponent {
     }
 
     afterRender() {
-        const overlay = document.getElementById(this.ctx.getIdType("overlay"))
+        const overlay = document.getElementById(this.ids.OVERLAY)
         if (overlay) {
             overlay.onclick = () => {
                 this.overlayCtx.overlayOpenState.set(false)
@@ -25,7 +25,7 @@ export class Overlay extends SceneComponent {
     }
 
     render(): string | string[] {
-        return this.overlayCtx.overlayOpenState.get() ? `<div class='overlay' id="${this.ctx.getIdType("overlay")}">
+        return this.overlayCtx.overlayOpenState.get() ? `<div class='overlay' id="${this.ids.OVERLAY}">
         ${this.overlayCtx.overlayHTMLState.get()}
         </div>` : ''
     }

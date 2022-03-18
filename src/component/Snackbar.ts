@@ -11,7 +11,7 @@ export class Snackbar extends SceneComponent {
 
     actions(): StateAction<any>[] {
         return [[this.snackbarCtx.snackbarState, ((_, message) => {
-            const snackbar = document.getElementById(this.ctx.getIdType("snackbar"))
+            const snackbar = document.getElementById(this.ids.SNACKBAR)
             const span = snackbar.querySelector("span")
             snackbar.classList.remove("snackbar--closed")
             span.innerText = message
@@ -24,8 +24,8 @@ export class Snackbar extends SceneComponent {
         })]]
     }
 
-    renderIn() {
-        return [this.getRootId("snackbar")]
+    renderInIds() {
+        return [this.ids.ROOT_SNACKBAR]
     }
 
     afterRender() {
@@ -33,6 +33,6 @@ export class Snackbar extends SceneComponent {
     }
 
     render(): string | string[] {
-        return `<div class='snackbar snackbar--closed ${this.ctx.isRootMobile()?'snackbar--mobile':'snackbar--normal'}' id="${this.ctx.getIdType("snackbar")}"><span></span></div>`
+        return `<div class='snackbar snackbar--closed ${this.ctx.isRootMobile()?'snackbar--mobile':'snackbar--normal'}' id="${this.ids.SNACKBAR}"><span></span></div>`
     }
 }

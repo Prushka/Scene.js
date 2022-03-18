@@ -33,17 +33,17 @@ export class PropList extends SceneComponent {
                 icon.classList.add("icon-animated-right")
             }
         }], [this.ctx.selectedState, (_, selected) => {
-            const listItemContainer = document.getElementById(this.ctx.getId(selected, 'prop', 'list'))
+            const listItemContainer = document.getElementById(this.idCtx.PROP_LIST(selected))
             this.ctx.propsState.get().forEach(prop => {
-                const listItemContainer = document.getElementById(this.ctx.getId(prop, 'prop', 'list'))
-                if(listItemContainer){
+                const listItemContainer = document.getElementById(this.idCtx.PROP_LIST(prop))
+                if (listItemContainer) {
                     listItemContainer.classList.add("prop__list__item--not-selected")
                     listItemContainer.classList.remove("prop__list__item--selected")
                     listItemContainer.querySelector("span").style.color = prop.color
                     listItemContainer.querySelector("path").style.fill = prop.color
                 }
             })
-            if(listItemContainer){
+            if (listItemContainer) {
                 listItemContainer.classList.remove("prop__list__item--not-selected")
                 listItemContainer.classList.add("prop__list__item--selected")
                 listItemContainer.querySelector("span").style.color = "white"
@@ -52,17 +52,17 @@ export class PropList extends SceneComponent {
         }]]
     }
 
-    renderIn() {
-        return [this.getRootId("prop__list")]
+    renderInIds() {
+        return [this.ids.ROOT_PROP_LIST]
     }
 
     afterRender() {
         this.open.set(this.ctx.config.defaultOpenPropList)
         this.ctx.$('.prop__list__item').on("click", (e) => {
-            const [id] = this.ctx.extractIdType(e.target.id)
+            const [id] = this.idCtx.extractIdType(e.target.id)
             this.ctx.toggleSelected(id)
         })
-        this.ctx.$('#' + this.ctx.getIdType("prop", "list", "hide")).on("click", () => {
+        this.ctx.$('#' + this.ids.PROP_LIST_HIDE).on("click", () => {
             this.open.set(!this.open.get())
         })
     }
@@ -72,10 +72,10 @@ export class PropList extends SceneComponent {
         parentContainer.classList.add('prop__list')
 
         const hideIconContainer = document.createElement('div')
-        hideIconContainer.id = this.ctx.getIdType("prop", "list", "hide")
+        hideIconContainer.id = this.ids.PROP_LIST_HIDE
         const hideIconRotateContainer = document.createElement('div')
         hideIconRotateContainer.classList.add("icon-animated-left", "hide__icon-rotate-container")
-        const hideIcon = createIconFontElement(this.ctx.getIdType("prop", "list", "hide", "icon"),
+        const hideIcon = createIconFontElement(this.ids.PROP_LIST_HIDE_ICON,
             "bi", "bi-arrow-bar-left")
 
         hideIconRotateContainer.append(hideIcon)
@@ -85,12 +85,12 @@ export class PropList extends SceneComponent {
             const isSelected = this.ctx.propSelected(prop)
             const color = isSelected ? "white" : prop.color
             const listItemContainer = document.createElement('div')
-            listItemContainer.id = this.ctx.getId(prop, 'prop', 'list')
+            listItemContainer.id = this.idCtx.PROP_LIST(prop)
             listItemContainer.classList.add("pointer", "prop__list__item", this.ctx.propSelected(prop) ? "prop__list__item--selected" : "prop__list__item--not-selected")
             const propIcon = this.ctx.getPropSVG(prop, color, 1.3)
-            propIcon.id = this.ctx.getId(prop, 'prop', 'list', 'icon')
+            propIcon.id = this.idCtx.PROP_LIST_ICON(prop)
             const propText = this.ctx.getPropSpanText(prop, color)
-            propText.id = this.ctx.getId(prop, 'prop', 'list', 'title')
+            propText.id = this.idCtx.PROP_LIST_TITLE(prop)
             listItemContainer.append(propIcon, propText)
             parentContainer.append(listItemContainer)
         })

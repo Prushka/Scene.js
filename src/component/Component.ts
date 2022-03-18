@@ -8,6 +8,7 @@ import SnackbarContext from "../context/SnackbarContext";
 import OverlayContext from "../context/OverlayContext";
 import ViewPortContext from "../context/ViewPortContext";
 import TimeContext from "../context/TimeContext";
+import {IdContext, useId} from "../context/IdContext";
 
 
 export abstract class CustomComponent {
@@ -37,14 +38,15 @@ export abstract class CustomComponent {
 
     renderComponent() {
 
-        this.renderIn().forEach(selector => {
+        this.renderInIds().forEach(elementId => {
             const el: string | string[] | Node = this.render()
+            const parent = document.getElementById(elementId)
             if (Array.isArray(el)) {
-                $(selector).html(el.join(''))
+                parent.innerHTML = el.join('')
             } else if (typeof el === 'string') {
-                $(selector).html(el)
+                parent.innerHTML = el
             } else {
-                $(selector)[0].append(el)
+                parent.append(el)
             }
 
         })
@@ -55,7 +57,7 @@ export abstract class CustomComponent {
         return []
     }
 
-    renderIn(): string[] {
+    renderInIds(): string[] {
         return [];
     }
 
@@ -73,18 +75,18 @@ export abstract class SceneComponent extends CustomComponent {
     protected overlayCtx: OverlayContext
     protected getViewportCtx: () => ViewPortContext
     protected getTimeCtx: () => TimeContext
+    protected readonly ids
+    protected readonly idCtx
 
-    protected getRootId(type) {
-        return '#' + this.ctx.getIdType(type, 'root__container')
-    }
-
-    constructor(context: Context) {
+    public constructor(context: Context) {
         super();
-        this.ctx = context
+        this.ctx = context;
+        [this.ids, this.idCtx] = [this.ctx.ids, this.ctx.idContext]
         this.snackbarCtx = this.ctx.snackbarCtx
         this.overlayCtx = this.ctx.overlayCtx
         this.getViewportCtx = this.ctx.getViewportGetter()
         this.getTimeCtx = this.ctx.getTimeContextGetter()
+
         this.afterConstructor()
         this.mount()
     }

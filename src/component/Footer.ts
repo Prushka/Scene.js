@@ -62,8 +62,8 @@ export class Footer extends SceneComponent {
     }
 
     private getProgressBars(frame) {
-        const progressFinished = document.getElementById(this.ctx.getId(frame, 'frame', 'progress', 'finished'))
-        const progressUnfinished = document.getElementById(this.ctx.getId(frame, 'frame', 'progress', 'unfinished'))
+        const progressFinished = document.getElementById(this.idCtx.FRAME_PROGRESS_FINISHED(frame))
+        const progressUnfinished = document.getElementById(this.idCtx.FRAME_PROGRESS_UNFINISHED(frame))
         if (progressUnfinished && progressFinished) {
             return new ProgressBarTupleElements(progressFinished, progressUnfinished)
         }
@@ -72,16 +72,16 @@ export class Footer extends SceneComponent {
 
     actions(): StateAction<any>[] {
         const setFrameButton = (frame: number, selected: boolean) => {
-            const frameElement = document.getElementById(this.ctx.getId(frame, 'timeline', 'frame'))
+            const frameElement = document.getElementById(this.idCtx.TIMELINE_FRAME(frame))
             frameElement.classList.remove(!selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
             frameElement.classList.add(selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
         }
         return [[this.open, ((_, open) => {
-            const toolbarElement = document.getElementById(this.ctx.getIdType("toolbar"))
+            const toolbarElement = document.getElementById(this.ids.TOOLBAR)
             const bottom = open ? 0 : -(toolbarElement.getBoundingClientRect().height - 45)
             toolbarElement.style.bottom = `${bottom}px`
         })], [this.playing, ((_, playing) => {
-            const icon = document.getElementById(this.ctx.getIdType("toolbar", "play", "icon"))
+            const icon = document.getElementById(this.ids.TOOLBAR_PLAY_ICON)
             if (playing) {
                 setClassList(icon, "bi", "bi-pause-fill")
             } else {
@@ -128,19 +128,19 @@ export class Footer extends SceneComponent {
             }]]
     }
 
-    renderIn() {
-        return [this.getRootId("footer")]
+    renderInIds() {
+        return [this.ids.ROOT_FOOTER]
     }
 
     afterRender() {
         this.open.set(this.ctx.config.defaultOpenToolbar)
         const hookButton = (action: (e: ClickEvent) => void, ...types: string[]) => {
-            this.ctx.$("#" + this.ctx.getIdType(...types)).on("click", (e) => {
+            this.ctx.$("#" + this.idCtx.getType(...types)).on("click", (e) => {
                 action(e)
             })
         }
         this.ctx.$('.timeline__frame').on("click", (e) => {
-            const [frame] = this.ctx.extractIdType(e.target.id)
+            const [frame] = this.idCtx.extractIdType(e.target.id)
             this.ctx.timeCtx.currentFrame = frame
         })
         hookButton(() => {
@@ -178,16 +178,16 @@ export class Footer extends SceneComponent {
     render() {
         const footerContainer = document.createElement('div')
         const toolbarContainer = document.createElement('div')
-        toolbarContainer.id = this.ctx.getIdType("toolbar")
+        toolbarContainer.id = this.ids.TOOLBAR
         toolbarContainer.classList.add('toolbar')
         const addButtonToToolbar = (title, iconClasses, ...types: string[]) => {
             const toolbarButton = document.createElement('div')
-            toolbarButton.id = this.ctx.getIdType(...types)
+            toolbarButton.id = this.idCtx.getType(...types)
             toolbarButton.title = title
             toolbarButton.classList.add('button', 'button--purple', 'pointer')
             const icon = document.createElement('i')
             icon.classList.add(...iconClasses.split(' '))
-            icon.id = this.ctx.getIdType(...types, 'icon')
+            icon.id = this.idCtx.getType(...types, 'icon')
             toolbarButton.append(icon)
             toolbarContainer.append(toolbarButton)
         }
@@ -217,12 +217,12 @@ export class Footer extends SceneComponent {
                 const progressUnfinished = document.createElement('div')
                 progressFinished.classList.add('progress', 'progress-finished')
                 progressUnfinished.classList.add('progress', 'progress-not')
-                progressFinished.id = this.ctx.getId(frame, 'frame', 'progress', 'finished')
-                progressUnfinished.id = this.ctx.getId(frame, 'frame', 'progress', 'unfinished')
+                progressFinished.id = this.idCtx.FRAME_PROGRESS_FINISHED(frame)
+                progressUnfinished.id = this.idCtx.FRAME_PROGRESS_UNFINISHED(frame)
                 progress.append(progressFinished, progressUnfinished)
                 frameContainer.append(progress)
                 const frameButton = document.createElement('div')
-                frameButton.id = this.ctx.getId(frame, 'timeline', 'frame')
+                frameButton.id = this.idCtx.TIMELINE_FRAME(frame)
                 frameButton.classList.add(`timeline__frame`, currentFrame === frame ? 'timeline__frame--selected' : 'timeline__frame--not-selected', `pointer`)
                 frameButton.innerText = String(frame)
                 frameContainer.append(frameButton)

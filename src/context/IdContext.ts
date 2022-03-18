@@ -11,6 +11,31 @@ export const IdTypes: { [key: string]: string[] } = {
     ROOT_VIEW: ['view', 'root__container'],
     ROOT_FOOTER: ['footer', 'root__container'],
     ROOT_OVERLAY: ['overlay', 'root__container'],
+    VIEW_ICON_PATH_GROUP: ['view', 'prop', 'icon', 'group'],
+    VIEW_ICON_PATH_GROUP_ENABLED: ['view', 'prop', 'icon', 'group', 'enabled'],
+    VIEW_ICON_PATH_GROUP_DISABLED: ['view', 'prop', 'icon', 'group', 'disabled'],
+    VIEW_PROP_TEXT: ['view', 'prop', 'text'],
+    VIEW_GROUP: ['view', 'prop'],
+    VIEW_CONNECTIONS: ['view', 'connections'],
+    VIEW_LINES_GROUP: ['view', 'lines', 'group'],
+    VIEW_PROP: ['view', 'prop'],
+    OVERLAY: ['overlay'],
+    FRAME_PROGRESS_FINISHED: ['frame', 'progress', 'finished'],
+    FRAME_PROGRESS_UNFINISHED: ['frame', 'progress', 'unfinished'],
+    TIMELINE_FRAME: ['timeline', 'frame'],
+    TOOLBAR: ['toolbar'],
+    TOOLBAR_PLAY_ICON: ["toolbar", "play", "icon"],
+    PROP_DIALOG_CLOSE_ICON: ['prop', 'dialog', 'property'],
+    PROP_DIALOG_FOOTER_ICON: ['prop', 'dialog', 'property', 'icon'],
+    PROP_DIALOG_FOOTER_POSITION: ['prop', 'dialog', 'footer', 'position'],
+    PROP_DIALOG_FOOTER_SCALE: ['prop', 'dialog', 'footer', 'scale'],
+    PROP_DIALOG_HEADER_TAB: ['dialog'],
+    PROP_LIST: ['prop', 'list'],
+    PROP_LIST_ICON: ['prop', 'list', 'icon'],
+    PROP_LIST_TITLE: ['prop', 'list', 'icon'],
+    PROP_LIST_HIDE: ['prop', 'list', 'hide'],
+    PROP_LIST_HIDE_ICON: ['prop', 'list', 'hide', 'icon'],
+    SNACKBAR: ['snackbar']
 }
 // I added context id to every id since id attributes are supposed to be unique
 // (i.e.,) unique ids across different instances in the same page
@@ -46,6 +71,10 @@ export class IdContext {
         }
     }
 
+    public getType(...type: string[]) {
+        return this.getId(null, ...type)
+    }
+
     public getId(id: HasId | number | null, ...type: string[]) {
         type.sort((a, b) => a.localeCompare(b))
         const _id = id == null ? "" : (typeof id === 'number' ? "-" + id : (id.id === null || undefined) ? "" : "-" + id.id)
@@ -68,5 +97,5 @@ export class IdContext {
 }
 
 
-const [ids, idContext] = useId()
-console.log(ids.ROOT_SNACKBAR, idContext.ROOT_SNACKBAR(2, "test"))
+// const [ids, idContext] = useId()
+// console.log(ids.ROOT_SNACKBAR, idContext.ROOT_SNACKBAR(2, "test"))
