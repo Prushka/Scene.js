@@ -114,12 +114,20 @@ export default class ThemeContext {
         return this._themeKeys[index]
     }
 
-    public get nextThemeIndex() {
-        let next = this._current.get() + 1
+    public getNextThemeIndex(index: number) {
+        let next = index + 1
         if (next >= this._themeKeys.length) {
             next = 0
         }
         return next
+    }
+
+    public getThemeToDisplay(){
+        return `${this.getThemeName(this._current.get())} -> ${this.getThemeName(this.nextThemeIndex)}`
+    }
+
+    public get nextThemeIndex() {
+        return this.getNextThemeIndex(this._current.get())
     }
 
     public next() {

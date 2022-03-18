@@ -4,9 +4,10 @@
 
 import {CustomComponent} from "../component/Component";
 
-export type Action<T> = (oldValue: T, newValue: T, previousValue: T) => void
-export type StateAction<T> = [State<T>, Action<T>?]
-export type ComponentAction<T> = [CustomComponent, Action<T>?]
+export type ActionBefore<T> = (oldValue: T, newValue: T, previousValue: T) => void
+export type ActionAfter<T> = (previousValue: T, currentValue: T) => void
+export type StateAction<T> = [State<T>, ActionBefore<T>?, ActionAfter<T>?]
+export type ComponentAction<T> = [CustomComponent, ActionBefore<T>?, ActionAfter<T>?]
 
 export default class State<T> {
     private _state: T
@@ -34,11 +35,18 @@ export default class State<T> {
 
     public set(value: T, forceUpdate?: boolean) {
         if (forceUpdate || value !== this._state) {
-            this._componentsActions.forEach(([, action]) => {
-                action(this.get(), value, this._previous_state)
+            this._componentsActions.forEach(([, actionBefore,]) => {
+                if (actionBefore) {
+                    actionBefore(this.get(), value, this._previous_state)
+                }
             })
             this._previous_state = this._state
             this._state = value
+            this._componentsActions.forEach(([, , actionAfter]) => {
+                if (actionAfter) {
+                    actionAfter(this._previous_state, this.get())
+                }
+            })
             this.render()
         }
     }
@@ -47,8 +55,8 @@ export default class State<T> {
         this._components.push(component)
     }
 
-    public subscribeActions(component: CustomComponent, func: Action<T>) {
-        this._componentsActions.push([component, func])
+    public subscribeActions(component: CustomComponent, actionBefore: ActionBefore<T>, actionAfter: ActionAfter<T>) {
+        this._componentsActions.push([component, actionBefore, actionAfter])
     }
 }
 

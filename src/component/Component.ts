@@ -25,9 +25,9 @@ export abstract class CustomComponent {
             s.subscribe(this)
         })
         // action will trigger the action function on the specified state update
-        this.actions().forEach(([state, func]) => {
-            if (func) {
-                state.subscribeActions(this, func)
+        this.actions().forEach(([state, before, after]) => {
+            if (before || after) {
+                state.subscribeActions(this, before, after)
             }
         })
     }
