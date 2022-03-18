@@ -22,7 +22,10 @@ export interface Config {
     zoomFactor?: number,
     dialogShowAllProperties?: boolean, // add an extra tab to dialog, which shows all properties of the selected prop
     dialogAllPropertiesFormat?: 'json' | 'flat',
-    customThemes?: { [key: string]: Theme }
+    customThemes?: { [key: string]: Theme },
+    displayToolbar?: boolean,
+    displayPropList?: boolean,
+    displayTimeline?: boolean
 }
 
 export const DefaultConfig: Config = {
@@ -46,5 +49,8 @@ export const DefaultConfig: Config = {
     zoomFactor: 1.02,
     dialogShowAllProperties: true,
     dialogAllPropertiesFormat: 'json',
-    customThemes: {}
+    customThemes: {},
+    displayToolbar: true,
+    displayPropList: true,
+    displayTimeline: true,
 }

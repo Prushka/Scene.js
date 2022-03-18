@@ -222,6 +222,7 @@ export class Footer extends SceneComponent {
 
     render() {
         const footerContainer = document.createElement('div')
+
         const toolbarContainer = document.createElement('div')
         toolbarContainer.id = this.ids.TOOLBAR
         toolbarContainer.classList.add('toolbar')
@@ -250,12 +251,16 @@ export class Footer extends SceneComponent {
         addButtonToToolbar("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', this.ids.TOOLBAR_RESET_FRAMES_BUTTON)
         addButtonToToolbar('Export', 'bi bi-box-arrow-up-right', this.ids.TOOLBAR_EXPORT_BUTTON)
         addButtonToToolbar(`Theme (${this.themeCtx.themeToDisplay})`, this.themeCtx.currentTheme.icon, this.ids.TOOLBAR_THEME_BUTTON)
-
-        footerContainer.append(toolbarContainer)
+        if(this.ctx.config.displayToolbar){
+            footerContainer.append(toolbarContainer)
+        }
         if (!this.ctx.frameContext.isStatic) {
             // create a timeline since it's not static
             const timelineContainer = document.createElement('div')
             timelineContainer.classList.add('timeline-container')
+            if(!this.ctx.config.displayToolbar){
+                timelineContainer.classList.add('timeline-container-full-width')
+            }
             for (let f = 0; f < this.getTimeCtx().totalFrames; f++) {
                 const frame = f + 1
                 const frameContainer = document.createElement('div')
@@ -283,7 +288,9 @@ export class Footer extends SceneComponent {
                 timelineContainer.append(frameContainer)
             }
             addButtonToToolbar('Play', this.playing.get() ? 'bi bi-pause-fill' : 'bi bi-play-fill', this.ids.TOOLBAR_PLAY_BUTTON)
-            footerContainer.append(timelineContainer)
+            if(this.ctx.config.displayTimeline){
+                footerContainer.append(timelineContainer)
+            }
         }
         return footerContainer
     }

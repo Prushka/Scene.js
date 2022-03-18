@@ -336,6 +336,11 @@
     overflow: auto;
 }
 
+.timeline-container-full-width {
+    width: calc(100% - 3px);
+    LEFT: 3px
+}
+
 .timeline {
     display: flex;
     width: 100%;

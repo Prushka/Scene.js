@@ -296,7 +296,10 @@ export class Context {
                                     <div id="${this.ids.ROOT_FOOTER}" class="footer-container"></div>
                                     <div id="${this.ids.ROOT_OVERLAY}" class="overlay-container"></div>`)
             const v = this.config.renderMethod === 'canvas' ? ViewCanvas : ViewSVG
-            const [view] = this.register(v, PropDialog, Footer, Snackbar, Overlay, PropList)
+            const [view] = this.register(v, PropDialog, Footer, Snackbar, Overlay)
+            if (this.config.displayPropList) {
+                this.register(PropList)
+            }
             this.viewComponent = view as View
         })
     }
