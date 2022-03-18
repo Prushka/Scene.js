@@ -10,7 +10,7 @@ export const IdTypes: { [key: string]: string[] } = {
     ROOT_PROP_DIALOG: ['prop__property', 'root__container'],
     ROOT_VIEW: ['view', 'root__container'],
     ROOT_FOOTER: ['footer', 'root__container'],
-    ROOT_OVERLAY: ['overlay', 'root__container']
+    ROOT_OVERLAY: ['overlay', 'root__container'],
 }
 // I added context id to every id since id attributes are supposed to be unique
 // (i.e.,) unique ids across different instances in the same page
@@ -42,7 +42,7 @@ export class IdContext {
         this.contextId = IdContext.contextIds
         IdContext.contextIds += 1
         for (let key in IdTypes) {
-            this[key] = (id) => this.getId(id, ...IdTypes[key])
+            this[key] = (id, ...extra) => this.getId(id, ...extra, ...IdTypes[key])
         }
     }
 
@@ -67,5 +67,6 @@ export class IdContext {
     }
 }
 
+
 const [ids, idContext] = useId()
-console.log(ids.ROOT_SNACKBAR, idContext.ROOT_SNACKBAR(2, ids.ROOT_SNACKBAR))
+console.log(ids.ROOT_SNACKBAR, idContext.ROOT_SNACKBAR(2, "test"))
