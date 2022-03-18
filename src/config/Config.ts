@@ -1,4 +1,5 @@
 import {LineConfig, PositionConfig, PropConfig, PropTypeIcon} from "../props/Props";
+import {Theme} from "../context/ThemeContext";
 
 export interface Config {
     defaultTheme?: string,
@@ -21,6 +22,7 @@ export interface Config {
     zoomFactor?: number,
     dialogShowAllProperties?: boolean, // add an extra tab to dialog, which shows all properties of the selected prop
     dialogAllPropertiesFormat?: 'json' | 'flat',
+    customThemes?: { [key: string]: Theme }
 }
 
 export const DefaultConfig: Config = {
@@ -43,5 +45,6 @@ export const DefaultConfig: Config = {
     zoomUpperBound: 2,
     zoomFactor: 1.02,
     dialogShowAllProperties: true,
-    dialogAllPropertiesFormat: 'json'
+    dialogAllPropertiesFormat: 'json',
+    customThemes: {}
 }

@@ -32,7 +32,7 @@ import {ViewCanvas} from "./component/ViewCanvas";
 import View from "./component/View";
 import {useId} from "./context/IdContext";
 import {PropList} from "./component/PropList";
-import {useTheme} from "./context/ThemeContext";
+import {ThemeConstants, useTheme} from "./context/ThemeContext";
 
 export class Context {
     protected propIds: number = 0
@@ -64,7 +64,7 @@ export class Context {
         console.log(this.config)
         this.propTypeIconPool = {...PropTypeIcons, ...config.propTypes}
 
-        this.themeCtx = useTheme(this.config.defaultTheme)
+        this.themeCtx = useTheme({...ThemeConstants, ...this.config.customThemes}, this.config.defaultTheme)
 
         this.config.props.forEach(propConfig => {
             this.addProp(propConfig)
@@ -395,6 +395,35 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
         }
     }
     const ctx: Context = new Context(rootId, {
+        customThemes: {
+            "light-custom": {
+                icon: "bi bi-arrow-through-heart-fill",
+                isLight: true,
+                colors: {
+                    "--scene-base": "#ffffff",
+                    "--scene-base-s1": "#F5F5F5",
+                    "--scene-base-inv": "#000000",
+                    "--scene-base-inv-s1": "#1c1c1c",
+                    "--scene-base-inv-s2": "#696969",
+                    "--scene-dialog-header-button-not-selected-hover": "#6565a1",
+                    "--scene-dialog-header-button-not-selected-text-hover": "#6565a1",
+                    "--scene-snackbar": "#EB7777",
+                    "--scene-timeline-button-selected": "#8688BC",
+                    "--scene-timeline-button-selected-hover": "#6565a1",
+                    "--scene-timeline-button-not-selected": "#EB7777",
+                    "--scene-timeline-button-not-selected-hover": "#d96262",
+                    "--scene-timeline-button-text": "#ffffff",
+                    "--scene-snackbar-text": "#ffffff",
+                    "--scene-dialog-key": "#6565a1",
+                    "--scene-dialog-value": "#EB7777",
+                    "--scene-dialog-content": "#000000",
+                    "--scene-button-text": "#ffffff",
+                    "--scene-button-color": "#8688BC",
+                    "--scene-button-hover": "#6565a1",
+                    "--scene-trans-base": "rgba(255, 255, 255, 0.95)",
+                },
+            }
+        },
         renderMethod: renderMethod,
         frameSpeed: {
             1: 3,

@@ -4,10 +4,10 @@
 
 import State, {createState} from "../state/State";
 
-type Colors = { [key: string]: string }
-type Theme = { isLight: boolean, colors: Colors, icon: string }
-
-const ThemeConstants: { [key: string]: Theme } = {
+export type Colors = { [key: string]: string }
+export type Theme = { isLight: boolean, colors: Colors, icon: string }
+export type Themes = { [key: string]: Theme }
+export const ThemeConstants: Themes = {
     'light': {
         isLight: true,
         colors: {
@@ -64,25 +64,27 @@ const ThemeConstants: { [key: string]: Theme } = {
     }
 }
 
-export function useTheme(defaultTheme?: string) {
-    return new ThemeContext(defaultTheme)
+export function useTheme(themes: Themes, defaultTheme?: string) {
+    return new ThemeContext(themes, defaultTheme)
 }
 
 export default class ThemeContext {
     private readonly _current: State<number>
-    private readonly _themes: string[]
+    private readonly _themeKeys: string[]
+    private readonly _themes: Themes
 
     public get currentState() {
         return this._current
     }
 
-    public constructor(defaultTheme?: string) {
-        this._themes = [...Object.keys(ThemeConstants)]
+    public constructor(themes: Themes, defaultTheme?: string) {
+        this._themeKeys = [...Object.keys(themes)]
+        this._themes = themes
         let defaultPos = 0
         if (defaultTheme) {
             defaultTheme = defaultTheme.toLowerCase()
-            if (this._themes.includes(defaultTheme)) {
-                defaultPos = this._themes.indexOf(defaultTheme)
+            if (this._themeKeys.includes(defaultTheme)) {
+                defaultPos = this._themeKeys.indexOf(defaultTheme)
             }
         }
         this._current = createState(defaultPos)
@@ -90,7 +92,7 @@ export default class ThemeContext {
     }
 
     public get currentTheme(): Theme {
-        return ThemeConstants[this._themes[this._current.get()]]
+        return this._themes[this._themeKeys[this._current.get()]]
     }
 
     public get nextTheme(): Theme {
@@ -105,12 +107,12 @@ export default class ThemeContext {
     }
 
     public getThemeByIndex(index: number) {
-        return ThemeConstants[this._themes[index]]
+        return this._themes[this._themeKeys[index]]
     }
 
     public get nextThemeIndex() {
         let next = this._current.get() + 1
-        if (next >= this._themes.length) {
+        if (next >= this._themeKeys.length) {
             next = 0
         }
         return next
