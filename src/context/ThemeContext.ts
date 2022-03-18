@@ -107,7 +107,11 @@ export default class ThemeContext {
     }
 
     public getThemeByIndex(index: number) {
-        return this._themes[this._themeKeys[index]]
+        return this._themes[this.getThemeName(index)]
+    }
+
+    public getThemeName(index: number) {
+        return this._themeKeys[index]
     }
 
     public get nextThemeIndex() {

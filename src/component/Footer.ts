@@ -77,9 +77,15 @@ export class Footer extends SceneComponent {
             frameElement.classList.add(selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
         }
         return [[this.themeCtx.currentState, ((_, next) => {
-            const iconEl = document.getElementById(this.ids.TOOLBAR_THEME_BUTTON).querySelector('i')
+            const theme = this.themeCtx.getThemeByIndex(next)
+            const themeButton = document.getElementById(this.ids.TOOLBAR_THEME_BUTTON)
+            const iconEl = themeButton.querySelector('i')
+            const spanEl = themeButton.parentElement.querySelector('span')
             if (iconEl) {
-                setClassList(iconEl, ...this.themeCtx.getThemeByIndex(next).icon.split(' '))
+                setClassList(iconEl, ...theme.icon.split(' '))
+            }
+            if (spanEl) {
+                spanEl.innerText = `Theme (${this.themeCtx.getThemeName(next)})`
             }
         })], [this.open, ((_, open) => {
             const toolbarElement = document.getElementById(this.ids.TOOLBAR)
@@ -198,7 +204,7 @@ export class Footer extends SceneComponent {
 
             const toolbarButton = document.createElement('div')
             toolbarButton.id = id
-            toolbarButton.title = title
+            // toolbarButton.title = title
             toolbarButton.classList.add('button', 'button--purple', 'pointer')
             const icon = document.createElement('i')
             icon.classList.add(...iconClasses.split(' '))
