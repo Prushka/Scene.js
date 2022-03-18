@@ -61,6 +61,33 @@ export const ThemeConstants: Themes = {
             "--scene-trans-base": "rgba(40,40,40,0.95)",
         },
         icon: 'bi bi-moon-stars-fill'
+    },
+    'dark-classic': {
+        isLight: false,
+        colors: {
+            "--scene-base": "#000000",
+            "--scene-base-s1": "#2c2c2c",
+            "--scene-base-inv": "#ffffff",
+            "--scene-base-inv-s1": "#efefef",
+            "--scene-base-inv-s2": "#b4b4b4",
+            "--scene-dialog-header-button-not-selected-hover": "#9ab999",
+            "--scene-dialog-header-button-not-selected-text-hover": "#9ab999",
+            "--scene-snackbar": "#ff857d",
+            "--scene-timeline-button-selected": "#375d7e",
+            "--scene-timeline-button-selected-hover": "#513c66",
+            "--scene-timeline-button-not-selected": "#6d5c7c",
+            "--scene-timeline-button-not-selected-hover": "#c06d85",
+            "--scene-timeline-button-text": "#ffffff",
+            "--scene-snackbar-text": "#ffffff",
+            "--scene-dialog-key": "#4c87b5",
+            "--scene-dialog-value": "#ff6a79",
+            "--scene-dialog-content": "#ffffff",
+            "--scene-button-text": "#ffffff",
+            "--scene-button-color": "#46aea9",
+            "--scene-button-hover": "#557a81",
+            "--scene-trans-base": "rgba(40,40,40,0.95)",
+        },
+        icon: 'bi bi-moon-stars-fill'
     }
 }
 
