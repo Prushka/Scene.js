@@ -279,17 +279,9 @@
     margin: 4px 0;
 }
 
-.toolbar__button-container:hover .toolbar__tooltip span{
-    opacity: 1;
-}
-
-
-.toolbar__tooltip {
+.toolbar__button-container span {
     max-height: 40px;
     justify-content: center;
-}
-
-.toolbar__tooltip span {
     transition-duration: .1s;
     opacity: 0;
     margin-left: 10px;
@@ -298,6 +290,11 @@
     border-radius: 8px;
     padding: 10px;
     white-space: nowrap;
+    pointer-events: none;
+}
+
+.toolbar__tooltip--visible {
+    opacity: 1 !important;
 }
 
 .button {
@@ -316,11 +313,11 @@
     font-size: 1.1rem;
 }
 
-.button--purple:hover {
+.toolbar__button:hover {
     background-color: var(--scene-button-hover);
 }
 
-.button--purple {
+.toolbar__button {
     color: var(--scene-button-text);
     background-color: var(--scene-button-color);
 }

@@ -157,6 +157,19 @@ export class Footer extends SceneComponent {
                 action(document.getElementById(id), e)
             })
         }
+        this.ctx.$(".toolbar__button").on("mouseover", (e) => {
+            const span = e.target.parentElement.querySelector('span')
+            if(span){
+                span.classList.add('toolbar__tooltip--visible')
+            }
+        })
+
+        this.ctx.$(".toolbar__button").on("mouseleave", (e) => {
+            const span = e.target.parentElement.querySelector('span')
+            if(span){
+                span.classList.remove('toolbar__tooltip--visible')
+            }
+        })
         this.ctx.$('.timeline__frame').on("click", (e) => {
             const [frame] = this.idCtx.extractIdType(e.target.id)
             this.ctx.frameContext.currentFrame = frame
@@ -209,18 +222,15 @@ export class Footer extends SceneComponent {
             const toolbarButton = document.createElement('div')
             toolbarButton.id = id
             // toolbarButton.title = title
-            toolbarButton.classList.add('button', 'button--purple', 'pointer')
+            toolbarButton.classList.add('button', 'toolbar__button', 'pointer')
             const icon = document.createElement('i')
             icon.classList.add(...iconClasses.split(' '))
             toolbarButton.append(icon)
 
-            const tooltip = document.createElement('div')
-            tooltip.classList.add('toolbar__tooltip')
             const tooltipText = document.createElement('span')
             tooltipText.innerText = title
-            tooltip.append(tooltipText)
 
-            container.append(toolbarButton, tooltip)
+            container.append(toolbarButton, tooltipText)
             toolbarContainer.append(container)
         }
         const currentFrame = this.ctx.frameContext.currentFrame
