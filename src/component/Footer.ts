@@ -77,10 +77,10 @@ export class Footer extends SceneComponent {
             frameElement.classList.add(selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
         }
         return [[this.themeCtx.currentState, ((_, next) => {
-            // const iconEl = el.querySelector('i')
-            // if(iconEl){
-            //     setClassList(iconEl, ...iconClasses.split(' '))
-            // }
+            const iconEl = document.getElementById(this.ids.TOOLBAR_THEME_BUTTON).querySelector('i')
+            if(iconEl){
+                setClassList(iconEl, ...this.themeCtx.getThemeByIndex(next).icon.split(' '))
+            }
         })], [this.open, ((_, open) => {
             const toolbarElement = document.getElementById(this.ids.TOOLBAR)
             const bottom = open ? 0 : -(toolbarElement.getBoundingClientRect().height - 45)
@@ -204,7 +204,7 @@ export class Footer extends SceneComponent {
         addButtonToToolbar('Reset viewport (based on current frame)', 'bi bi-arrows-move', this.ids.TOOLBAR_RESET_CURRENT_BUTTON)
         addButtonToToolbar("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', this.ids.TOOLBAR_RESET_FRAMES_BUTTON)
         addButtonToToolbar('Export', 'bi bi-box-arrow-up-right', this.ids.TOOLBAR_EXPORT_BUTTON)
-        addButtonToToolbar('Theme', 'bi bi-moon-stars-fill', this.ids.TOOLBAR_THEME_BUTTON)
+        addButtonToToolbar('Theme', this.themeCtx.currentTheme.icon, this.ids.TOOLBAR_THEME_BUTTON)
 
         footerContainer.append(toolbarContainer)
         if (!this.ctx.frameContext.isStatic) {

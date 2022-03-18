@@ -19,7 +19,7 @@ const ThemeConstants: { [key: string]: Theme } = {
             "--theme-dark-pink": "#d96262",
             "--theme-trans-white": "rgba(255, 255, 255, 0.95)"
         },
-        icon: 'bi bi-moon-stars-fill'
+        icon: 'bi bi-brightness-high'
     },
     'dark': {
         colors: {
@@ -32,7 +32,7 @@ const ThemeConstants: { [key: string]: Theme } = {
             "--theme-dark-pink": "#f8cfcf",
             "--theme-trans-white": "rgba(0,0,0,0.95)"
         },
-        icon: 'bi bi-brightness-high'
+        icon: 'bi bi-moon-stars-fill'
     }
 }
 
@@ -61,8 +61,12 @@ export default class ThemeContext {
         this.renderTheme()
     }
 
-    public get currentTheme():Theme {
+    public get currentTheme(): Theme {
         return ThemeConstants[this._themes[this._current.get()]]
+    }
+
+    public get nextTheme(): Theme {
+        return this.getThemeByIndex(this.nextThemeIndex)
     }
 
     public renderTheme() {
@@ -72,11 +76,20 @@ export default class ThemeContext {
         }
     }
 
-    public next() {
-        this._current.set(this._current.get() + 1)
-        if (this._current.get() >= this._themes.length) {
-            this._current.set(0)
+    public getThemeByIndex(index: number) {
+        return ThemeConstants[this._themes[index]]
+    }
+
+    public get nextThemeIndex() {
+        let next = this._current.get() + 1
+        if (next >= this._themes.length) {
+            next = 0
         }
+        return next
+    }
+
+    public next() {
+        this._current.set(this.nextThemeIndex)
         this.renderTheme()
     }
 
