@@ -14,7 +14,7 @@ import {
     convertTypeToReadable,
     createSpan,
     createSVGIcon,
-    generateDarkColor, getPathGroupByHTML,
+    generateDarkColor, generateLightColor, getPathGroupByHTML,
     randInclusive
 } from "./utils/Utils";
 import {PropDialog} from "./component/PropDialog";
@@ -61,17 +61,19 @@ export class Context {
         })
         console.log(this.config)
         this.propTypeIconPool = {...PropTypeIcons, ...config.propTypes}
+
+        this.themeCtx = useTheme(this.config.defaultTheme)
+
         this.config.props.forEach(propConfig => {
             this.addProp(propConfig)
         })
-        this.themeCtx = useTheme(this.config.defaultTheme)
     }
 
     private addProp(...propConfigs: PropConfig[]): Context {
         const _props = [...this.propsState.get()]
         propConfigs.forEach(propConfig => {
             propConfig = {...DefaultPropConfig, ...propConfig}
-            propConfig.color = propConfig.color ?? generateDarkColor()
+            propConfig.color = propConfig.color ?? this.themeCtx.currentTheme.isLight ? generateDarkColor() : generateLightColor()
             propConfig.id = propConfig.id ?? this.propIds
             propConfig.name = propConfig.name ?? `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
             if (propConfig.frameAnimationConfig) {

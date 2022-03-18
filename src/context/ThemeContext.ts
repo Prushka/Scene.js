@@ -5,10 +5,11 @@
 import State, {createState} from "../state/State";
 
 type Colors = { [key: string]: string }
-type Theme = { colors: Colors, icon: string }
+type Theme = { isLight: boolean, colors: Colors, icon: string }
 
 const ThemeConstants: { [key: string]: Theme } = {
     'light': {
+        isLight: true,
         colors: {
             "--theme-dark-white": "#F5F5F5",
             "--theme-dark-gray": "#1c1c1c",
@@ -24,6 +25,7 @@ const ThemeConstants: { [key: string]: Theme } = {
         icon: 'bi bi-brightness-high'
     },
     'dark': {
+        isLight: false,
         colors: {
             "--theme-dark-white": "#363636",
             "--theme-dark-gray": "#dcdcdc",
