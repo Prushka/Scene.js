@@ -47,7 +47,9 @@ export class PropList extends SceneComponent {
                 listItemContainer.classList.remove("prop__list__item--not-selected")
                 listItemContainer.classList.add("prop__list__item--selected")
                 listItemContainer.querySelector("span").style.color = "var(--scene-base)"
-                listItemContainer.querySelector("path").style.fill = "var(--scene-base)"
+                listItemContainer.querySelectorAll("path").forEach(c=>{
+                    c.style.fill = "var(--scene-base)"
+                })
             }
         }]]
     }
