@@ -173,6 +173,10 @@ export class Footer extends SceneComponent {
         hookButton(() => {
             navigator.clipboard.writeText(JSON.stringify(this.ctx.config, null, 2)).then(() => this.snackbarCtx.snackbar = "Copied to clipboard")
         }, "toolbar", "export")
+
+        hookButton(() => {
+            document.documentElement.style.setProperty('--theme-dark-pink', '#000000');
+        }, "toolbar", "theme")
     }
 
     render() {
@@ -196,6 +200,7 @@ export class Footer extends SceneComponent {
         addButtonToToolbar('Reset viewport (based on current frame)', 'bi bi-arrows-move', "toolbar", "reset", "current")
         addButtonToToolbar("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', "toolbar", "reset", "frames")
         addButtonToToolbar('Export', 'bi bi-box-arrow-up-right', "toolbar", "export")
+        addButtonToToolbar('Theme', 'bi bi-moon-stars-fill', "toolbar", "theme")
 
         footerContainer.append(toolbarContainer)
         if (!this.ctx.timeCtx.isStatic) {

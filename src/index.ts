@@ -5,7 +5,6 @@
 import {
     AnimationConfig, DefaultAnimationConfig, DefaultLine, DefaultPropConfig,
     FrameAnimationConfig,
-    HasId,
     PropConfig,
     PropType, PropTypeIcon,
     PropTypeIcons
@@ -27,11 +26,11 @@ import {CustomComponent} from "./component/Component";
 import {Overlay} from "./component/Overlay";
 import TimeContext from "./context/TimeContext";
 import ViewPortContext from "./context/ViewPortContext";
-import SnackbarContext, {useSnackbar} from "./context/SnackbarContext";
-import OverlayContext, {useOverlay} from "./context/OverlayContext";
+import {useSnackbar} from "./context/SnackbarContext";
+import {useOverlay} from "./context/OverlayContext";
 import {ViewCanvas} from "./component/ViewCanvas";
 import View from "./component/View";
-import {IdContext, IdTypes, useId} from "./context/IdContext";
+import {useId} from "./context/IdContext";
 import {PropList} from "./component/PropList";
 
 export class Context {
