@@ -76,12 +76,17 @@ export class Footer extends SceneComponent {
             frameElement.classList.remove(!selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
             frameElement.classList.add(selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
         }
-        return [[this.open, ((_, open) => {
+        return [[this.themeCtx.currentState, ((_, next) => {
+            // const iconEl = el.querySelector('i')
+            // if(iconEl){
+            //     setClassList(iconEl, ...iconClasses.split(' '))
+            // }
+        })], [this.open, ((_, open) => {
             const toolbarElement = document.getElementById(this.ids.TOOLBAR)
             const bottom = open ? 0 : -(toolbarElement.getBoundingClientRect().height - 45)
             toolbarElement.style.bottom = `${bottom}px`
         })], [this.playing, ((_, playing) => {
-            const icon = document.getElementById(this.ids.TOOLBAR_PLAY_ICON)
+            const icon = document.getElementById(this.ids.TOOLBAR_PLAY_BUTTON).querySelector('i')
             if (playing) {
                 setClassList(icon, "bi", "bi-pause-fill")
             } else {
@@ -134,9 +139,9 @@ export class Footer extends SceneComponent {
 
     afterRender() {
         this.open.set(this.ctx.config.defaultOpenToolbar)
-        const hookButton = (action: (e: ClickEvent) => void, ...types: string[]) => {
-            this.ctx.$("#" + this.idCtx.getType(...types)).on("click", (e) => {
-                action(e)
+        const hookButton = (action: (el: HTMLElement, e: ClickEvent) => void, id:string) => {
+            this.ctx.$(`#${id}`).on("click", (e) => {
+                action(document.getElementById(id), e)
             })
         }
         this.ctx.$('.timeline__frame').on("click", (e) => {
@@ -145,16 +150,16 @@ export class Footer extends SceneComponent {
         })
         hookButton(() => {
             this.open.set(!this.open.get())
-        }, "toolbar", "collapse")
+        }, this.ids.TOOLBAR_COLLAPSE_BUTTON)
         hookButton(() => {
             this.ctx.viewComponent.resetViewport()
             this.snackbarCtx.snackbar = "Reset Viewport - Frames Based"
-        }, "toolbar", "reset", "frames")
+        }, this.ids.TOOLBAR_RESET_FRAMES_BUTTON)
 
         hookButton(() => {
             this.ctx.viewComponent.resetViewport(this.ctx.frameContext.currentFrame)
             this.snackbarCtx.snackbar = "Reset Current Viewport"
-        }, "toolbar", "reset", "current")
+        }, this.ids.TOOLBAR_RESET_CURRENT_BUTTON)
 
         const nextFrame = () => {
             if (this.playing.get()) {
@@ -169,14 +174,14 @@ export class Footer extends SceneComponent {
             if (this.playing.get()) {
                 nextFrame()
             }
-        }, "toolbar", "play")
+        }, this.ids.TOOLBAR_PLAY_BUTTON)
         hookButton(() => {
             navigator.clipboard.writeText(JSON.stringify(this.ctx.config, null, 2)).then(() => this.snackbarCtx.snackbar = "Copied to clipboard")
-        }, "toolbar", "export")
+        }, this.ids.TOOLBAR_EXPORT_BUTTON)
 
         hookButton(() => {
             this.themeCtx.next()
-        }, "toolbar", "theme")
+        }, this.ids.TOOLBAR_THEME_BUTTON)
     }
 
     render() {
@@ -184,23 +189,22 @@ export class Footer extends SceneComponent {
         const toolbarContainer = document.createElement('div')
         toolbarContainer.id = this.ids.TOOLBAR
         toolbarContainer.classList.add('toolbar')
-        const addButtonToToolbar = (title, iconClasses, ...types: string[]) => {
+        const addButtonToToolbar = (title, iconClasses, id: string) => {
             const toolbarButton = document.createElement('div')
-            toolbarButton.id = this.idCtx.getType(...types)
+            toolbarButton.id = id
             toolbarButton.title = title
             toolbarButton.classList.add('button', 'button--purple', 'pointer')
             const icon = document.createElement('i')
             icon.classList.add(...iconClasses.split(' '))
-            icon.id = this.idCtx.getType(...types, 'icon')
             toolbarButton.append(icon)
             toolbarContainer.append(toolbarButton)
         }
         const currentFrame = this.ctx.frameContext.currentFrame
-        addButtonToToolbar('Collapse/Expand', 'bi bi-arrows-collapse', "toolbar", "collapse")
-        addButtonToToolbar('Reset viewport (based on current frame)', 'bi bi-arrows-move', "toolbar", "reset", "current")
-        addButtonToToolbar("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', "toolbar", "reset", "frames")
-        addButtonToToolbar('Export', 'bi bi-box-arrow-up-right', "toolbar", "export")
-        addButtonToToolbar('Theme', 'bi bi-moon-stars-fill', "toolbar", "theme")
+        addButtonToToolbar('Collapse/Expand', 'bi bi-arrows-collapse', this.ids.TOOLBAR_COLLAPSE_BUTTON)
+        addButtonToToolbar('Reset viewport (based on current frame)', 'bi bi-arrows-move', this.ids.TOOLBAR_RESET_CURRENT_BUTTON)
+        addButtonToToolbar("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', this.ids.TOOLBAR_RESET_FRAMES_BUTTON)
+        addButtonToToolbar('Export', 'bi bi-box-arrow-up-right', this.ids.TOOLBAR_EXPORT_BUTTON)
+        addButtonToToolbar('Theme', 'bi bi-moon-stars-fill', this.ids.TOOLBAR_THEME_BUTTON)
 
         footerContainer.append(toolbarContainer)
         if (!this.ctx.frameContext.isStatic) {
@@ -233,7 +237,7 @@ export class Footer extends SceneComponent {
                 frameContainer.append(frameButton)
                 timelineContainer.append(frameContainer)
             }
-            addButtonToToolbar('Play', this.playing.get() ? 'bi bi-pause-fill' : 'bi bi-play-fill', "toolbar", "play")
+            addButtonToToolbar('Play', this.playing.get() ? 'bi bi-pause-fill' : 'bi bi-play-fill', this.ids.TOOLBAR_PLAY_BUTTON)
             footerContainer.append(timelineContainer)
         }
         return footerContainer

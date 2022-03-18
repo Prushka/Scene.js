@@ -19,7 +19,7 @@ const ThemeConstants: { [key: string]: Theme } = {
             "--theme-dark-pink": "#d96262",
             "--theme-trans-white": "rgba(255, 255, 255, 0.95)"
         },
-        icon: ''
+        icon: 'bi bi-moon-stars-fill'
     },
     'dark': {
         colors: {
@@ -32,7 +32,7 @@ const ThemeConstants: { [key: string]: Theme } = {
             "--theme-dark-pink": "#f8cfcf",
             "--theme-trans-white": "rgba(0,0,0,0.95)"
         },
-        icon: ''
+        icon: 'bi bi-brightness-high'
     }
 }
 
@@ -41,15 +41,19 @@ export function useTheme(defaultTheme?: string) {
 }
 
 export default class ThemeContext {
-    private _current: State<number>
+    private readonly _current: State<number>
     private readonly _themes: string[]
+
+    public get currentState() {
+        return this._current
+    }
 
     public constructor(defaultTheme?: string) {
         this._themes = [...Object.keys(ThemeConstants)]
         let defaultPos = 0
         if (defaultTheme) {
             defaultTheme = defaultTheme.toLowerCase()
-            if(this._themes.includes(defaultTheme)){
+            if (this._themes.includes(defaultTheme)) {
                 defaultPos = this._themes.indexOf(defaultTheme)
             }
         }
@@ -57,9 +61,12 @@ export default class ThemeContext {
         this.renderTheme()
     }
 
+    public get currentTheme():Theme {
+        return ThemeConstants[this._themes[this._current.get()]]
+    }
+
     public renderTheme() {
-        const currentTheme = this._themes[this._current.get()]
-        const colors = ThemeConstants[currentTheme].colors
+        const colors = this.currentTheme.colors
         for (let key in colors) {
             document.documentElement.style.setProperty(key, colors[key]);
         }
