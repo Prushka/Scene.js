@@ -40,7 +40,6 @@ export abstract class CustomComponent {
     renderComponent() {
         this.renderInIds().forEach(elementId => {
             const el: string | string[] | Node = this.render()
-            console.log(elementId)
             const parent = document.getElementById(elementId)
             if (Array.isArray(el)) {
                 parent.innerHTML = el.join('')

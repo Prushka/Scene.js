@@ -47,7 +47,7 @@ export class Context {
     public readonly frameContext = useFrames()
     public readonly snackbarCtx = useSnackbar()
     public readonly overlayCtx = useOverlay()
-    public readonly themeCtx = useTheme()
+    public readonly themeCtx
     public readonly ids
     public readonly idContext
 
@@ -64,6 +64,7 @@ export class Context {
         this.config.props.forEach(propConfig => {
             this.addProp(propConfig)
         })
+        this.themeCtx = useTheme(this.config.defaultTheme)
     }
 
     private addProp(...propConfigs: PropConfig[]): Context {

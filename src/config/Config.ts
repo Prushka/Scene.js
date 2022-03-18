@@ -1,7 +1,7 @@
 import {LineConfig, PositionConfig, PropConfig, PropTypeIcon} from "../props/Props";
 
 export interface Config {
-    theme?: "dark" | "light",
+    defaultTheme?: string,
     dialog?: "popup" | "embedded",
     viewOffset?: number,
     transitionTimingFunction?: string,
@@ -20,11 +20,11 @@ export interface Config {
     zoomUpperBound?: number,
     zoomFactor?: number,
     dialogShowAllProperties?: boolean, // add an extra tab to dialog, which shows all properties of the selected prop
-    dialogAllPropertiesFormat?: 'json' | 'flat'
+    dialogAllPropertiesFormat?: 'json' | 'flat',
 }
 
 export const DefaultConfig: Config = {
-    theme: "light",
+    defaultTheme: "dark",
     dialog: "embedded",
     viewOffset: 0.2,
     transitionTimingFunction: "linear",

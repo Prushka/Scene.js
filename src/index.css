@@ -7,6 +7,8 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css");
 
 :root {
+    --prop-list-width: 172px;
+    --toolbar-button-width: 40px;
     --theme-dark-white: #F5F5F5;
     --theme-dark-gray: #1c1c1c;
     --theme-gray: #696969;
@@ -14,8 +16,6 @@
     --theme-dark-purple: #6565a1;
     --theme-pink: #EB7777;
     --theme-dark-pink: #d96262;
-    --prop-list-width: 172px;
-    --toolbar-button-width: 40px;
     --theme-trans-white: rgba(255, 255, 255, 0.95)
 }
 
