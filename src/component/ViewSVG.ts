@@ -54,7 +54,7 @@ export class ViewSVG extends View {
                     groupElement.style.display = show ? "unset" : "none"
                     const enabledGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP_ENABLED(prop))
                     const disabledGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP_DISABLED(prop))
-                    const storyboard = document.querySelector('image')
+                    const storyboard = groupElement.querySelector('image')
                     if(enabledGroup){
                         enabledGroup.style.opacity = !newPosition.enabled ? "0" : "1"
                     }
@@ -95,12 +95,12 @@ export class ViewSVG extends View {
                     const position = this.ctx.getPropPositionByCurrentFrame(prop)
                     const textElement = element.querySelector('text')
                     const pathGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP(prop, position.enabled ? 'enabled' : 'disable')) as any
-                    const storyboard = document.querySelector('image') as any
+                    const storyboard = element.querySelector('image') as any
 
                     if (textElement) {
                         const textWidth = textElement.getBBox().width * prop.nameScale
                         const textHeight = textElement.getBBox().height * prop.nameScale
-                        const elementBBox = storyboard.getBBox() ?? pathGroup.getBBox()
+                        const elementBBox = storyboard ? storyboard.getBBox() : pathGroup.getBBox()
                         let shiftXVertical = elementBBox.width / 2 - textWidth / 2
                         let shiftYHorizontal = elementBBox.height / 2 + textHeight / 2
                         console.log(`Path: ${elementBBox.width} | Text: ${textWidth} | Shift: ${shiftYHorizontal}`)
