@@ -29,7 +29,7 @@ export class PropDialog extends SceneComponent {
         return [this.ctx.selectedState, this.ctx.propsState, this.selectedTabState];
     }
 
-    subscribe() {
+    renderIn() {
         return [this.getRootId("prop__property")]
     }
 
@@ -82,7 +82,7 @@ export class PropDialog extends SceneComponent {
         })
     }
 
-    render(): string | string[] {
+    render() {
         const selectedProp = this.ctx.selected
         if (selectedProp) {
             const isPopup = this.ctx.config.dialog === 'popup'
@@ -235,7 +235,7 @@ export class PropDialog extends SceneComponent {
 
             footer.append(propIcon, propText, positionText, scaleText)
             dialogContainerElement.append(header, contentElement, footer)
-            return parentContainer.outerHTML
+            return parentContainer
         }
         return ""
     }

@@ -128,7 +128,7 @@ export class Footer extends SceneComponent {
             }]]
     }
 
-    subscribe() {
+    renderIn() {
         return [this.getRootId("footer")]
     }
 
@@ -175,7 +175,7 @@ export class Footer extends SceneComponent {
         }, "toolbar", "export")
     }
 
-    render(): string | string[] {
+    render() {
         const footerContainer = document.createElement('div')
         const toolbarContainer = document.createElement('div')
         toolbarContainer.id = this.ctx.getIdType("toolbar")
@@ -231,6 +231,6 @@ export class Footer extends SceneComponent {
             addButtonToToolbar('Play', this.playing.get() ? 'bi bi-pause-fill' : 'bi bi-play-fill', "toolbar", "play")
             footerContainer.append(timelineContainer)
         }
-        return footerContainer.outerHTML
+        return footerContainer
     }
 }

@@ -52,7 +52,7 @@ export class PropList extends SceneComponent {
         }]]
     }
 
-    subscribe() {
+    renderIn() {
         return [this.getRootId("prop__list")]
     }
 

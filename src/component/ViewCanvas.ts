@@ -77,7 +77,7 @@ export class ViewCanvas extends View {
             }]]
     }
 
-    subscribe() {
+    renderIn() {
         return [this.getRootId("view")]
     }
 

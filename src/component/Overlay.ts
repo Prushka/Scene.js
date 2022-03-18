@@ -7,7 +7,7 @@ import State from "../state/State";
 
 export class Overlay extends SceneComponent {
 
-    subscribe() {
+    renderIn() {
         return [this.getRootId('overlay')]
     }
 

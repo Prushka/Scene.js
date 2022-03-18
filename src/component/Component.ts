@@ -14,7 +14,7 @@ export abstract class CustomComponent {
 
     protected hookedComponents: { [key: string]: CustomComponent }
 
-    abstract render(): string | string[]
+    abstract render(): string | string[] | Node
 
     abstract afterRender(): void
 
@@ -36,9 +36,17 @@ export abstract class CustomComponent {
     }
 
     renderComponent() {
-        const html = this.render()
-        this.subscribe().forEach(selector => {
-            $(selector).html(Array.isArray(html) ? html.join('') : html)
+
+        this.renderIn().forEach(selector => {
+            const el: string | string[] | Node = this.render()
+            if (Array.isArray(el)) {
+                $(selector).html(el.join(''))
+            } else if (typeof el === 'string') {
+                $(selector).html(el)
+            } else {
+                $(selector)[0].append(el)
+            }
+
         })
         this.afterRender()
     }
@@ -47,7 +55,7 @@ export abstract class CustomComponent {
         return []
     }
 
-    subscribe(): string[] {
+    renderIn(): string[] {
         return [];
     }
 

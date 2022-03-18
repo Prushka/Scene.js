@@ -24,7 +24,7 @@ export class Snackbar extends SceneComponent {
         })]]
     }
 
-    subscribe() {
+    renderIn() {
         return [this.getRootId("snackbar")]
     }
 
