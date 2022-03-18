@@ -239,7 +239,10 @@ export class PropDialog extends SceneComponent {
 
             footer.append(propIcon, propText, positionText, scaleText)
             dialogContainerElement.append(header, contentElement, footer)
-            return parentContainer
+
+            return parentContainer.outerHTML
+            // appending the element will set svg's Viewbox to viewbox
+            // and it's case-sensitive, that's why outerHTML's used
         }
         return ""
     }
