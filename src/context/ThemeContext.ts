@@ -25,14 +25,14 @@ const ThemeConstants: { [key: string]: Theme } = {
     },
     'dark': {
         colors: {
-            "--theme-dark-white": "#232323",
+            "--theme-dark-white": "#363636",
             "--theme-dark-gray": "#dcdcdc",
             "--theme-gray": "#b0b0b0",
             "--theme-purple": "#caccf5",
             "--theme-dark-purple": "#e1e1f3",
             "--theme-pink": "#f6a2a2",
             "--theme-dark-pink": "#f8cfcf",
-            "--theme-trans-white": "rgba(0,0,0,0.95)",
+            "--theme-trans-white": "rgba(45,45,45,0.95)",
             "--theme-base": "black",
             "--theme-base-inv": "white",
         },
