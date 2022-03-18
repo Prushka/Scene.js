@@ -25,6 +25,7 @@ export const IdTypes: { [key: string]: string[] } = {
     TIMELINE_FRAME: ['timeline', 'frame'],
     TOOLBAR: ['toolbar'],
     TOOLBAR_PLAY_BUTTON: ["toolbar", "play"],
+    TOOLBAR_FULLSCREEN: ['toolbar', 'fullscreen'],
     TOOLBAR_COLLAPSE_BUTTON: ["toolbar", "collapse"],
     TOOLBAR_RESET_CURRENT_BUTTON: ["toolbar", "reset", "current"],
     TOOLBAR_RESET_FRAMES_BUTTON: ["toolbar", "reset", "frames"],

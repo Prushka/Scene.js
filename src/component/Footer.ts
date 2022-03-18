@@ -76,7 +76,7 @@ export class Footer extends SceneComponent {
             frameElement.classList.remove(!selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
             frameElement.classList.add(selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
         }
-        return [[this.themeCtx.currentState,null, () => {
+        return [[this.themeCtx.currentState, null, () => {
             const theme = this.themeCtx.currentTheme
             const themeButton = document.getElementById(this.ids.TOOLBAR_THEME_BUTTON)
             const iconEl = themeButton.querySelector('i')
@@ -159,14 +159,14 @@ export class Footer extends SceneComponent {
         }
         this.ctx.$(".toolbar__button").on("mouseover", (e) => {
             const span = e.target.parentElement.querySelector('span')
-            if(span){
+            if (span) {
                 span.classList.add('toolbar__tooltip--visible')
             }
         })
 
-        this.ctx.$(".toolbar__button").on("mouseleave", (e) => {
+        this.ctx.$(".toolbar__button").on("mouseleave fullscreenchange", (e) => {
             const span = e.target.parentElement.querySelector('span')
-            if(span){
+            if (span) {
                 span.classList.remove('toolbar__tooltip--visible')
             }
         })
@@ -208,6 +208,14 @@ export class Footer extends SceneComponent {
         hookButton(() => {
             this.themeCtx.next()
         }, this.ids.TOOLBAR_THEME_BUTTON)
+        hookButton(() => {
+            if (document.fullscreenElement) {
+                document.exitFullscreen().then()
+            } else {
+                const element = this.ctx.getRootDocument();
+                element.requestFullscreen().then()
+            }
+        }, this.ids.TOOLBAR_FULLSCREEN)
     }
 
     render() {
@@ -235,6 +243,7 @@ export class Footer extends SceneComponent {
         }
         const currentFrame = this.ctx.frameContext.currentFrame
         addButtonToToolbar('Collapse/Expand', 'bi bi-arrows-collapse', this.ids.TOOLBAR_COLLAPSE_BUTTON)
+        addButtonToToolbar('Toggle fullscreen mode', 'bi bi-arrows-fullscreen', this.ids.TOOLBAR_FULLSCREEN)
         addButtonToToolbar('Reset viewport (based on current frame)', 'bi bi-arrows-move', this.ids.TOOLBAR_RESET_CURRENT_BUTTON)
         addButtonToToolbar("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', this.ids.TOOLBAR_RESET_FRAMES_BUTTON)
         addButtonToToolbar('Export', 'bi bi-box-arrow-up-right', this.ids.TOOLBAR_EXPORT_BUTTON)
