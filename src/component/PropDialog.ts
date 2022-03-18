@@ -8,11 +8,11 @@ import {ExcludeKeys, ImageConfig, StepConfig} from "../props/Props";
 import {camelToDisplay, flatObject, positionToDisplay} from "../utils/Utils";
 
 enum Tab {
-    IMAGES = "IMAGES",
-    GENERAL = "GENERAL",
-    STEPS = "STEPS",
-    SCRIPTS = "SCRIPTS",
-    DEBUG = "DEBUG"
+    IMAGES,
+    GENERAL,
+    STEPS,
+    SCRIPTS,
+    DEBUG
 }
 
 export class PropDialog extends SceneComponent {
@@ -74,7 +74,7 @@ export class PropDialog extends SceneComponent {
             e.stopPropagation()
         })
         this.ctx.$('.header span').on("click", (e) => {
-            this.selectedTabState.set(Tab[this.idCtx.extractIdType(e.target.id, 'dialog')[1][0] as keyof typeof Tab])
+            this.selectedTabState.set(this.idCtx.extractIdType(e.target.id)[0])
         })
         this.ctx.$('.content .image__container img').on("click", (e) => {
             this.overlayCtx.overlayOpenState.set(true)

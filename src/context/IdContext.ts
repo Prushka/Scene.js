@@ -35,7 +35,8 @@ export const IdTypes: { [key: string]: string[] } = {
     PROP_LIST_TITLE: ['prop', 'list', 'icon'],
     PROP_LIST_HIDE: ['prop', 'list', 'hide'],
     PROP_LIST_HIDE_ICON: ['prop', 'list', 'hide', 'icon'],
-    SNACKBAR: ['snackbar']
+    SNACKBAR: ['snackbar'],
+    CANVAS: ['canvas']
 }
 // I added context id to every id since id attributes are supposed to be unique
 // (i.e.,) unique ids across different instances in the same page
@@ -84,7 +85,7 @@ export class IdContext {
     public extractIdType(htmlID: string, ...exclude: string[]): [number, string[]] {
         const elementId = htmlID.match(/-\d+/)
         const contextId = htmlID.match(/\d+-/)
-        if (!contextId || contextId != this.contextId) {
+        if (!contextId || parseInt(contextId[0].replace('-', '')) != this.contextId) {
             return [-1, []]
         }
         let id = -1

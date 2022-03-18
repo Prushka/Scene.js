@@ -32,6 +32,7 @@ import OverlayContext, {useOverlay} from "./context/OverlayContext";
 import {ViewCanvas} from "./component/ViewCanvas";
 import View from "./component/View";
 import {IdContext, IdTypes, useId} from "./context/IdContext";
+import {PropList} from "./component/PropList";
 
 export class Context {
     protected propIds: number = 0
@@ -313,7 +314,7 @@ export class Context {
                                     <div id="${this.ids.ROOT_FOOTER}" class="footer-container"></div>
                                     <div id="${this.ids.ROOT_OVERLAY}" class="overlay-container"></div>`)
             const v = this.config.renderMethod === 'canvas' ? ViewCanvas : ViewSVG
-            const [view] = this.register(v, PropDialog, Footer, Snackbar, Overlay)
+            const [view] = this.register(v, PropDialog, Footer, Snackbar, Overlay, PropList)
             this.viewComponent = view as View
         })
     }

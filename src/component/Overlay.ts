@@ -8,7 +8,7 @@ import State from "../state/State";
 export class Overlay extends SceneComponent {
 
     renderInIds() {
-        return [this.ids.OVERLAY]
+        return [this.ids.ROOT_OVERLAY]
     }
 
     listen(): State<any>[] {

@@ -5,13 +5,15 @@ export class ViewCanvas extends View {
     }
 
     render(): string | string[] | Node {
-        return undefined;
+        return `<canvas width="${Math.floor(this.ctx.getRootWidth())}" height="${Math.floor(this.ctx.getRootHeight())}"
+        id="${this.ids.CANVAS}"></canvas>`;
     }
 
     resetViewport(currentFrame?: number): void {
     }
 
 }
+
 // /*
 //  * Copyright 2022 Dan Lyu.
 //  */
