@@ -348,6 +348,18 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
         }
     }
 
+    const getStoryBoard = () => {
+        return {
+            type: "STORYBOARD",
+            script: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+            frameAnimationConfig: {
+                1: {
+                    x: 0, y: 0
+                }
+            }
+        }
+    }
+
     const getDemoTable = () => {
         return {
             type: "TABLE",
@@ -446,7 +458,7 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
         lines: [
             [{x: 40, y: 40}, {x: 80, y: 80}]
         ],
-        props: [getDemoTable(), generateTable(2, {x: 0, y: 0, scaleX: 2, scaleY: 2}),
+        props: [getStoryBoard(), getDemoTable(), generateTable(2, {x: 0, y: 0, scaleX: 2, scaleY: 2}),
             generateTable(1, {x: 0, y: 0, scaleX: 5, scaleY: 5, degree: 20}),
             generateTable(3, {x: 0, y: 0, scaleX: 1, scaleY: 1})]
     })

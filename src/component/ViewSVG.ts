@@ -2,7 +2,7 @@
  * Copyright 2022 Dan Lyu.
  */
 
-import {PositionConfig, PropConfig} from "../props/Props";
+import {PositionConfig, PropConfig, PropType} from "../props/Props";
 import State, {createState, StateAction} from "../state/State";
 import PropTupleSet from "../utils/PropTupleSet";
 import {getLineGroup, getPathGroupByHTML} from "../utils/Utils";
@@ -95,36 +95,39 @@ export class ViewSVG extends View {
                     const textWidth = textElement.getBBox().width * prop.nameScale
                     const textHeight = textElement.getBBox().height * prop.nameScale
                     const pathGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP(prop, position.enabled ? 'enabled' : 'disable')) as any
-                    const pathGroupBBox = pathGroup.getBBox()
-                    let shiftXVertical = pathGroupBBox.width / 2 - textWidth / 2
-                    let shiftYHorizontal = pathGroupBBox.height / 2 + textHeight / 2
-                    console.log(`Path: ${pathGroupBBox.width} | Text: ${textWidth} | Shift: ${shiftYHorizontal}`)
-                    let shiftX, shiftY
-                    switch (prop.namePosition) {
-                        case "top":
-                            shiftY = -7
-                            shiftX = shiftXVertical
-                            break
-                        case "bottom":
-                            shiftY = pathGroupBBox.height + textHeight + 7
-                            shiftX = shiftXVertical
-                            break
-                        case "left":
-                            shiftY = shiftYHorizontal
-                            shiftX = Math.floor(-textWidth - pathGroupBBox.width)
-                            break
-                        case "right":
-                            shiftY = shiftYHorizontal
-                            shiftX = Math.floor(pathGroupBBox.width + 7)
-                            break
-                        case "center":
-                            shiftY = shiftYHorizontal
-                            shiftX = shiftXVertical
-                            break
+                    if (pathGroup) {
+                        const pathGroupBBox = pathGroup.getBBox()
+                        let shiftXVertical = pathGroupBBox.width / 2 - textWidth / 2
+                        let shiftYHorizontal = pathGroupBBox.height / 2 + textHeight / 2
+                        console.log(`Path: ${pathGroupBBox.width} | Text: ${textWidth} | Shift: ${shiftYHorizontal}`)
+                        let shiftX, shiftY
+                        switch (prop.namePosition) {
+                            case "top":
+                                shiftY = -7
+                                shiftX = shiftXVertical
+                                break
+                            case "bottom":
+                                shiftY = pathGroupBBox.height + textHeight + 7
+                                shiftX = shiftXVertical
+                                break
+                            case "left":
+                                shiftY = shiftYHorizontal
+                                shiftX = Math.floor(-textWidth - pathGroupBBox.width)
+                                break
+                            case "right":
+                                shiftY = shiftYHorizontal
+                                shiftX = Math.floor(pathGroupBBox.width + 7)
+                                break
+                            case "center":
+                                shiftY = shiftYHorizontal
+                                shiftX = shiftXVertical
+                                break
+                        }
+                        textElement.setAttribute("y", String(prop.nameYOffset + shiftY))
+                        textElement.setAttribute("x", String(prop.nameXOffset + shiftX))
+                        textElement.setAttribute("transform", `scale(${prop.nameScale} ${prop.nameScale})`)
+
                     }
-                    textElement.setAttribute("y", String(prop.nameYOffset + shiftY))
-                    textElement.setAttribute("x", String(prop.nameXOffset + shiftX))
-                    textElement.setAttribute("transform", `scale(${prop.nameScale} ${prop.nameScale})`)
                 }
             })
         }
@@ -145,7 +148,7 @@ export class ViewSVG extends View {
             if (this.dragging) {
                 e.preventDefault()
                 this.dragging = false
-                $('#'+this.ids.ROOT_VIEW).css('cursor', 'unset')
+                $('#' + this.ids.ROOT_VIEW).css('cursor', 'unset')
             }
         }
 
@@ -160,7 +163,7 @@ export class ViewSVG extends View {
         $('#' + this.ids.ROOT_VIEW).on("mousedown touchstart", (e) => {
             e.preventDefault()
             this.dragging = true
-            const c = $('#'+this.ids.ROOT_VIEW)
+            const c = $('#' + this.ids.ROOT_VIEW)
             this.mouse = getMouseOffset(e)
             c.css('cursor', 'grabbing')
         }).on("mousemove touchmove", (e) => {
@@ -231,20 +234,24 @@ export class ViewSVG extends View {
                 group.id = this.idCtx.VIEW_GROUP(prop)
                 group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree}) scale(${position.scaleX} ${position.scaleY})`)
 
-                // It's not possible to set innerHTML to format: <path ... /><path ... />
-                // The above line will be formatted to: <path ...><path ...></path></path>
-                // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
-                // (until I find a workaround or figure out what the issue is)
-                const pathGroupEnabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['enabledPaths'], prop)
-                const pathGroupDisabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], prop)
-                pathGroupEnabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_ENABLED(prop)
-                pathGroupDisabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_DISABLED(prop)
-                if (this.ctx.isPropEnabled(prop)) {
-                    pathGroupDisabled.style.opacity = "0"
+                if (prop.type === PropType.STORYBOARD) {
+
                 } else {
-                    pathGroupEnabled.style.opacity = "0"
+                    // It's not possible to set innerHTML to format: <path ... /><path ... />
+                    // The above line will be formatted to: <path ...><path ...></path></path>
+                    // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
+                    // (until I find a workaround or figure out what the issue is)
+                    const pathGroupEnabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['enabledPaths'], prop)
+                    const pathGroupDisabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], prop)
+                    pathGroupEnabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_ENABLED(prop)
+                    pathGroupDisabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_DISABLED(prop)
+                    if (this.ctx.isPropEnabled(prop)) {
+                        pathGroupDisabled.style.opacity = "0"
+                    } else {
+                        pathGroupEnabled.style.opacity = "0"
+                    }
+                    group.append(pathGroupEnabled, pathGroupDisabled)
                 }
-                group.append(pathGroupEnabled, pathGroupDisabled)
                 if (prop.shouldDisplayName) {
                     const text = document.createElement("text")
                     text.id = this.idCtx.VIEW_PROP_TEXT(prop)
