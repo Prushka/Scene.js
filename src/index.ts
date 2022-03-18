@@ -351,8 +351,10 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
         return {
             type: "STORYBOARD",
             script: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
-            orderIndex:20,
+            orderIndex: 20,
             namePosition: 'bottom',
+
+            shouldDisplayName: false,
             frameAnimationConfig: {
                 1: {
                     x: 0, y: 0, thumbnail: {
@@ -360,15 +362,15 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
                         imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png",
                         width: 50
                     },
-                    degree:20
+                    degree: 20
                 },
                 2: {
                     x: 0, y: 0, thumbnail: {
                         title: "something",
                         imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png",
-                        width: 50
+                        width: 80
                     },
-                    degree:40
+                    degree: 40
                 }
             }
         }

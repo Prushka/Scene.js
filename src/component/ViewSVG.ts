@@ -55,11 +55,21 @@ export class ViewSVG extends View {
                     const enabledGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP_ENABLED(prop))
                     const disabledGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP_DISABLED(prop))
                     const storyboard = groupElement.querySelector('image')
-                    if(enabledGroup){
+                    if (enabledGroup) {
                         enabledGroup.style.opacity = !newPosition.enabled ? "0" : "1"
                     }
-                    if(disabledGroup){
+                    if (disabledGroup) {
                         disabledGroup.style.opacity = !newPosition.enabled ? "1" : "0"
+                    }
+                    if (storyboard) {
+                        if (newPosition.thumbnail) {
+                            if (newPosition.thumbnail.height) {
+                                storyboard.setAttributeNS(null, 'width', String(newPosition.thumbnail.height))
+                            }
+                            if (newPosition.thumbnail.width) {
+                                storyboard.setAttributeNS(null, 'width', String(newPosition.thumbnail.width))
+                            }
+                        }
                     }
                     groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scaleX} ${newPosition.scaleY})`)
                     let transitionDuration
@@ -131,8 +141,8 @@ export class ViewSVG extends View {
                         textElement.setAttribute("x", String(prop.nameXOffset + shiftX))
                         textElement.setAttribute("transform", `scale(${prop.nameScale} ${prop.nameScale})`)
 
-                    }else{
-                        switch (prop.type){
+                    } else {
+                        switch (prop.type) {
                             case PropType.STORYBOARD:
                                 //textElement.setAttribute("y", String(textHeight))
                                 break
@@ -243,30 +253,26 @@ export class ViewSVG extends View {
                 group.style.transitionTimingFunction = position.transitionTimingFunction
                 group.id = this.idCtx.VIEW_GROUP(prop)
                 group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree}) scale(${position.scaleX} ${position.scaleY})`)
-                switch (prop.type){
+                switch (prop.type) {
                     case PropType.STORYBOARD:
-                        if(position.thumbnail){
-                            const img = document.createElementNS('http://www.w3.org/2000/svg','image')
-                            if(position.thumbnail.width == null && position.thumbnail.height == null){
+                        if (position.thumbnail) {
+                            const img = document.createElementNS('http://www.w3.org/2000/svg', 'image')
+                            if (position.thumbnail.width == null && position.thumbnail.height == null) {
                                 position.thumbnail.width = 50
                             }
-                            if(position.thumbnail.height){
-                                img.setAttributeNS(null,'height',String(position.thumbnail.height))
+                            if (position.thumbnail.height) {
+                                img.setAttributeNS(null, 'height', String(position.thumbnail.height))
                             }
-                            if(position.thumbnail.width){
-                                img.setAttributeNS(null,'width',String(position.thumbnail.width))
+                            if (position.thumbnail.width) {
+                                img.setAttributeNS(null, 'width', String(position.thumbnail.width))
                             }
-                            img.setAttributeNS('http://www.w3.org/1999/xlink','href',position.thumbnail.imageURL)
-                            img.setAttributeNS(null,'x',String(position.x))
-                            img.setAttributeNS(null,'y',String(position.y))
+                            img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', position.thumbnail.imageURL)
+                            img.setAttributeNS(null, 'x', String(position.x))
+                            img.setAttributeNS(null, 'y', String(position.y))
                             group.append(img)
                         }
                         break
                     default:
-                        // It's not possible to set innerHTML to format: <path ... /><path ... />
-                        // The above line will be formatted to: <path ...><path ...></path></path>
-                        // As such, I'm mapping every element to a DOM instead of mapping all fragments and get the child nodes
-                        // (until I find a workaround or figure out what the issue is)
                         const pathGroupEnabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['enabledPaths'], prop)
                         const pathGroupDisabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], prop)
                         pathGroupEnabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_ENABLED(prop)
