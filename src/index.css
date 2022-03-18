@@ -30,6 +30,8 @@
     --scene-button-color: #8688BC;
     --scene-button-hover: #6565a1;
     --scene-trans-base: rgba(255, 255, 255, 0.95);
+    --scene-tooltip-background: #313131;
+    --scene-tooltip-text: #ffffff;
 }
 
 .pointer {
@@ -265,7 +267,37 @@
     transition-duration: 0.3s;
     transition-timing-function: ease-in;
     position: absolute;
-    margin: 0 0 8px 10px;
+    margin: 0 0 4px 10px;
+}
+
+
+.toolbar__button-container {
+    display: flex;
+    align-items: center;
+
+    z-index: 1200;
+    margin: 4px 0;
+}
+
+.toolbar__button-container:hover .toolbar__tooltip span{
+    opacity: 1;
+}
+
+
+.toolbar__tooltip {
+    max-height: 40px;
+    justify-content: center;
+}
+
+.toolbar__tooltip span {
+    transition-duration: .1s;
+    opacity: 0;
+    margin-left: 10px;
+    background-color: var(--scene-tooltip-background);
+    color: var(--scene-tooltip-text);
+    border-radius: 8px;
+    padding: 10px;
+    white-space: nowrap;
 }
 
 .button {
@@ -278,7 +310,6 @@
     padding: 9px 12px;
     width: 100%;
     box-sizing: border-box;
-    margin-top: 8px
 }
 
 .button i {

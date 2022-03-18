@@ -395,6 +395,7 @@ export function demo(rootId: string, renderMethod: 'canvas' | 'svg') {
         }
     }
     const ctx: Context = new Context(rootId, {
+        defaultTheme: 'light-custom',
         customThemes: {
             "light-custom": {
                 icon: "bi bi-arrow-through-heart-fill",

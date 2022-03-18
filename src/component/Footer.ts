@@ -78,13 +78,16 @@ export class Footer extends SceneComponent {
         }
         return [[this.themeCtx.currentState, ((_, next) => {
             const iconEl = document.getElementById(this.ids.TOOLBAR_THEME_BUTTON).querySelector('i')
-            if(iconEl){
+            if (iconEl) {
                 setClassList(iconEl, ...this.themeCtx.getThemeByIndex(next).icon.split(' '))
             }
         })], [this.open, ((_, open) => {
             const toolbarElement = document.getElementById(this.ids.TOOLBAR)
-            const bottom = open ? 0 : -(toolbarElement.getBoundingClientRect().height - 45)
-            toolbarElement.style.bottom = `${bottom}px`
+            // TODO: y does the bounding rect have a ~10px random offset?
+            if (toolbarElement) {
+                const bottom = open ? 0 : -(toolbarElement.getBoundingClientRect().height - 45)
+                toolbarElement.style.bottom = `${bottom}px`
+            }
         })], [this.playing, ((_, playing) => {
             const icon = document.getElementById(this.ids.TOOLBAR_PLAY_BUTTON).querySelector('i')
             if (playing) {
@@ -139,7 +142,7 @@ export class Footer extends SceneComponent {
 
     afterRender() {
         this.open.set(this.ctx.config.defaultOpenToolbar)
-        const hookButton = (action: (el: HTMLElement, e: ClickEvent) => void, id:string) => {
+        const hookButton = (action: (el: HTMLElement, e: ClickEvent) => void, id: string) => {
             this.ctx.$(`#${id}`).on("click", (e) => {
                 action(document.getElementById(id), e)
             })
@@ -190,6 +193,9 @@ export class Footer extends SceneComponent {
         toolbarContainer.id = this.ids.TOOLBAR
         toolbarContainer.classList.add('toolbar')
         const addButtonToToolbar = (title, iconClasses, id: string) => {
+            const container = document.createElement('div')
+            container.classList.add('toolbar__button-container')
+
             const toolbarButton = document.createElement('div')
             toolbarButton.id = id
             toolbarButton.title = title
@@ -197,7 +203,15 @@ export class Footer extends SceneComponent {
             const icon = document.createElement('i')
             icon.classList.add(...iconClasses.split(' '))
             toolbarButton.append(icon)
-            toolbarContainer.append(toolbarButton)
+
+            const tooltip = document.createElement('div')
+            tooltip.classList.add('toolbar__tooltip')
+            const tooltipText = document.createElement('span')
+            tooltipText.innerText = title
+            tooltip.append(tooltipText)
+
+            container.append(toolbarButton, tooltip)
+            toolbarContainer.append(container)
         }
         const currentFrame = this.ctx.frameContext.currentFrame
         addButtonToToolbar('Collapse/Expand', 'bi bi-arrows-collapse', this.ids.TOOLBAR_COLLAPSE_BUTTON)
