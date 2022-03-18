@@ -4,6 +4,10 @@
 
 import State, {createState} from "../state/State";
 
+export function useSnackbar(){
+    return new SnackbarContext()
+}
+
 export default class SnackbarContext {
     private snackbarMessageState: State<string> = createState('')
 

@@ -27,11 +27,11 @@ import {CustomComponent} from "./component/Component";
 import {Overlay} from "./component/Overlay";
 import TimeContext from "./context/TimeContext";
 import ViewPortContext from "./context/ViewPortContext";
-import SnackbarContext from "./context/SnackbarContext";
-import OverlayContext from "./context/OverlayContext";
+import SnackbarContext, {useSnackbar} from "./context/SnackbarContext";
+import OverlayContext, {useOverlay} from "./context/OverlayContext";
 import {ViewCanvas} from "./component/ViewCanvas";
 import View from "./component/View";
-import {IdContext} from "./context/IdContext";
+import {IdContext, IdTypes, useId} from "./context/IdContext";
 
 export class Context {
     protected ids: number = 0
@@ -43,9 +43,9 @@ export class Context {
     public readonly propTypeIconPool: { [key in PropType]: PropTypeIcon }
     public readonly rootContainerId: string
     public readonly rootContainerIdSymbol: string
-    public readonly snackbarCtx = new SnackbarContext()
-    public readonly overlayCtx = new OverlayContext()
-    public readonly idCtx = new IdContext()
+    public readonly snackbarCtx = useSnackbar()
+    public readonly overlayCtx = useOverlay()
+    public readonly idCtx = useId()
 
     public constructor(rootContainerId: string, config?: Config, context?: TimeContext) {
         this.rootContainerId = rootContainerId
@@ -116,20 +116,6 @@ export class Context {
 
     public isRootMobile() {
         return this.getRootWidth() < 500
-    }
-
-    public extractIdType(htmlID: string, ...exclude: string[]): [number, string[]] {
-        const elementId = htmlID.match(/-\d+/)
-        const contextId = htmlID.match(/\d+-/)
-        if (!contextId) {
-            return [-1, []]
-        }
-        let id = -1
-        if (elementId) {
-            id = parseInt(elementId[0].replace('-', ''))
-        }
-        const type: string = htmlID.replace(/-\d+/, '').replace(/\d+-/, '')
-        return [id, type.split('-').filter(t => !exclude.includes(t))]
     }
 
     public isPropEnabled(prop: PropConfig): boolean {
@@ -318,8 +304,8 @@ export class Context {
         this.beforeDisplay()
         $(() => {
             $(`${this.rootContainerIdSymbol}`).addClass("root-container")
-                .html(`<div id="${this.getIdType('snackbar', 'root__container')}" class='snackbar-container'></div>
-                                     <div id="${this.getIdType('prop__list', 'root__container')}" class='prop__list-container'></div>
+                .html(`<div id="${this.idCtx.getId(IdTypes.ROOT_SNACKBAR)}" class='snackbar-container'></div>
+                                     <div id="${this.idCtx.getId(IdTypes.ROOT_PROP_LIST)}" class='prop__list-container'></div>
                                     <div id="${this.getIdType('prop__property', 'root__container')}" class='prop__property-container'></div>
                                     <div id="${this.getIdType('view', 'root__container')}" class='view-container'></div>
                                     <div id="${this.getIdType('footer', 'root__container')}" class="footer-container"></div>
