@@ -5,6 +5,7 @@
 import {HasId} from "../props/Props";
 
 export const IdTypes: { [key: string]: string[] } = {
+    ROOT_SNACKBAR: ['snackbar', 'root__container'],
     ROOT_PROP_LIST: ['prop__list', 'root__container'],
     ROOT_PROP_DIALOG: ['prop__property', 'root__container'],
     ROOT_VIEW: ['view', 'root__container'],
@@ -15,20 +16,27 @@ export const IdTypes: { [key: string]: string[] } = {
 // (i.e.,) unique ids across different instances in the same page
 // I don't know if there's a better way to achieve this
 
+// https://github.com/microsoft/TypeScript/issues/20846
 export function useId() {
     const idContext = new IdContext()
-    return new Proxy(IdTypes, {
+    const idTypesProxy: any = new Proxy(IdTypes, {
         get(target, prop, receiver) {
             if (Reflect.has(target, prop)) {
                 const returnValue = typeof prop === 'string' ? IdTypes[prop] ?? Reflect.get(target, prop, receiver) : Reflect.get(target, prop, receiver)
                 if (Array.isArray(returnValue)) {
-                    return idContext.getId(returnValue)
+                    return idContext.getId(null, ...returnValue)
                 }
                 return returnValue;
             }
             return null;
         }
     })
+    const getIdProxy: any = new Proxy(idContext, {
+        apply(target, prop, args) {
+            console.log(target, prop, args)
+        }
+    })
+    return [idTypesProxy, getIdProxy]
 }
 
 export class IdContext {
@@ -40,7 +48,7 @@ export class IdContext {
         IdContext.contextIds += 1
     }
 
-    public getId(type: string[], id?: HasId | number | null) {
+    public getId(id: HasId | number | null, ...type: string[]) {
         type.sort((a, b) => a.localeCompare(b))
         const _id = id == null ? "" : (typeof id === 'number' ? "-" + id : (id.id === null || undefined) ? "" : "-" + id.id)
         return `${this.contextId}-${type.join('-')}${_id}`
@@ -61,4 +69,5 @@ export class IdContext {
     }
 }
 
-const s = useId()
+const [ids, getIdProxy] = useId()
+console.log(ids.ROOT_SNACKBAR, getIdProxy.getId(2, ids.ROOT_SNACKBAR))

@@ -3,7 +3,9 @@
     "target": "es2015",
     "watch": true,
     "lib": [
-      "dom", "es2015"
+      "dom",
+      "es2015",
+      "es2015.proxy"
     ],
     "rootDir": "src",
     "alwaysStrict": true
