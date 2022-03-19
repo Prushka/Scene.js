@@ -107,8 +107,8 @@ export class ViewSVG extends View {
                     const pathGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP(prop, position.enabled ? 'enabled' : 'disabled')) as any
                     const storyboard = element.querySelector('image') as any
                     if (textElement) {
-                        const textWidth = textElement.getBBox().width * prop.nameScale
-                        const textHeight = textElement.getBBox().height * prop.nameScale
+                        const textWidth = textElement.getBBox().width
+                        const textHeight = textElement.getBBox().height
                         const elementBBox = storyboard ? storyboard.getBBox() : pathGroup.getBBox()
                         let shiftXVertical = elementBBox.width / 2 - textWidth / 2
                         let shiftYHorizontal = elementBBox.height / 2 + textHeight / 2
