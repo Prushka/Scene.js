@@ -34,6 +34,9 @@ import {useId} from "./context/IdContext";
 import {PropList} from "./component/PropList";
 import {ThemeConstants, useTheme} from "./context/ThemeContext";
 
+export * from './utils/Utils'
+export * from './props/Props'
+
 export class Context {
     protected propIds: number = 0
     private _selected: State<PropConfig> = createState()
@@ -508,7 +511,7 @@ export function demo(rootRootId) {
 
     const rootContainer = document.getElementById(rootRootId)
     let ids = 0
-    const display = (content, config: Config, width?, height?) => {
+    const display = (content, config, width?, height?) => {
         const rootRoot = document.createElement('div')
         rootRoot.id = `root-${ids}`
         const root = document.createElement('div')
