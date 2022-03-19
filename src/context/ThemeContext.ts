@@ -131,9 +131,10 @@ export default class ThemeContext {
 
     public renderTheme() {
         const colors = this.currentTheme.colors
-
+        const container = this._context.config.themeScope === 'root'
+            ? document.documentElement : this._context.getRootDocument()
         for (let key in colors) {
-            this._context.getRootDocument().style.setProperty(key, colors[key]);
+            container.style.setProperty(key, colors[key]);
         }
     }
 

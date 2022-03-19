@@ -15,6 +15,17 @@ export interface Config {
      */
     defaultTheme?: string,
 
+    /** The default theme scope
+     *
+     * Root sets all instances of this library to the certain theme
+     * on theme switch.
+     *
+     * Container restricts the scope to the current selected theme.
+     *
+     * @default 'container
+     */
+    themeScope?: 'root' | 'container',
+
     /** [TODO: Popup hasn't been fully implemented]
      *
      * Affects the basic container style of the prop property dialog
@@ -234,6 +245,7 @@ export interface Config {
 
 export const DefaultConfig: Config = {
     defaultTheme: "dark",
+    themeScope: 'container',
     dialog: "embedded",
     viewOffset: 0.2,
     transitionTimingFunction: "linear",
