@@ -64,7 +64,7 @@ export class Context {
         console.log(this.config)
         this.propTypeIconPool = {...PropTypeIcons, ...config.propTypes}
 
-        this.themeCtx = useTheme({...ThemeConstants, ...this.config.customThemes}, this.config.defaultTheme)
+        this.themeCtx = useTheme(this,{...ThemeConstants, ...this.config.customThemes}, this.config.defaultTheme)
 
         this.config.props.forEach(propConfig => {
             this.addProp(propConfig)

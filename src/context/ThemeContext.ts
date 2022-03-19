@@ -3,6 +3,7 @@
  */
 
 import State, {createState} from "../state/State";
+import {Context} from "../index";
 
 export type Colors = { [key: string]: string }
 export type Theme = { isLight: boolean, colors: Colors, icon: string }
@@ -91,20 +92,22 @@ export const ThemeConstants: Themes = {
     }
 }
 
-export function useTheme(themes: Themes, defaultTheme?: string) {
-    return new ThemeContext(themes, defaultTheme)
+export function useTheme(context: Context, themes: Themes, defaultTheme?: string) {
+    return new ThemeContext(context, themes, defaultTheme)
 }
 
 export default class ThemeContext {
     private readonly _current: State<number>
     private readonly _themeKeys: string[]
     private readonly _themes: Themes
+    private readonly _context: Context
 
     public get currentState() {
         return this._current
     }
 
-    public constructor(themes: Themes, defaultTheme?: string) {
+    public constructor(context: Context, themes: Themes, defaultTheme?: string) {
+        this._context = context
         this._themeKeys = [...Object.keys(themes)]
         this._themes = themes
         let defaultPos = 0
@@ -128,8 +131,9 @@ export default class ThemeContext {
 
     public renderTheme() {
         const colors = this.currentTheme.colors
+
         for (let key in colors) {
-            document.documentElement.style.setProperty(key, colors[key]);
+            this._context.getRootDocument().style.setProperty(key, colors[key]);
         }
     }
 
@@ -149,7 +153,7 @@ export default class ThemeContext {
         return next
     }
 
-    public get themeToDisplay(){
+    public get themeToDisplay() {
         return `${this.getThemeName(this._current.get())} -> ${this.getThemeName(this.nextThemeIndex)}`
     }
 
