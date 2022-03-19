@@ -5,7 +5,8 @@
   "main": "build/bundle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:bundle": "webpack"
+    "build:bundle": "webpack",
+    "start": "node express/server.ts"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/csc309-winter-2022/js-library-lyudan1#readme",
   "dependencies": {
+    "express": "^4.17.3",
     "ts-loader": "^9.2.8",
     "typescript": "^4.6.2",
     "webpack": "^5.70.0",

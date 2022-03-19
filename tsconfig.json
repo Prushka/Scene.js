@@ -8,6 +8,10 @@
       "es2015.proxy"
     ],
     "rootDir": "src",
-    "alwaysStrict": true
-  }
+    "alwaysStrict": true,
+  },
+  "exclude": [
+    "node_modules",
+    "express",
+  ]
 }

@@ -10,7 +10,7 @@ module.exports = {
             type: 'umd',
             umdNamedDefine: true
         },
-        path: path.resolve(__dirname, './build'),
+        path: path.resolve(__dirname, './express/pub'),
         filename: "bundle.js",
     },
     resolve: {
@@ -20,7 +20,7 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                loader: "ts-loader"
+                loader: "ts-loader",
             }
         ]
     }
