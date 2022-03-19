@@ -105,9 +105,7 @@ export class ViewSVG extends View {
                     const position = this.ctx.getPropPositionByCurrentFrame(prop)
                     const textElement = element.querySelector('text')
                     const pathGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP(prop, position.enabled ? 'enabled' : 'disabled')) as any
-                    console.log(document.getElementById('1-disable-group-icon-prop-view-0'))
                     const storyboard = element.querySelector('image') as any
-                    console.log(this.idCtx.VIEW_ICON_PATH_GROUP(prop, position.enabled ? 'enabled' : 'disabled'))
                     if (textElement) {
                         const textWidth = textElement.getBBox().width * prop.nameScale
                         const textHeight = textElement.getBBox().height * prop.nameScale

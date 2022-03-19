@@ -137,6 +137,5 @@ export function flatObject(obj) {
         })
     }
     _flatValues(obj, "")
-    console.log(newObj)
     return newObj
 }

@@ -4,7 +4,7 @@
 
 import {
     AnimationConfig, DefaultAnimationConfig, DefaultLine, DefaultPropConfig,
-    FrameAnimationConfig,
+    FrameAnimationConfig, ImageConfig,
     PropConfig,
     PropType, PropTypeIcon,
     PropTypeIcons
@@ -64,7 +64,7 @@ export class Context {
         console.log(this.config)
         this.propTypeIconPool = {...PropTypeIcons, ...config.propTypes}
 
-        this.themeCtx = useTheme(this,{...ThemeConstants, ...this.config.customThemes}, this.config.defaultTheme)
+        this.themeCtx = useTheme(this, {...ThemeConstants, ...this.config.customThemes}, this.config.defaultTheme)
 
         this.config.props.forEach(propConfig => {
             this.addProp(propConfig)
@@ -306,6 +306,20 @@ export class Context {
 }
 
 export function demo(rootRootId) {
+    let randomNamePosition: boolean = false
+    const sImages = [
+        {
+            title: "test",
+            imageURL: "https://s2.loli.net/2022/02/10/grldkO4LeDjxmY8.png"
+        },
+        {
+            imageURL: "https://s2.loli.net/2022/03/16/KZw7yAWXudMGL21.png"
+        },
+        {
+            title: "A long picture",
+            imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png"
+        }
+    ]
     const getSharedProp = () => {
         const s = {}
         if (randBoolean()) {
@@ -315,19 +329,7 @@ export function demo(rootRootId) {
             s['scripts'] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\n123\n\na: c"
         }
         if (randBoolean()) {
-            s['images'] = [
-                {
-                    title: "test",
-                    imageURL: "https://s2.loli.net/2022/02/10/grldkO4LeDjxmY8.png"
-                },
-                {
-                    imageURL: "https://s2.loli.net/2022/03/16/KZw7yAWXudMGL21.png"
-                },
-                {
-                    title: "A long picture",
-                    imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png"
-                }
-            ]
+            s['images'] = sImages
         }
         if (randBoolean()) {
             s['steps'] =
@@ -391,9 +393,6 @@ export function demo(rootRootId) {
         renderMethod: 'svg',
     }
 
-    // lines: [
-    //     // [{x: 40, y: 40}, {x: 80, y: 80}]
-    // ],
     const getDemoLight = () => {
         return {
             type: PropType.LIGHT,
@@ -428,47 +427,51 @@ export function demo(rootRootId) {
     }
 
     const getRandomPosition = () => {
-        const scale = randInclusive(5, 40) / 10
+        const scale = randInclusive(8, 40) / 10
         return {
             enabled: randBoolean(),
-            x: Math.random() * 550,
-            y: Math.random() * 550,
+            x: Math.random() * 750,
+            y: Math.random() * 750,
             degree: Math.random() * 360,
             scaleX: scale,
             scaleY: scale,
         }
     }
 
-    const getStoryBoard = () => {
+    const sImage1 = {
+        title: "something",
+        imageURL: "https://s2.loli.net/2022/03/19/kfoHSKL792r4cvD.jpg",
+        width: 400
+    }
+    const sImage2 = {
+        title: "something",
+        imageURL: "https://s2.loli.net/2022/03/19/iN9yLYWoE28z5MI.jpg",
+        width: 300
+    }
+
+    const getStoryBoard = (image: ImageConfig) => {
         return {
             type: "STORYBOARD",
-            script: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+            script: "Some storyboard script",
             orderIndex: 20,
             namePosition: 'bottom',
-
             shouldDisplayName: false,
             frameAnimationConfig: {
                 1: {
-                    x: 0, y: 0, thumbnail: {
-                        title: "something",
-                        imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png",
-                        width: 50
-                    },
-                    degree: 20
+                    x: 100, y: 100, thumbnail: image,
+                    degree: 0
                 },
                 2: {
-                    x: 0, y: 0, thumbnail: {
-                        title: "something",
-                        imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png",
-                        width: 80
-                    },
+                    x: 60, y: 60, thumbnail: image,
                     degree: 40
                 }
-            }
+            },
+            images: sImages
         }
     }
     const allPropTypes = Object.values(PropType)
     let allIconPropTypes = [...allPropTypes]
+    const allPositions = ['top', 'bottom', 'right', 'left']
     allIconPropTypes = allIconPropTypes.filter(i => {
         return i != PropType.STORYBOARD && i != PropType.SCRIPT
     })
@@ -484,8 +487,17 @@ export function demo(rootRootId) {
             brand: "Random",
             someValue: 5000,
             frameAnimationConfig: s,
-            shouldDisplayName: !!randInclusive(0, 1)
+            shouldDisplayName: !!randInclusive(0, 1),
+            namePosition: randomNamePosition ? allPositions[randInclusive(0, allPositions.length - 1)] : 'top',
         }
+    }
+
+    const getRandoms = (howMany, frames) => {
+        const s = []
+        for (let i = 0; i < howMany; i++) {
+            s.push(getRandom(frames))
+        }
+        return s
     }
 
     const getRandomFrameSpeed = (frames) => {
@@ -521,45 +533,50 @@ export function demo(rootRootId) {
     }
     let frames = 5
     display(
-        `A completely random scene to demonstrate basic functionalities\nBy default, shows all interface elements (and sets them to open)`,
+        `A completely random scene to demonstrate basic functionalities\nshows all interface elements (and sets them to open)`,
         {
             frameSpeed: getRandomFrameSpeed(frames),
-            defaultOpenToolbar: true,
-            defaultOpenPropList: true,
-            props: [getRandom(frames), getRandom(frames), getRandom(frames),
-                getRandom(frames), getRandom(frames), getRandom(frames), getRandom(frames)]
+            props: [...getRandoms(11, frames)]
         }, '100vw', '600px')
 
-    display('A random scene, with mobile style\nBy default, hides all interface elements', {
+    display('A random scene\nwith mobile style, hides all interface elements and another light theme', {
         frameSpeed: getRandomFrameSpeed(frames),
-        props: [getRandom(frames), getRandom(frames), getRandom(frames),
-            getRandom(frames), getRandom(frames), getRandom(frames), getRandom(frames)]
+        defaultTheme: "light-custom",
+        defaultOpenToolbar: false,
+        defaultOpenPropList: false,
+        props: [...getRandoms(8, frames)]
     }, '400px', '800px')
     frames = 4
-    display('A random scene, with no toolbar or prop list\nShows all debug details in prop dialog', {
+    display('A random scene\nwith no toolbar or prop list, shows all debug details in prop dialog and 1 storyboard', {
         frameSpeed: getRandomFrameSpeed(frames),
         displayToolbar: false,
         displayPropList: false,
         dialogShowAllProperties: true,
-        props: [getRandom(frames), getRandom(frames), getRandom(frames),
-            getRandom(frames), getRandom(frames), getRandom(frames), getRandom(frames)]
+        props: [...getRandoms(8, frames),
+            getStoryBoard(sImage1)]
     }, '90vw', '800px')
 
     frames = 7
-    display('A random scene, with lines and slower default frame speed', {
+    display(`A random scene\n with walls, slower default frame speed, a dark theme and a director's viewfinder`, {
         frameSpeed: getRandomFrameSpeed(frames),
+        defaultOpenPropList: false,
+        defaultTheme: 'dark',
         frameSelectionSpeed: 5,
-        props: [getRandom(frames), getRandom(frames), getRandom(frames),
-            getRandom(frames), getRandom(frames), getRandom(frames), getRandom(frames)]
+        lines: [
+            [{x: 300, y: -2}, {x: 300, y: 100}, {color: 'var(--scene-base-inv-s2)', width: 3}],
+            [{x: 300, y: 98}, {x: 600, y: 98}, {color: 'var(--scene-base-inv-s2)', width: 3}],
+            [{x: 0, y: 0}, {x: 300, y: 0}, {color: 'var(--scene-base-inv-s2)', width: 3}]],
+        props: [...getRandoms(8, frames), getStoryBoard(sImage2)]
     }, '90vw', '800px')
 
     frames = 1
-    display('A random static scene, with larger zoom factors and always show all dialog tabs', {
+    randomNamePosition = true
+    display('A random static scene\n with larger zoom factors, always show all dialog tabs, another dark theme and random name position (top/bottom/right/center)', {
         frameSpeed: getRandomFrameSpeed(frames),
         zoomFactor: 1.2,
+        defaultTheme: 'dark-classic',
         alwaysShowAllDialogTabs: true,
-        props: [getRandom(frames), getRandom(frames), getRandom(frames),
-            getRandom(frames), getRandom(frames), getRandom(frames), getRandom(frames)]
+        props: [...getRandoms(16, frames)]
     }, '90vw', '800px')
 
 
