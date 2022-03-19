@@ -40,7 +40,9 @@ export class PropList extends SceneComponent {
                     listItemContainer.classList.add("prop__list__item--not-selected")
                     listItemContainer.classList.remove("prop__list__item--selected")
                     listItemContainer.querySelector("span").style.color = prop.color
-                    listItemContainer.querySelector("path").style.fill = prop.color
+                    listItemContainer.querySelectorAll("path").forEach(c=>{
+                        c.style.fill = prop.color
+                    })
                 }
             })
             if (listItemContainer) {
