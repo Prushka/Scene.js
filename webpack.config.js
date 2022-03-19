@@ -11,7 +11,7 @@ module.exports = {
             umdNamedDefine: true
         },
         path: path.resolve(__dirname, './express/pub/js'),
-        filename: "bundle.js",
+        filename: "scene.js",
     },
     resolve: {
         extensions: ['.ts', '.js'],
