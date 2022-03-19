@@ -147,7 +147,6 @@ function demo(rootRootId) {
         for (let i = 0; i < frames; i++) {
             s[i + 1] = getRandomPosition()
         }
-        console.log(Object.keys(sceneBlocking.PropTypeIcons[type]))
         return {
             ...getSharedProp(),
             nameScale: randomNameScale ? sceneBlocking.randInclusive(2, 20) / 10 : 1,

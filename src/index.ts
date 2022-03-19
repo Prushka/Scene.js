@@ -479,7 +479,6 @@ export function demo(rootRootId) {
         for (let i = 0; i < frames; i++) {
             s[i + 1] = getRandomPosition()
         }
-        console.log(Object.keys(PropTypeIcons[type]))
         return {
             ...getSharedProp(),
             nameScale: randomNameScale ? randInclusive(2, 20) / 10 : 1,

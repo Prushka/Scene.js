@@ -112,7 +112,7 @@ export class ViewSVG extends View {
                         const elementBBox = storyboard ? storyboard.getBBox() : pathGroup.getBBox()
                         let shiftXVertical = elementBBox.width / 2 - textWidth / 2
                         let shiftYHorizontal = elementBBox.height / 2 + textHeight / 2
-                        console.log(`Path: ${elementBBox.width} | Text: ${textWidth} | Shift: ${shiftYHorizontal}`)
+                        // console.log(`Path: ${elementBBox.width} | Text: ${textWidth} | Shift: ${shiftYHorizontal}`)
                         let shiftX, shiftY
                         switch (prop.namePosition) {
                             case "top":
