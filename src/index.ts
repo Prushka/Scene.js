@@ -154,12 +154,6 @@ export class Context {
         return frame in this.config.frameSpeed ? this.config.frameSpeed[frame] : this.config.defaultFrameSpeed
     }
 
-    public getPropPosition(prop: PropConfig): AnimationConfig | null {
-        let position: AnimationConfig = prop.frameAnimationConfig[this.frameContext.currentFrame]
-        position = {...position}
-        return position
-    }
-
     public getPropPositionByCurrentFrame(prop: PropConfig): AnimationConfig | null {
         return this.getPropPositionByFrame(prop, this.frameContext.currentFrame, false)
     }
@@ -307,6 +301,7 @@ export class Context {
 
 export function demo(rootRootId) {
     let randomNamePosition: boolean = false
+    let randomNameScale: boolean = false
     const sImages = [
         {
             title: "test",
@@ -484,6 +479,7 @@ export function demo(rootRootId) {
         console.log(Object.keys(PropTypeIcons[type]))
         return {
             ...getSharedProp(),
+            nameScale: randomNameScale ? randInclusive(2, 20) / 10 : 1,
             type: type,
             brand: "Random",
             style: getRandomFromList(Object.keys(PropTypeIcons[type])),
@@ -573,7 +569,8 @@ export function demo(rootRootId) {
 
     frames = 1
     randomNamePosition = true
-    display('A random static scene\n with larger zoom factors, always show all dialog tabs, another dark theme and random name position (top/bottom/right/center)', {
+    randomNameScale = true
+    display('A random static scene\n with larger zoom factors, always show all dialog tabs, another dark theme,\nrandom name position (top/bottom/right/center), random name scale and random name offsets', {
         frameSpeed: getRandomFrameSpeed(frames),
         zoomFactor: 1.2,
         defaultTheme: 'dark-classic',
