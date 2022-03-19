@@ -14,7 +14,7 @@ import {
     convertTypeToReadable,
     createSpan,
     createSVGIcon,
-    generateDarkColor, generateLightColor, getPathGroupByHTML, randBoolean,
+    generateDarkColor, generateLightColor, getPathGroupByHTML, getRandomFromList, randBoolean,
     randInclusive
 } from "./utils/Utils";
 import {PropDialog} from "./component/PropDialog";
@@ -427,7 +427,7 @@ export function demo(rootRootId) {
     }
 
     const getRandomPosition = () => {
-        const scale = randInclusive(8, 40) / 10
+        const scale = randInclusive(8, 46) / 10
         return {
             enabled: randBoolean(),
             x: Math.random() * 750,
@@ -476,19 +476,21 @@ export function demo(rootRootId) {
         return i != PropType.STORYBOARD && i != PropType.SCRIPT
     })
     const getRandom = (frames) => {
-        const type = allIconPropTypes[randInclusive(0, allIconPropTypes.length - 1)]
+        const type = getRandomFromList(allIconPropTypes)
         const s = {}
         for (let i = 0; i < frames; i++) {
             s[i + 1] = getRandomPosition()
         }
+        console.log(Object.keys(PropTypeIcons[type]))
         return {
             ...getSharedProp(),
             type: type,
             brand: "Random",
+            style: getRandomFromList(Object.keys(PropTypeIcons[type])),
             someValue: 5000,
             frameAnimationConfig: s,
             shouldDisplayName: !!randInclusive(0, 1),
-            namePosition: randomNamePosition ? allPositions[randInclusive(0, allPositions.length - 1)] : 'top',
+            namePosition: randomNamePosition ? getRandomFromList(allPositions) : 'top',
         }
     }
 
