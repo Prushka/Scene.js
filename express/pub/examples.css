@@ -1,0 +1,29 @@
+/*
+ * Copyright 2022 Dan Lyu.
+ */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.container > div {
+
+    border-bottom: 2px solid #1c1c1c;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.container > div > p {
+    line-height: 20px;
+    padding: 10px 40px;
+    white-space: pre-wrap;
+    font-family: Comfortaa, serif;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+}

@@ -19,6 +19,11 @@ export function randInclusive(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+export function randBoolean():boolean{
+    return !!randInclusive(0, 1)
+}
+
+
 export function generateDarkColor() {
     const c = () => randInclusive(0, 125)
     return `rgb(${c()},${c()},${c()})`

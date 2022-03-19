@@ -251,7 +251,7 @@ export const DefaultConfig: Config = {
     zoomLowerBound: 0.15,
     zoomUpperBound: 2,
     zoomFactor: 1.02,
-    dialogShowAllProperties: true,
+    dialogShowAllProperties: false,
     dialogAllPropertiesFormat: 'json',
     customThemes: {},
     displayToolbar: true,

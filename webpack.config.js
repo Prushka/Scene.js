@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     target: "web",
-    mode: "production",
+    mode: "development",
     entry: "./src/index.ts",
     output: {
         library: {
@@ -10,7 +10,7 @@ module.exports = {
             type: 'umd',
             umdNamedDefine: true
         },
-        path: path.resolve(__dirname, './express/pub'),
+        path: path.resolve(__dirname, './express/pub/js'),
         filename: "bundle.js",
     },
     resolve: {
