@@ -8,11 +8,20 @@ export interface PositionConfig {
 }
 
 export interface OrientationConfig {
+    /**
+     * @default 0
+     */
     degree?: number
 }
 
 export interface ScaleConfig {
+    /**
+     * @default 1
+     */
     scaleX?: number,
+    /**
+     * @default 1
+     */
     scaleY?: number
 }
 
@@ -24,10 +33,27 @@ export interface ImageConfig {
 }
 
 export interface AnimationConfig extends OrientationConfig, PositionConfig, ScaleConfig {
+    /** True renders the enabled path, False renders the disabled one.
+     *
+     * @default true
+     */
     enabled?: boolean,
+    /** If the prop should be hidden.
+     *
+     * @default false
+     */
     hide?: boolean,
-    isOffset?: boolean,
+    /** The transition timing function of the prop group (at this frame).
+     *
+     * @see Config
+     * @default uses the default transitionTimingFunction defined in the config.
+     */
     transitionTimingFunction?: string,
+    /** The thumbnail used at this frame, if provided, an <image> will be rendered
+     * in the prop group instead of its path.
+     *
+     * @default null
+     */
     thumbnail?: ImageConfig,
 }
 
@@ -62,22 +88,118 @@ export interface StepConfig {
 }
 
 export interface PropConfig extends HasId {
+    /** The name of the prop.
+     *
+     * @see type
+     * @default if a name is not provided,
+     * a name with an index and type will be generated
+     * @example Table 1
+     */
     name?: string,
+
+    /** The color of the prop icon
+     *
+     * @see Config.defaultTheme
+     * @default if a color is not provided,
+     * a random color will be generated based on the default theme
+     */
     color?: string,
+
+    /** The icon style of this prop */
     style?: string,
+
+    /** The prop type.
+     *
+     * Affects the icon being rendered in the prop group
+     * */
     type?: PropType | string,
+
+    /** The specific frame animation
+     * (i.e., position, orientation, frame speed, enabled/hide etc.)
+     *
+     * @see FrameAnimationConfig */
     frameAnimationConfig?: FrameAnimationConfig,
+
+    /** A script
+     *
+     * Affects the prop dialog's script tab and its content
+     */
     script?: string,
+
+    /** A list of objects
+     *
+     * Affects the prop dialog's step tab and its content,
+     * will be ordered before render
+     */
     steps?: { [key: number]: StepConfig },
+
+    /** A note
+     *
+     * Affects the prop dialog's general information tab and its content
+     */
     note?: string,
+
+    /** A list of images with titles
+     *
+     * Affects the prop dialog's images tab and its content
+     * and the image overlay on click
+     */
     images?: ImageConfig[],
+
+    /** The order index of this prop.
+     * A larger order index renders this prop on top of other props
+     * with smaller indices.
+     *
+     * Affects the prop's group's order inside the svg viewport's props group
+     */
     orderIndex?: number,
+
+    /** True displays the prop's name inside the viewport
+     *
+     * False hides its name
+     */
     shouldDisplayName?: boolean,
+
+    /** When name is displayed, the position of this prop's name
+     *  relative to its main content (i.e., image OR icon OR script)
+     *
+     * Affects the position of the text element inside the grouped <g> prop in the svg viewport
+     *
+     * @default 'top'
+     */
     namePosition?: string | 'center' | 'top' | 'right' | 'left' | 'bottom',
+
+    /** An extra scale parameter of the name inside the viewport
+     *
+     * @default 1
+     */
     nameScale?: number,
+
+    /** When set, the name will use this color in the
+     * viewport, prop list and prop dialog (i.e., everywhere the name is colored)
+     */
     nameColor?: string,
+
+    /** The x offset of the name text element inside the grouped prop
+     *
+     * @default 0
+     */
     nameXOffset?: number,
+
+    /** The y offset of the name text element inside the grouped prop
+     *
+     * @default 0
+     */
     nameYOffset?: number,
+
+    /** By default, the general information tab renders
+     *  all key value pairs provided by the user.
+     *
+     *  Any key listed in this list will be excluded from
+     *  the content element in the prop dialog
+     *
+     * @default []
+     */
     excludeKeys?: string[]
 }
 
@@ -97,6 +219,7 @@ export const ExcludeKeys = ["name", "color", "type", "frameAnimationConfig", "sc
     "namePosition", "nameScale", "nameXOffset", "nameYOffset", "excludeKeys",
     "nameColor"]
 
+/** The default PropTypes */
 export enum PropType {
     TABLE = "TABLE",
     LIGHT = "LIGHT",
@@ -111,10 +234,13 @@ export enum PropType {
 }
 
 export interface PropTypeStyleIcon {
+    /** A string of a list of paths, can repeat in the following format:
+     * 1. <path .*? />
+     * 2. <path .*?><path/>
+     */
     enabledPaths: string,
     disabledPaths: string
 }
-
 
 export type PropTypeIcon = { [key: string]: PropTypeStyleIcon }
 
