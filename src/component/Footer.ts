@@ -248,7 +248,9 @@ export class Footer extends SceneComponent {
         addButtonToToolbar('Collapse/Expand', 'bi bi-arrows-collapse', this.ids.TOOLBAR_COLLAPSE_BUTTON)
         addButtonToToolbar('Toggle fullscreen mode', 'bi bi-arrows-fullscreen', this.ids.TOOLBAR_FULLSCREEN)
         addButtonToToolbar('Reset viewport (based on current frame)', 'bi bi-arrows-move', this.ids.TOOLBAR_RESET_CURRENT_BUTTON)
-        addButtonToToolbar("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', this.ids.TOOLBAR_RESET_FRAMES_BUTTON)
+        if(!this.getTimeCtx().isStatic){
+            addButtonToToolbar("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', this.ids.TOOLBAR_RESET_FRAMES_BUTTON)
+        }
         addButtonToToolbar('Export', 'bi bi-box-arrow-up-right', this.ids.TOOLBAR_EXPORT_BUTTON)
         addButtonToToolbar(`Theme (${this.themeCtx.themeToDisplay})`, this.themeCtx.currentTheme.icon, this.ids.TOOLBAR_THEME_BUTTON)
         if (this.ctx.config.displayToolbar) {
