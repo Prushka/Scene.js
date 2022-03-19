@@ -313,8 +313,6 @@ export class ViewSVG extends View {
             })
         }
 
-
-        console.log(this.connections.get())
         return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg"><g id="${this.ids.VIEW_CONNECTIONS}"></g>${s.join('')}
 <g id="${this.ids.VIEW_LINES_GROUP}">${gs.join('')}</g></svg>`
     }
