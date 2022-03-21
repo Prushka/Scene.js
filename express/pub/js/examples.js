@@ -201,7 +201,7 @@ function demo(rootRootId) {
     }
 
     display(
-        `A scene example`,
+        `A scene example\nThe following applies to all scenes:\nYou can interact with the view by dragging using mouse and touch, and zooming using mouse wheels\nYou can toggle selected prop in the prop list or view (which shows a prop dialog when selected)\nThe toolbar contains a bunch of buttons. Their functions have been described in the tooltip or pdf`,
         {
             frameSpeed: {
                 1: 1,
@@ -324,7 +324,7 @@ function demo(rootRootId) {
         props: [...getRandoms(8, frames)]
     }, '400px', '800px')
     frames = 4
-    display('A random scene\nwith no toolbar or prop list, shows all debug details in prop dialog and 1 storyboard', {
+    display(`A random scene\nwith no toolbar or prop list, shows all debug details in prop dialog and 1 storyboard\nNote in the scene below, clicking any prop gives you a prop dialog with an extra "Debug" tab which displays all prop's properties in json format`, {
         frameSpeed: getRandomFrameSpeed(frames),
         displayToolbar: false,
         displayPropList: false,
@@ -334,7 +334,7 @@ function demo(rootRootId) {
     }, '90vw', '800px')
 
     frames = 7
-    display(`A random scene\n with walls, slower default frame speed, a dark theme and a director's viewfinder`, {
+    display(`A random scene\n with walls, slower default frame speed (slower animation speed when users skip frames),\n a dark theme and a director's viewfinder`, {
         frameSpeed: getRandomFrameSpeed(frames),
         defaultOpenPropList: false,
         defaultTheme: 'dark',
@@ -349,10 +349,11 @@ function demo(rootRootId) {
     frames = 1
     randomNamePosition = true
     randomNameScale = true
-    display('A random static scene\n with larger zoom factors, always show all dialog tabs, another dark theme,\nrandom name position (top/bottom/right/center), random name scale and random name offsets', {
+    display("A random static scene\n with larger zoom factors, always show all dialog tabs, another dark theme,\nrandom name position (top/bottom/right/center), random name scale and random name offsets\nNote in the scene below, clicking any prop gives you a prop dialog with every available tab (even if the tab doesn't contain anything)\nThe debug tab in the prop dialog is also configured to display prop's properties in '[key1.key2...]: value' format", {
         frameSpeed: getRandomFrameSpeed(frames),
         zoomFactor: 1.2,
         defaultTheme: 'dark-classic',
+        dialogAllPropertiesFormat: 'flat',
         alwaysShowAllDialogTabs: true,
         props: [...getRandoms(16, frames)]
     }, '90vw', '800px')
