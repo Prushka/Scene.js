@@ -201,7 +201,7 @@ function demo(rootRootId) {
     }
 
     display(
-        `A scene example\nThe following applies to all scenes:\nYou can interact with the view by dragging using mouse and touch, and zooming using mouse wheels\nYou can toggle selected prop in the prop list or view (which shows a prop dialog when selected)\nThe toolbar contains a bunch of buttons. Their functions have been described in the tooltip or pdf`,
+        `A scene example\nThe following applies to all scenes:\nYou can interact with the view by dragging using mouse and touch, and zooming using mouse wheels\nYou can toggle selected prop in the prop list or view (which shows a prop dialog when selected)\nThe toolbar contains a bunch of buttons. Their functions have been described in the tooltip or pdf\nYou can select frames in the timeline, which gives you an animated progress bar and plays the view animation. The speed of the animation depends on the order of frames you select`,
         {
             frameSpeed: {
                 1: 1,
