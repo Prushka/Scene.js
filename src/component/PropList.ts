@@ -72,8 +72,32 @@ export class PropList extends SceneComponent {
     }
 
     render(): string | string[] {
+        const propColumnContainer = document.createElement('div')
+        propColumnContainer.classList.add('prop__column')
         const parentContainer = document.createElement('div')
         parentContainer.classList.add('prop__list')
+
+
+        const createButton = (text) => {
+
+            const button = document.createElement('div')
+            button.classList.add('prop__list__bottom__button')
+
+            const buttonText = document.createElement('span')
+            buttonText.innerText = text
+            button.append(buttonText)
+            return button
+        }
+        const dialogButton = createButton('Filter')
+        const resetButton = createButton('Reset')
+
+        const buttonGroup = document.createElement('div')
+        buttonGroup.classList.add('prop__list__bottom__container')
+
+        buttonGroup.append(dialogButton, resetButton)
+        propColumnContainer.append(buttonGroup)
+
+        propColumnContainer.append(parentContainer)
 
         const hideIconContainer = document.createElement('div')
         hideIconContainer.id = this.ids.PROP_LIST_HIDE
@@ -99,6 +123,6 @@ export class PropList extends SceneComponent {
             parentContainer.append(listItemContainer)
         })
 
-        return parentContainer.outerHTML + hideIconContainer.outerHTML
+        return propColumnContainer.outerHTML + hideIconContainer.outerHTML
     }
 }

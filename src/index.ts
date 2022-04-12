@@ -344,7 +344,9 @@ export function demo(rootRootId) {
                         content: "aha"
                     },
                     5: {title: "A title"},
-                    1: {}
+                    1: {},
+                    6: {},
+                    7: {}
                 }
         }
         return s
@@ -535,7 +537,7 @@ export function demo(rootRootId) {
     let frames = 6
     display(`A random scene\n with walls, slower default frame speed (slower animation speed when users skip frames),\n a dark theme and a director's viewfinder`, {
         frameSpeed: getRandomFrameSpeed(frames),
-        defaultOpenPropList: false,
+        defaultOpenPropList: true,
         frameSelectionSpeed: 5,
         lines: [
             [{x: 300, y: -2}, {x: 300, y: 100}, {color: 'var(--scene-base-inv-s2)', width: 3}],

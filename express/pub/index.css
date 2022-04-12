@@ -171,7 +171,7 @@
 
 .header__tab span {
     position: absolute;
-    top: 48px;
+    top: 46px;
     left: -1px;
 }
 
@@ -455,6 +455,11 @@
     transform: rotate(-180deg);
 }
 
+.prop__column {
+    display: flex;
+    flex-direction: column;
+}
+
 .prop__list {
     display: flex;
     flex-direction: column;
@@ -464,6 +469,34 @@
     background-color: var(--scene-trans-base);
     top: 0;
     left: 0;
+}
+
+.prop__list__bottom__container {
+    display: flex;
+}
+
+.prop__list__bottom__button{
+    display: flex;
+    width: 50%;
+    padding: 11px 0 11px 0;
+    background-color: var(--scene-trans-base);
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition-duration: .1s;
+}
+
+.prop__list__bottom__button:hover {
+    background-color: var(--scene-base-inv-s1);
+}
+
+.prop__list__bottom__button:hover span{
+    color: var(--scene-base)
+}
+
+.prop__list__bottom__button span {
+    font-weight: 600;
 }
 
 .prop__list__item {
