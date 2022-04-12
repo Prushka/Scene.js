@@ -157,19 +157,6 @@ export class Footer extends SceneComponent {
                 action(document.getElementById(id), e)
             })
         }
-        this.ctx.$(".toolbar__button").on("mouseenter", (e) => {
-            const span = e.target.parentElement.querySelector('span')
-            if (span) {
-                span.classList.add('toolbar__tooltip--visible')
-            }
-        })
-
-        this.ctx.$(".toolbar__button").on("mouseleave", (e) => {
-            const span = e.target.parentElement.querySelector('span')
-            if (span) {
-                span.classList.remove('toolbar__tooltip--visible')
-            }
-        })
         this.ctx.$('.timeline__frame').on("click", (e) => {
             const [frame] = this.idCtx.extractIdType(e.target.id)
             this.ctx.frameContext.currentFrame = frame

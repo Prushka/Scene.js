@@ -293,7 +293,7 @@
     pointer-events: none;
 }
 
-.toolbar__tooltip--visible {
+.toolbar__button-container:hover span{
     opacity: 1 !important;
 }
 
