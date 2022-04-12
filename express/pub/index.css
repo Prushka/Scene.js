@@ -103,6 +103,7 @@
     background-color: var(--scene-trans-base);
     position: absolute;
     z-index: 1100;
+    box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgb(0, 0, 0, 0.049);
 }
 
 /* Cannot use media since we don't define the root element's width */
@@ -307,7 +308,7 @@
     font-weight: normal;
 }
 
-.tooltip:hover span{
+.tooltip:hover span {
     opacity: 1 !important;
 }
 
