@@ -70,7 +70,8 @@ export class PropList extends SceneComponent {
             this.open.set(!this.open.get())
         })
         this.ctx.$('#' + this.ids.PROP_LIST_DIALOG_BUTTON).on("click", () => {
-            this.overlayCtx.openWith(createDialog('Test Title'))
+            const content = document.createElement('div')
+            this.overlayCtx.openWith(createDialog('Test Title', content))
         })
     }
 

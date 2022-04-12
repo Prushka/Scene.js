@@ -16,7 +16,8 @@
     --toolbar-button-width: 40px;
     --scene-dialog-header-button-not-selected-hover: #6565a1;
     --scene-dialog-header-button-not-selected-text-hover: #6565a1;
-    --scene-snackbar: #EB7777;
+    --scene-snackbar-error: #EB7777;
+    --scene-snackbar-success: #49655E;
     --scene-timeline-button-selected: #8688BC;
     --scene-timeline-button-selected-hover: #6565a1;
     --scene-timeline-button-not-selected: #EB7777;
@@ -585,13 +586,20 @@
     left: 0;
     right: 0;
     top: 0;
-    background-color: var(--scene-snackbar);
     color: var(--scene-snackbar-text);
     z-index: 1400;
     border-radius: 4px;
     transition-duration: .3s;
     font-weight: 600;
     opacity: 1;
+}
+
+.snackbar--error {
+    background-color: var(--scene-snackbar-error);
+}
+
+.snackbar--success {
+    background-color: var(--scene-snackbar-success);
 }
 
 .snackbar--normal {
@@ -664,11 +672,19 @@
 .modal__header {
     display: flex;
     padding: 25px 30px;
+    align-items: center;
 }
 
-.modal__header span {
+.modal__header__title {
     font-weight: 700;
     font-size: 28px;
+}
+
+.modal__header__close {
+    margin-left: auto;
+    font-size: 45px;
+    cursor: pointer;
+
 }
 
 .modal__content {

@@ -143,12 +143,14 @@ export function flatObject(obj) {
     return newObj
 }
 
-export function createDialog(title: string): string {
-    const dialog = document.createElement('div')
-
+export function createDialog(title: string, content: Element | string): string {
+    const contentString = typeof content === 'string' ? content : content.outerHTML
     return `<div class="modal">
                 <div class="modal__header">
-                <span>${title}</span>
+                <span class="modal__header__title">${title}</span><span class="bi bi-x modal__header__close"></span>
+                </div>
+                <div class="modal__content">
+                ${contentString}
                 </div>
             </div>`
 }
