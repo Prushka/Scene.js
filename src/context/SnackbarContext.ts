@@ -10,16 +10,18 @@ export function useSnackbar(){
 
 export default class SnackbarContext {
     private snackbarMessageState: State<string> = createState('')
+    private error: boolean = false
+
+    public get isError(){
+        return this.error
+    }
 
     public get snackbarState(): State<string> {
         return this.snackbarMessageState
     }
 
-    public get snackbar() {
-        return this.snackbarMessageState.get()
-    }
-
-    public set snackbar(message: string) {
+    public snackbar(message: string, isError: boolean = false) {
+        this.error = isError
         this.snackbarMessageState.set(message, true)
     }
 }
