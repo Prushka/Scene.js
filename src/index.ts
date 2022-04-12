@@ -640,55 +640,8 @@ export function demo(rootRootId) {
                 }]
         }, '80vw', '700px')
 
-    let frames = 5
-    display(
-        `A completely random scene to demonstrate basic functionalities\nshows all interface elements (and sets them to open) and max width`,
-        {
-            frameSpeed: getRandomFrameSpeed(frames),
-            props: [...getRandoms(11, frames)]
-        }, '100vw', '700px')
-
-    display('A random scene\nwith mobile style, hides all interface elements and another light theme', {
-        frameSpeed: getRandomFrameSpeed(frames),
-        defaultTheme: "light-custom",
-        defaultOpenToolbar: false,
-        defaultOpenPropList: false,
-        props: [...getRandoms(8, frames)]
-    }, '400px', '800px')
-    frames = 4
-    display('A random scene\nwith no toolbar or prop list, shows all debug details in prop dialog and 1 storyboard', {
-        frameSpeed: getRandomFrameSpeed(frames),
-        displayToolbar: false,
-        displayPropList: false,
-        dialogShowAllProperties: true,
-        props: [...getRandoms(8, frames),
-            getStoryBoard(sImage1)]
-    }, '90vw', '800px')
-
-    frames = 7
-    display(`A random scene\n with walls, slower default frame speed, a dark theme and a director's viewfinder`, {
-        frameSpeed: getRandomFrameSpeed(frames),
-        defaultOpenPropList: false,
-        defaultTheme: 'dark',
-        frameSelectionSpeed: 5,
-        lines: [
-            [{x: 300, y: -2}, {x: 300, y: 100}, {color: 'var(--scene-base-inv-s2)', width: 3}],
-            [{x: 300, y: 98}, {x: 600, y: 98}, {color: 'var(--scene-base-inv-s2)', width: 3}],
-            [{x: 0, y: 0}, {x: 300, y: 0}, {color: 'var(--scene-base-inv-s2)', width: 3}]],
-        props: [...getRandoms(8, frames), getStoryBoard(sImage2)]
-    }, '90vw', '800px')
-
-    frames = 1
-    randomNamePosition = true
-    randomNameScale = true
-    display('A random static scene\n with larger zoom factors, always show all dialog tabs, another dark theme,\nrandom name position (top/bottom/right/center), random name scale and random name offsets', {
-        frameSpeed: getRandomFrameSpeed(frames),
-        zoomFactor: 1.2,
-        defaultTheme: 'dark-classic',
-        alwaysShowAllDialogTabs: true,
-        props: [...getRandoms(16, frames)]
-    }, '90vw', '800px')
-
 
 }
+
+demo("container")
 
