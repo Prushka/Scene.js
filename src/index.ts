@@ -532,115 +532,17 @@ export function demo(rootRootId) {
         ctx.display()
     }
 
-    display(
-        `A scene example`,
-        {
-            frameSpeed: {
-                1: 1,
-                2: 2,
-                3: 1
-            },
-            props: [{
-                type: 'CAMERA',
-                name: 'Behind Stage Camera',
-                nameScale: 0.5,
-                frameAnimationConfig: {
-                    1: {x: 50, y: 50, degree: 30},
-                    2: {x: 20, y: 150},
-                    3: {x: 50, y: 250, degree: -30}
-                }
-            },
-                {
-                    type: 'TABLE',
-                    name: 'Main Table',
-                    style: 'fillSquare',
-                    shouldDisplayName: false,
-                    frameAnimationConfig: {
-                        1: {x: 150, y: 70, scaleX: 8, scaleY: 8},
-                        2: {x: 150, y: 70, scaleX: 8, scaleY: 8},
-                        3: {x: 150, y: 70, scaleX: 8, scaleY: 8},
-                    }
-                },
-                {
-                    type: 'CAMERA',
-                    name: 'Camera A',
-                    color: 'rgb(201,201,201)',
-                    frameAnimationConfig: {
-                        1: {x: 170, y: 140, degree: 210},
-                        2: {x: 170, y: 120, degree: 200},
-                        3: {x: 170, y: 140, degree: 210}
-                    }
-                },
-                {
-                    type: 'CAMERA',
-                    name: 'Camera B',
-                    color: 'rgb(199,199,199)',
-                    frameAnimationConfig: {
-                        1: {x: 230, y: 140, degree: 20},
-                        2: {x: 230, y: 140, degree: 0},
-                        3: {x: 230, y: 140, degree: 20}
-                    }
-                },
-                {
-                    type: 'SHELF',
-                    texture: 'wood',
-                    shouldDisplayName: false,
-                    frameAnimationConfig: {
-                        1: {x: 400, y: 150, degree: 0},
-                        2: {x: 400, y: 150, degree: 0},
-                        3: {x: 320, y: 170, degree: 0}
-                    }
-                },
-                {
-                    type: 'CHARACTER',
-                    name: 'Emily',
-                    frameAnimationConfig: {
-                        1: {x: 120, y: 100, degree: 20},
-                        2: {x: 120, y: 100, degree: -20},
-                        3: {x: 120, y: 100, degree: 20},
-                    }
-                }, {
-                    type: 'CHARACTER',
-                    name: 'Elizabeth',
-                    script: 'Good Evening',
-                    frameAnimationConfig: {
-                        1: {x: 290, y: 170, degree: 0},
-                        2: {x: 380, y: 160, degree: -10},
-                        3: {x: 290, y: 170, degree: 0},
-                    }
-                }, {
-                    type: 'CHARACTER',
-                    name: 'Eric',
-                    script: 'Good Morning',
-                    frameAnimationConfig: {
-                        1: {x: 400, y: 80, degree: 100},
-                        2: {x: 250, y: 20, degree: 150},
-                        3: {x: 400, y: 80, degree: 100},
-                    }
-                }, {
-                    type: 'STORYBOARD',
-                    shouldDisplayName: false,
-                    frameAnimationConfig: {
-                        1: {x: 210, y: 150, degree: 0, thumbnail: sImage1, scaleX: 0.5, scaleY: 0.5},
-                        2: {x: 210, y: 150, degree: 0, thumbnail: sImage1, scaleX: 0.5, scaleY: 0.5},
-                        3: {x: 210, y: 150, degree: 0, thumbnail: sImage1, scaleX: 0.5, scaleY: 0.5}
-                    }
-                }, {
-                    type: 'LIGHT',
-                    name: 'Light 1',
-                    namePosition: 'bottom',
-                    nameScale: 0.5,
-                    nameYOffset: 8,
-                    nameXOffset: 9,
-                    frameAnimationConfig: {
-                        1: {x: 230, y: 60, degree: 180, scaleX: 2, scaleY: 2},
-                        2: {x: 230, y: 60, degree: 180, scaleX: 2, scaleY: 2, enabled: false},
-                        3: {x: 230, y: 60, degree: 180, scaleX: 2, scaleY: 2, enabled: true}
-                    }
-                }]
-        }, '80vw', '700px')
-
-
+    let frames = 6
+    display(`A random scene\n with walls, slower default frame speed (slower animation speed when users skip frames),\n a dark theme and a director's viewfinder`, {
+        frameSpeed: getRandomFrameSpeed(frames),
+        defaultOpenPropList: false,
+        frameSelectionSpeed: 5,
+        lines: [
+            [{x: 300, y: -2}, {x: 300, y: 100}, {color: 'var(--scene-base-inv-s2)', width: 3}],
+            [{x: 300, y: 98}, {x: 600, y: 98}, {color: 'var(--scene-base-inv-s2)', width: 3}],
+            [{x: 0, y: 0}, {x: 300, y: 0}, {color: 'var(--scene-base-inv-s2)', width: 3}]],
+        props: [...getRandoms(8, frames), getStoryBoard(sImage2)]
+    }, '90vw', '800px')
 }
 
 demo("container")

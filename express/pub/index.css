@@ -154,7 +154,7 @@
     color: var(--scene-base-inv-s1)
 }
 
-.header span {
+.header__tab {
     font-size: 1.5rem;
     font-weight: 600;
     padding: 6px 10px;
@@ -165,6 +165,16 @@
     transition-property: background-color, color;
     cursor: pointer;
     margin-right: 12px;
+    position: relative;
+}
+
+.header__tab span {
+    position: absolute;
+    top: 35px;
+}
+
+.header__tab:hover span {
+    opacity: 1 !important;
 }
 
 .content-text--normal {
@@ -279,22 +289,30 @@
     margin: 4px 0;
 }
 
-.toolbar__button-container span {
+
+.tooltip span {
+    z-index: 1000;
     max-height: 40px;
     justify-content: center;
     transition-duration: .1s;
     opacity: 0;
-    margin-left: 10px;
     background-color: var(--scene-tooltip-background);
     color: var(--scene-tooltip-text);
     border-radius: 8px;
     padding: 10px;
     white-space: nowrap;
     pointer-events: none;
+    font-size: 15px;
+    font-family: Roboto, serif;
+    font-weight: normal;
 }
 
-.toolbar__button-container:hover span{
+.tooltip:hover span{
     opacity: 1 !important;
+}
+
+.toolbar__button-container span {
+    margin-left: 10px;
 }
 
 .button {

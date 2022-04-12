@@ -100,8 +100,10 @@ export class PropDialog extends SceneComponent {
             const addTitleTab = (id, title, enableTab, ...classNames) => {
                 if (this.ctx.config.alwaysShowAllDialogTabs || enableTab) {
                     const button = document.createElement('span')
-                    button.title = title
-                    button.classList.add(...classNames)
+                    const tooltip = document.createElement('span')
+                    tooltip.innerText = title
+                    button.append(tooltip)
+                    button.classList.add(...classNames, 'tooltip', 'header__tab')
                     button.id = this.idCtx.PROP_DIALOG_HEADER_TAB(id)
                     button.classList.add(this.selectedTabState.get() === id ? "header__button--selected" : "header__button--not-selected")
                     header.append(button)
