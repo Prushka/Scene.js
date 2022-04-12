@@ -4,7 +4,7 @@
 
 import {SceneComponent} from "./Component";
 import State, {createState, StateAction} from "../state/State";
-import {createIconFontElement} from "../utils/Utils";
+import {createDialog, createIconFontElement} from "../utils/Utils";
 
 export class PropList extends SceneComponent {
 
@@ -69,6 +69,9 @@ export class PropList extends SceneComponent {
         this.ctx.$('#' + this.ids.PROP_LIST_HIDE).on("click", () => {
             this.open.set(!this.open.get())
         })
+        this.ctx.$('#' + this.ids.PROP_LIST_DIALOG_BUTTON).on("click", () => {
+            this.overlayCtx.openWith(createDialog('Test Title'))
+        })
     }
 
     render(): string | string[] {
@@ -78,18 +81,17 @@ export class PropList extends SceneComponent {
         parentContainer.classList.add('prop__list')
 
 
-        const createButton = (text) => {
-
+        const createButton = (text, id) => {
             const button = document.createElement('div')
             button.classList.add('prop__list__bottom__button')
-
+            button.id = id
             const buttonText = document.createElement('span')
             buttonText.innerText = text
             button.append(buttonText)
             return button
         }
-        const dialogButton = createButton('Filter')
-        const resetButton = createButton('Reset')
+        const dialogButton = createButton('Filter', this.ids.PROP_LIST_DIALOG_BUTTON)
+        const resetButton = createButton('Reset',this.ids.PROP_LIST_RESET_BUTTON)
 
         const buttonGroup = document.createElement('div')
         buttonGroup.classList.add('prop__list__bottom__container')

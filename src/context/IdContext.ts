@@ -40,6 +40,8 @@ export const IdTypes: { [key: string]: string[] } = {
     PROP_LIST_ICON: ['prop', 'list', 'icon'],
     PROP_LIST_TITLE: ['prop', 'list', 'icon'],
     PROP_LIST_HIDE: ['prop', 'list', 'hide'],
+    PROP_LIST_RESET_BUTTON: ['prop', 'list', 'reset'],
+    PROP_LIST_DIALOG_BUTTON: ['prop', 'list', 'open', 'dialog'],
     PROP_LIST_HIDE_ICON: ['prop', 'list', 'hide', 'icon'],
     SNACKBAR: ['snackbar'],
     CANVAS: ['canvas']

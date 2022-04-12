@@ -142,3 +142,13 @@ export function flatObject(obj) {
     _flatValues(obj, "")
     return newObj
 }
+
+export function createDialog(title: string): string {
+    const dialog = document.createElement('div')
+
+    return `<div class="modal">
+                <div class="modal__header">
+                <span>${title}</span>
+                </div>
+            </div>`
+}

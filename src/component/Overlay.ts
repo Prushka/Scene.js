@@ -18,15 +18,17 @@ export class Overlay extends SceneComponent {
     afterRender() {
         const overlay = document.getElementById(this.ids.OVERLAY)
         if (overlay) {
-            overlay.onclick = () => {
-                this.overlayCtx.overlayOpenState.set(false)
+            overlay.onclick = (e) => {
+                if(e.target === overlay){
+                    this.overlayCtx.close()
+                }
             }
         }
     }
 
     render(): string | string[] {
-        return this.overlayCtx.overlayOpenState.get() ? `<div class='overlay' id="${this.ids.OVERLAY}">
-        ${this.overlayCtx.overlayHTMLState.get()}
+        return this.overlayCtx.overlayOpen ? `<div class='overlay' id="${this.ids.OVERLAY}">
+        ${this.overlayCtx.overlayHTML}
         </div>` : ''
     }
 }

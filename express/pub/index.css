@@ -651,3 +651,30 @@
     -o-transition: none !important;
     transition: none !important;
 }
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 79%;
+    align-self: center;
+    background-color: var(--scene-base);
+}
+
+.modal__header {
+    display: flex;
+    padding: 25px 30px;
+}
+
+.modal__header span {
+    font-weight: 700;
+    font-size: 28px;
+}
+
+.modal__content {
+
+}
+
+.modal__footer {
+
+}
