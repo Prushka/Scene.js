@@ -32,7 +32,7 @@ export const ThemeConstants: Themes = {
             "--scene-button-text": "#ffffff",
             "--scene-button-color": "#8688BC",
             "--scene-button-hover": "#6565a1",
-            "--scene-trans-base": "rgba(255, 255, 255, 0.95)",
+            "--scene-trans-base": "rgba(255, 255, 255, 0.92)",
         },
         icon: 'bi bi-brightness-high'
     },
@@ -59,7 +59,7 @@ export const ThemeConstants: Themes = {
             "--scene-button-text": "#ffffff",
             "--scene-button-color": "#8688BC",
             "--scene-button-hover": "#6565a1",
-            "--scene-trans-base": "rgba(40,40,40,0.95)",
+            "--scene-trans-base": "rgba(40,40,40,0.92)",
         },
         icon: 'bi bi-moon-stars-fill'
     },
@@ -86,7 +86,7 @@ export const ThemeConstants: Themes = {
             "--scene-button-text": "#ffffff",
             "--scene-button-color": "#46aea9",
             "--scene-button-hover": "#557a81",
-            "--scene-trans-base": "rgba(40,40,40,0.95)",
+            "--scene-trans-base": "rgba(40,40,40,0.92)",
         },
         icon: 'bi bi-balloon-heart-fill'
     }
