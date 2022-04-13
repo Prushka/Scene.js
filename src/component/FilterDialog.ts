@@ -62,7 +62,7 @@ export class FilterDialog extends SceneComponent {
             propElement.append(span, svg)
             temp.append(propElement)
         })
-        if(propListContainer){
+        if (propListContainer) {
             propListContainer.innerHTML = temp.innerHTML
         }
     }
@@ -92,6 +92,15 @@ export class FilterDialog extends SceneComponent {
             typeListContainer.append(propElement)
         })
 
+        const createButton = (text: string) => {
+            const button = document.createElement('div')
+            button.classList.add('search__container__button')
+            button.innerText = text
+            return button
+        }
+
+        const searchContainer = document.createElement('div')
+        searchContainer.classList.add('search__container')
         const searchTextField = document.createElement('div')
         searchTextField.classList.add('textfield')
         const label = FilterDialog.createTitle('Search Prop Name')
@@ -102,6 +111,10 @@ export class FilterDialog extends SceneComponent {
         input.id = this.ids.PROP_SEARCH_INPUT
         searchTextField.append(label, input)
 
+        const selectAllPropTypesButton = createButton('Select All Props')
+        const deselectAllPropTypesButton = createButton('Deselect All Props')
+
+        searchContainer.append(searchTextField, selectAllPropTypesButton, deselectAllPropTypesButton)
 
         filterPropsByTypeContainer.append(FilterDialog.createTitle('Select Prop Types'), typeListContainer)
 
@@ -112,7 +125,7 @@ export class FilterDialog extends SceneComponent {
         propListContainer.id = this.ids.PROP_FILTERED_LIST
         filteredPropsContainer.append(FilterDialog.createTitle('Filtered Props'), propListContainer)
 
-        content.append(searchTextField, filterPropsByTypeContainer, filteredPropsContainer)
+        content.append(searchContainer, filterPropsByTypeContainer, filteredPropsContainer)
         return createDialog('Filter Props', content)
     }
 }

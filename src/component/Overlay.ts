@@ -18,10 +18,6 @@ export class Overlay extends SceneComponent {
     afterRender() {
         const overlay = document.getElementById(this.ids.OVERLAY)
         if (overlay) {
-            this.scene.$('.modal__header__close').on('click', ()=>{
-                console.log('clicked')
-                this.overlayCtx.close()
-            })
             overlay.onclick = (e) => {
                 if(e.target === overlay){
                     this.overlayCtx.close()

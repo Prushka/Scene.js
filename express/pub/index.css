@@ -485,6 +485,7 @@
     width: 50%;
     padding: 11px 0 11px 0;
     background-color: var(--scene-trans-base);
+    color: var(--scene-base-inv);
     box-sizing: border-box;
     align-items: center;
     justify-content: center;
@@ -687,6 +688,7 @@
 .modal__header__title {
     font-weight: 700;
     font-size: 30px;
+    color: var(--scene-base-inv-s1);
 }
 
 .modal__header__close {
@@ -714,6 +716,7 @@
     flex-direction: column;
     width: 100%;
     align-items: center;
+    color: var(--scene-base-inv-s1);
 }
 
 .filter__modal__title {
@@ -744,7 +747,7 @@
 }
 
 .list__items__item span {
-    color: var(--scene-base-inv);
+    color: white;
 }
 
 .list__items__item--selected {
@@ -763,10 +766,6 @@
     background-color: var(--scene-toggle-not-selected-hover) !important;
 }
 
-.list__items__item--not-selected span, .list__items__item--selected span {
-    color: var(--scene-base);
-}
-
 .list__items__icon {
     margin-left: 9px;
 }
@@ -778,7 +777,7 @@
 .input__box {
     font-family: Roboto, serif;
     font-weight: 500;
-    border: 2px solid black;
+    border: 2px solid var(--scene-base-inv-s1);
     border-radius: 8px;
     padding: 18px 20px;
     margin: 7px;
@@ -786,18 +785,46 @@
     box-sizing: border-box;
 }
 
+.search__container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 7px;
+}
+
+.search__container__button {
+    padding: 0 20px 0 20px;
+    cursor: pointer;
+    background-color: var(--scene-button-color);
+    color: var(--scene-button-text);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+    transition-duration: .1s;
+    height: 53px;
+    box-sizing: border-box;
+}
+
+.search__container__button:hover{
+    background-color: var(--scene-button-hover);
+    color: var(--scene-button-text);
+}
+
 .textfield {
     font-family: Roboto, serif !important;
     font-weight: 500;
     display: flex;
     flex-direction: column;
-    margin: 7px;
 }
 
 .textfield__input {
     width: 100%;
     padding: 16px 20px 15px 20px;
-    margin: 8px 0;
+    margin: 8px 0 0 0;
     outline: none;
     display: inline-block;
     box-shadow: unset !important;

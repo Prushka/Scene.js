@@ -66,6 +66,12 @@ export class PropList extends SceneComponent {
     afterRender() {
         let filterDialog
         this.open.set(this.scene.config.defaultOpenPropList)
+
+        const openFilterDialog = () => {
+            this.overlayCtx.openWith(``)
+            filterDialog = new FilterDialog(this.scene)
+            filterDialog.renderComponent()
+        }
         this.scene.$('.prop__list__item').on("click", (e) => {
             const [id] = this.idCtx.extractIdType(e.currentTarget.id)
             this.propCtx.toggleSelected(id)
@@ -74,9 +80,7 @@ export class PropList extends SceneComponent {
             this.open.set(!this.open.get())
         })
         this.scene.$('#' + this.ids.PROP_LIST_DIALOG_BUTTON).on("click", () => {
-            this.overlayCtx.openWith(``)
-            filterDialog = new FilterDialog(this.scene)
-            filterDialog.renderComponent()
+            openFilterDialog()
         })
         this.scene.$('#' + this.ids.PROP_LIST_RESET_BUTTON).on("click", () => {
             if(filterDialog){
@@ -84,6 +88,7 @@ export class PropList extends SceneComponent {
             }
             this.propCtx.resetFilter()
         })
+        openFilterDialog()
     }
 
     render(): string | string[] {
