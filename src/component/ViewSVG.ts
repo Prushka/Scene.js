@@ -272,8 +272,8 @@ export class ViewSVG extends View {
                         }
                         break
                     default:
-                        const pathGroupEnabled = getPathGroupByHTML(this.propCtx.propTypeIconPool[prop.type][prop.style]['enabledPaths'], prop)
-                        const pathGroupDisabled = getPathGroupByHTML(this.propCtx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], prop)
+                        const pathGroupEnabled = getPathGroupByHTML(this.propCtx.propTypePool[prop.type][prop.style]['enabledPaths'], prop)
+                        const pathGroupDisabled = getPathGroupByHTML(this.propCtx.propTypePool[prop.type][prop.style]['disabledPaths'], prop)
                         pathGroupEnabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_ENABLED(prop)
                         pathGroupDisabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_DISABLED(prop)
                         if (this.propCtx.isPropEnabled(prop)) {

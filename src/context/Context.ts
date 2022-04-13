@@ -6,7 +6,7 @@ import {Scene} from "../index";
 
 export default class Context {
 
-    protected readonly scene
+    protected readonly scene: Scene
     protected readonly themeCtx
     protected readonly config
 

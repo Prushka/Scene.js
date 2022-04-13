@@ -60,6 +60,38 @@ export class PropList extends SceneComponent {
         return [this.ids.ROOT_PROP_LIST]
     }
 
+    private openFilterDialog() {
+        const content = document.createElement('div')
+        content.classList.add('filter__modal__container')
+        const filteredProps = document.createElement('div')
+        filteredProps.classList.add('input__box')
+
+        const filteredPropsTitle = document.createElement('div')
+        filteredPropsTitle.innerText = 'Filtered Props'
+        filteredPropsTitle.classList.add('filter__modal__title')
+
+        const listItems = document.createElement('div')
+        listItems.classList.add('list__items')
+
+        this.propCtx.filteredProps.forEach(prop => {
+            console.log(prop.name)
+            const propElement = document.createElement('div')
+            propElement.classList.add('list__items__item')
+            const span = document.createElement('span')
+            span.innerText = prop.name
+            propElement.append(span)
+            listItems.append(propElement)
+        })
+
+        const filterPropsByType = document.createElement('div')
+        filterPropsByType.classList.add('input__box')
+
+        filteredProps.append(filteredPropsTitle, listItems)
+
+        content.append(filteredProps)
+        this.overlayCtx.openWith(createDialog('Test Title', content))
+    }
+
     afterRender() {
         this.open.set(this.ctx.config.defaultOpenPropList)
         this.ctx.$('.prop__list__item').on("click", (e) => {
@@ -70,9 +102,9 @@ export class PropList extends SceneComponent {
             this.open.set(!this.open.get())
         })
         this.ctx.$('#' + this.ids.PROP_LIST_DIALOG_BUTTON).on("click", () => {
-            const content = document.createElement('div')
-            this.overlayCtx.openWith(createDialog('Test Title', content))
+            this.openFilterDialog()
         })
+        this.openFilterDialog()
     }
 
     render(): string | string[] {

@@ -671,13 +671,13 @@
 
 .modal__header {
     display: flex;
-    padding: 25px 30px;
+    padding: 19px 30px;
     align-items: center;
 }
 
 .modal__header__title {
     font-weight: 700;
-    font-size: 28px;
+    font-size: 30px;
 }
 
 .modal__header__close {
@@ -688,9 +688,62 @@
 }
 
 .modal__content {
-
+    display: flex;
+    flex-direction: column;
+    padding: 0 40px 10px 30px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .modal__footer {
 
+}
+
+.filter__modal__container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.filter__modal__title{
+    margin-bottom: 5px;
+}
+
+.list__items {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.list__items__item {
+    font-weight: 400;
+    background-color: rgb(230, 230, 230);
+    padding: 8px 16px;
+    margin: 7px;
+    border-radius: 7px;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.list__items__icon {
+    margin-left: 9px;
+}
+
+.list__items__item:hover {
+    background-color: rgb(205, 205, 205);
+}
+
+.input__box {
+    font-family: Roboto, serif;
+    font-weight: 500;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin: 7px;
+    width: 100%;
+    box-sizing: border-box;
 }

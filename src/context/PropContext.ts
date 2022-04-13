@@ -29,11 +29,14 @@ export default class PropContext extends Context {
     public selectedPropState: State<PropConfig> = createState()
     public propsState: State<PropConfig[]> = createState([])
     protected propIds: number = 0
-    public propTypeIconPool: { [key in PropType]: PropTypeIcon }
+    public propTypePool: { [key in PropType]: PropTypeIcon }
+
+    public selectedPropTypesState: State<string[]> = createState([])
+    public searchPropValueState: State<string> = createState('')
 
     public constructor(scene: Scene) {
         super(scene);
-        this.propTypeIconPool = {...PropTypeIcons}
+        this.propTypePool = {...PropTypeIcons}
     }
 
     public clearSelectedProp() {
@@ -44,8 +47,14 @@ export default class PropContext extends Context {
         return this.propsState.get()
     }
 
+    public get filteredProps() {
+        return this.props.filter(prop => {
+            return true
+        })
+    }
+
     public addPropType(propTypes: { [key: string]: PropTypeIcon }) {
-        this.propTypeIconPool = {...this.propTypeIconPool, ...propTypes}
+        this.propTypePool = {...this.propTypePool, ...propTypes}
     }
 
     public sortPropsByRenderOrder() {
@@ -196,7 +205,7 @@ export default class PropContext extends Context {
     }
 
     public getPathGroup(prop: PropConfig, color ?: string) {
-        return getPathGroupByHTML(this.propTypeIconPool[prop.type][prop.style][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths'], prop, color)
+        return getPathGroupByHTML(this.propTypePool[prop.type][prop.style][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths'], prop, color)
     }
 
     public get isStatic() {

@@ -16,6 +16,7 @@ export default class ViewPortContext extends Context {
     public constructor(scene: Scene) {
         super(scene)
     }
+
     public findMinMaxPosition(currentFrame?: number): [number, number, number, number] {
         let [minX, minY, maxX, maxY] = [null, null, null, null]
         const updateMinMax = (position) => {
@@ -34,7 +35,7 @@ export default class ViewPortContext extends Context {
         }
         this.scene.propCtx.props.forEach(prop => {
             if (currentFrame) {
-                updateMinMax(this.scene.getPropPositionByCurrentFrame(prop))
+                updateMinMax(this.scene.propCtx.getPropPositionByCurrentFrame(prop))
             } else {
                 for (let key in prop.frameAnimationConfig) {
                     const position = prop.frameAnimationConfig[key]
@@ -53,9 +54,9 @@ export default class ViewPortContext extends Context {
         const viewWidthRatio = (maxX - minX) / svgE.width()
         const viewHeightRatio = (maxY - minY) / svgE.height()
         let viewRatio = viewWidthRatio > viewHeightRatio ? viewWidthRatio : viewHeightRatio
-        viewRatio += this.scene.config.viewOffset
-        const viewX = minX - (this.scene.config.viewOffset / 2) * svgE.width()
-        const viewY = minY - (this.scene.config.viewOffset / 2) * svgE.height()
+        viewRatio += this.config.viewOffset
+        const viewX = minX - (this.config.viewOffset / 2) * svgE.width()
+        const viewY = minY - (this.config.viewOffset / 2) * svgE.height()
         return [viewRatio, viewX, viewY]
     }
 
@@ -80,7 +81,7 @@ export default class ViewPortContext extends Context {
     }
 
     public set scale(scale) {
-        if (scale > this.scene.config.zoomLowerBound && scale < this.scene.config.zoomUpperBound) {
+        if (scale > this.config.zoomLowerBound && scale < this.config.zoomUpperBound) {
             this.scaleState.set(scale)
         }
     }
@@ -94,10 +95,10 @@ export default class ViewPortContext extends Context {
     }
 
     public zoomIn() {
-        this.scale = this.scale * this.scene.config.zoomFactor
+        this.scale = this.scale * this.config.zoomFactor
     }
 
     public zoomOut() {
-        this.scale = this.scale * (1 / this.scene.config.zoomFactor)
+        this.scale = this.scale * (1 / this.config.zoomFactor)
     }
 }
