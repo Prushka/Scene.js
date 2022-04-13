@@ -53,15 +53,16 @@ export class FilterDialog extends SceneComponent {
 
     private renderFilteredProps() {
         const propListContainer = document.getElementById(this.ids.PROP_FILTERED_LIST)
-        propListContainer.innerHTML = ''
+        const temp = document.createElement('div')
         this.propCtx.filteredProps.forEach(prop => {
             const propElement = document.createElement('div')
             propElement.classList.add('list__items__item')
             const span = this.propCtx.getPropSpanText(prop)
             const svg = this.propCtx.getPropSVG(prop, null, 1)
             propElement.append(span, svg)
-            propListContainer.append(propElement)
+            temp.append(propElement)
         })
+        propListContainer.innerHTML = temp.innerHTML
     }
 
     render(): string | string[] {

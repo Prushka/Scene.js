@@ -106,9 +106,9 @@ export function getPathGroupByHTML(pathsHTML: string, prop?: PropConfig, color ?
     let pathId = 0
     const pathGroup = document.createElementNS("http://www.w3.org/2000/svg","g")
     forEachPathHTML(pathsHTML, (pathHTML) => {
-        // const path = createElement(pathHTML)
-        let path = (new DOMParser().parseFromString(pathHTML, 'image/svg+xml')).firstChild
-        //path.style.fill = color ? color : prop.color
+        const path = createElement(pathHTML)
+        // let path = (new DOMParser().parseFromString(pathHTML, 'image/svg+xml')).firstChild
+        path.style.fill = color ? color : prop.color
         pathGroup.appendChild(path)
         pathId++
     })
