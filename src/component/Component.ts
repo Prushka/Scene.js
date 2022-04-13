@@ -70,7 +70,7 @@ export abstract class CustomComponent {
 }
 
 export abstract class SceneComponent extends CustomComponent {
-    protected ctx: Scene
+    protected scene: Scene
     protected snackbarCtx: SnackbarContext
     protected overlayCtx: OverlayContext
     protected themeCtx: ThemeContext
@@ -81,13 +81,13 @@ export abstract class SceneComponent extends CustomComponent {
 
     public constructor(context: Scene) {
         super();
-        this.ctx = context;
-        [this.ids, this.idCtx] = [this.ctx.ids, this.ctx.idContext]
-        this.snackbarCtx = this.ctx.snackbarCtx
-        this.overlayCtx = this.ctx.overlayCtx
-        this.themeCtx = this.ctx.themeCtx
-        this.propCtx = this.ctx.propCtx
-        this.getViewportCtx = this.ctx.getViewportGetter()
+        this.scene = context;
+        [this.ids, this.idCtx] = [this.scene.ids, this.scene.idContext]
+        this.snackbarCtx = this.scene.snackbarCtx
+        this.overlayCtx = this.scene.overlayCtx
+        this.themeCtx = this.scene.themeCtx
+        this.propCtx = this.scene.propCtx
+        this.getViewportCtx = this.scene.getViewportGetter()
         this.afterConstructor()
         this.mount()
     }

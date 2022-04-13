@@ -388,7 +388,7 @@ export function demo(rootRootId) {
             [{x: 300, y: -2}, {x: 300, y: 100}, {color: 'var(--scene-base-inv-s2)', width: 3}],
             [{x: 300, y: 98}, {x: 600, y: 98}, {color: 'var(--scene-base-inv-s2)', width: 3}],
             [{x: 0, y: 0}, {x: 300, y: 0}, {color: 'var(--scene-base-inv-s2)', width: 3}]],
-        props: [...getRandoms(8, frames), getStoryBoard(sImage2)]
+        props: [...getRandoms(25, frames), getStoryBoard(sImage2)]
     }, '90vw', '800px')
 }
 

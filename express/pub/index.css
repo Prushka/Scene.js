@@ -697,10 +697,11 @@
     padding: 0 40px 10px 30px;
     width: 100%;
     box-sizing: border-box;
+    overflow: auto;
+    margin-bottom: 15px;
 }
 
 .modal__footer {
-
 }
 
 .filter__modal__container {
@@ -780,7 +781,7 @@
     box-sizing: border-box;
 }
 
-.textfield-section {
+.textfield {
     font-family: Roboto, serif !important;
     font-weight: 500;
     display: flex;
@@ -788,7 +789,7 @@
     margin: 7px;
 }
 
-.textfield-section__input {
+.textfield__input {
     width: 100%;
     padding: 16px 20px 15px 20px;
     margin: 8px 0;
@@ -799,10 +800,14 @@
     /*someone made a global textarea*/
 }
 
-.textfield-section__input:focus {
+.textfield__label {
+    margin-bottom: 0 !important;
+}
+
+.textfield__input:focus {
     border: 2px solid var(--scene-snackbar-success);
 }
 
-.textfield-section__input, .textfield-section__input::placeholder {
+.textfield__input, .textfield__input::placeholder {
     font-size: 15px
 }

@@ -40,6 +40,6 @@ export class Snackbar extends SceneComponent {
     }
 
     render(): string | string[] {
-        return `<div class='snackbar snackbar--closed ${this.ctx.isRootMobile()?'snackbar--mobile':'snackbar--normal'} ${this.snackbarCtx.isError ? 'snackbar--error' : 'snackbar--success'}' id="${this.ids.SNACKBAR}"><span></span></div>`
+        return `<div class='snackbar snackbar--closed ${this.scene.isRootMobile()?'snackbar--mobile':'snackbar--normal'} ${this.snackbarCtx.isError ? 'snackbar--error' : 'snackbar--success'}' id="${this.ids.SNACKBAR}"><span></span></div>`
     }
 }

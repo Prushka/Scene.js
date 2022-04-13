@@ -17,13 +17,14 @@ export class PropList extends SceneComponent {
     }
 
     listen() {
-        return [this.propCtx.propsState, this.propCtx.selectedPropTypesState]
+        return [this.propCtx.propsState, this.propCtx.selectedPropTypesState,
+            this.propCtx.searchPropValueState]
     }
 
     actions(): StateAction<any>[] {
         return [[this.open, (_, open) => {
-            const container = this.ctx.getRootDocument().querySelector('.prop__list-container')
-            const icon = this.ctx.getRootDocument().querySelector('.hide__icon-rotate-container')
+            const container = this.scene.getRootDocument().querySelector('.prop__list-container')
+            const icon = this.scene.getRootDocument().querySelector('.hide__icon-rotate-container')
             if (open) {
                 container.classList.remove("prop__list-container--closed")
                 icon.classList.remove("icon-animated-right")
@@ -110,10 +111,14 @@ export class PropList extends SceneComponent {
         })
 
         const searchTextField = document.createElement('div')
-        searchTextField.classList.add('textfield-section')
+        searchTextField.classList.add('textfield')
         const label = createTitle('Search Prop Name')
+        label.classList.add('textfield__label')
         const input = document.createElement('input')
-        input.classList.add('input__box', 'textfield-section__input')
+        input.classList.add('input__box', 'textfield__input')
+        input.setAttribute('value', this.propCtx.searchValue)
+        console.log(this.propCtx.searchValue)
+        input.id = this.ids.PROP_SEARCH_INPUT
         searchTextField.append(label, input)
 
 
@@ -122,25 +127,30 @@ export class PropList extends SceneComponent {
 
         content.append(searchTextField, filterPropsByTypeContainer, filteredPropsContainer)
         this.overlayCtx.openWith(createDialog('Filter Props', content), () => {
-            this.ctx.$('.list__items__item').on('click', (e) => {
+            const propCtx = this.propCtx
+            this.scene.$(`#${this.ids.PROP_SEARCH_INPUT}`).focus()
+            this.scene.$('.list__items__item').on('click', (e) => {
                 const [_, type] = this.idCtx.extractIdType(e.currentTarget.id, ...IdTypes.PROP_TYPE_TOGGLE)
                 if (type && type.length > 0) {
                     this.propCtx.toggleSelectedPropType(type[0])
                 }
             })
+            this.scene.$(`#${this.ids.PROP_SEARCH_INPUT}`).on('input', function (e) {
+                propCtx.searchValue = $(this).val().toString()
+            })
         })
     }
 
     afterRender() {
-        this.open.set(this.ctx.config.defaultOpenPropList)
-        this.ctx.$('.prop__list__item').on("click", (e) => {
+        this.open.set(this.scene.config.defaultOpenPropList)
+        this.scene.$('.prop__list__item').on("click", (e) => {
             const [id] = this.idCtx.extractIdType(e.currentTarget.id)
             this.propCtx.toggleSelected(id)
         })
-        this.ctx.$('#' + this.ids.PROP_LIST_HIDE).on("click", () => {
+        this.scene.$('#' + this.ids.PROP_LIST_HIDE).on("click", () => {
             this.open.set(!this.open.get())
         })
-        this.ctx.$('#' + this.ids.PROP_LIST_DIALOG_BUTTON).on("click", () => {
+        this.scene.$('#' + this.ids.PROP_LIST_DIALOG_BUTTON).on("click", () => {
             this.openFilterDialog()
         })
         this.openFilterDialog()

@@ -106,12 +106,12 @@ export class Footer extends SceneComponent {
                 spanEl.innerText = 'Play'
             }
         }],
-            [this.ctx.propCtx.currentFrameState, (oldFrame, newFrame, previousFrame) => {
+            [this.scene.propCtx.currentFrameState, (oldFrame, newFrame, previousFrame) => {
                 console.log(`Frame: ${previousFrame} | ${oldFrame} -> ${newFrame}`)
                 if (oldFrame == null) {
                     return
                 }
-                const frameSeconds = this.ctx.getFrameSeconds(oldFrame)
+                const frameSeconds = this.scene.getFrameSeconds(oldFrame)
                 if (this.propCtx.ifJumpOneLiterally(oldFrame, newFrame)) {
                     // normal flow, (start -> end, one frame jump) will trigger progress bar change and frame button timeout change
                     setFrameButton(oldFrame, true)
@@ -127,7 +127,7 @@ export class Footer extends SceneComponent {
                     }
                     const progressBars = this.getProgressBars(oldFrame)
                     if (progressBars) {
-                        progressBars.setTransition(frameSeconds + 's', this.ctx.config.transitionTimingFunction, true)
+                        progressBars.setTransition(frameSeconds + 's', this.scene.config.transitionTimingFunction, true)
                     }
                 } else {
                     // user skips frames, reset progress bar and frame button styles
@@ -151,35 +151,35 @@ export class Footer extends SceneComponent {
     }
 
     afterRender() {
-        this.open.set(this.ctx.config.defaultOpenToolbar)
+        this.open.set(this.scene.config.defaultOpenToolbar)
         const hookButton = (action: (el: HTMLElement, e: ClickEvent) => void, id: string) => {
-            this.ctx.$(`#${id}`).on("click", (e) => {
+            this.scene.$(`#${id}`).on("click", (e) => {
                 action(document.getElementById(id), e)
             })
         }
-        this.ctx.$('.timeline__frame').on("click", (e) => {
+        this.scene.$('.timeline__frame').on("click", (e) => {
             const [frame] = this.idCtx.extractIdType(e.target.id)
-            this.ctx.propCtx.currentFrame = frame
+            this.scene.propCtx.currentFrame = frame
         })
         hookButton(() => {
             this.open.set(!this.open.get())
         }, this.ids.TOOLBAR_COLLAPSE_BUTTON)
         hookButton(() => {
-            this.ctx.viewComponent.resetViewport()
+            this.scene.viewComponent.resetViewport()
             this.snackbarCtx.snackbar("Reset Viewport - Frames Based")
         }, this.ids.TOOLBAR_RESET_FRAMES_BUTTON)
 
         hookButton(() => {
-            this.ctx.viewComponent.resetViewport(this.ctx.propCtx.currentFrame)
+            this.scene.viewComponent.resetViewport(this.scene.propCtx.currentFrame)
             this.snackbarCtx.snackbar("Reset Current Viewport")
         }, this.ids.TOOLBAR_RESET_CURRENT_BUTTON)
 
         const nextFrame = () => {
             if (this.playing.get()) {
-                const previousFrame = this.ctx.propCtx.nextFrame()
+                const previousFrame = this.scene.propCtx.nextFrame()
                 setTimeout(() => {
                     nextFrame()
-                }, this.ctx.getFrameSeconds(previousFrame) * 1000)
+                }, this.scene.getFrameSeconds(previousFrame) * 1000)
             }
         }
         hookButton(() => {
@@ -189,7 +189,7 @@ export class Footer extends SceneComponent {
             }
         }, this.ids.TOOLBAR_PLAY_BUTTON)
         hookButton(() => {
-            navigator.clipboard.writeText(JSON.stringify(this.ctx.config, null, 2)).then(() => this.snackbarCtx.snackbar("Copied to clipboard"))
+            navigator.clipboard.writeText(JSON.stringify(this.scene.config, null, 2)).then(() => this.snackbarCtx.snackbar("Copied to clipboard"))
         }, this.ids.TOOLBAR_EXPORT_BUTTON)
 
         hookButton(() => {
@@ -201,7 +201,7 @@ export class Footer extends SceneComponent {
             if (document.fullscreenElement) {
                 document.exitFullscreen().then()
             } else {
-                const element = this.ctx.getRootDocument();
+                const element = this.scene.getRootDocument();
                 element.requestFullscreen().then()
             }
         }, this.ids.TOOLBAR_FULLSCREEN)
@@ -231,7 +231,7 @@ export class Footer extends SceneComponent {
             container.append(toolbarButton, tooltipText)
             toolbarContainer.append(container)
         }
-        const currentFrame = this.ctx.propCtx.currentFrame
+        const currentFrame = this.scene.propCtx.currentFrame
         addButtonToToolbar('Collapse/Expand', 'bi bi-arrows-collapse', this.ids.TOOLBAR_COLLAPSE_BUTTON)
         addButtonToToolbar('Toggle fullscreen mode', 'bi bi-arrows-fullscreen', this.ids.TOOLBAR_FULLSCREEN)
         addButtonToToolbar('Reset viewport (based on current frame)', 'bi bi-arrows-move', this.ids.TOOLBAR_RESET_CURRENT_BUTTON)
@@ -240,14 +240,14 @@ export class Footer extends SceneComponent {
         }
         addButtonToToolbar('Export', 'bi bi-box-arrow-up-right', this.ids.TOOLBAR_EXPORT_BUTTON)
         addButtonToToolbar(`Theme (${this.themeCtx.themeToDisplay})`, this.themeCtx.currentTheme.icon, this.ids.TOOLBAR_THEME_BUTTON)
-        if (this.ctx.config.displayToolbar) {
+        if (this.scene.config.displayToolbar) {
             footerContainer.append(toolbarContainer)
         }
-        if (!this.ctx.propCtx.isStatic) {
+        if (!this.scene.propCtx.isStatic) {
             // create a timeline since it's not static
             const timelineContainer = document.createElement('div')
             timelineContainer.classList.add('timeline-container')
-            if (!this.ctx.config.displayToolbar) {
+            if (!this.scene.config.displayToolbar) {
                 timelineContainer.classList.add('timeline-container-full-width')
             }
             for (let f = 0; f < this.propCtx.totalFrames; f++) {
@@ -255,7 +255,7 @@ export class Footer extends SceneComponent {
                 const frameContainer = document.createElement('div')
                 frameContainer.classList.add('timeline__frame-container')
                 if (frame != this.propCtx.totalFrames) {
-                    frameContainer.style.flexGrow = String(Math.floor(this.ctx.getFrameSeconds(frame) * 10))
+                    frameContainer.style.flexGrow = String(Math.floor(this.scene.getFrameSeconds(frame) * 10))
                 }
                 // The styling (e.g., color etc.,) of a standard html <progress> tag cannot be standardized,
                 // that's why a custom div was used
@@ -277,7 +277,7 @@ export class Footer extends SceneComponent {
                 timelineContainer.append(frameContainer)
             }
             addButtonToToolbar('Play', this.playing.get() ? 'bi bi-pause-fill' : 'bi bi-play-fill', this.ids.TOOLBAR_PLAY_BUTTON)
-            if (this.ctx.config.displayTimeline) {
+            if (this.scene.config.displayTimeline) {
                 footerContainer.append(timelineContainer)
             }
         }

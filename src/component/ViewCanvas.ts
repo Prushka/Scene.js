@@ -5,7 +5,7 @@ export class ViewCanvas extends View {
     }
 
     render(): string | string[] | Node {
-        return `<canvas width="${Math.floor(this.ctx.getRootWidth())}" height="${Math.floor(this.ctx.getRootHeight())}"
+        return `<canvas width="${Math.floor(this.scene.getRootWidth())}" height="${Math.floor(this.scene.getRootHeight())}"
         id="${this.ids.CANVAS}"></canvas>`;
     }
 

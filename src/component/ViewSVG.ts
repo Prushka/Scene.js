@@ -25,7 +25,8 @@ export class ViewSVG extends View {
     }
 
     listen(): State<any>[] {
-        return [this.propCtx.propsState, this.propCtx.selectedPropTypesState];
+        return [this.propCtx.propsState, this.propCtx.selectedPropTypesState,
+            this.propCtx.searchPropValueState];
     }
 
     actions(): StateAction<any>[] {
@@ -74,9 +75,9 @@ export class ViewSVG extends View {
                     groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scaleX} ${newPosition.scaleY})`)
                     let transitionDuration
                     if (this.propCtx.ifJumpOne(oldFrame, newFrame)) {
-                        transitionDuration = this.ctx.getFrameSeconds(oldFrame) + "s"
+                        transitionDuration = this.scene.getFrameSeconds(oldFrame) + "s"
                     } else {
-                        transitionDuration = this.ctx.config.frameSelectionSpeed + "s"
+                        transitionDuration = this.scene.config.frameSelectionSpeed + "s"
                     }
                     setStyles('transitionDuration', transitionDuration, enabledGroup, disabledGroup, groupElement, storyboard)
                     const oldPosition = this.propCtx.getPropPositionByFrame(prop, oldFrame, false)
@@ -95,11 +96,11 @@ export class ViewSVG extends View {
 
     private applyViewportAttrs(viewBoxChange?: boolean) {
         const svgE =
-            this.ctx.$(`.view-svg`)
+            this.scene.$(`.view-svg`)
         svgE.attr("viewBox",
             `${-this.getViewportCtx().x} ${-this.getViewportCtx().y} ${svgE.width() * this.getViewportCtx().scale} ${svgE.height() * this.getViewportCtx().scale}`);
         if (!viewBoxChange) {
-            this.ctx.$(`.view__prop`).each((index, element) => {
+            this.scene.$(`.view__prop`).each((index, element) => {
                 const prop = this.propCtx.getPropById(this.idCtx.extractIdType(element.id)[0])
                 if (prop.shouldDisplayName) {
                     const position = this.propCtx.getPropPositionByCurrentFrame(prop)
@@ -211,7 +212,7 @@ export class ViewSVG extends View {
             this.applyViewportAttrs(true)
         })
 
-        this.ctx.$('.view__prop').on('click touchend', (e) => {
+        this.scene.$('.view__prop').on('click touchend', (e) => {
             const elementId = e.target.id ? e.target.id : e.target.parentElement.id
             let [id] = this.idCtx.extractIdType(elementId)
             this.propCtx.toggleSelected(id)
@@ -239,7 +240,7 @@ export class ViewSVG extends View {
 
     render(): string | string[] {
         const gs = []
-        this.ctx.config.lines.forEach(([start, end, line]) => {
+        this.scene.config.lines.forEach(([start, end, line]) => {
             gs.push(getLineGroup(start.x, start.y, end.x, end.y, line.width, line.color))
         })
         let s = []
@@ -298,10 +299,10 @@ export class ViewSVG extends View {
                 s.push(group.outerHTML)
             }
         })
-        for (let key in this.ctx.config.attachment) {
+        for (let key in this.scene.config.attachment) {
             const keyProps = this.propCtx.getPropsByName(key)
             let valueProps = []
-            this.ctx.config.attachment[key].forEach(name => {
+            this.scene.config.attachment[key].forEach(name => {
                 valueProps = valueProps.concat(this.propCtx.getPropsByName(name))
             })
             keyProps.forEach(keyProp => {

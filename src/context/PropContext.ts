@@ -34,6 +34,14 @@ export default class PropContext extends Context {
     public selectedPropTypesState: State<string[]> = createState([])
     public searchPropValueState: State<string> = createState('')
 
+    public get searchValue() {
+        return this.searchPropValueState.get()
+    }
+
+    public set searchValue(value: string) {
+        this.searchPropValueState.set(value)
+    }
+
     public toggleSelectedPropType(type: string) {
         if (this.isPropTypeSelected(type)) {
             this.selectedPropTypesState.set(this.selectedPropTypes.filter(t => t !== type))
@@ -73,7 +81,7 @@ export default class PropContext extends Context {
 
     public get filteredProps() {
         return this.props.filter(prop => {
-            return this.selectedPropTypes.includes(prop.type)
+            return this.selectedPropTypes.includes(prop.type) && (this.searchValue ? prop.name.toLowerCase().includes(this.searchValue.toLowerCase()) : true)
         })
     }
 

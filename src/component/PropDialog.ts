@@ -36,7 +36,7 @@ export class PropDialog extends SceneComponent {
     actions(): StateAction<any>[] {
         return [[this.propCtx.selectedPropState, () => {
             this.selectedTabState.set(Tab.GENERAL)
-        }], [this.ctx.propCtx.currentFrameState, (oldFrame, newFrame) => {
+        }], [this.scene.propCtx.currentFrameState, (oldFrame, newFrame) => {
             const selectedProp = this.propCtx.selectedProp
             if (selectedProp) {
                 const positionElement = document.getElementById(this.idCtx.PROP_DIALOG_FOOTER_POSITION(selectedProp))
@@ -64,19 +64,19 @@ export class PropDialog extends SceneComponent {
             const [id] = this.idCtx.extractIdType(e.target.id)
             this.propCtx.toggleSelected(id)
         }
-        this.ctx.$('.prop__dialog__close').on("click", (e) => {
+        this.scene.$('.prop__dialog__close').on("click", (e) => {
             toggle(e)
         })
-        this.ctx.$('.prop__dialog').on("click", () => {
+        this.scene.$('.prop__dialog').on("click", () => {
             this.propCtx.clearSelectedProp()
         })
-        this.ctx.$('.prop__dialog--popup').on("click", (e) => {
+        this.scene.$('.prop__dialog--popup').on("click", (e) => {
             e.stopPropagation()
         })
-        this.ctx.$('.header span').on("click", (e) => {
+        this.scene.$('.header span').on("click", (e) => {
             this.selectedTabState.set(this.idCtx.extractIdType(e.target.id)[0])
         })
-        this.ctx.$('.content .image__container img').on("click", (e) => {
+        this.scene.$('.content .image__container img').on("click", (e) => {
             this.overlayCtx.openWith(`<img src='${e.target.getAttribute('src')}' alt=""/>`)
         })
     }
@@ -84,20 +84,20 @@ export class PropDialog extends SceneComponent {
     render() {
         const selectedProp = this.propCtx.selectedProp
         if (selectedProp) {
-            const isPopup = this.ctx.config.dialog === 'popup'
+            const isPopup = this.scene.config.dialog === 'popup'
             const parentContainer = document.createElement('div')
             if (isPopup) {
                 parentContainer.classList.add("prop__dialog")
             }
             const dialogContainerElement = document.createElement('div')
             dialogContainerElement.classList.add(`prop__dialog--${isPopup ? 'popup' : 'embedded'}`,
-                this.ctx.isRootMobile() ? 'prop__dialog--embedded--mobile' : 'prop__dialog--embedded--normal')
+                this.scene.isRootMobile() ? 'prop__dialog--embedded--mobile' : 'prop__dialog--embedded--normal')
             parentContainer.appendChild(dialogContainerElement)
             const header = document.createElement('div')
             header.classList.add('header')
 
             const addTitleTab = (id, title, enableTab, ...classNames) => {
-                if (this.ctx.config.alwaysShowAllDialogTabs || enableTab) {
+                if (this.scene.config.alwaysShowAllDialogTabs || enableTab) {
                     const button = document.createElement('span')
                     const tooltip = document.createElement('span')
                     tooltip.innerText = title
@@ -114,7 +114,7 @@ export class PropDialog extends SceneComponent {
             addTitleTab(Tab.SCRIPTS, "Scripts", selectedProp.script, "bi", "bi-journal-bookmark-fill")
             addTitleTab(Tab.STEPS, "Steps", selectedProp.steps, "bi", "bi-123")
             addTitleTab(Tab.IMAGES, "Images", selectedProp.images, "bi", "bi-image-fill")
-            addTitleTab(Tab.DEBUG, "Debug Information", this.ctx.config.dialogShowAllProperties, "bi", "bi-bug")
+            addTitleTab(Tab.DEBUG, "Debug Information", this.scene.config.dialogShowAllProperties, "bi", "bi-bug")
 
             const contentElement = document.createElement('div')
             contentElement.classList.add("content")
@@ -200,7 +200,7 @@ export class PropDialog extends SceneComponent {
                     }
                     break
                 case Tab.DEBUG:
-                    switch (this.ctx.config.dialogAllPropertiesFormat) {
+                    switch (this.scene.config.dialogAllPropertiesFormat) {
                         case "flat":
                             const flat = flatObject(selectedProp)
                             for (let key in flat) {
