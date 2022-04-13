@@ -6,6 +6,7 @@ import {SceneComponent} from "./Component";
 import State, {createState, StateAction} from "../state/State";
 import {createDialog, createIconFontElement} from "../utils/Utils";
 import {IdTypes} from "../context/IdContext";
+import {FilterDialog} from "./FilterDialog";
 
 export class PropList extends SceneComponent {
 
@@ -62,85 +63,6 @@ export class PropList extends SceneComponent {
         return [this.ids.ROOT_PROP_LIST]
     }
 
-    private openFilterDialog() {
-        const createTitle = (text: string) => {
-            const title = document.createElement('div')
-            title.innerText = text
-            title.classList.add('filter__modal__title')
-            return title
-        }
-
-        const createListContainer = () => {
-            const filteredProps = document.createElement('div')
-            filteredProps.classList.add('list__items')
-            return filteredProps
-        }
-
-        const content = document.createElement('div')
-        content.classList.add('filter__modal__container')
-        const filteredPropsContainer = document.createElement('div')
-        filteredPropsContainer.classList.add('input__box')
-
-        const propListContainer = createListContainer()
-        this.propCtx.filteredProps.forEach(prop => {
-            const propElement = document.createElement('div')
-            propElement.classList.add('list__items__item')
-            const span = this.propCtx.getPropSpanText(prop)
-            const svg = this.propCtx.getPropSVG(prop, null, 1)
-            propElement.append(span, svg)
-            propListContainer.append(propElement)
-        })
-
-        const filterPropsByTypeContainer = document.createElement('div')
-        filterPropsByTypeContainer.classList.add('input__box')
-        const typeListContainer = createListContainer()
-        this.propCtx.allPropTypes.forEach(type => {
-            const propElement = document.createElement('div')
-            propElement.classList.add('list__items__item')
-            if (this.propCtx.isPropTypeSelected(type)) {
-                propElement.classList.add('list__items__item--selected')
-            } else {
-                propElement.classList.add('list__items__item--not-selected')
-            }
-            const span = document.createElement('span')
-            span.innerText = type
-            const svg = this.propCtx.getPropSVG(type, 'white', 1)
-            propElement.append(span, svg)
-            propElement.id = this.idCtx.PROP_TYPE_TOGGLE(null, type)
-            typeListContainer.append(propElement)
-        })
-
-        const searchTextField = document.createElement('div')
-        searchTextField.classList.add('textfield')
-        const label = createTitle('Search Prop Name')
-        label.classList.add('textfield__label')
-        const input = document.createElement('input')
-        input.classList.add('input__box', 'textfield__input')
-        input.setAttribute('value', this.propCtx.searchValue)
-        console.log(this.propCtx.searchValue)
-        input.id = this.ids.PROP_SEARCH_INPUT
-        searchTextField.append(label, input)
-
-
-        filterPropsByTypeContainer.append(createTitle('Select Prop Types'), typeListContainer)
-        filteredPropsContainer.append(createTitle('Filtered Props'), propListContainer)
-
-        content.append(searchTextField, filterPropsByTypeContainer, filteredPropsContainer)
-        this.overlayCtx.openWith(createDialog('Filter Props', content), () => {
-            const propCtx = this.propCtx
-            this.scene.$(`#${this.ids.PROP_SEARCH_INPUT}`).focus()
-            this.scene.$('.list__items__item').on('click', (e) => {
-                const [_, type] = this.idCtx.extractIdType(e.currentTarget.id, ...IdTypes.PROP_TYPE_TOGGLE)
-                if (type && type.length > 0) {
-                    this.propCtx.toggleSelectedPropType(type[0])
-                }
-            })
-            this.scene.$(`#${this.ids.PROP_SEARCH_INPUT}`).on('input', function (e) {
-                propCtx.searchValue = $(this).val().toString()
-            })
-        })
-    }
-
     afterRender() {
         this.open.set(this.scene.config.defaultOpenPropList)
         this.scene.$('.prop__list__item').on("click", (e) => {
@@ -151,9 +73,10 @@ export class PropList extends SceneComponent {
             this.open.set(!this.open.get())
         })
         this.scene.$('#' + this.ids.PROP_LIST_DIALOG_BUTTON).on("click", () => {
-            this.openFilterDialog()
+            this.overlayCtx.openWith(``)
+            const filterDialog = new FilterDialog(this.scene)
+            filterDialog.renderComponent()
         })
-        this.openFilterDialog()
     }
 
     render(): string | string[] {
