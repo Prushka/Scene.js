@@ -110,6 +110,7 @@ export class Scene {
         }
         this.viewportsState.set(viewports)
         this.propCtx.sortPropsByRenderOrder()
+        this.propCtx.resetSelectedPropTypes()
     }
 
     private register(...c: Array<new(T) => CustomComponent>): CustomComponent[] {

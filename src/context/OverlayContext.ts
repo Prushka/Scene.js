@@ -11,6 +11,7 @@ export function useOverlay() {
 export default class OverlayContext {
     public overlayOpenState: State<boolean> = createState(false)
     public overlayHTMLState: State<string> = createState('')
+    public overlayAfterRender = () => {}
 
     public get overlayHTML() {
         return this.overlayHTMLState.get()
@@ -24,7 +25,8 @@ export default class OverlayContext {
         this.overlayOpenState.set(false)
     }
 
-    public openWith(content: string) {
+    public openWith(content: string, afterRender = () => {}) {
+        this.overlayAfterRender = afterRender
         this.overlayOpenState.set(true)
         this.overlayHTMLState.set(content)
     }

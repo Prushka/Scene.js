@@ -37,14 +37,13 @@ export const IdTypes: { [key: string]: string[] } = {
     PROP_DIALOG_FOOTER_SCALE: ['prop', 'dialog', 'footer', 'scale'],
     PROP_DIALOG_HEADER_TAB: ['dialog'],
     PROP_LIST: ['prop', 'list'],
-    PROP_LIST_ICON: ['prop', 'list', 'icon'],
-    PROP_LIST_TITLE: ['prop', 'list', 'icon'],
     PROP_LIST_HIDE: ['prop', 'list', 'hide'],
     PROP_LIST_RESET_BUTTON: ['prop', 'list', 'reset'],
     PROP_LIST_DIALOG_BUTTON: ['prop', 'list', 'open', 'dialog'],
     PROP_LIST_HIDE_ICON: ['prop', 'list', 'hide', 'icon'],
     SNACKBAR: ['snackbar'],
-    CANVAS: ['canvas']
+    CANVAS: ['canvas'],
+    PROP_TYPE_TOGGLE: ['prop', 'type', 'toggle']
 }
 // I added context id to every id since id attributes are supposed to be unique
 // (i.e.,) unique ids across different instances in the same page

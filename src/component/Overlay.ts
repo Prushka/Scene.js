@@ -26,6 +26,7 @@ export class Overlay extends SceneComponent {
             this.ctx.$('.modal__header__close').on('click', ()=>{
                 this.overlayCtx.close()
             })
+            this.overlayCtx.overlayAfterRender()
         }
     }
 

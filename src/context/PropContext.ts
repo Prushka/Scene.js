@@ -34,6 +34,30 @@ export default class PropContext extends Context {
     public selectedPropTypesState: State<string[]> = createState([])
     public searchPropValueState: State<string> = createState('')
 
+    public toggleSelectedPropType(type: string) {
+        if (this.isPropTypeSelected(type)) {
+            this.selectedPropTypesState.set(this.selectedPropTypes.filter(t => t !== type))
+        } else {
+            this.selectedPropTypesState.set([...this.selectedPropTypes, type])
+        }
+    }
+
+    public isPropTypeSelected(type: string) {
+        return this.selectedPropTypes.includes(type.toUpperCase())
+    }
+
+    public resetSelectedPropTypes() {
+        this.selectedPropTypesState.set(this.allPropTypes)
+    }
+
+    public get allPropTypes(): string[] {
+        return Object.keys(this.propTypePool)
+    }
+
+    public get selectedPropTypes() {
+        return this.selectedPropTypesState.get()
+    }
+
     public constructor(scene: Scene) {
         super(scene);
         this.propTypePool = {...PropTypeIcons}
@@ -49,7 +73,7 @@ export default class PropContext extends Context {
 
     public get filteredProps() {
         return this.props.filter(prop => {
-            return true
+            return this.selectedPropTypes.includes(prop.type)
         })
     }
 
@@ -196,16 +220,27 @@ export default class PropContext extends Context {
         return createSpan(prop.name, color ? color : prop.color)
     }
 
-    public getPropSVG(prop: PropConfig, color ?: string, scale ?: number) {
+    public getPropSVG(propOrType: PropConfig | string, color ?: string, scale ?: number) {
         scale = scale ? scale : 1.4
-        const propIcon = this.getPathGroup(prop, color)
-        const svg = createSVGIcon(scale)
-        svg.append(propIcon)
-        return svg
+        const propIcon = this.getPathGroup(propOrType, color)
+        if (propIcon) {
+            const svg = createSVGIcon(scale)
+            svg.append(propIcon)
+            return svg
+        }
+        return document.createElement('div')
     }
 
-    public getPathGroup(prop: PropConfig, color ?: string) {
-        return getPathGroupByHTML(this.propTypePool[prop.type][prop.style][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths'], prop, color)
+    private getPathGroup(propOrType: PropConfig | string, color ?: string) {
+        const isType = typeof propOrType === 'string'
+        const type = isType ? propOrType : propOrType.type
+        const style = isType ? 'default' : propOrType.style
+        const pathType = isType ? 'enabledPaths' : this.isPropEnabled(propOrType) ? 'enabledPaths' : 'disabledPaths'
+        const icon = this.propTypePool[type][style] ? this.propTypePool[type][style][pathType] : null
+        if (icon) {
+            return getPathGroupByHTML(icon, isType ? null : propOrType, color)
+        }
+        return null
     }
 
     public get isStatic() {

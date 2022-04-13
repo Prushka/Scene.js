@@ -25,7 +25,7 @@ export class ViewSVG extends View {
     }
 
     listen(): State<any>[] {
-        return [this.propCtx.propsState];
+        return [this.propCtx.propsState, this.propCtx.selectedPropTypesState];
     }
 
     actions(): StateAction<any>[] {
@@ -46,7 +46,7 @@ export class ViewSVG extends View {
                 }
             }],
             [this.propCtx.currentFrameState, (oldFrame: number, newFrame: number) => {
-                this.propCtx.props.forEach(prop => {
+                this.propCtx.filteredProps.forEach(prop => {
                     let newPosition = prop.frameAnimationConfig[newFrame]
                     let show = newPosition && !newPosition.hide
                     newPosition = this.propCtx.getPropPositionByFrame(prop, newFrame, newFrame < oldFrame)

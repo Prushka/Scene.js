@@ -33,6 +33,10 @@
     --scene-trans-base: rgba(255, 255, 255, 0.92);
     --scene-tooltip-background: #313131;
     --scene-tooltip-text: #ffffff;
+    --scene-toggle-selected: #49655E;
+    --scene-toggle-selected-hover: #2c413c;
+    --scene-toggle-not-selected: #8c232f;
+    --scene-toggle-not-selected-hover: #b74352;
 }
 
 .pointer {
@@ -476,7 +480,7 @@
     display: flex;
 }
 
-.prop__list__bottom__button{
+.prop__list__bottom__button {
     display: flex;
     width: 50%;
     padding: 11px 0 11px 0;
@@ -492,7 +496,7 @@
     background-color: var(--scene-base-inv-s1);
 }
 
-.prop__list__bottom__button:hover span{
+.prop__list__bottom__button:hover span {
     color: var(--scene-base)
 }
 
@@ -706,7 +710,7 @@
     align-items: center;
 }
 
-.filter__modal__title{
+.filter__modal__title {
     margin-bottom: 5px;
 }
 
@@ -729,6 +733,34 @@
     justify-content: center;
 }
 
+.list__items__item svg {
+    margin-left: 10px;
+}
+
+.list__items__item span {
+    color: var(--scene-base-inv);
+}
+
+.list__items__item--selected {
+    background-color: var(--scene-toggle-selected);
+}
+
+.list__items__item--selected:hover {
+    background-color: var(--scene-toggle-selected-hover) !important;
+}
+
+.list__items__item--not-selected {
+    background-color: var(--scene-toggle-not-selected);
+}
+
+.list__items__item--not-selected:hover {
+    background-color: var(--scene-toggle-not-selected-hover) !important;
+}
+
+.list__items__item--not-selected span, .list__items__item--selected span {
+    color: var(--scene-base);
+}
+
 .list__items__icon {
     margin-left: 9px;
 }
@@ -746,4 +778,31 @@
     margin: 7px;
     width: 100%;
     box-sizing: border-box;
+}
+
+.textfield-section {
+    font-family: Roboto, serif !important;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    margin: 7px;
+}
+
+.textfield-section__input {
+    width: 100%;
+    padding: 16px 20px 15px 20px;
+    margin: 8px 0;
+    outline: none;
+    display: inline-block;
+    box-shadow: unset !important;
+    transition: 0.2s all linear;
+    /*someone made a global textarea*/
+}
+
+.textfield-section__input:focus {
+    border: 2px solid var(--scene-snackbar-success);
+}
+
+.textfield-section__input, .textfield-section__input::placeholder {
+    font-size: 15px
 }

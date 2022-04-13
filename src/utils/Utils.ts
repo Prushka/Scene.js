@@ -102,7 +102,7 @@ export function createSpan(text: string, color?: string) {
     return span
 }
 
-export function getPathGroupByHTML(pathsHTML: string, prop: PropConfig, color ?: string) {
+export function getPathGroupByHTML(pathsHTML: string, prop?: PropConfig, color ?: string) {
     let pathId = 0
     const pathGroup = document.createElement("g")
     forEachPathHTML(pathsHTML, (pathHTML) => {
