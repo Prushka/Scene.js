@@ -38,7 +38,7 @@ export function generateLightColor() {
 }
 
 export function createSVGElement(width: number, height: number) {
-    const svg = document.createElement("svg")
+    const svg = document.createElementNS('http://www.w3.org/2000/svg',"svg")
     svg.setAttribute('xmlns', "http://www.w3.org/2000/svg")
     svg.setAttribute("width", String(width))
     svg.setAttribute("height", String(height))
@@ -104,10 +104,11 @@ export function createSpan(text: string, color?: string) {
 
 export function getPathGroupByHTML(pathsHTML: string, prop?: PropConfig, color ?: string) {
     let pathId = 0
-    const pathGroup = document.createElement("g")
+    const pathGroup = document.createElementNS("http://www.w3.org/2000/svg","g")
     forEachPathHTML(pathsHTML, (pathHTML) => {
-        const path = createElement(pathHTML)
-        path.style.fill = color ? color : prop.color
+        // const path = createElement(pathHTML)
+        let path = (new DOMParser().parseFromString(pathHTML, 'image/svg+xml')).firstChild
+        //path.style.fill = color ? color : prop.color
         pathGroup.appendChild(path)
         pathId++
     })

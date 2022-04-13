@@ -248,7 +248,7 @@ export class ViewSVG extends View {
             const hide = position.hide
             if (position) {
                 const isSelected = this.propCtx.isPropSelected(prop)
-                const group = document.createElement("g")
+                const group = document.createElementNS("http://www.w3.org/2000/svg","g")
                 group.classList.add("view__prop", isSelected ? 'view__prop--selected' : 'view__prop--not-selected')
                 group.style.transitionTimingFunction = position.transitionTimingFunction
                 group.id = this.idCtx.VIEW_GROUP(prop)

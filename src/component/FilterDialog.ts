@@ -14,7 +14,8 @@ export class FilterDialog extends SceneComponent {
     }
 
     actions(): StateAction<any>[] {
-        return [[this.propCtx.searchPropValueState, ()=>{},()=>{
+        return [[this.propCtx.searchPropValueState, () => {
+        }, () => {
             this.renderFilteredProps()
         }]]
     }
@@ -24,6 +25,7 @@ export class FilterDialog extends SceneComponent {
     }
 
     afterRender() {
+        this.renderFilteredProps()
         const propCtx = this.propCtx
         this.scene.$('.list__items__item').on('click', (e) => {
             const [_, type] = this.idCtx.extractIdType(e.currentTarget.id, ...IdTypes.PROP_TYPE_TOGGLE)
@@ -42,6 +44,7 @@ export class FilterDialog extends SceneComponent {
         title.classList.add('filter__modal__title')
         return title
     }
+
     private static createListContainer() {
         const filteredProps = document.createElement('div')
         filteredProps.classList.add('list__items')
@@ -49,11 +52,8 @@ export class FilterDialog extends SceneComponent {
     }
 
     private renderFilteredProps() {
-        const filteredPropsContainer = document.getElementById(this.ids.PROP_FILTERED_LIST) ?? document.createElement('div')
-        filteredPropsContainer.innerHTML = ''
-        filteredPropsContainer.classList.add('input__box')
-        filteredPropsContainer.id = this.ids.PROP_FILTERED_LIST
-        const propListContainer = FilterDialog.createListContainer()
+        const propListContainer = document.getElementById(this.ids.PROP_FILTERED_LIST)
+        propListContainer.innerHTML = ''
         this.propCtx.filteredProps.forEach(prop => {
             const propElement = document.createElement('div')
             propElement.classList.add('list__items__item')
@@ -62,8 +62,6 @@ export class FilterDialog extends SceneComponent {
             propElement.append(span, svg)
             propListContainer.append(propElement)
         })
-        filteredPropsContainer.append(FilterDialog.createTitle('Filtered Props'), propListContainer)
-        return filteredPropsContainer
     }
 
     render(): string | string[] {
@@ -104,7 +102,14 @@ export class FilterDialog extends SceneComponent {
 
         filterPropsByTypeContainer.append(FilterDialog.createTitle('Select Prop Types'), typeListContainer)
 
-        content.append(searchTextField, filterPropsByTypeContainer, this.renderFilteredProps())
+
+        const filteredPropsContainer = document.createElement('div')
+        filteredPropsContainer.classList.add('input__box')
+        const propListContainer = FilterDialog.createListContainer()
+        propListContainer.id = this.ids.PROP_FILTERED_LIST
+        filteredPropsContainer.append(FilterDialog.createTitle('Filtered Props'), propListContainer)
+
+        content.append(searchTextField, filterPropsByTypeContainer, filteredPropsContainer)
         return createDialog('Filter Props', content)
     }
 }
