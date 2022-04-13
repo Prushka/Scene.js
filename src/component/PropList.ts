@@ -64,6 +64,7 @@ export class PropList extends SceneComponent {
     }
 
     afterRender() {
+        let filterDialog
         this.open.set(this.scene.config.defaultOpenPropList)
         this.scene.$('.prop__list__item').on("click", (e) => {
             const [id] = this.idCtx.extractIdType(e.currentTarget.id)
@@ -74,8 +75,14 @@ export class PropList extends SceneComponent {
         })
         this.scene.$('#' + this.ids.PROP_LIST_DIALOG_BUTTON).on("click", () => {
             this.overlayCtx.openWith(``)
-            const filterDialog = new FilterDialog(this.scene)
+            filterDialog = new FilterDialog(this.scene)
             filterDialog.renderComponent()
+        })
+        this.scene.$('#' + this.ids.PROP_LIST_RESET_BUTTON).on("click", () => {
+            if(filterDialog){
+                filterDialog.unmount()
+            }
+            this.propCtx.resetFilter()
         })
     }
 
@@ -86,17 +93,21 @@ export class PropList extends SceneComponent {
         parentContainer.classList.add('prop__list')
 
 
-        const createButton = (text, id) => {
+        const createButton = (text, id, ...iconClasses: string[]) => {
             const button = document.createElement('div')
             button.classList.add('prop__list__bottom__button')
             button.id = id
             const buttonText = document.createElement('span')
             buttonText.innerText = text
-            button.append(buttonText)
+
+            const icon = document.createElement('span')
+            icon.classList.add(...iconClasses)
+
+            button.append(buttonText, icon)
             return button
         }
-        const dialogButton = createButton('Filter', this.ids.PROP_LIST_DIALOG_BUTTON)
-        const resetButton = createButton('Reset', this.ids.PROP_LIST_RESET_BUTTON)
+        const dialogButton = createButton('Filter', this.ids.PROP_LIST_DIALOG_BUTTON,'bi','bi-x')
+        const resetButton = createButton('Reset', this.ids.PROP_LIST_RESET_BUTTON,'bi','bi-x')
 
         const buttonGroup = document.createElement('div')
         buttonGroup.classList.add('prop__list__bottom__container')

@@ -62,7 +62,9 @@ export class FilterDialog extends SceneComponent {
             propElement.append(span, svg)
             temp.append(propElement)
         })
-        propListContainer.innerHTML = temp.innerHTML
+        if(propListContainer){
+            propListContainer.innerHTML = temp.innerHTML
+        }
     }
 
     render(): string | string[] {
