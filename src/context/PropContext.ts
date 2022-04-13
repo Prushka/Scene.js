@@ -54,8 +54,16 @@ export default class PropContext extends Context {
         return this.selectedPropTypes.includes(type.toUpperCase())
     }
 
-    public resetFilter() {
+    public deselectAllPropTypes() {
+        this.selectedPropTypesState.set([])
+    }
+
+    public selectAllPropTypes() {
         this.selectedPropTypesState.set(this.allPropTypes)
+    }
+
+    public resetFilter() {
+        this.selectAllPropTypes()
         this.searchValue = ''
     }
 

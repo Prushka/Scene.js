@@ -45,7 +45,10 @@ export const IdTypes: { [key: string]: string[] } = {
     CANVAS: ['canvas'],
     PROP_TYPE_TOGGLE: ['prop', 'type', 'toggle'],
     PROP_SEARCH_INPUT: ['prop', 'search', 'input'],
-    PROP_FILTERED_LIST: ['prop', 'filtered', 'list']
+    PROP_FILTERED_LIST: ['prop', 'filtered', 'list'],
+    PROP_FILTER_DIALOG_SELECT_ALL: ['prop', 'filter', 'dialog', 'select'],
+    PROP_FILTER_DIALOG_DESELECT_ALL: ['prop', 'filter', 'dialog', 'deselect'],
+    PROP_FILTER_DIALOG_CLEAR_TEXTFIELD: ['prop', 'filter', 'dialog', 'clear'],
 }
 // I added context id to every id since id attributes are supposed to be unique
 // (i.e.,) unique ids across different instances in the same page

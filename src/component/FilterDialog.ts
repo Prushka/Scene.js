@@ -15,8 +15,14 @@ export class FilterDialog extends SceneComponent {
 
     actions(): StateAction<any>[] {
         return [[this.propCtx.searchPropValueState, () => {
-        }, () => {
+        }, (previousValue, value) => {
             this.renderFilteredProps()
+            if(previousValue !== value){
+                const input = document.getElementById(this.ids.PROP_SEARCH_INPUT)
+                if(input){
+                    input['value'] = value
+                }
+            }
         }]]
     }
 
@@ -35,6 +41,15 @@ export class FilterDialog extends SceneComponent {
         })
         this.scene.$(`#${this.ids.PROP_SEARCH_INPUT}`).on('input', function (e) {
             propCtx.searchValue = $(this).val().toString()
+        })
+        this.scene.$(`#${this.ids.PROP_FILTER_DIALOG_SELECT_ALL}`).on('click', () => {
+            propCtx.selectAllPropTypes()
+        })
+        this.scene.$(`#${this.ids.PROP_FILTER_DIALOG_DESELECT_ALL}`).on('click', () => {
+            propCtx.deselectAllPropTypes()
+        })
+        this.scene.$(`#${this.ids.PROP_FILTER_DIALOG_CLEAR_TEXTFIELD}`).on('click', () => {
+            propCtx.searchValue = ''
         })
     }
 
@@ -92,10 +107,11 @@ export class FilterDialog extends SceneComponent {
             typeListContainer.append(propElement)
         })
 
-        const createButton = (text: string) => {
+        const createButton = (text: string, id: string) => {
             const button = document.createElement('div')
             button.classList.add('search__container__button')
             button.innerText = text
+            button.id = id
             return button
         }
 
@@ -103,16 +119,26 @@ export class FilterDialog extends SceneComponent {
         searchContainer.classList.add('search__container')
         const searchTextField = document.createElement('div')
         searchTextField.classList.add('textfield')
+
+        const searchTextFieldHeader = document.createElement('div')
+        searchTextFieldHeader.classList.add('textfield__header')
+
         const label = FilterDialog.createTitle('Search Prop Name')
-        label.classList.add('textfield__label')
+
+        const clearTextField = FilterDialog.createTitle('Clear')
+        clearTextField.classList.add('textfield__action')
+        clearTextField.id = this.ids.PROP_FILTER_DIALOG_CLEAR_TEXTFIELD
+
+        searchTextFieldHeader.append(label, clearTextField)
+
         const input = document.createElement('input')
         input.classList.add('input__box', 'textfield__input')
         input.setAttribute('value', this.propCtx.searchValue)
         input.id = this.ids.PROP_SEARCH_INPUT
-        searchTextField.append(label, input)
+        searchTextField.append(searchTextFieldHeader, input)
 
-        const selectAllPropTypesButton = createButton('Select All Props')
-        const deselectAllPropTypesButton = createButton('Deselect All Props')
+        const selectAllPropTypesButton = createButton('Select All Props', this.ids.PROP_FILTER_DIALOG_SELECT_ALL)
+        const deselectAllPropTypesButton = createButton('Deselect All Props', this.ids.PROP_FILTER_DIALOG_DESELECT_ALL)
 
         searchContainer.append(searchTextField, selectAllPropTypesButton, deselectAllPropTypesButton)
 

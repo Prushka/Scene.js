@@ -88,7 +88,6 @@ export class PropList extends SceneComponent {
             }
             this.propCtx.resetFilter()
         })
-        openFilterDialog()
     }
 
     render(): string | string[] {

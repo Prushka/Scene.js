@@ -788,12 +788,12 @@
 .search__container {
     display: flex;
     width: 100%;
-    justify-content: space-between;
     align-items: flex-end;
     margin: 7px;
 }
 
 .search__container__button {
+    font-family: Roboto, serif;
     padding: 0 20px 0 20px;
     cursor: pointer;
     background-color: var(--scene-button-color);
@@ -802,14 +802,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 16px;
     transition-duration: .1s;
     height: 53px;
     box-sizing: border-box;
+    margin-left: 10px;
 }
 
-.search__container__button:hover{
+.search__container__button:hover {
     background-color: var(--scene-button-hover);
     color: var(--scene-button-text);
 }
@@ -832,8 +833,19 @@
     /*someone made a global textarea*/
 }
 
-.textfield__label {
+.textfield__header {
+    display: flex;
     margin-bottom: 0 !important;
+}
+
+.textfield__header div {
+    margin-bottom: 0 !important;
+}
+
+.textfield__action {
+    margin-left: 10px;
+    color: var(--scene-dialog-value);
+    cursor: pointer;
 }
 
 .textfield__input:focus {
