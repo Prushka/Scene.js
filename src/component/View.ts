@@ -5,8 +5,8 @@ export default abstract class View extends SceneComponent {
     public abstract resetViewport(currentFrame?: number): void
 
     public forEachPropWithPosition(f: (prop: PropConfig, position: AnimationConfig) => void) {
-        this.ctx.propsState.get().forEach(prop => {
-            const position = this.ctx.getPropPositionByCurrentFrame(prop)
+        this.propCtx.props.forEach(prop => {
+            const position = this.propCtx.getPropPositionByCurrentFrame(prop)
             if(position){
                 f(prop, position)
             }

@@ -3,7 +3,7 @@
  */
 
 import State, {createState} from "../state/State";
-import {Context} from "../index";
+import {Scene} from "../index";
 
 export type Colors = { [key: string]: string }
 export type Theme = { isLight: boolean, colors: Colors, icon: string }
@@ -95,7 +95,7 @@ export const ThemeConstants: Themes = {
     }
 }
 
-export function useTheme(context: Context, themes: Themes, defaultTheme?: string) {
+export function useTheme(context: Scene, themes: Themes, defaultTheme?: string) {
     return new ThemeContext(context, themes, defaultTheme)
 }
 
@@ -103,13 +103,13 @@ export default class ThemeContext {
     private readonly _current: State<number>
     private readonly _themeKeys: string[]
     private readonly _themes: Themes
-    private readonly _context: Context
+    private readonly _context: Scene
 
     public get currentState() {
         return this._current
     }
 
-    public constructor(context: Context, themes: Themes, defaultTheme?: string) {
+    public constructor(context: Scene, themes: Themes, defaultTheme?: string) {
         this._context = context
         this._themeKeys = [...Object.keys(themes)]
         this._themes = themes

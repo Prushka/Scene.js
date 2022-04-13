@@ -24,7 +24,7 @@ import {Config, DefaultConfig} from "./config/Config";
 import {Snackbar} from "./component/Snackbar";
 import {CustomComponent} from "./component/Component";
 import {Overlay} from "./component/Overlay";
-import FrameContext, {useFrames} from "./context/FrameContext";
+import PropContext from "./context/PropContext";
 import ViewPortContext from "./context/ViewPortContext";
 import {useSnackbar} from "./context/SnackbarContext";
 import {useOverlay} from "./context/OverlayContext";
@@ -37,20 +37,20 @@ import {ThemeConstants, useTheme} from "./context/ThemeContext";
 export * from './utils/Utils'
 export * from './props/Props'
 
-export class Context {
-    protected propIds: number = 0
-    private _selected: State<PropConfig> = createState()
-    public propsState: State<PropConfig[]> = createState([])
+let globalSceneIds = 0
+
+const globalScenes: { [key: number]: Scene } = {}
+
+export class Scene {
     public viewportsState: State<ViewPortContext[]> = createState([])
     public readonly config: Config
-    public readonly propTypeIconPool: { [key in PropType]: PropTypeIcon }
     public readonly rootContainerId: string
     public readonly rootContainerIdSymbol: string
 
-    public readonly frameContext = useFrames()
     public readonly snackbarCtx = useSnackbar()
     public readonly overlayCtx = useOverlay()
     public readonly themeCtx
+    public readonly propCtx
     public readonly ids
     public readonly idContext
 
@@ -65,53 +65,13 @@ export class Context {
             l[2] = {...DefaultLine, ...l[2]}
         })
         console.log(this.config)
-        this.propTypeIconPool = {...PropTypeIcons, ...config.propTypes}
-
         this.themeCtx = useTheme(this, {...ThemeConstants, ...this.config.customThemes}, this.config.defaultTheme)
+        this.propCtx = new PropContext(this)
+        this.propCtx.addPropType(config.propTypes)
 
         this.config.props.forEach(propConfig => {
-            this.addProp(propConfig)
+            this.propCtx.addProp(propConfig)
         })
-    }
-
-    private addProp(...propConfigs: PropConfig[]): Context {
-        const _props = [...this.propsState.get()]
-        propConfigs.forEach(propConfig => {
-            propConfig = {...DefaultPropConfig, ...propConfig}
-            propConfig.color = propConfig.color ?? (this.themeCtx.currentTheme.isLight ? generateDarkColor() : generateLightColor())
-            propConfig.id = propConfig.id ?? this.propIds
-            propConfig.name = propConfig.name ?? `${convertTypeToReadable(propConfig.type)} ${propConfig.id}`
-            if (propConfig.frameAnimationConfig) {
-                propConfig.frameAnimationConfig
-                for (let key in propConfig.frameAnimationConfig) {
-                    const a = {...DefaultAnimationConfig, ...propConfig.frameAnimationConfig[key]}
-                    a.transitionTimingFunction = a.transitionTimingFunction || this.config.transitionTimingFunction
-                    propConfig.frameAnimationConfig[key] = a
-                }
-            }
-            this.propIds += 1
-            _props.push(propConfig)
-        })
-        this.propsState.set(_props)
-        return this
-    }
-
-    public get selected() {
-        return this._selected.get()
-    }
-
-    public set selected(selected: PropConfig) {
-        this._selected.set(selected)
-    }
-
-    public get selectedState() {
-        return this._selected
-    }
-
-    public propSelected(prop: PropConfig | number): boolean {
-        const selectedProp: PropConfig = this.selected
-        const propId: number = typeof prop === 'number' ? prop : prop.id
-        return selectedProp && selectedProp.id === propId;
     }
 
     public getRootDocument() {
@@ -130,94 +90,8 @@ export class Context {
         return this.getRootWidth() < 500
     }
 
-    public isPropEnabled(prop: PropConfig): boolean {
-        return this.getPropPositionByCurrentFrame(prop).enabled
-    }
-
-    public getPropById(id: number): PropConfig | null {
-        for (const prop of this.propsState.get()) {
-            if (prop.id === id) {
-                return prop
-            }
-        }
-        return null
-    }
-
-    public getPropsByName(name: string) {
-        const props = []
-        for (const prop of this.propsState.get()) {
-            if (prop.name.toLowerCase() === name.toLowerCase()) {
-                props.push(prop)
-            }
-        }
-        return props
-    }
-
     public getFrameSeconds(frame: number): number {
         return frame in this.config.frameSpeed ? this.config.frameSpeed[frame] : this.config.defaultFrameSpeed
-    }
-
-    public getPropPositionByCurrentFrame(prop: PropConfig): AnimationConfig | null {
-        return this.getPropPositionByFrame(prop, this.frameContext.currentFrame, false)
-    }
-
-    public getPropPositionByFrame(prop: PropConfig, frame: number, lookForward: boolean): AnimationConfig | null {
-        const _get = (_lookForward: boolean) => {
-            let position: AnimationConfig
-            const frameConfig = prop.frameAnimationConfig
-            if (frameConfig) {
-                if (frameConfig[frame]) {
-                    position = frameConfig[frame]
-                } else {
-                    let closest = -1
-                    for (let key in frameConfig) {
-                        const _key = Number(key)
-                        if (_lookForward) {
-                            if (_key > frame && (closest === -1 || Math.abs(_key - frame) < closest)) {
-                                closest = _key
-                            }
-                        } else {
-                            if (_key < frame && (closest === -1 || Math.abs(_key - frame) < closest)) {
-                                closest = _key
-                            }
-                        }
-                    }
-                    position = frameConfig[closest]
-                }
-            }
-            return position
-        }
-        const position = _get(lookForward) ?? _get(!lookForward)
-        if (position) {
-            return {...position}
-        }
-        return null
-    }
-
-    public toggleSelected(prop: PropConfig | number) {
-        let _prop: PropConfig
-        if (typeof prop == "number") {
-            _prop = this.getPropById(prop)
-        } else {
-            _prop = prop
-        }
-        if (_prop === this.selected) {
-            this.selected = null
-        } else {
-            this.selected = _prop
-        }
-    }
-
-    public findMaxFrames(): number {
-        let max = 0
-        this.propsState.get().forEach(prop => {
-            const frameConfig: FrameAnimationConfig = prop.frameAnimationConfig
-            const _max: number = Number(Object.keys(frameConfig).reduce((a, b) => frameConfig[a] > frameConfig[b] ? a : b))
-            if (_max > max) {
-                max = _max
-            }
-        })
-        return max
     }
 
     public getViewportGetter(): () => ViewPortContext {
@@ -226,46 +100,16 @@ export class Context {
         }
     }
 
-    public getTimeContextGetter(): () => FrameContext {
-        return () => {
-            return this.frameContext
-        }
-    }
-
     private beforeDisplay() {
-        this.frameContext.totalFrames = this.findMaxFrames()
+        this.propCtx.totalFrames = this.propCtx.findMaxFrames()
         const viewports = []
-        for (let i = 0; i <= this.frameContext.totalFrames; i++) {
+        for (let i = 0; i <= this.propCtx.totalFrames; i++) {
             // populate one more frame since 0's used for static/animation
             const viewport = new ViewPortContext(this)
             viewports.push(viewport)
         }
         this.viewportsState.set(viewports)
-        this.propsState.set(this.propsState.get().sort((a, b) => {
-            if (a.orderIndex < b.orderIndex) {
-                return -1
-            }
-            if (a.orderIndex > b.orderIndex) {
-                return 1
-            }
-            return 0
-        }));
-    }
-
-    public getPropSpanText(prop: PropConfig, color ?: string) {
-        return createSpan(prop.name, color ? color : prop.color)
-    }
-
-    public getPropSVG(prop: PropConfig, color ?: string, scale ?: number) {
-        scale = scale ? scale : 1.4
-        const propIcon = this.getPathGroup(prop, color)
-        const svg = createSVGIcon(scale)
-        svg.append(propIcon)
-        return svg
-    }
-
-    public getPathGroup(prop: PropConfig, color ?: string) {
-        return getPathGroupByHTML(this.propTypeIconPool[prop.type][prop.style][this.isPropEnabled(prop) ? 'enabledPaths' : 'disabledPaths'], prop, color)
+        this.propCtx.sortPropsByRenderOrder()
     }
 
     private register(...c: Array<new(T) => CustomComponent>): CustomComponent[] {
@@ -527,7 +371,7 @@ export function demo(rootRootId) {
             root.style.height = height
         }
 
-        const ctx: Context = new Context(root.id, {
+        const ctx: Scene = new Scene(root.id, {
             ...sharedConfig,
             ...config
         })

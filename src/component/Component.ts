@@ -3,11 +3,11 @@
  */
 
 import State, {StateAction} from "../state/State";
-import {Context} from "../index";
+import {Scene} from "../index";
 import SnackbarContext from "../context/SnackbarContext";
 import OverlayContext from "../context/OverlayContext";
 import ViewPortContext from "../context/ViewPortContext";
-import FrameContext from "../context/FrameContext";
+import PropContext from "../context/PropContext";
 import ThemeContext from "../context/ThemeContext";
 
 
@@ -70,25 +70,24 @@ export abstract class CustomComponent {
 }
 
 export abstract class SceneComponent extends CustomComponent {
-    protected ctx: Context
+    protected ctx: Scene
     protected snackbarCtx: SnackbarContext
     protected overlayCtx: OverlayContext
     protected themeCtx: ThemeContext
+    protected propCtx: PropContext
     protected getViewportCtx: () => ViewPortContext
-    protected getTimeCtx: () => FrameContext
     protected readonly ids
     protected readonly idCtx
 
-    public constructor(context: Context) {
+    public constructor(context: Scene) {
         super();
         this.ctx = context;
         [this.ids, this.idCtx] = [this.ctx.ids, this.ctx.idContext]
         this.snackbarCtx = this.ctx.snackbarCtx
         this.overlayCtx = this.ctx.overlayCtx
         this.themeCtx = this.ctx.themeCtx
+        this.propCtx = this.ctx.propCtx
         this.getViewportCtx = this.ctx.getViewportGetter()
-        this.getTimeCtx = this.ctx.getTimeContextGetter()
-
         this.afterConstructor()
         this.mount()
     }

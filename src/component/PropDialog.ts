@@ -26,7 +26,7 @@ export class PropDialog extends SceneComponent {
     }
 
     listen(): State<any>[] {
-        return [this.ctx.selectedState, this.ctx.propsState, this.selectedTabState];
+        return [this.propCtx.selectedPropState, this.propCtx.propsState, this.selectedTabState];
     }
 
     renderInIds() {
@@ -34,10 +34,10 @@ export class PropDialog extends SceneComponent {
     }
 
     actions(): StateAction<any>[] {
-        return [[this.ctx.selectedState, () => {
+        return [[this.propCtx.selectedPropState, () => {
             this.selectedTabState.set(Tab.GENERAL)
-        }], [this.ctx.frameContext.currentFrameState, (oldFrame, newFrame) => {
-            const selectedProp = this.ctx.selected
+        }], [this.ctx.propCtx.currentFrameState, (oldFrame, newFrame) => {
+            const selectedProp = this.propCtx.selectedProp
             if (selectedProp) {
                 const positionElement = document.getElementById(this.idCtx.PROP_DIALOG_FOOTER_POSITION(selectedProp))
                 const scaleElement = document.getElementById(this.idCtx.PROP_DIALOG_FOOTER_SCALE(selectedProp))
@@ -47,7 +47,7 @@ export class PropDialog extends SceneComponent {
     }
 
     private updatePositionScaleElements(positionElement, scaleElement, prop, frame?: number, lookForward?: boolean) {
-        const position = frame == null ? this.ctx.getPropPositionByCurrentFrame(prop) : this.ctx.getPropPositionByFrame(prop, frame, lookForward)
+        const position = frame == null ? this.propCtx.getPropPositionByCurrentFrame(prop) : this.propCtx.getPropPositionByFrame(prop, frame, lookForward)
         const positionDisplay = positionToDisplay(position)
         if (positionElement) {
             positionElement.innerText = `(${positionDisplay.x}, ${positionDisplay.y}, ${positionDisplay.degree}°)`
@@ -62,13 +62,13 @@ export class PropDialog extends SceneComponent {
     afterRender() {
         const toggle = (e) => {
             const [id] = this.idCtx.extractIdType(e.target.id)
-            this.ctx.toggleSelected(id)
+            this.propCtx.toggleSelected(id)
         }
         this.ctx.$('.prop__dialog__close').on("click", (e) => {
             toggle(e)
         })
         this.ctx.$('.prop__dialog').on("click", () => {
-            this.ctx.selected = null
+            this.propCtx.clearSelectedProp()
         })
         this.ctx.$('.prop__dialog--popup').on("click", (e) => {
             e.stopPropagation()
@@ -82,7 +82,7 @@ export class PropDialog extends SceneComponent {
     }
 
     render() {
-        const selectedProp = this.ctx.selected
+        const selectedProp = this.propCtx.selectedProp
         if (selectedProp) {
             const isPopup = this.ctx.config.dialog === 'popup'
             const parentContainer = document.createElement('div')
@@ -226,7 +226,7 @@ export class PropDialog extends SceneComponent {
             headerCloseIcon.classList.add("bi", "bi-x", "pointer", "prop__dialog__close")
             header.appendChild(headerCloseIcon)
 
-            const propIcon = this.ctx.getPropSVG(selectedProp)
+            const propIcon = this.propCtx.getPropSVG(selectedProp)
             propIcon.id = this.idCtx.PROP_DIALOG_FOOTER_ICON(selectedProp)
             const propText = document.createElement("span")
             propText.innerText = selectedProp.name

@@ -25,12 +25,12 @@ export class ViewSVG extends View {
     }
 
     listen(): State<any>[] {
-        return [this.ctx.propsState];
+        return [this.propCtx.propsState];
     }
 
     actions(): StateAction<any>[] {
         return [
-            [this.ctx.selectedState, (oldProp: PropConfig, newProp: PropConfig) => {
+            [this.propCtx.selectedPropState, (oldProp: PropConfig, newProp: PropConfig) => {
                 if (oldProp) {
                     const propDOM = $(`#${this.idCtx.VIEW_PROP(oldProp)}`)
                     if (propDOM) {
@@ -45,11 +45,11 @@ export class ViewSVG extends View {
                     }
                 }
             }],
-            [this.ctx.frameContext.currentFrameState, (oldFrame: number, newFrame: number) => {
-                this.ctx.propsState.get().forEach(prop => {
+            [this.propCtx.currentFrameState, (oldFrame: number, newFrame: number) => {
+                this.propCtx.props.forEach(prop => {
                     let newPosition = prop.frameAnimationConfig[newFrame]
                     let show = newPosition && !newPosition.hide
-                    newPosition = this.ctx.getPropPositionByFrame(prop, newFrame, newFrame < oldFrame)
+                    newPosition = this.propCtx.getPropPositionByFrame(prop, newFrame, newFrame < oldFrame)
                     const groupElement = document.getElementById(this.idCtx.VIEW_PROP(prop))
                     groupElement.style.display = show ? "unset" : "none"
                     const enabledGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP_ENABLED(prop))
@@ -73,13 +73,13 @@ export class ViewSVG extends View {
                     }
                     groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scaleX} ${newPosition.scaleY})`)
                     let transitionDuration
-                    if (this.getTimeCtx().ifJumpOne(oldFrame, newFrame)) {
+                    if (this.propCtx.ifJumpOne(oldFrame, newFrame)) {
                         transitionDuration = this.ctx.getFrameSeconds(oldFrame) + "s"
                     } else {
                         transitionDuration = this.ctx.config.frameSelectionSpeed + "s"
                     }
                     setStyles('transitionDuration', transitionDuration, enabledGroup, disabledGroup, groupElement, storyboard)
-                    const oldPosition = this.ctx.getPropPositionByFrame(prop, oldFrame, false)
+                    const oldPosition = this.propCtx.getPropPositionByFrame(prop, oldFrame, false)
                     if (oldPosition) {
                         setStyles('transitionTimingFunction', oldPosition.transitionTimingFunction,
                             enabledGroup, disabledGroup, groupElement, storyboard)
@@ -100,9 +100,9 @@ export class ViewSVG extends View {
             `${-this.getViewportCtx().x} ${-this.getViewportCtx().y} ${svgE.width() * this.getViewportCtx().scale} ${svgE.height() * this.getViewportCtx().scale}`);
         if (!viewBoxChange) {
             this.ctx.$(`.view__prop`).each((index, element) => {
-                const prop = this.ctx.getPropById(this.idCtx.extractIdType(element.id)[0])
+                const prop = this.propCtx.getPropById(this.idCtx.extractIdType(element.id)[0])
                 if (prop.shouldDisplayName) {
-                    const position = this.ctx.getPropPositionByCurrentFrame(prop)
+                    const position = this.propCtx.getPropPositionByCurrentFrame(prop)
                     const textElement = element.querySelector('text')
                     const pathGroup = document.getElementById(this.idCtx.VIEW_ICON_PATH_GROUP(prop, position.enabled ? 'enabled' : 'disabled')) as any
                     const storyboard = element.querySelector('image') as any
@@ -214,19 +214,19 @@ export class ViewSVG extends View {
         this.ctx.$('.view__prop').on('click touchend', (e) => {
             const elementId = e.target.id ? e.target.id : e.target.parentElement.id
             let [id] = this.idCtx.extractIdType(elementId)
-            this.ctx.toggleSelected(id)
+            this.propCtx.toggleSelected(id)
         })
     }
 
     private createConnections() {
         let connections = [...this.connections.get()].map(_c => {
             const c: number[] = _c.split(",").map(s => Number(s))
-            const propLeft = this.ctx.getPropById(c[0])
-            const propRight = this.ctx.getPropById(c[1])
+            const propLeft = this.propCtx.getPropById(c[0])
+            const propRight = this.propCtx.getPropById(c[1])
             const leftGroupElement = document.getElementById(this.idCtx.VIEW_GROUP(propLeft))
             const rightGroupElement = document.getElementById(this.idCtx.VIEW_GROUP(propRight))
-            const propLeftPosition = this.ctx.getPropPositionByCurrentFrame(propLeft)
-            const propRightPosition = this.ctx.getPropPositionByCurrentFrame(propRight)
+            const propLeftPosition = this.propCtx.getPropPositionByCurrentFrame(propLeft)
+            const propRightPosition = this.propCtx.getPropPositionByCurrentFrame(propRight)
             const propLeftRect = leftGroupElement.querySelector("text").getBoundingClientRect()
             const propRightRect = rightGroupElement.querySelector("text").getBoundingClientRect()
             // console.log("bounding: " + propLeftPosition.x + "," + propLeftPosition.y)
@@ -246,9 +246,9 @@ export class ViewSVG extends View {
         this.forEachPropWithPosition((prop, position) => {
             const hide = position.hide
             if (position) {
-                const selected = this.ctx.propSelected(prop)
+                const isSelected = this.propCtx.isPropSelected(prop)
                 const group = document.createElement("g")
-                group.classList.add("view__prop", selected ? 'view__prop--selected' : 'view__prop--not-selected')
+                group.classList.add("view__prop", isSelected ? 'view__prop--selected' : 'view__prop--not-selected')
                 group.style.transitionTimingFunction = position.transitionTimingFunction
                 group.id = this.idCtx.VIEW_GROUP(prop)
                 group.setAttribute("transform", `translate(${position.x}, ${position.y}) rotate(${position.degree}) scale(${position.scaleX} ${position.scaleY})`)
@@ -272,11 +272,11 @@ export class ViewSVG extends View {
                         }
                         break
                     default:
-                        const pathGroupEnabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['enabledPaths'], prop)
-                        const pathGroupDisabled = getPathGroupByHTML(this.ctx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], prop)
+                        const pathGroupEnabled = getPathGroupByHTML(this.propCtx.propTypeIconPool[prop.type][prop.style]['enabledPaths'], prop)
+                        const pathGroupDisabled = getPathGroupByHTML(this.propCtx.propTypeIconPool[prop.type][prop.style]['disabledPaths'], prop)
                         pathGroupEnabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_ENABLED(prop)
                         pathGroupDisabled.id = this.idCtx.VIEW_ICON_PATH_GROUP_DISABLED(prop)
-                        if (this.ctx.isPropEnabled(prop)) {
+                        if (this.propCtx.isPropEnabled(prop)) {
                             pathGroupDisabled.style.opacity = "0"
                         } else {
                             pathGroupEnabled.style.opacity = "0"
@@ -299,10 +299,10 @@ export class ViewSVG extends View {
             }
         })
         for (let key in this.ctx.config.attachment) {
-            const keyProps = this.ctx.getPropsByName(key)
+            const keyProps = this.propCtx.getPropsByName(key)
             let valueProps = []
             this.ctx.config.attachment[key].forEach(name => {
-                valueProps = valueProps.concat(this.ctx.getPropsByName(name))
+                valueProps = valueProps.concat(this.propCtx.getPropsByName(name))
             })
             keyProps.forEach(keyProp => {
                 valueProps.forEach(valueProp => {

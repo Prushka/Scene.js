@@ -106,19 +106,19 @@ export class Footer extends SceneComponent {
                 spanEl.innerText = 'Play'
             }
         }],
-            [this.ctx.frameContext.currentFrameState, (oldFrame, newFrame, previousFrame) => {
+            [this.ctx.propCtx.currentFrameState, (oldFrame, newFrame, previousFrame) => {
                 console.log(`Frame: ${previousFrame} | ${oldFrame} -> ${newFrame}`)
                 if (oldFrame == null) {
                     return
                 }
                 const frameSeconds = this.ctx.getFrameSeconds(oldFrame)
-                if (this.getTimeCtx().ifJumpOneLiterally(oldFrame, newFrame)) {
+                if (this.propCtx.ifJumpOneLiterally(oldFrame, newFrame)) {
                     // normal flow, (start -> end, one frame jump) will trigger progress bar change and frame button timeout change
                     setFrameButton(oldFrame, true)
                     this.timeouts.push(setTimeout(() => {
                         setFrameButton(newFrame, true)
                     }, frameSeconds * 1000))
-                    if (previousFrame == null || this.getTimeCtx().ifJumpOne(previousFrame, oldFrame)) {
+                    if (previousFrame == null || this.propCtx.ifJumpOne(previousFrame, oldFrame)) {
                         // force the previous progress bar to be full if the user jumps another frame ahead
                         const previousProgressBars = this.getProgressBars(oldFrame - 1)
                         if (previousProgressBars) {
@@ -134,7 +134,7 @@ export class Footer extends SceneComponent {
                     this.timeouts.forEach(t => {
                         clearTimeout(t)
                     })
-                    for (let frame = 1; frame <= this.getTimeCtx().totalFrames; frame++) {
+                    for (let frame = 1; frame <= this.propCtx.totalFrames; frame++) {
                         setFrameButton(frame, false)
                         const progressBars = this.getProgressBars(frame)
                         if (progressBars) {
@@ -159,7 +159,7 @@ export class Footer extends SceneComponent {
         }
         this.ctx.$('.timeline__frame').on("click", (e) => {
             const [frame] = this.idCtx.extractIdType(e.target.id)
-            this.ctx.frameContext.currentFrame = frame
+            this.ctx.propCtx.currentFrame = frame
         })
         hookButton(() => {
             this.open.set(!this.open.get())
@@ -170,13 +170,13 @@ export class Footer extends SceneComponent {
         }, this.ids.TOOLBAR_RESET_FRAMES_BUTTON)
 
         hookButton(() => {
-            this.ctx.viewComponent.resetViewport(this.ctx.frameContext.currentFrame)
+            this.ctx.viewComponent.resetViewport(this.ctx.propCtx.currentFrame)
             this.snackbarCtx.snackbar("Reset Current Viewport")
         }, this.ids.TOOLBAR_RESET_CURRENT_BUTTON)
 
         const nextFrame = () => {
             if (this.playing.get()) {
-                const previousFrame = this.ctx.frameContext.nextFrame()
+                const previousFrame = this.ctx.propCtx.nextFrame()
                 setTimeout(() => {
                     nextFrame()
                 }, this.ctx.getFrameSeconds(previousFrame) * 1000)
@@ -231,11 +231,11 @@ export class Footer extends SceneComponent {
             container.append(toolbarButton, tooltipText)
             toolbarContainer.append(container)
         }
-        const currentFrame = this.ctx.frameContext.currentFrame
+        const currentFrame = this.ctx.propCtx.currentFrame
         addButtonToToolbar('Collapse/Expand', 'bi bi-arrows-collapse', this.ids.TOOLBAR_COLLAPSE_BUTTON)
         addButtonToToolbar('Toggle fullscreen mode', 'bi bi-arrows-fullscreen', this.ids.TOOLBAR_FULLSCREEN)
         addButtonToToolbar('Reset viewport (based on current frame)', 'bi bi-arrows-move', this.ids.TOOLBAR_RESET_CURRENT_BUTTON)
-        if (!this.getTimeCtx().isStatic) {
+        if (!this.propCtx.isStatic) {
             addButtonToToolbar("Reset viewport (based on all frames)", 'bi bi-bootstrap-reboot', this.ids.TOOLBAR_RESET_FRAMES_BUTTON)
         }
         addButtonToToolbar('Export', 'bi bi-box-arrow-up-right', this.ids.TOOLBAR_EXPORT_BUTTON)
@@ -243,18 +243,18 @@ export class Footer extends SceneComponent {
         if (this.ctx.config.displayToolbar) {
             footerContainer.append(toolbarContainer)
         }
-        if (!this.ctx.frameContext.isStatic) {
+        if (!this.ctx.propCtx.isStatic) {
             // create a timeline since it's not static
             const timelineContainer = document.createElement('div')
             timelineContainer.classList.add('timeline-container')
             if (!this.ctx.config.displayToolbar) {
                 timelineContainer.classList.add('timeline-container-full-width')
             }
-            for (let f = 0; f < this.getTimeCtx().totalFrames; f++) {
+            for (let f = 0; f < this.propCtx.totalFrames; f++) {
                 const frame = f + 1
                 const frameContainer = document.createElement('div')
                 frameContainer.classList.add('timeline__frame-container')
-                if (frame != this.getTimeCtx().totalFrames) {
+                if (frame != this.propCtx.totalFrames) {
                     frameContainer.style.flexGrow = String(Math.floor(this.ctx.getFrameSeconds(frame) * 10))
                 }
                 // The styling (e.g., color etc.,) of a standard html <progress> tag cannot be standardized,

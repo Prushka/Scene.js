@@ -50,6 +50,7 @@ export const IdTypes: { [key: string]: string[] } = {
 // (i.e.,) unique ids across different instances in the same page
 // I don't know if there's a better way to achieve this
 
+// ISSUE with JS proxy in TS:
 // https://github.com/microsoft/TypeScript/issues/20846
 export function useId() {
     const idContext = new IdContext()

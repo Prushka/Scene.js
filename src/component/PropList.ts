@@ -16,7 +16,7 @@ export class PropList extends SceneComponent {
     }
 
     listen() {
-        return [this.ctx.propsState]
+        return [this.propCtx.propsState]
     }
 
     actions(): StateAction<any>[] {
@@ -32,15 +32,15 @@ export class PropList extends SceneComponent {
                 icon.classList.remove("icon-animated-left")
                 icon.classList.add("icon-animated-right")
             }
-        }], [this.ctx.selectedState, (_, selected) => {
+        }], [this.propCtx.selectedPropState, (_, selected) => {
             const listItemContainer = document.getElementById(this.idCtx.PROP_LIST(selected))
-            this.ctx.propsState.get().forEach(prop => {
+            this.propCtx.props.forEach(prop => {
                 const listItemContainer = document.getElementById(this.idCtx.PROP_LIST(prop))
                 if (listItemContainer) {
                     listItemContainer.classList.add("prop__list__item--not-selected")
                     listItemContainer.classList.remove("prop__list__item--selected")
                     listItemContainer.querySelector("span").style.color = prop.color
-                    listItemContainer.querySelectorAll("path").forEach(c=>{
+                    listItemContainer.querySelectorAll("path").forEach(c => {
                         c.style.fill = prop.color
                     })
                 }
@@ -49,7 +49,7 @@ export class PropList extends SceneComponent {
                 listItemContainer.classList.remove("prop__list__item--not-selected")
                 listItemContainer.classList.add("prop__list__item--selected")
                 listItemContainer.querySelector("span").style.color = "var(--scene-base)"
-                listItemContainer.querySelectorAll("path").forEach(c=>{
+                listItemContainer.querySelectorAll("path").forEach(c => {
                     c.style.fill = "var(--scene-base)"
                 })
             }
@@ -64,7 +64,7 @@ export class PropList extends SceneComponent {
         this.open.set(this.ctx.config.defaultOpenPropList)
         this.ctx.$('.prop__list__item').on("click", (e) => {
             const [id] = this.idCtx.extractIdType(e.target.id)
-            this.ctx.toggleSelected(id)
+            this.propCtx.toggleSelected(id)
         })
         this.ctx.$('#' + this.ids.PROP_LIST_HIDE).on("click", () => {
             this.open.set(!this.open.get())
@@ -92,7 +92,7 @@ export class PropList extends SceneComponent {
             return button
         }
         const dialogButton = createButton('Filter', this.ids.PROP_LIST_DIALOG_BUTTON)
-        const resetButton = createButton('Reset',this.ids.PROP_LIST_RESET_BUTTON)
+        const resetButton = createButton('Reset', this.ids.PROP_LIST_RESET_BUTTON)
 
         const buttonGroup = document.createElement('div')
         buttonGroup.classList.add('prop__list__bottom__container')
@@ -112,15 +112,15 @@ export class PropList extends SceneComponent {
         hideIconRotateContainer.append(hideIcon)
         hideIconContainer.append(hideIconRotateContainer)
         hideIconContainer.classList.add('hide__icon-container', 'pointer')
-        this.ctx.propsState.get().forEach(prop => {
-            const isSelected = this.ctx.propSelected(prop)
+        this.propCtx.props.forEach(prop => {
+            const isSelected = this.propCtx.isPropSelected(prop)
             const color = isSelected ? "var(--scene-base)" : prop.color
             const listItemContainer = document.createElement('div')
             listItemContainer.id = this.idCtx.PROP_LIST(prop)
-            listItemContainer.classList.add("pointer", "prop__list__item", this.ctx.propSelected(prop) ? "prop__list__item--selected" : "prop__list__item--not-selected")
-            const propIcon = this.ctx.getPropSVG(prop, color, 1.3)
+            listItemContainer.classList.add("pointer", "prop__list__item", this.propCtx.isPropSelected(prop) ? "prop__list__item--selected" : "prop__list__item--not-selected")
+            const propIcon = this.propCtx.getPropSVG(prop, color, 1.3)
             propIcon.id = this.idCtx.PROP_LIST_ICON(prop)
-            const propText = this.ctx.getPropSpanText(prop, color)
+            const propText = this.propCtx.getPropSpanText(prop, color)
             propText.id = this.idCtx.PROP_LIST_TITLE(prop)
             listItemContainer.append(propIcon, propText)
             parentContainer.append(listItemContainer)
