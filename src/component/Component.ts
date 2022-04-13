@@ -19,6 +19,17 @@ export abstract class CustomComponent {
 
     abstract afterRender(): void
 
+    unmount() {
+        this.listen().forEach(s => {
+            s.unsubscribe(this)
+        })
+        this.actions().forEach(([state, before, after]) => {
+            if (before || after) {
+                state.unsubscribe(this)
+            }
+        })
+    }
+
     mount() {
         // listen will trigger render on every state update
         this.listen().forEach(s => {
@@ -40,15 +51,16 @@ export abstract class CustomComponent {
         this.renderInIds().forEach(elementId => {
             const el: string | string[] | Node = this.render()
             const parent = document.getElementById(elementId)
-            if (Array.isArray(el)) {
-                parent.innerHTML = el.join('')
-            } else if (typeof el === 'string') {
-                parent.innerHTML = el
-            } else {
-                parent.innerHTML = ''
-                parent.append(el)
+            if (parent) {
+                if (Array.isArray(el)) {
+                    parent.innerHTML = el.join('')
+                } else if (typeof el === 'string') {
+                    parent.innerHTML = el
+                } else {
+                    parent.innerHTML = ''
+                    parent.append(el)
+                }
             }
-
         })
         this.afterRender()
     }

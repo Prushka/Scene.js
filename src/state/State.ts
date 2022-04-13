@@ -51,6 +51,11 @@ export default class State<T> {
         }
     }
 
+    public unsubscribe(component: CustomComponent) {
+        this._components = this._components.filter(c => c !== component)
+        this._componentsActions = this._componentsActions.filter(c => c[0] !== component)
+    }
+
     public subscribe(component: CustomComponent) {
         this._components.push(component)
     }
