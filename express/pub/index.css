@@ -476,11 +476,11 @@
     left: 0;
 }
 
-.prop__list__bottom__container {
+.prop__list__action__container {
     display: flex;
 }
 
-.prop__list__bottom__button {
+.prop__list__action__button {
     display: flex;
     width: 50%;
     padding: 11px 0 11px 0;
@@ -492,16 +492,21 @@
     transition-duration: .1s;
 }
 
-.prop__list__bottom__button:hover {
+.prop__list__action__button:hover {
     background-color: var(--scene-base-inv-s1);
 }
 
-.prop__list__bottom__button:hover span {
+.prop__list__action__button:hover span {
     color: var(--scene-base)
 }
 
-.prop__list__bottom__button span {
+.prop__list__action__button span {
     font-weight: 600;
+}
+
+.prop__list__action__button__icon {
+    font-size: 1.1rem;
+    margin-left: 5px;
 }
 
 .prop__list__item {

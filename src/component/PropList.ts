@@ -95,22 +95,22 @@ export class PropList extends SceneComponent {
 
         const createButton = (text, id, ...iconClasses: string[]) => {
             const button = document.createElement('div')
-            button.classList.add('prop__list__bottom__button')
+            button.classList.add('prop__list__action__button')
             button.id = id
             const buttonText = document.createElement('span')
             buttonText.innerText = text
 
             const icon = document.createElement('span')
-            icon.classList.add(...iconClasses)
+            icon.classList.add(...iconClasses,'prop__list__action__button__icon')
 
             button.append(buttonText, icon)
             return button
         }
-        const dialogButton = createButton('Filter', this.ids.PROP_LIST_DIALOG_BUTTON,'bi','bi-x')
-        const resetButton = createButton('Reset', this.ids.PROP_LIST_RESET_BUTTON,'bi','bi-x')
+        const dialogButton = createButton('Filter', this.ids.PROP_LIST_DIALOG_BUTTON,'bi','bi-search')
+        const resetButton = createButton('Reset', this.ids.PROP_LIST_RESET_BUTTON,'bi','bi-arrow-clockwise')
 
         const buttonGroup = document.createElement('div')
-        buttonGroup.classList.add('prop__list__bottom__container')
+        buttonGroup.classList.add('prop__list__action__container')
 
         buttonGroup.append(dialogButton, resetButton)
         propColumnContainer.append(buttonGroup)

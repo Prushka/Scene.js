@@ -18,14 +18,17 @@ export class Overlay extends SceneComponent {
     afterRender() {
         const overlay = document.getElementById(this.ids.OVERLAY)
         if (overlay) {
+            this.scene.$('.modal__header__close').on('click', ()=>{
+                console.log('clicked')
+                this.overlayCtx.close()
+            })
             overlay.onclick = (e) => {
                 if(e.target === overlay){
                     this.overlayCtx.close()
+                }else if(e.target['classList'] && e.target['classList'].contains('modal__header__close')){
+                    this.overlayCtx.close()
                 }
             }
-            this.scene.$('.modal__header__close').on('click', ()=>{
-                this.overlayCtx.close()
-            })
             this.overlayCtx.overlayAfterRender()
         }
     }
