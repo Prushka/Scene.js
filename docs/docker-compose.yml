@@ -3,7 +3,7 @@ version: '3'
 services:
   react:
     build:
-      context: ..
+      context: .
       dockerfile: "docker/Dockerfile"
     image: scenejs:1.2
     container_name: scene-js
