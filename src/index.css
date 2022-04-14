@@ -37,6 +37,8 @@
     --scene-toggle-selected-hover: #2c413c;
     --scene-toggle-not-selected: #8c232f;
     --scene-toggle-not-selected-hover: #b74352;
+
+    all: initial;
 }
 
 .pointer {
@@ -286,6 +288,7 @@
     position: absolute;
     margin: 0 0 4px 10px;
     left: 0;
+    z-index: 600;
 }
 
 
