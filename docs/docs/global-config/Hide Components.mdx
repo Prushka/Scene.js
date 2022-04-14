@@ -1,0 +1,62 @@
+---
+sidebar_position: 4
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList, sceneHideToolbar, sceneHidePropList, sceneHideToolbarPropList
+} from "../../src/components/Scene/SceneComponents";
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+## Hide Prop List / Toolbar by Default
+
+:::caution
+
+This is not the same as disabling these components:
+
+* Hiding components only makes them collapse on default (see Hide Components)
+
+* Not showing components disables them
+
+:::
+
+You can disable any component in the library by setting its show property to false:
+
+### Hide Toolbar by Default
+
+<GeneratorConfigBlock
+    generator={"new GlobalConfigGenerator().defaultOpenToolbar(false)"}
+    config={"config.defaultOpenToolbar = false"} />
+
+
+<SceneOnlyShort {...sceneHideToolbar}/>
+
+### Hide Prop List by Default
+
+<GeneratorConfigBlock
+    generator={"new GlobalConfigGenerator().defaultOpenPropList(false)"}
+    config={"config.defaultOpenPropList = false"} />
+
+
+<SceneOnlyShort {...sceneHidePropList}/>
+
+### Hide Prop List and Toolbar by Default
+
+<GeneratorConfigBlock
+    generator={"new GlobalConfigGenerator().defaultOpenPropList(false).defaultOpenToolbar(false)"}
+    config={
+`config.defaultOpenPropList = false
+config.defaultOpenToolbar = false
+`} />
+
+
+<SceneOnlyShort {...sceneHideToolbarPropList}/>

@@ -3,6 +3,8 @@ import {generateRandomString, getDemoScene, GlobalConfigGenerator, PropConfigGen
 import './scene.css';
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 export const SceneComponent = ({scene, uid, width, height}) => {
     useEffect(() => {
@@ -33,6 +35,39 @@ export const SceneOnly = ({scene, uid}) => {
 
         }
     </BrowserOnly>)
+}
+
+export const SceneOnlyShort = ({scene, uid}) => {
+    return (<BrowserOnly>
+        {
+            () =>
+                <div className='docs__actions'>
+                    <SceneComponent scene={scene} uid={uid} width={'100%'} height={'450px'}/>
+                </div>
+
+        }
+    </BrowserOnly>)
+}
+
+export const GeneratorConfigBlock = ({generator, config}) => {
+    return (<Tabs>
+        <TabItem value="generator" label="Global Config Generator" default>
+
+            <CodeBlock language={'js'}>
+                {`${generator}`}
+            </CodeBlock>
+
+
+        </TabItem>
+        <TabItem value="config" label="Config">
+
+            <CodeBlock language={'js'}>
+                {`${config}`}
+            </CodeBlock>
+
+        </TabItem>
+    </Tabs>)
+
 }
 
 export const SceneSnackbar = ({scene, uid}) => {
@@ -146,4 +181,29 @@ export const sceneDeveloperInteractionManualSelection = getCustomScene(() => {
         new PropConfigGenerator().asRandom().shouldDisplayName(true).withName('Select Me').withPosition(3).getConfig()
     )
     return config
+})
+
+export const sceneNoToolbar = getCustomScene(() => {
+    return new GlobalConfigGenerator().withFrameSpeed().showToolbar(false).withProps().getConfig()
+})
+export const sceneHideToolbar = getCustomScene(() => {
+    return new GlobalConfigGenerator().withFrameSpeed().defaultOpenToolbar(false).withProps().getConfig()
+})
+
+export const sceneNoPropList = getCustomScene(() => {
+    return new GlobalConfigGenerator().withFrameSpeed().showPropList(false).withProps().getConfig()
+})
+export const sceneHidePropList = getCustomScene(() => {
+    return new GlobalConfigGenerator().withFrameSpeed().defaultOpenPropList(false).withProps().getConfig()
+})
+
+export const sceneNoTimeline = getCustomScene(() => {
+    return new GlobalConfigGenerator().withFrameSpeed().showTimeline(false).withProps().getConfig()
+})
+
+export const sceneNoTimelineToolbarPropList = getCustomScene(() => {
+    return new GlobalConfigGenerator().withFrameSpeed().showPropList(false).showTimeline(false).showToolbar(false).withProps().getConfig()
+})
+export const sceneHideToolbarPropList = getCustomScene(() => {
+    return new GlobalConfigGenerator().withFrameSpeed().defaultOpenPropList(false).defaultOpenToolbar(false).withProps().getConfig()
 })
