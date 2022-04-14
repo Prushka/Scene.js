@@ -34,6 +34,8 @@ import {useId} from "./context/IdContext";
 import {PropList} from "./component/PropList";
 import {ThemeConstants, useTheme} from "./context/ThemeContext";
 
+import './index.css'
+
 export * from './utils/Utils'
 export * from './props/Props'
 
@@ -394,3 +396,4 @@ export function demo(rootRootId) {
 
 demo("container")
 
+console.log('Scene.js loaded')
