@@ -676,7 +676,7 @@
     width: 80%;
     height: 79%;
     align-self: center;
-    background-color: var(--scene-base);
+    background-color: var(--scene-base-s1);
 }
 
 .modal__header {
@@ -695,7 +695,7 @@
     margin-left: auto;
     font-size: 45px;
     cursor: pointer;
-
+    color: var(--scene-base-inv-s1);
 }
 
 .modal__content {
