@@ -1,12 +1,12 @@
 # https://dev.to/karanpratapsingh/dockerize-your-react-app-4j2e
-FROM node:current-alpine3.15 AS build
+FROM node:17-alpine3.14 AS build
 ENV NODE_ENV production
 # Add a work directory
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm ci --silent
+RUN yarn install --frozen-lockfile
 COPY . ./
 RUN npm run build
 
