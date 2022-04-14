@@ -193,7 +193,7 @@ export interface Config {
      *
      * @default 1.02
      */
-    zoomFactor?: number,
+    zoomStep?: number,
 
     /** Affects the dialog element's header tab.
      *
@@ -265,7 +265,7 @@ export const DefaultConfig: Config = {
     renderMethod: "svg",
     zoomLowerBound: 0.15,
     zoomUpperBound: 2,
-    zoomFactor: 1.02,
+    zoomStep: 1.02,
     dialogShowAllProperties: false,
     dialogAllPropertiesFormat: 'json',
     customThemes: {},

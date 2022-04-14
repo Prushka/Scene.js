@@ -222,6 +222,13 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         return this
     }
 
+    public addProp(f: (generator: PropConfigGenerator) => void) {
+        const propConfigGenerator = new PropConfigGenerator()
+        f(propConfigGenerator)
+        this.config.props.push(propConfigGenerator.getConfig())
+        return this
+    }
+
     public zoomUpperBound(n: number) {
         this.config.zoomUpperBound = n
         return this
@@ -232,8 +239,8 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         return this
     }
 
-    public zoomFactor(n: number) {
-        this.config.zoomFactor = n
+    public zoomStep(n: number) {
+        this.config.zoomStep = n
         return this
     }
 

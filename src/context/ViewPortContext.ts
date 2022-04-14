@@ -13,7 +13,7 @@ export default class ViewPortContext extends Context {
     })
     private scaleState: State<number> = createState(0.75)
 
-    private onZoom = (n: number) => {
+    private onZoom = (n: number, prev: number) => {
     }
 
     public constructor(scene: Scene) {
@@ -71,7 +71,7 @@ export default class ViewPortContext extends Context {
         }
     }
 
-    public setOnZoom(onZoom: (n: number) => void) {
+    public setOnZoom(onZoom: (n: number, prev: number) => void) {
         this.onZoom = onZoom
     }
 
@@ -88,10 +88,11 @@ export default class ViewPortContext extends Context {
     }
 
     public set scale(scale) {
+        const prev = this.scale
         if (scale > this.config.zoomLowerBound && scale < this.config.zoomUpperBound) {
             this.scaleState.set(scale)
         }
-        this.onZoom(this.scale)
+        this.onZoom(this.scale, prev)
     }
 
     public get x() {
@@ -103,10 +104,10 @@ export default class ViewPortContext extends Context {
     }
 
     public zoomIn() {
-        this.scale = this.scale * this.config.zoomFactor
+        this.scale = this.scale * this.config.zoomStep
     }
 
     public zoomOut() {
-        this.scale = this.scale * (1 / this.config.zoomFactor)
+        this.scale = this.scale * (1 / this.config.zoomStep)
     }
 }

@@ -161,7 +161,7 @@ export class ViewSVG extends View {
     afterRender() {
         this.mouse = {x: 0, y: 0}
         this.dragging = false
-        this.resetViewport()
+        this.resetViewport(this.propCtx.currentFrame)
 
         const rootView = document.getElementById(this.ids.ROOT_VIEW)
 
