@@ -7,8 +7,6 @@ WORKDIR /app
 COPY . ./
 WORKDIR /app/docs
 ENV PATH /app/node_modules/.bin:$PATH
-COPY package.json ./
-COPY yarn.lock ./
 RUN yarn install --frozen-lockfile
 RUN npm run build
 
@@ -16,7 +14,7 @@ RUN npm run build
 FROM nginx:1.21.6-alpine as production
 ENV NODE_ENV production
 # Copy built assets from builder
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/docs/build /usr/share/nginx/html
 # Add your nginx.conf
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 # Expose port
