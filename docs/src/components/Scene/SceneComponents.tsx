@@ -1,11 +1,10 @@
-import React from "react";
-import {useEffect} from "react";
-import {getDemoScene, generateRandomString, GlobalConfigGenerator} from '../../../../src/index';
+import React, {useEffect} from "react";
+import {generateRandomString, getDemoScene, GlobalConfigGenerator, Scene} from '../../../../src/index';
 import styles from './styles.module.css';
 import BrowserOnly from "@docusaurus/BrowserOnly";
 
 
-export const Scene = ({scene, uid, width, height}) => {
+export const SceneComponent = ({scene, uid, width, height}) => {
     useEffect(() => {
         scene.display()
     }, [])
@@ -25,12 +24,12 @@ export const Button = ({
     )
 };
 
-export const SceneUserInteraction = ({scene, uid}) => {
+export const SceneOnly = ({scene, uid}) => {
     return (<BrowserOnly>
         {
             () =>
                 <div className={styles.scene__actions}>
-                    <Scene scene={scene} uid={uid} width={'100%'} height={'650px'}/>
+                    <SceneComponent scene={scene} uid={uid} width={'100%'} height={'650px'}/>
                 </div>
 
         }
@@ -45,7 +44,7 @@ export const SceneNormal = ({scene, uid}) => {
                     <Button onClick={() => {
                         scene.snackbarCtx.error('test')
                     }}>test</Button>
-                    <Scene scene={scene} uid={uid} width={'100%'} height={'650px'}/>
+                    <SceneComponent scene={scene} uid={uid} width={'100%'} height={'650px'}/>
                 </div>
         }
     </BrowserOnly>)
@@ -58,5 +57,19 @@ export function getScene() {
     return {scene, uid}
 }
 
+export function getCustomScene(f: () => {}) {
+    const uid = generateRandomString()
+    const scene = new Scene(uid, f())
+    return {scene, uid}
+}
+
 export const sceneNormal = getScene()
-export const sceneUserInteraction = getScene()
+export const sceneUserInteractionToolbar = getCustomScene(() => {
+    return new GlobalConfigGenerator().withFrameSpeed().showPropList(false).withProps().getConfig()
+})
+export const sceneUserInteractionTimeline = getCustomScene(() => {
+    return new GlobalConfigGenerator().withFrameSpeed().showPropList(false).showToolbar(false).withProps().getConfig()
+})
+export const sceneUserInteractionPropList = getCustomScene(() => {
+    return new GlobalConfigGenerator().withFrameSpeed().showToolbar(false).withProps().getConfig()
+})

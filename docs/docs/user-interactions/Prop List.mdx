@@ -1,0 +1,39 @@
+---
+sidebar_position: 3
+---
+
+import {
+    sceneUserInteractionPropList,
+    SceneOnly
+} from "../../src/components/Scene/SceneComponents";
+
+<SceneOnly {...sceneUserInteractionPropList}/>
+
+## Prop List
+
+This list shows all filtered props. By **default**, it displays all props in this frame.
+
+* Clicking a prop will display/hide its prop dialog (toggle selected prop)
+
+### Filter
+
+The filter button will give you a dialog popup.
+
+You can filter props by **prop type** and **search text**.
+
+Every time you **selected/deselect a prop type** and/or **enter/clear the search TextField**:
+1. The filter dialog will display filtered props only
+2. The prop list itself will display filtered props only
+3. The viewport will display filtered props only
+
+:::info
+
+If search TextField contains nothing, it has no effect.
+
+:::
+
+### Reset
+
+This button next to Filter resets the filter.
+
+All props will be displayed once you click it.

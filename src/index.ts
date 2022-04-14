@@ -186,24 +186,35 @@ export class Scene {
 
 }
 
-export abstract class ConfigGenerator<T extends {[K in keyof T]:any}> {
+export abstract class ConfigGenerator<T extends { [K in keyof T]: any }> {
     config: T
 
     public constructor() {
         this.config = this.initializeConfig()
     }
 
-    protected abstract initializeConfig():T;
+    protected abstract initializeConfig(): T;
 
     public getConfig(): T {
         return this.config
     }
 }
 
-export class GlobalConfigGenerator extends ConfigGenerator<Config>{
+export class GlobalConfigGenerator extends ConfigGenerator<Config> {
+
+    static randomFrames = 6
 
     protected initializeConfig() {
         return {};
+    }
+
+    public withProps(props?: PropConfig[]) {
+        if (props) {
+            this.config.props = props
+        } else {
+            this.config.props = PropConfigGenerator.generateRandomProps(6, GlobalConfigGenerator.randomFrames)
+        }
+        return this
     }
 
     public withDefaultTheme(defaultTheme: string) {
@@ -221,7 +232,22 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config>{
         return this
     }
 
-    public withFrameSpeed(frame: number, allocation?: number) {
+    public showTimeline(v: boolean = true) {
+        this.config.displayTimeline = v
+        return this
+    }
+
+    public showToolbar(v: boolean = true) {
+        this.config.displayToolbar = v
+        return this
+    }
+
+    public showPropList(v: boolean = true) {
+        this.config.displayPropList = v
+        return this
+    }
+
+    public withFrameSpeed(frame: number = GlobalConfigGenerator.randomFrames, allocation?: number) {
         if (allocation) {
             this.config.frameSpeed[frame] = allocation
         } else {
@@ -236,7 +262,7 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config>{
 
 }
 
-export class PropConfigGenerator extends ConfigGenerator<PropConfig>{
+export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
 
     static allPositions = ['top', 'bottom', 'right', 'left']
 
@@ -392,14 +418,15 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig>{
     public getConfig() {
         return this.config
     }
-}
 
-export function generateRandomProps(howMany, frames) {
-    const s = []
-    for (let i = 0; i < howMany; i++) {
-        s.push(new PropConfigGenerator().asRandom().withPosition(frames).getConfig())
+    static generateRandomProps(howMany, frames) {
+        const s = []
+        for (let i = 0; i < howMany; i++) {
+            s.push(new PropConfigGenerator().asRandom().withPosition(frames).getConfig())
+        }
+        return s
     }
-    return s
+
 }
 
 
@@ -449,7 +476,7 @@ export function getDemoScene(rootRootId): Scene {
     const config = new GlobalConfigGenerator().withFrameSpeed(6).getConfig()
     return new Scene(rootRootId, {
         ...config,
-        props: generateRandomProps(6, 6)
+        props: PropConfigGenerator.generateRandomProps(6, 6)
     })
 }
 
