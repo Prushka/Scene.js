@@ -121,7 +121,6 @@ export default class ThemeContext {
             }
         }
         this._current = createState(defaultPos)
-        this.renderTheme()
     }
 
     public get currentTheme(): Theme {

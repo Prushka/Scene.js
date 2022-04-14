@@ -212,7 +212,7 @@ export class PropDialog extends SceneComponent {
 
 
             const footer = document.createElement('div')
-            footer.classList.add('footer')
+            footer.classList.add('prop__dialog__footer')
             const headerCloseIcon = document.createElement('i')
             headerCloseIcon.id = this.ids.PROP_DIALOG_CLOSE_ICON
             headerCloseIcon.classList.add("bi", "bi-x", "pointer", "prop__dialog__close")

@@ -95,7 +95,7 @@ export class ViewSVG extends View {
     }
 
     private applyViewportAttrs(viewBoxChange?: boolean) {
-        const svgE = (this.scene.$(`.view-svg`) as HTMLElement)
+        const svgE = (document.getElementById(this.ids.VIEW_SVG) as HTMLElement)
         svgE.setAttribute("viewBox",
             `${-this.getViewportCtx().x} ${-this.getViewportCtx().y} ${svgE.clientWidth * this.getViewportCtx().scale} ${svgE.clientHeight * this.getViewportCtx().scale}`);
         if (!viewBoxChange) {
@@ -333,7 +333,7 @@ export class ViewSVG extends View {
             })
         }
 
-        return `<svg class="view-svg" xmlns="http://www.w3.org/2000/svg"><g id="${this.ids.VIEW_CONNECTIONS}"></g>${s.join('')}
+        return `<svg id="${this.ids.VIEW_SVG}" class="view-svg" xmlns="http://www.w3.org/2000/svg"><g id="${this.ids.VIEW_CONNECTIONS}"></g>${s.join('')}
 <g id="${this.ids.VIEW_LINES_GROUP}">${gs.join('')}</g></svg>`
     }
 }

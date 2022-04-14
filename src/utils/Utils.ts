@@ -38,7 +38,7 @@ export function generateLightColor() {
 }
 
 export function createSVGElement(width: number, height: number) {
-    const svg = document.createElementNS('http://www.w3.org/2000/svg',"svg")
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', "svg")
     svg.setAttribute('xmlns', "http://www.w3.org/2000/svg")
     svg.setAttribute("width", String(width))
     svg.setAttribute("height", String(height))
@@ -104,7 +104,7 @@ export function createSpan(text: string, color?: string) {
 
 export function getPathGroupByHTML(pathsHTML: string, prop?: PropConfig, color ?: string) {
     let pathId = 0
-    const pathGroup = document.createElementNS("http://www.w3.org/2000/svg","g")
+    const pathGroup = document.createElementNS("http://www.w3.org/2000/svg", "g")
     forEachPathHTML(pathsHTML, (pathHTML) => {
         const path = createElement(pathHTML)
         // let path = (new DOMParser().parseFromString(pathHTML, 'image/svg+xml')).firstChild
@@ -154,4 +154,16 @@ export function createDialog(title: string, content: Element | string): string {
                 ${contentString}
                 </div>
             </div>`
+}
+
+// https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+export const generateRandomString = (size = 15) => {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    let charactersLength = characters.length;
+    for (let i = 0; i < size; i++) {
+        result += characters.charAt(Math.floor(Math.random() *
+            charactersLength));
+    }
+    return result;
 }

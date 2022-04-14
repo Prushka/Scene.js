@@ -37,8 +37,6 @@
     --scene-toggle-selected-hover: #2c413c;
     --scene-toggle-not-selected: #8c232f;
     --scene-toggle-not-selected-hover: #b74352;
-
-    all: initial;
 }
 
 .pointer {
@@ -46,6 +44,7 @@
 }
 
 .root-container {
+    line-height: 1;
     width: 100%;
     height: 100%;
     background-color: var(--scene-base-s1);
@@ -172,7 +171,8 @@
 }
 
 .content-text--normal {
-    color: var(--scene-dialog-content)
+    color: var(--scene-dialog-content);
+    line-height: 1.4;
 }
 
 .content .image__container {
@@ -206,6 +206,7 @@
 .content__value {
     color: var(--scene-dialog-value) !important;
     font-weight: 600;
+    line-height: 1.4;
 }
 
 .header__button--selected {
@@ -235,8 +236,8 @@
     font-size: 1.1rem;
 }
 
-.prop__dialog--popup .footer,
-.prop__dialog--embedded .footer {
+.prop__dialog--popup .prop__dialog__footer,
+.prop__dialog--embedded .prop__dialog__footer {
     display: flex;
     margin-top: auto;
     padding-top: 13px;
@@ -247,19 +248,19 @@
     box-sizing: border-box;
 }
 
-.prop__dialog--popup .footer span,
-.prop__dialog--embedded .footer span {
+.prop__dialog--popup .prop__dialog__footer span,
+.prop__dialog--embedded .prop__dialog__footer span {
     font-size: 1rem;
     font-weight: 700;
     margin-left: 13px;
 }
 
-.prop__dialog--popup .footer i,
-.prop__dialog--embedded .footer i {
+.prop__dialog--popup .prop__dialog__footer i,
+.prop__dialog--embedded .prop__dialog__footer i {
     font-size: 1.2rem;
 }
 
-.footer {
+.prop__dialog__footer {
     bottom: 0;
 }
 

@@ -2,21 +2,9 @@
  * Copyright 2022 Dan Lyu.
  */
 
-import {
-    AnimationConfig, DefaultAnimationConfig, DefaultLine, DefaultPropConfig,
-    FrameAnimationConfig, ImageConfig,
-    PropConfig,
-    PropType, PropTypeIcon,
-    PropTypeIcons
-} from "./props/Props";
+import {DefaultLine, ImageConfig, PropType, PropTypeIcons} from "./props/Props";
 import State, {createState} from "./state/State";
-import {
-    convertTypeToReadable,
-    createSpan,
-    createSVGIcon,
-    generateDarkColor, generateLightColor, getPathGroupByHTML, getRandomFromList, randBoolean,
-    randInclusive
-} from "./utils/Utils";
+import {getRandomFromList, randBoolean, randInclusive} from "./utils/Utils";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
 import {ViewSVG} from "./component/ViewSVG";
@@ -38,6 +26,7 @@ import './index.css'
 
 export * from './utils/Utils'
 export * from './props/Props'
+export * from './context/SnackbarContext'
 
 let globalSceneIds = 0
 
@@ -113,6 +102,8 @@ export class Scene {
         this.viewportsState.set(viewports)
         this.propCtx.sortPropsByRenderOrder()
         this.propCtx.resetFilter()
+
+        this.themeCtx.renderTheme()
     }
 
     private register(...c: Array<new(T) => CustomComponent>): CustomComponent[] {
@@ -141,6 +132,7 @@ export class Scene {
     }
 
     public display() {
+        console.log(`Going to render scene: ${this.rootContainerId}`)
         this.beforeDisplay()
 
         const render = () => {
@@ -167,16 +159,9 @@ export class Scene {
 
 }
 
-export function demo(rootRootId) {
-
-
-    console.log(rootRootId)
+export function demo(rootRootId): Scene {
+    console.log(`Render scene in: ${rootRootId}`)
     const rootContainer = document.getElementById(rootRootId)
-    if (!rootContainer) {
-        return
-    }
-
-    console.log(rootRootId + ' found')
 
     let randomNamePosition: boolean = false
     let randomNameScale: boolean = false
@@ -193,6 +178,7 @@ export function demo(rootRootId) {
             imageURL: "https://s2.loli.net/2022/03/16/tukpnVKZaUC7GIF.png"
         }
     ]
+
     const getSharedProp = () => {
         const s = {}
         if (randBoolean()) {
@@ -385,25 +371,19 @@ export function demo(rootRootId) {
         return s
     }
     let ids = 0
-    const display = (config, width?, height?) => {
-        const root = document.createElement('div')
-        root.id = `scene-${ids}`
-        ids += 1
-        rootContainer.append(root)
-        if (width) {
-            root.style.width = width
-            root.style.height = height
-        }
+    const display = (config) => {
+        // const root = document.createElement('div')
+        // root.id = `scene-${ids}`
+        // ids += 1
+        // rootContainer.append(root)
 
-        const ctx: Scene = new Scene(root.id, {
+        return new Scene(rootRootId, {
             ...sharedConfig,
             ...config
         })
-        ctx.display()
     }
-
     let frames = 6
-    display({
+    const s = display({
         frameSpeed: getRandomFrameSpeed(frames),
         defaultOpenPropList: true,
         frameSelectionSpeed: 5,
@@ -412,13 +392,9 @@ export function demo(rootRootId) {
             [{x: 300, y: 98}, {x: 600, y: 98}, {color: 'var(--scene-base-inv-s2)', width: 3}],
             [{x: 0, y: 0}, {x: 300, y: 0}, {color: 'var(--scene-base-inv-s2)', width: 3}]],
         props: [...getRandoms(25, frames), getStoryBoard(sImage2)]
-    }, '80%', '800px')
+    })
+    console.log(s)
+    return s
 }
-
-export default function test() {
-    console.log('aha')
-}
-
-demo("container")
 
 console.log('Scene.js loaded')

@@ -19,6 +19,7 @@ export const IdTypes: { [key: string]: string[] } = {
     VIEW_CONNECTIONS: ['view', 'connections'],
     VIEW_LINES_GROUP: ['view', 'lines', 'group'],
     VIEW_PROP: ['view', 'prop'],
+    VIEW_SVG: ['view', 'svg', 'sss'],
     OVERLAY: ['overlay'],
     FRAME_PROGRESS_FINISHED: ['frame', 'progress', 'finished'],
     FRAME_PROGRESS_UNFINISHED: ['frame', 'progress', 'unfinished'],
