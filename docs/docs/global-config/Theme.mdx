@@ -1,0 +1,106 @@
+---
+sidebar_position: 3
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneDefaultDarkTheme,
+    sceneDefaultCustomTheme
+} from "../../src/components/Scene/SceneComponents";
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Library comes with the following themes:
+
+* light (default theme)
+* dark
+* dark-classic
+
+### Select a theme as default theme
+
+<GeneratorConfigBlock
+    generator={"new GlobalConfigGenerator().defaultTheme('dark')"}
+    config={
+`config.defaultTheme = 'dark'
+`} />
+
+
+<SceneOnlyShort {...sceneDefaultDarkTheme}/>
+
+
+### Provide a custom theme
+
+<GeneratorConfigBlock
+    generator={
+`new GlobalConfigGenerator().customTheme('my-custom-theme', {
+    icon: "bi bi-arrow-through-heart-fill",
+    isLight: true,
+    colors: {
+        "--scene-base": "#ffffff",
+        "--scene-base-s1": "#F5F5F5",
+        "--scene-base-inv": "#000000",
+        "--scene-base-inv-s1": "#1c1c1c",
+        "--scene-base-inv-s2": "#696969",
+        "--scene-dialog-header-button-not-selected-hover": "#355070",
+        "--scene-dialog-header-button-not-selected-text-hover": "#355070",
+        "--scene-snackbar": "#F765A3",
+        "--scene-timeline-button-selected": "#6d597a",
+        "--scene-timeline-button-selected-hover": "#6d597a",
+        "--scene-timeline-button-not-selected": "#F765A3",
+        "--scene-timeline-button-not-selected-hover": "#ea5490",
+        "--scene-timeline-button-text": "#ffffff",
+        "--scene-snackbar-text": "#ffffff",
+        "--scene-dialog-key": "#6d597a",
+        "--scene-dialog-value": "#A155B9",
+        "--scene-dialog-content": "#000000",
+        "--scene-button-text": "#ffffff",
+        "--scene-button-color": "#7ec4ef",
+        "--scene-button-hover": "#9cabde",
+        "--scene-trans-base": "rgba(255, 255, 255, 0.95)",
+    },
+}).defaultTheme('my-custom-theme')`}
+    config={
+`config.defaultTheme = 'my-custom-theme'
+config.customThemes = {
+    "my-custom-theme": {
+        icon: "bi bi-arrow-through-heart-fill",
+        isLight: true,
+        colors: {
+            "--scene-base": "#ffffff",
+            "--scene-base-s1": "#F5F5F5",
+            "--scene-base-inv": "#000000",
+            "--scene-base-inv-s1": "#1c1c1c",
+            "--scene-base-inv-s2": "#696969",
+            "--scene-dialog-header-button-not-selected-hover": "#355070",
+            "--scene-dialog-header-button-not-selected-text-hover": "#355070",
+            "--scene-snackbar": "#F765A3",
+            "--scene-timeline-button-selected": "#6d597a",
+            "--scene-timeline-button-selected-hover": "#6d597a",
+            "--scene-timeline-button-not-selected": "#F765A3",
+            "--scene-timeline-button-not-selected-hover": "#ea5490",
+            "--scene-timeline-button-text": "#ffffff",
+            "--scene-snackbar-text": "#ffffff",
+            "--scene-dialog-key": "#6d597a",
+            "--scene-dialog-value": "#A155B9",
+            "--scene-dialog-content": "#000000",
+            "--scene-button-text": "#ffffff",
+            "--scene-button-color": "#7ec4ef",
+            "--scene-button-hover": "#9cabde",
+            "--scene-trans-base": "rgba(255, 255, 255, 0.95)",
+        },
+    }
+`} />
+
+
+<SceneOnlyShort {...sceneDefaultCustomTheme}/>

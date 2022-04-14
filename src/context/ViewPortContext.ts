@@ -13,6 +13,9 @@ export default class ViewPortContext extends Context {
     })
     private scaleState: State<number> = createState(0.75)
 
+    private onZoom = (n: number) => {
+    }
+
     public constructor(scene: Scene) {
         super(scene)
     }
@@ -68,6 +71,10 @@ export default class ViewPortContext extends Context {
         }
     }
 
+    public setOnZoom(onZoom: (n: number) => void) {
+        this.onZoom = onZoom
+    }
+
     public get offset() {
         return this.offsetState.get()
     }
@@ -84,6 +91,7 @@ export default class ViewPortContext extends Context {
         if (scale > this.config.zoomLowerBound && scale < this.config.zoomUpperBound) {
             this.scaleState.set(scale)
         }
+        this.onZoom(this.scale)
     }
 
     public get x() {

@@ -1,0 +1,45 @@
+---
+sidebar_position: 2
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneZoomInLimit,
+    SceneZoom
+} from "../../src/components/Scene/SceneComponents";
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+:::tip
+
+You can retrieve the **zoom factor** and set **onZoom** actions using the following:
+
+Please note that this is different from other context retrieval methods to allow multiple viewports.
+
+*e.g.*, you can get `SnackbarContext` with `scene.snackbarCtx`
+
+```js
+// suppose you have a setZoomFactor function to
+// set your local variable
+setZoomFactor(scene.getViewportCtx().scale)
+scene.getViewportCtx().setOnZoom((n) => {
+    setZoomFactor(n)
+})
+```
+
+:::
+
+### Zoom-in limit
+
+<SceneZoom {...sceneZoomInLimit}/>

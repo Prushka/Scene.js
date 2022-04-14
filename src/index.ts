@@ -32,7 +32,7 @@ import {PropList} from "./component/PropList";
 
 import './index.css'
 import Prop from "./props/Prop";
-import ThemeContext from "./context/ThemeContext";
+import ThemeContext, {Theme} from "./context/ThemeContext";
 
 export * from './utils/Utils'
 export * from './props/Props'
@@ -99,6 +99,10 @@ export class Scene {
         return () => {
             return this.viewportsState.get()[0]
         }
+    }
+
+    public getViewportCtx(): ViewPortContext {
+        return this.viewportsState.get()[0]
     }
 
     private beforeDisplay() {
@@ -209,7 +213,7 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         return {};
     }
 
-    public withProps(props?: PropConfig[] | number, frames?:number) {
+    public withProps(props?: PropConfig[] | number, frames?: number) {
         if (Array.isArray(props)) {
             this.config.props = props
         } else {
@@ -218,12 +222,35 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         return this
     }
 
-    public withDefaultTheme(defaultTheme: string) {
+    public zoomUpperBound(n: number) {
+        this.config.zoomUpperBound = n
+        return this
+    }
+
+    public zoomLowerBound(n: number) {
+        this.config.zoomLowerBound = n
+        return this
+    }
+
+    public zoomFactor(n: number) {
+        this.config.zoomFactor = n
+        return this
+    }
+
+    public customTheme(key: string, theme: Theme) {
+        if (!this.config.customThemes) {
+            this.config.customThemes = {}
+        }
+        this.config.customThemes[key] = theme
+        return this
+    }
+
+    public defaultTheme(defaultTheme: string) {
         this.config.defaultTheme = defaultTheme
         return this
     }
 
-    public withViewportResetOffset(offset: number) {
+    public viewportCalcOffset(offset: number) {
         this.config.viewOffset = offset
         return this
     }
@@ -424,10 +451,6 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
             this.config.frameAnimationConfig = s
         }
         return this
-    }
-
-    public getConfig() {
-        return this.config
     }
 
     static generateRandomProps(howMany, frames) {

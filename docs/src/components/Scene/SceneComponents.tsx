@@ -1,5 +1,11 @@
-import React, {useEffect} from "react";
-import {generateRandomString, getDemoScene, GlobalConfigGenerator, PropConfigGenerator, Scene} from '../../../../src/index';
+import React, {useEffect, useState} from "react";
+import {
+    generateRandomString,
+    getDemoScene,
+    GlobalConfigGenerator,
+    PropConfigGenerator,
+    Scene
+} from '../../../../src/index';
 import './scene.css';
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import CodeBlock from '@theme/CodeBlock';
@@ -13,7 +19,8 @@ export const SceneComponent = ({scene, uid, width, height}) => {
     return (<div id={uid} style={{width: width, height: height}}></div>)
 }
 
-export const Button = ({className='',
+export const Button = ({
+                           className = '',
                            children, onClick = () => {
     }
                        }) => {
@@ -102,7 +109,7 @@ export const CodeBlockWithAction = ({title, buttonText, action, scene}) => {
         <CodeBlock language="js">
             {`${action}`}
         </CodeBlock>
-        <Button onClick={()=>eval(action)}>{buttonText}</Button>
+        <Button onClick={() => eval(action)}>{buttonText}</Button>
     </>)
 }
 
@@ -115,18 +122,18 @@ export const ScenePropManualSelection = ({scene, uid}) => {
                                          buttonText={`Click to select prop with name: 'Select Me'`}
                                          scene={scene}
                                          action={
-`const props = scene.propCtx.getPropsByName('Select Me')
+                                             `const props = scene.propCtx.getPropsByName('Select Me')
 if(props && props.length > 0){
     scene.propCtx.selectedProp = props[0]
-}`} />
+}`}/>
                     <CodeBlockWithAction title={`Toggle a prop's selection: `}
                                          buttonText={`Click to toggle prop selection with name: 'Select Me'`}
                                          scene={scene}
                                          action={
-`const props = scene.propCtx.getPropsByName('Select Me')
+                                             `const props = scene.propCtx.getPropsByName('Select Me')
 if(props && props.length > 0){
     scene.propCtx.toggleSelected(props[0])
-}`} />
+}`}/>
                     <CodeBlockWithAction title={`Check if a prop is selected: `}
                                          buttonText={`Click to check if prop: 'Select Me' is selected`}
                                          scene={scene}
@@ -136,8 +143,7 @@ if(props && props.length > 0){
     const isSelected = scene.propCtx.isPropSelected(props[0])
     const selectedString = isSelected ? 'is' : 'is not'
     scene.snackbarCtx.snackbar("Prop: Select Me "+selectedString+" selected", !isSelected)
-}`} />
-
+}`}/>
 
 
                     <SceneComponent scene={scene} uid={uid} width={'100%'} height={'650px'}/>
@@ -204,6 +210,76 @@ export const sceneNoTimeline = getCustomScene(() => {
 export const sceneNoTimelineToolbarPropList = getCustomScene(() => {
     return new GlobalConfigGenerator().withFrameSpeed().showPropList(false).showTimeline(false).showToolbar(false).withProps().getConfig()
 })
+
 export const sceneHideToolbarPropList = getCustomScene(() => {
     return new GlobalConfigGenerator().withFrameSpeed().defaultOpenPropList(false).defaultOpenToolbar(false).withProps().getConfig()
+})
+
+export const sceneDefaultDarkTheme = getCustomScene(() => {
+    return new GlobalConfigGenerator().withFrameSpeed().defaultOpenPropList(false).defaultTheme('dark').withProps().getConfig()
+})
+
+export const sceneDefaultCustomTheme = getCustomScene(() => {
+    return new GlobalConfigGenerator().withFrameSpeed()
+        .defaultOpenPropList(false)
+        .customTheme('my-custom-theme', {
+            icon: "bi bi-arrow-through-heart-fill",
+            isLight: true,
+            colors: {
+                "--scene-base": "#ffffff",
+                "--scene-base-s1": "#F5F5F5",
+                "--scene-base-inv": "#000000",
+                "--scene-base-inv-s1": "#1c1c1c",
+                "--scene-base-inv-s2": "#696969",
+                "--scene-dialog-header-button-not-selected-hover": "#355070",
+                "--scene-dialog-header-button-not-selected-text-hover": "#355070",
+                "--scene-snackbar": "#F765A3",
+                "--scene-timeline-button-selected": "#6d597a",
+                "--scene-timeline-button-selected-hover": "#6d597a",
+                "--scene-timeline-button-not-selected": "#F765A3",
+                "--scene-timeline-button-not-selected-hover": "#ea5490",
+                "--scene-timeline-button-text": "#ffffff",
+                "--scene-snackbar-text": "#ffffff",
+                "--scene-dialog-key": "#6d597a",
+                "--scene-dialog-value": "#A155B9",
+                "--scene-dialog-content": "#000000",
+                "--scene-button-text": "#ffffff",
+                "--scene-button-color": "#7ec4ef",
+                "--scene-button-hover": "#9cabde",
+                "--scene-trans-base": "rgba(255, 255, 255, 0.95)",
+            },
+        }).defaultTheme('my-custom-theme').withProps().getConfig()
+})
+
+export const SceneZoom = ({scene, uid}) => {
+    const [zoomFactor, setZoomFactor] = useState(0)
+    useEffect(() => {
+        setZoomFactor(scene.getViewportCtx().scale)
+        scene.getViewportCtx().setOnZoom((n) => {
+            setZoomFactor(n)
+        })
+    }, [])
+    return (<BrowserOnly>
+        {
+            () =>
+                <>
+                    <Button>
+                        Zoom: {`${zoomFactor}`}
+                    </Button>
+                    <div className='docs__actions'>
+                        <SceneComponent scene={scene} uid={uid} width={'100%'} height={'450px'}/>
+                    </div>
+                </>
+
+        }
+    </BrowserOnly>)
+}
+
+export const sceneZoomInLimit = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .zoomUpperBound(1)
+        .withFrameSpeed()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .withProps().getConfig()
 })

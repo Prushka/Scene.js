@@ -35,6 +35,12 @@ To import this library, all you need to do is include one script tag in your hea
 <script defer type="text/javascript" src="js/scene.js"></script>
 ```
 
+### Disclaimer
+
+Even though this landing page is built using React and Docusaurus, the library doesn't use React.
+
+In fact, the library doesn't use any external libraries and can be used both in vanilla html/js with script tag and ESM environments.
+
 ## Create a scene
 
 :::tip
