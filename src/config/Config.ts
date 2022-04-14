@@ -1,6 +1,9 @@
 import {LineConfig, PositionConfig, PropConfig, PropTypeIcon} from "../props/Props";
 import {Theme} from "../context/ThemeContext";
 
+
+export type FrameSpeeds = { [key: number]: number }
+
 export interface Config {
     /** The default theme used
      *
@@ -67,7 +70,7 @@ export interface Config {
     defaultOpenToolbar?: boolean,
 
     /** A list of pairs of frame speeds
-     * {1: 1, 2: 2} gives allocates 1 second for frame 1->2 transition
+     * {1: 1, 2: 2} allocates 1 second for frame 1->2 transition
      * and 2 seconds for frame 2->1 transition.
      *
      * Affects the length (i.e., flex-grow property) of timeline frame progress bar
@@ -76,7 +79,7 @@ export interface Config {
      *
      * @default {}
      */
-    frameSpeed?: { [key: number]: number },
+    frameSpeed?: FrameSpeeds,
 
     /** The default frame speed used when a frame speed property is missing.
      *

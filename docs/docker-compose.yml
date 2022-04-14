@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  react:
+    build:
+      context: ..
+      dockerfile: "docker/Dockerfile"
+    image: scenejs:1.2
+    container_name: scene-js
+    restart: unless-stopped
+    ports:
+      - "7129:80"
+    environment:
+      - "TZ=America/Toronto"

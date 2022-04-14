@@ -17,7 +17,7 @@ import {getRandomFromList, randBoolean, randInclusive} from "./utils/Utils";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
 import {ViewSVG} from "./component/ViewSVG";
-import {Config, DefaultConfig} from "./config/Config";
+import {Config, DefaultConfig, FrameSpeeds} from "./config/Config";
 import {Snackbar} from "./component/Snackbar";
 import {CustomComponent} from "./component/Component";
 import {Overlay} from "./component/Overlay";
@@ -186,10 +186,24 @@ export class Scene {
 
 }
 
-export class GlobalConfigGenerator {
-    config: Config
+export abstract class ConfigGenerator<T extends {[K in keyof T]:any}> {
+    config: T
 
     public constructor() {
+        this.config = this.initializeConfig()
+    }
+
+    protected abstract initializeConfig():T;
+
+    public getConfig(): T {
+        return this.config
+    }
+}
+
+export class GlobalConfigGenerator extends ConfigGenerator<Config>{
+
+    protected initializeConfig() {
+        return {};
     }
 
     public withDefaultTheme(defaultTheme: string) {
@@ -207,19 +221,22 @@ export class GlobalConfigGenerator {
         return this
     }
 
-
-    public withRandomFrameSpeed(frames) {
-        const s = {}
-        for (let i = 0; i < frames; i++) {
-            s[i + 1] = randInclusive(3, 30) / 10
+    public withFrameSpeed(frame: number, allocation?: number) {
+        if (allocation) {
+            this.config.frameSpeed[frame] = allocation
+        } else {
+            const s = {}
+            for (let i = 0; i < frame; i++) {
+                s[i + 1] = randInclusive(3, 30) / 10
+            }
+            this.config.frameSpeed = s
         }
-        this.config.frameSpeed = s
         return this
     }
+
 }
 
-export class PropConfigGenerator {
-    config: PropConfig = {}
+export class PropConfigGenerator extends ConfigGenerator<PropConfig>{
 
     static allPositions = ['top', 'bottom', 'right', 'left']
 
@@ -267,8 +284,12 @@ export class PropConfigGenerator {
         width: 300
     }
 
+    protected initializeConfig() {
+        return {};
+    }
+
     public withNameScale(nameScale?: number) {
-        this.config.nameScale = nameScale ?? randInclusive(2, 20) / 10
+        this.config.nameScale = nameScale ?? randInclusive(5, 10) / 10
         return this
     }
 
@@ -294,6 +315,7 @@ export class PropConfigGenerator {
 
     public withStyle(style?: string) {
         this.config.style = style ?? getRandomFromList(Object.keys(PropTypeIcons[this.config.type]))
+        return this
     }
 
     public withNamePosition(position?: PropNamePosition) {
@@ -315,7 +337,7 @@ export class PropConfigGenerator {
     }
 
     public shouldDisplayName(shouldDisplayName?: boolean) {
-        this.config.shouldDisplayName = shouldDisplayName ?? !!randInclusive(0, 1)
+        this.config.shouldDisplayName = shouldDisplayName ?? !!randBoolean()
         return this
     }
 
@@ -340,15 +362,8 @@ export class PropConfigGenerator {
             .withSteps()
             .withNameScale()
             .withStyle()
+            .shouldDisplayName()
         return this
-    }
-
-    public constructor(type?: string) {
-        if (type) {
-            this.config.type = type
-        } else {
-            this.withType()
-        }
     }
 
     public withName(name: string) {
@@ -379,10 +394,10 @@ export class PropConfigGenerator {
     }
 }
 
-export function generateRandomProps(howMany) {
+export function generateRandomProps(howMany, frames) {
     const s = []
     for (let i = 0; i < howMany; i++) {
-        s.push(new PropConfigGenerator().asRandom().withPosition(20).getConfig())
+        s.push(new PropConfigGenerator().asRandom().withPosition(frames).getConfig())
     }
     return s
 }
@@ -431,9 +446,10 @@ export function getDemoScene(rootRootId): Scene {
             }
         }
     }
-
+    const config = new GlobalConfigGenerator().withFrameSpeed(6).getConfig()
     return new Scene(rootRootId, {
-        props: generateRandomProps(20)
+        ...config,
+        props: generateRandomProps(6, 6)
     })
 }
 

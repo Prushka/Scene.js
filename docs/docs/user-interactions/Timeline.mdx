@@ -1,0 +1,30 @@
+---
+sidebar_position: 1
+---
+
+import {
+    sceneUserInteraction,
+    SceneUserInteraction
+} from "../../src/components/Scene/SceneComponents";
+
+:::info
+
+Timeline won't be visible if the scene is static (*i.e.,* single frame)
+
+:::
+
+<SceneUserInteraction {...sceneUserInteraction}/>
+
+## Timeline
+
+:::info
+
+The progress bar will only display and animate when the user goes forward by 1 frame.
+
+:::
+
+
+The animation speed and how long it takes to go to the **next** frame depend on the prop config.
+
+However, if the user goes backward or forward by more than 1 frames, the animation speed and how long it takes depend on the global config.
+
