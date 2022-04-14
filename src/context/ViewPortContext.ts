@@ -50,13 +50,13 @@ export default class ViewPortContext extends Context {
     }
 
     public calcViewBox([minX, minY, maxX, maxY]) {
-        const svgE = $(`${this.scene.rootContainerIdSymbol}`)
-        const viewWidthRatio = (maxX - minX) / svgE.width()
-        const viewHeightRatio = (maxY - minY) / svgE.height()
+        const svgE = document.getElementById(this.scene.rootContainerId)
+        const viewWidthRatio = (maxX - minX) / svgE.clientWidth
+        const viewHeightRatio = (maxY - minY) / svgE.clientHeight
         let viewRatio = viewWidthRatio > viewHeightRatio ? viewWidthRatio : viewHeightRatio
         viewRatio += this.config.viewOffset
-        const viewX = minX - (this.config.viewOffset / 2) * svgE.width()
-        const viewY = minY - (this.config.viewOffset / 2) * svgE.height()
+        const viewX = minX - (this.config.viewOffset / 2) * svgE.clientWidth
+        const viewY = minY - (this.config.viewOffset / 2) * svgE.clientHeight
         return [viewRatio, viewX, viewY]
     }
 

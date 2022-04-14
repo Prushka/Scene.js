@@ -72,17 +72,17 @@ export class PropList extends SceneComponent {
             filterDialog = new FilterDialog(this.scene)
             filterDialog.renderComponent()
         }
-        this.scene.$('.prop__list__item').on("click", (e) => {
-            const [id] = this.idCtx.extractIdType(e.currentTarget.id)
+        this.scene.$('.prop__list__item').addEventListener("click", (e) => {
+            const [id] = this.idCtx.extractIdType((e.currentTarget as HTMLElement).id)
             this.propCtx.toggleSelected(id)
         })
-        this.scene.$('#' + this.ids.PROP_LIST_HIDE).on("click", () => {
+        document.getElementById(this.ids.PROP_LIST_HIDE).addEventListener("click", () => {
             this.open.set(!this.open.get())
         })
-        this.scene.$('#' + this.ids.PROP_LIST_DIALOG_BUTTON).on("click", () => {
+        document.getElementById(this.ids.PROP_LIST_DIALOG_BUTTON).addEventListener("click", () => {
             openFilterDialog()
         })
-        this.scene.$('#' + this.ids.PROP_LIST_RESET_BUTTON).on("click", () => {
+        document.getElementById(this.ids.PROP_LIST_RESET_BUTTON).addEventListener("click", () => {
             if(filterDialog){
                 filterDialog.unmount()
             }

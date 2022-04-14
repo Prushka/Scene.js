@@ -60,6 +60,8 @@ export abstract class CustomComponent {
                     parent.innerHTML = ''
                     parent.append(el)
                 }
+            }else{
+                console.log(`Warning: ${elementId} not found`)
             }
         })
         this.afterRender()

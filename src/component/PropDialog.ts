@@ -64,21 +64,24 @@ export class PropDialog extends SceneComponent {
             const [id] = this.idCtx.extractIdType(e.target.id)
             this.propCtx.toggleSelected(id)
         }
-        this.scene.$('.prop__dialog__close').on("click", (e) => {
-            toggle(e)
-        })
-        this.scene.$('.prop__dialog').on("click", () => {
-            this.propCtx.clearSelectedProp()
-        })
-        this.scene.$('.prop__dialog--popup').on("click", (e) => {
-            e.stopPropagation()
-        })
-        this.scene.$('.header span').on("click", (e) => {
-            this.selectedTabState.set(this.idCtx.extractIdType(e.target.id)[0])
-        })
-        this.scene.$('.content .image__container img').on("click", (e) => {
-            this.overlayCtx.openWith(`<img src='${e.target.getAttribute('src')}' alt=""/>`)
-        })
+        if (this.propCtx.selectedProp) {
+            this.scene.$('.prop__dialog__close').addEventListener("click", (e) => {
+                toggle(e)
+            })
+            this.scene.$('.prop__dialog').addEventListener("click", () => {
+                this.propCtx.clearSelectedProp()
+            })
+            this.scene.$('.prop__dialog--popup').addEventListener("click", (e) => {
+                e.stopPropagation()
+            })
+            this.scene.$('.header span').addEventListener("click", (e) => {
+                this.selectedTabState.set(this.idCtx.extractIdType((e.target as HTMLElement).id)[0])
+            })
+            this.scene.$('.content .image__container img').addEventListener("click", (e) => {
+                this.overlayCtx.openWith(`<img src='${(e.target as HTMLElement).getAttribute('src')}' alt=""/>`)
+            })
+        }
+
     }
 
     render() {

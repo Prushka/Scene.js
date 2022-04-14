@@ -4,7 +4,6 @@
 
 import {SceneComponent} from "./Component";
 import State, {createState, StateAction} from "../state/State";
-import ClickEvent = JQuery.ClickEvent;
 import {setClassList} from "../utils/Utils";
 
 
@@ -152,13 +151,13 @@ export class Footer extends SceneComponent {
 
     afterRender() {
         this.open.set(this.scene.config.defaultOpenToolbar)
-        const hookButton = (action: (el: HTMLElement, e: ClickEvent) => void, id: string) => {
-            this.scene.$(`#${id}`).on("click", (e) => {
-                action(document.getElementById(id), e)
+        const hookButton = (action: (el: HTMLElement) => void, id: string) => {
+            document.getElementById(id).addEventListener("click", (e) => {
+                action(document.getElementById(id))
             })
         }
-        this.scene.$('.timeline__frame').on("click", (e) => {
-            const [frame] = this.idCtx.extractIdType(e.target.id)
+        this.scene.$('.timeline__frame').addEventListener("click", (e) => {
+            const [frame] = this.idCtx.extractIdType((e.target as HTMLElement).id)
             this.scene.propCtx.currentFrame = frame
         })
         hookButton(() => {

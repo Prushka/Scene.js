@@ -33,16 +33,16 @@ export class ViewSVG extends View {
         return [
             [this.propCtx.selectedPropState, (oldProp: PropConfig, newProp: PropConfig) => {
                 if (oldProp) {
-                    const propDOM = $(`#${this.idCtx.VIEW_PROP(oldProp)}`)
+                    const propDOM = document.getElementById(this.idCtx.VIEW_PROP(oldProp))
                     if (propDOM) {
-                        propDOM.removeClass("view__prop--selected")
+                        propDOM.classList.remove("view__prop--selected")
                     }
                 }
                 if (newProp) {
-                    const propDOM = $(`#${this.idCtx.VIEW_PROP(newProp)}`)
+                    const propDOM = document.getElementById(this.idCtx.VIEW_PROP(newProp))
                     if (propDOM) {
-                        propDOM.removeClass("view__prop--not-selected")
-                        propDOM.addClass("view__prop--selected")
+                        propDOM.classList.remove("view__prop--not-selected")
+                        propDOM.classList.add("view__prop--selected")
                     }
                 }
             }],
@@ -95,12 +95,11 @@ export class ViewSVG extends View {
     }
 
     private applyViewportAttrs(viewBoxChange?: boolean) {
-        const svgE =
-            this.scene.$(`.view-svg`)
-        svgE.attr("viewBox",
-            `${-this.getViewportCtx().x} ${-this.getViewportCtx().y} ${svgE.width() * this.getViewportCtx().scale} ${svgE.height() * this.getViewportCtx().scale}`);
+        const svgE = (this.scene.$(`.view-svg`) as HTMLElement)
+        svgE.setAttribute("viewBox",
+            `${-this.getViewportCtx().x} ${-this.getViewportCtx().y} ${svgE.clientWidth * this.getViewportCtx().scale} ${svgE.clientHeight * this.getViewportCtx().scale}`);
         if (!viewBoxChange) {
-            this.scene.$(`.view__prop`).each((index, element) => {
+            this.scene.$$(`.view__prop`).forEach((element, index) => {
                 const prop = this.propCtx.getPropById(this.idCtx.extractIdType(element.id)[0])
                 if (prop.shouldDisplayName) {
                     const position = this.propCtx.getPropPositionByCurrentFrame(prop)
@@ -164,29 +163,36 @@ export class ViewSVG extends View {
         this.dragging = false
         this.resetViewport()
 
+        const rootView = document.getElementById(this.ids.ROOT_VIEW)
+
+
+        const getMouseOffset = (e) => {
+            rootView.style.cursor = 'unset'
+            const interactX = e.touches == null ? e.clientX : e.touches[0].pageX
+            const interactY = e.touches == null ? e.clientY : e.touches[0].pageY
+            return {
+                x: interactX - rootView.getBoundingClientRect().left,
+                y: interactY - rootView.getBoundingClientRect().top
+            }
+        }
+
         const stopDragging = (e) => {
             if (this.dragging) {
                 e.preventDefault()
                 this.dragging = false
-                $('#' + this.ids.ROOT_VIEW).css('cursor', 'unset')
+                const rootView = document.getElementById(this.ids.ROOT_VIEW)
+                rootView.style.cursor = 'unset'
             }
         }
 
-
-        const getMouseOffset = (e) => {
-            const c = $('#' + this.ids.ROOT_VIEW)
-            const interactX = e.touches == null ? e.clientX : e.touches[0].pageX
-            const interactY = e.touches == null ? e.clientY : e.touches[0].pageY
-            return {x: interactX - c[0].getBoundingClientRect().left, y: interactY - c[0].getBoundingClientRect().top}
-        }
-
-        $('#' + this.ids.ROOT_VIEW).on("mousedown touchstart", (e) => {
+        const mousedown = (e) => {
             e.preventDefault()
             this.dragging = true
-            const c = $('#' + this.ids.ROOT_VIEW)
             this.mouse = getMouseOffset(e)
-            c.css('cursor', 'grabbing')
-        }).on("mousemove touchmove", (e) => {
+            rootView.style.cursor = 'grabbing'
+        }
+
+        const mousemove = (e) => {
             e.preventDefault()
             if (this.dragging) {
                 const previous = this.getViewportCtx().offset
@@ -199,21 +205,29 @@ export class ViewSVG extends View {
                 }
                 this.applyViewportAttrs(true)
             }
-        }).on("mouseup mouseleave touchend touchcancel", (e) => {
-            stopDragging(e)
-        }).on('wheel', (e) => {
+        }
+
+
+        rootView.onmousedown = rootView.ontouchstart = mousedown
+
+        rootView.onmousemove = rootView.ontouchmove = mousemove
+
+        rootView.onmouseleave = rootView.onmouseup = rootView.ontouchcancel = rootView.ontouchend = stopDragging
+
+        rootView.onwheel = (e) => {
             e.preventDefault()
-            const deltaY = (<WheelEvent>e.originalEvent).deltaY
+            const deltaY = e.deltaY
             if (deltaY > 0) { // zoom in
                 this.getViewportCtx().zoomIn()
             } else { // zoom out
                 this.getViewportCtx().zoomOut()
             }
             this.applyViewportAttrs(true)
-        })
+        }
 
-        this.scene.$('.view__prop').on('click touchend', (e) => {
-            const elementId = e.target.id ? e.target.id : e.target.parentElement.id
+        this.scene.$('.view__prop').addEventListener('click touchend', (e) => {
+            const target = (e.target as HTMLElement)
+            const elementId = target.id ? target.id : target.parentElement.id
             let [id] = this.idCtx.extractIdType(elementId)
             this.propCtx.toggleSelected(id)
         })
@@ -248,7 +262,7 @@ export class ViewSVG extends View {
             const hide = position.hide
             if (position) {
                 const isSelected = this.propCtx.isPropSelected(prop)
-                const group = document.createElementNS("http://www.w3.org/2000/svg","g")
+                const group = document.createElementNS("http://www.w3.org/2000/svg", "g")
                 group.classList.add("view__prop", isSelected ? 'view__prop--selected' : 'view__prop--not-selected')
                 group.style.transitionTimingFunction = position.transitionTimingFunction
                 group.id = this.idCtx.VIEW_GROUP(prop)

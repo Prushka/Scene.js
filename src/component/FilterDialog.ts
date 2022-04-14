@@ -33,22 +33,22 @@ export class FilterDialog extends SceneComponent {
     afterRender() {
         this.renderFilteredProps()
         const propCtx = this.propCtx
-        this.scene.$('.list__items__item').on('click', (e) => {
-            const [_, type] = this.idCtx.extractIdType(e.currentTarget.id, ...IdTypes.PROP_TYPE_TOGGLE)
+        this.scene.$('.list__items__item').addEventListener('click', (e) => {
+            const [_, type] = this.idCtx.extractIdType((e.currentTarget as HTMLElement).id, ...IdTypes.PROP_TYPE_TOGGLE)
             if (type && type.length > 0) {
                 this.propCtx.toggleSelectedPropType(type[0])
             }
         })
-        this.scene.$(`#${this.ids.PROP_SEARCH_INPUT}`).on('input', function (e) {
-            propCtx.searchValue = $(this).val().toString()
+        document.getElementById(this.ids.PROP_SEARCH_INPUT).addEventListener('input', function (e) {
+            propCtx.searchValue = (e.target as HTMLInputElement).value
         })
-        this.scene.$(`#${this.ids.PROP_FILTER_DIALOG_SELECT_ALL}`).on('click', () => {
+        document.getElementById(this.ids.PROP_FILTER_DIALOG_SELECT_ALL).addEventListener('click', () => {
             propCtx.selectAllPropTypes()
         })
-        this.scene.$(`#${this.ids.PROP_FILTER_DIALOG_DESELECT_ALL}`).on('click', () => {
+        document.getElementById(this.ids.PROP_FILTER_DIALOG_DESELECT_ALL).addEventListener('click', () => {
             propCtx.deselectAllPropTypes()
         })
-        this.scene.$(`#${this.ids.PROP_FILTER_DIALOG_CLEAR_TEXTFIELD}`).on('click', () => {
+        document.getElementById(this.ids.PROP_FILTER_DIALOG_CLEAR_TEXTFIELD).addEventListener('click', () => {
             propCtx.searchValue = ''
         })
     }

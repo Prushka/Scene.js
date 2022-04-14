@@ -126,19 +126,24 @@ export class Scene {
     }
 
     public $(selector) {
-        return $(`${this.rootContainerIdSymbol} ${selector}`)
+        return document.querySelector(`${this.rootContainerIdSymbol} ${selector}`)
+    }
+
+    public $$(selector) {
+        return document.querySelectorAll(`${this.rootContainerIdSymbol} ${selector}`)
     }
 
     public display() {
         this.beforeDisplay()
-        $(() => {
-            $(`${this.rootContainerIdSymbol}`).addClass("root-container")
-                .html(`<div id="${this.ids.ROOT_SNACKBAR}" class='snackbar-container'></div>
+        document.addEventListener("DOMContentLoaded", (e)=>{
+            const container = document.getElementById(this.rootContainerId)
+            container.classList.add('root-container')
+            container.innerHTML = `<div id="${this.ids.ROOT_SNACKBAR}" class='snackbar-container'></div>
                                      <div id="${this.ids.ROOT_PROP_LIST}" class='prop__list-container'></div>
                                     <div id="${this.ids.ROOT_PROP_DIALOG}" class='prop__property-container'></div>
                                     <div id="${this.ids.ROOT_VIEW}" class='view-container'></div>
                                     <div id="${this.ids.ROOT_FOOTER}" class="footer-container"></div>
-                                    <div id="${this.ids.ROOT_OVERLAY}" class="overlay-container"></div>`)
+                                    <div id="${this.ids.ROOT_OVERLAY}" class="overlay-container"></div>`
             const v = this.config.renderMethod === 'canvas' ? ViewCanvas : ViewSVG
             const [view] = this.register(v, PropDialog, Footer, Snackbar, Overlay)
             if (this.config.displayPropList) {
@@ -147,9 +152,20 @@ export class Scene {
             this.viewComponent = view as View
         })
     }
+
 }
 
 export function demo(rootRootId) {
+
+
+    console.log(rootRootId)
+    const rootContainer = document.getElementById(rootRootId)
+    if (!rootContainer) {
+        return
+    }
+
+    console.log(rootRootId + ' found')
+
     let randomNamePosition: boolean = false
     let randomNameScale: boolean = false
     const sImages = [
@@ -356,8 +372,6 @@ export function demo(rootRootId) {
         }
         return s
     }
-
-    const rootContainer = document.getElementById(rootRootId)
     let ids = 0
     const display = (content, config, width?, height?) => {
         const rootRoot = document.createElement('div')
@@ -392,6 +406,10 @@ export function demo(rootRootId) {
             [{x: 0, y: 0}, {x: 300, y: 0}, {color: 'var(--scene-base-inv-s2)', width: 3}]],
         props: [...getRandoms(25, frames), getStoryBoard(sImage2)]
     }, '90vw', '800px')
+}
+
+export default function test() {
+    console.log('aha')
 }
 
 demo("container")
