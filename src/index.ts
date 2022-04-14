@@ -163,7 +163,7 @@ export class Scene {
 
 }
 
-export function demo(rootRootId): Scene {
+export function getDemoScene(rootRootId): Scene {
     console.log(`Render scene in: ${rootRootId}`)
     const rootContainer = document.getElementById(rootRootId)
 
@@ -386,16 +386,17 @@ export function demo(rootRootId): Scene {
         })
     }
     let frames = 6
-    return display({
+    return new Scene(rootRootId, {
+        ...sharedConfig,
         frameSpeed: getRandomFrameSpeed(frames),
         defaultOpenPropList: true,
         frameSelectionSpeed: 5,
-        lines: [
-            [{x: 300, y: -2}, {x: 300, y: 100}, {color: 'var(--scene-base-inv-s2)', width: 3}],
-            [{x: 300, y: 98}, {x: 600, y: 98}, {color: 'var(--scene-base-inv-s2)', width: 3}],
-            [{x: 0, y: 0}, {x: 300, y: 0}, {color: 'var(--scene-base-inv-s2)', width: 3}]],
-        props: [...getRandoms(5, frames), getStoryBoard(sImage2)]
+        props: [...getRandoms(5, frames), getStoryBoard(sImage1)]
     })
 }
+
+
+// Creates a scene to demo built-in prop functionalities
+// Devs can use this as a boilerplate for global config experimenting
 
 console.log('Scene.js loaded')

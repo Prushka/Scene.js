@@ -15,14 +15,6 @@ const config = {
     favicon: 'img/favicon.ico',
     organizationName: 'facebook', // Usually your GitHub org/user name.
     projectName: 'docusaurus', // Usually your repo name.
-    scripts: [
-        {
-            src: 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js',
-            defer: true
-        }
-    ],
-    clientModules: [
-    ],
 
     presets: [
         [

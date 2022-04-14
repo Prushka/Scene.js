@@ -1,0 +1,36 @@
+---
+sidebar_position: 1
+---
+
+import {
+    sceneUserInteraction,
+    SceneUserInteraction
+} from "../../src/components/Scene/SceneComponents";
+
+
+<SceneUserInteraction {...sceneUserInteraction}/>
+
+## Buttons
+
+:::tip
+
+You can hover on the button to check its **tooltip**.
+
+:::
+
+From top to bottom:
+
+1. **Collapse/Expand:** This collapses or expands the button group
+2. **Toggle Fullscreen Mode:** Toggles fullscreen mode (doesn't work on mobile)
+3. **Reset viewport (based on current frame):** Centers all props in the current frame
+4. **Reset viewport (based on all frame):** Centers all props based on their positions in all frames (This makes sure no prop goes outside the viewport when switching frames)
+5. **Export:** Exports the entire config as a json (It will be populated with default config values)
+6. **Theme:** Cycles among all available themes and custom themes provided in the config
+7. **Play/Pause:** Plays all frames one by one according to the provided prop animation speed
+
+## Hidden buttons in static scene
+
+The following buttons won't be visible if the scene is static (*i.e.,* single frame)
+
+* **Reset viewport (based on all frame)**
+* **Play/Pause**
