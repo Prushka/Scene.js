@@ -244,7 +244,7 @@ export interface Config {
 }
 
 export const DefaultConfig: Config = {
-    defaultTheme: "dark",
+    defaultTheme: "light",
     themeScope: 'container',
     dialog: "embedded",
     viewOffset: 0.2,

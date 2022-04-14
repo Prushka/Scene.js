@@ -4,6 +4,7 @@
 
 import State, {createState} from "../state/State";
 import {Scene} from "../index";
+import Context from "./Context";
 
 export type Colors = { [key: string]: string }
 export type Theme = { isLight: boolean, colors: Colors, icon: string }
@@ -95,27 +96,23 @@ export const ThemeConstants: Themes = {
     }
 }
 
-export function useTheme(context: Scene, themes: Themes, defaultTheme?: string) {
-    return new ThemeContext(context, themes, defaultTheme)
-}
 
-export default class ThemeContext {
+export default class ThemeContext extends Context{
     private readonly _current: State<number>
     private readonly _themeKeys: string[]
     private readonly _themes: Themes
-    private readonly _context: Scene
 
     public get currentState() {
         return this._current
     }
 
-    public constructor(context: Scene, themes: Themes, defaultTheme?: string) {
-        this._context = context
-        this._themeKeys = [...Object.keys(themes)]
-        this._themes = themes
+    public constructor(scene: Scene) {
+        super(scene)
+        this._themes = {...ThemeConstants, ...this.config.customThemes}
+        this._themeKeys = [...Object.keys(this._themes)]
         let defaultPos = 0
-        if (defaultTheme) {
-            defaultTheme = defaultTheme.toLowerCase()
+        if (this.config.defaultTheme) {
+            const defaultTheme = this.config.defaultTheme.toLowerCase()
             if (this._themeKeys.includes(defaultTheme)) {
                 defaultPos = this._themeKeys.indexOf(defaultTheme)
             }
@@ -133,8 +130,8 @@ export default class ThemeContext {
 
     public renderTheme() {
         const colors = this.currentTheme.colors
-        const container = this._context.config.themeScope === 'root'
-            ? document.documentElement : this._context.getRootDocument()
+        const container = this.config.themeScope === 'root'
+            ? document.documentElement : this.scene.getRootDocument()
         for (let key in colors) {
             container.style.setProperty(key, colors[key]);
         }

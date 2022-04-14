@@ -2,7 +2,16 @@
  * Copyright 2022 Dan Lyu.
  */
 
-import {DefaultLine, ImageConfig, PropType, PropTypeIcons} from "./props/Props";
+import {
+    AnimationConfig,
+    DefaultLine,
+    ImageConfig,
+    PropConfig,
+    PropNamePosition,
+    PropType,
+    PropTypeIcons,
+    StepsConfig
+} from "./props/Props";
 import State, {createState} from "./state/State";
 import {getRandomFromList, randBoolean, randInclusive} from "./utils/Utils";
 import {PropDialog} from "./component/PropDialog";
@@ -20,9 +29,10 @@ import {ViewCanvas} from "./component/ViewCanvas";
 import View from "./component/View";
 import {useId} from "./context/IdContext";
 import {PropList} from "./component/PropList";
-import {ThemeConstants, useTheme} from "./context/ThemeContext";
 
 import './index.css'
+import Prop from "./props/Prop";
+import ThemeContext from "./context/ThemeContext";
 
 export * from './utils/Utils'
 export * from './props/Props'
@@ -56,7 +66,7 @@ export class Scene {
             l[2] = {...DefaultLine, ...l[2]}
         })
         console.log(this.config)
-        this.themeCtx = useTheme(this, {...ThemeConstants, ...this.config.customThemes}, this.config.defaultTheme)
+        this.themeCtx = new ThemeContext(this)
         this.propCtx = new PropContext(this)
         this.propCtx.addPropType(config.propTypes)
 
@@ -102,8 +112,6 @@ export class Scene {
         this.viewportsState.set(viewports)
         this.propCtx.sortPropsByRenderOrder()
         this.propCtx.resetFilter()
-
-        this.themeCtx.renderTheme()
     }
 
     components: CustomComponent[] = []
@@ -137,13 +145,18 @@ export class Scene {
         })
     }
 
-    public display() {
+    public display(checkDOMContentLoaded: boolean = false) {
         console.log(`Going to render scene: ${this.rootContainerId}`)
         this.unmountIfMount()
         this.beforeDisplay()
 
         const render = () => {
-            const container = document.getElementById(this.rootContainerId)
+            const root = document.getElementById(this.rootContainerId)
+            root.innerHTML = ''
+            if (!console) {
+                console.log('Warning: scene display has been called but root container cannot be found')
+            }
+            const container = document.createElement('div')
             container.classList.add('root-container')
             container.innerHTML = `<div id="${this.ids.ROOT_SNACKBAR}" class='snackbar-container'></div>
                                      <div id="${this.ids.ROOT_PROP_LIST}" class='prop__list-container'></div>
@@ -151,25 +164,66 @@ export class Scene {
                                     <div id="${this.ids.ROOT_VIEW}" class='view-container'></div>
                                     <div id="${this.ids.ROOT_FOOTER}" class="footer-container"></div>
                                     <div id="${this.ids.ROOT_OVERLAY}" class="overlay-container"></div>`
+            root.append(container)
             const v = this.config.renderMethod === 'canvas' ? ViewCanvas : ViewSVG
             this.register(v, PropDialog, Footer, Snackbar, Overlay)
             if (this.config.displayPropList) {
                 this.register(PropList)
             }
             this.viewComponent = this.components[0] as View
+
+            this.themeCtx.renderTheme()
         }
-        render()
+
+        if (checkDOMContentLoaded) {
+            document.addEventListener("DOMContentLoaded", e => {
+                render()
+            })
+        } else {
+            render()
+        }
     }
 
 }
 
-export function getDemoScene(rootRootId): Scene {
-    console.log(`Render scene in: ${rootRootId}`)
-    const rootContainer = document.getElementById(rootRootId)
+export class GlobalConfigGenerator {
+    config: Config
 
-    let randomNamePosition: boolean = false
-    let randomNameScale: boolean = false
-    const sImages = [
+    public constructor() {
+    }
+
+    public withDefaultTheme(defaultTheme: string) {
+        this.config.defaultTheme = defaultTheme
+        return this
+    }
+
+    public withViewportResetOffset(offset: number) {
+        this.config.viewOffset = offset
+        return this
+    }
+
+    public withTransitionTimingFunction(transitionTimingFunction: string) {
+        this.config.transitionTimingFunction = transitionTimingFunction
+        return this
+    }
+
+
+    public withRandomFrameSpeed(frames) {
+        const s = {}
+        for (let i = 0; i < frames; i++) {
+            s[i + 1] = randInclusive(3, 30) / 10
+        }
+        this.config.frameSpeed = s
+        return this
+    }
+}
+
+export class PropConfigGenerator {
+    config: PropConfig = {}
+
+    static allPositions = ['top', 'bottom', 'right', 'left']
+
+    static demoImages = [
         {
             title: "test",
             imageURL: "https://s2.loli.net/2022/02/10/grldkO4LeDjxmY8.png"
@@ -183,39 +237,160 @@ export function getDemoScene(rootRootId): Scene {
         }
     ]
 
-    const getSharedProp = () => {
-        const s = {}
-        if (randBoolean()) {
-            s['note'] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-        }
-        if (randBoolean()) {
-            s['scripts'] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\n123\n\na: c"
-        }
-        if (randBoolean()) {
-            s['images'] = sImages
-        }
-        if (randBoolean()) {
-            s['steps'] =
-                {
-                    3: {
-                        title: "Here's step 1",
-                        content: "Here's some content"
-                    },
-                    2: {
-                        title: "Here's step 2",
-                        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris"
-                    },
-                    4: {
-                        content: "aha"
-                    },
-                    5: {title: "A title"},
-                    1: {},
-                    6: {},
-                    7: {}
-                }
-        }
-        return s
+    static demoSteps = {
+        3: {
+            title: "Here's step 1",
+            content: "Here's some content"
+        },
+        2: {
+            title: "Here's step 2",
+            content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris"
+        },
+        4: {
+            content: "aha"
+        },
+        5: {title: "A title"},
+        1: {},
+        6: {},
+        7: {}
     }
+
+
+    static storyboardDemoImage = {
+        title: "something",
+        imageURL: "https://s2.loli.net/2022/03/19/kfoHSKL792r4cvD.jpg",
+        width: 400
+    }
+    static directorsViewfinderDemoImage = {
+        title: "something",
+        imageURL: "https://s2.loli.net/2022/03/19/iN9yLYWoE28z5MI.jpg",
+        width: 300
+    }
+
+    public withNameScale(nameScale?: number) {
+        this.config.nameScale = nameScale ?? randInclusive(2, 20) / 10
+        return this
+    }
+
+    public withImages(images?: ImageConfig[]) {
+        this.config.images = images ?? PropConfigGenerator.demoImages
+        return this
+    }
+
+    public withScript(script?: string) {
+        this.config.script = script ?? "Here's some random script\nLorem ipsum dolor sit amet, consectetur adipiscing elit,\n123\n\na: c"
+        return this
+    }
+
+    public withNote(note?: string) {
+        this.config.note = note ?? "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        return this
+    }
+
+    public withSteps(steps?: StepsConfig) {
+        this.config.steps = steps ?? PropConfigGenerator.demoSteps
+        return this
+    }
+
+    public withStyle(style?: string) {
+        this.config.style = style ?? getRandomFromList(Object.keys(PropTypeIcons[this.config.type]))
+    }
+
+    public withNamePosition(position?: PropNamePosition) {
+        this.config.namePosition = position ?? getRandomFromList(PropConfigGenerator.allPositions)
+    }
+
+    public getAllPropTypes() {
+        const allPropTypes = Object.values(PropType)
+        let allIconPropTypes = [...allPropTypes]
+        allIconPropTypes = allIconPropTypes.filter(i => {
+            return i != PropType.STORYBOARD && i != PropType.SCRIPT
+        })
+        return allIconPropTypes
+    }
+
+    public withType(type?: string) {
+        this.config.type = type ?? getRandomFromList(this.getAllPropTypes())
+        return this
+    }
+
+    public shouldDisplayName(shouldDisplayName?: boolean) {
+        this.config.shouldDisplayName = shouldDisplayName ?? !!randInclusive(0, 1)
+        return this
+    }
+
+
+    static getRandomPosition() {
+        const scale = randInclusive(8, 46) / 10
+        return {
+            enabled: randBoolean(),
+            x: Math.random() * 750,
+            y: Math.random() * 750,
+            degree: Math.random() * 360,
+            scaleX: scale,
+            scaleY: scale,
+        }
+    }
+
+    public asRandom() {
+        this.withType()
+            .withImages()
+            .withScript()
+            .withNote()
+            .withSteps()
+            .withNameScale()
+            .withStyle()
+        return this
+    }
+
+    public constructor(type?: string) {
+        if (type) {
+            this.config.type = type
+        } else {
+            this.withType()
+        }
+    }
+
+    public withName(name: string) {
+        this.config.name = name
+        return this
+    }
+
+    public withColor(color: string) {
+        this.config.color = color
+        return this
+    }
+
+    public withPosition(frame: number, position?: AnimationConfig) {
+        if (position) {
+            this.config.frameAnimationConfig[frame] = position
+        } else {
+            const s = {}
+            for (let i = 0; i < frame; i++) {
+                s[i + 1] = PropConfigGenerator.getRandomPosition()
+            }
+            this.config.frameAnimationConfig = s
+        }
+        return this
+    }
+
+    public getConfig() {
+        return this.config
+    }
+}
+
+export function generateRandomProps(howMany) {
+    const s = []
+    for (let i = 0; i < howMany; i++) {
+        s.push(new PropConfigGenerator().asRandom().withPosition(20).getConfig())
+    }
+    return s
+}
+
+
+export function getDemoScene(rootRootId): Scene {
+    console.log(`Render demo scene in: ${rootRootId}`)
+
     const sharedConfig: Config = {
         defaultTheme: 'light',
         customThemes: {
@@ -257,141 +432,8 @@ export function getDemoScene(rootRootId): Scene {
         }
     }
 
-    const getDemoLight = () => {
-        return {
-            type: PropType.LIGHT,
-            colorTemperature: 5000,
-            lightType: "hard",
-            frameAnimationConfig: {
-                1: {
-                    x: 140, y: 140, degree: 30, enabled: false
-                },
-                2: {
-                    x: 100, y: 100, degree: 60
-                },
-                3: {
-                    x: 190, y: 150, degree: 90
-                },
-            }
-        }
-    }
-
-    const generateTable = (order, position) => {
-        return {
-            type: "TABLE",
-            brand: "Random",
-            style: "fillSquare",
-            frameAnimationConfig: {
-                1: position,
-            },
-            orderIndex: order,
-            shouldDisplayName: true,
-            nameScale: 0.8,
-        }
-    }
-
-    const getRandomPosition = () => {
-        const scale = randInclusive(8, 46) / 10
-        return {
-            enabled: randBoolean(),
-            x: Math.random() * 750,
-            y: Math.random() * 750,
-            degree: Math.random() * 360,
-            scaleX: scale,
-            scaleY: scale,
-        }
-    }
-
-    const sImage1 = {
-        title: "something",
-        imageURL: "https://s2.loli.net/2022/03/19/kfoHSKL792r4cvD.jpg",
-        width: 400
-    }
-    const sImage2 = {
-        title: "something",
-        imageURL: "https://s2.loli.net/2022/03/19/iN9yLYWoE28z5MI.jpg",
-        width: 300
-    }
-
-    const getStoryBoard = (image: ImageConfig) => {
-        return {
-            type: "STORYBOARD",
-            script: "Some storyboard script",
-            orderIndex: 20,
-            namePosition: 'bottom',
-            shouldDisplayName: false,
-            frameAnimationConfig: {
-                1: {
-                    x: 100, y: 100, thumbnail: image,
-                    degree: 0
-                },
-                2: {
-                    x: 60, y: 60, thumbnail: image,
-                    degree: 40
-                }
-            },
-            images: sImages
-        }
-    }
-    const allPropTypes = Object.values(PropType)
-    let allIconPropTypes = [...allPropTypes]
-    const allPositions = ['top', 'bottom', 'right', 'left']
-    allIconPropTypes = allIconPropTypes.filter(i => {
-        return i != PropType.STORYBOARD && i != PropType.SCRIPT
-    })
-    const getRandom = (frames) => {
-        const type = getRandomFromList(allIconPropTypes)
-        const s = {}
-        for (let i = 0; i < frames; i++) {
-            s[i + 1] = getRandomPosition()
-        }
-        return {
-            ...getSharedProp(),
-            nameScale: randomNameScale ? randInclusive(2, 20) / 10 : 1,
-            type: type,
-            brand: "Random",
-            style: getRandomFromList(Object.keys(PropTypeIcons[type])),
-            someValue: 5000,
-            frameAnimationConfig: s,
-            shouldDisplayName: !!randInclusive(0, 1),
-            namePosition: randomNamePosition ? getRandomFromList(allPositions) : 'top',
-        }
-    }
-
-    const getRandoms = (howMany, frames) => {
-        const s = []
-        for (let i = 0; i < howMany; i++) {
-            s.push(getRandom(frames))
-        }
-        return s
-    }
-
-    const getRandomFrameSpeed = (frames) => {
-        const s = {}
-        for (let i = 0; i < frames; i++) {
-            s[i + 1] = randInclusive(3, 30) / 10
-        }
-        return s
-    }
-    let ids = 0
-    const display = (config) => {
-        // const root = document.createElement('div')
-        // root.id = `scene-${ids}`
-        // ids += 1
-        // rootContainer.append(root)
-
-        return new Scene(rootRootId, {
-            ...sharedConfig,
-            ...config
-        })
-    }
-    let frames = 6
     return new Scene(rootRootId, {
-        ...sharedConfig,
-        frameSpeed: getRandomFrameSpeed(frames),
-        defaultOpenPropList: true,
-        frameSelectionSpeed: 5,
-        props: [...getRandoms(5, frames), getStoryBoard(sImage1)]
+        props: generateRandomProps(20)
     })
 }
 

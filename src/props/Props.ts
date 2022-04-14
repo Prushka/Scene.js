@@ -87,6 +87,10 @@ export interface StepConfig {
     content?: string
 }
 
+export type StepsConfig = { [key: number]: StepConfig }
+
+export type PropNamePosition = 'center' | 'top' | 'right' | 'left' | 'bottom'
+
 export interface PropConfig extends HasId {
     /** The name of the prop.
      *
@@ -131,7 +135,7 @@ export interface PropConfig extends HasId {
      * Affects the prop dialog's step tab and its content,
      * will be ordered before render
      */
-    steps?: { [key: number]: StepConfig },
+    steps?: StepsConfig,
 
     /** A note
      *
@@ -167,7 +171,7 @@ export interface PropConfig extends HasId {
      *
      * @default 'top'
      */
-    namePosition?: string | 'center' | 'top' | 'right' | 'left' | 'bottom',
+    namePosition?: string | PropNamePosition,
 
     /** An extra scale parameter of the name inside the viewport
      *

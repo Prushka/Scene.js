@@ -11,14 +11,15 @@
     <title>Scene.js demo</title>
 
     <link rel="stylesheet" href="examples.css">
-    <script defer type="text/javascript" src="js/scene.js"></script>
-    <script defer>
+    <script type="text/javascript" src="js/scene.js"></script>
 
+    <script defer>
+        const scene = sceneBlocking.getDemoScene('container')
+        scene.display(true)
     </script>
-<!--    <script defer type="text/javascript" src="js/examples.js"></script>-->
-</head>
 <body>
 <!--Inline styles are used to create a simple example app, this will be refactored in a landing page-->
+
 <div class="container" id="container">
 </div>
 </body>

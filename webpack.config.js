@@ -28,33 +28,35 @@ module.exports = [{
             }
         ]
     }
-}, {
-    target: "web",
-    mode: "development",
-    entry: "./src/index.ts",
-    output: {
-        library: {
-            type: "module",
-        },
-        path: path.resolve(__dirname, './docs'),
-        filename: "scene.js",
-    },
-    experiments: {
-        outputModule: true,
-    },
-    resolve: {
-        extensions: ['.ts', '.js'],
-    },
-    module: {
-        rules: [
-            {
-                test: /\.css$/i,
-                use: ["style-loader", "css-loader"],
-            },
-            {
-                test: /\.tsx?$/,
-                loader: "ts-loader"
-            }
-        ]
-    }
-}];
+},
+//     {
+//     target: "web",
+//     mode: "development",
+//     entry: "./src/index.ts",
+//     output: {
+//         library: {
+//             type: "module",
+//         },
+//         path: path.resolve(__dirname, './docs'),
+//         filename: "scene.js",
+//     },
+//     experiments: {
+//         outputModule: true,
+//     },
+//     resolve: {
+//         extensions: ['.ts', '.js'],
+//     },
+//     module: {
+//         rules: [
+//             {
+//                 test: /\.css$/i,
+//                 use: ["style-loader", "css-loader"],
+//             },
+//             {
+//                 test: /\.tsx?$/,
+//                 loader: "ts-loader"
+//             }
+//         ]
+//     }
+// }
+];
