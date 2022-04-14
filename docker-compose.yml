@@ -8,6 +8,6 @@ services:
     container_name: scene-js
     restart: unless-stopped
     ports:
-      - "7129:80"
+      - "127.0.0.1:7129:80"
     environment:
       - "TZ=America/Toronto"
