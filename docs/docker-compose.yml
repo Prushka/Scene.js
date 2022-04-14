@@ -4,7 +4,6 @@ services:
   react:
     build:
       context: .
-      dockerfile: "docker/Dockerfile"
     image: scenejs:1.2
     container_name: scene-js
     restart: unless-stopped
