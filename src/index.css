@@ -81,7 +81,6 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 40%);
     position: fixed;
-    z-index: 1250;
     top: 0;
     left: 0;
     display: flex;
@@ -89,27 +88,13 @@
     justify-content: center;
 }
 
-.prop__dialog--popup {
-    background-color: var(--scene-base);
-    margin: 0;
-    position: absolute;
-    z-index: 1300;
-    padding: 12px 15px;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-
-    width: 60%;
-    height: 73%;
-}
-
 .prop__dialog--embedded {
+    z-index: 150;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     background-color: var(--scene-trans-base);
     position: absolute;
-    z-index: 1100;
     box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgb(0, 0, 0, 0.049);
 }
 
@@ -288,21 +273,18 @@
     position: absolute;
     margin: 0 0 4px 10px;
     left: 0;
-    z-index: 600;
+    z-index: 110;
 }
 
 
 .toolbar__button-container {
     display: flex;
     align-items: center;
-
-    z-index: 1200;
     margin: 4px 0;
 }
 
 
 .tooltip span {
-    z-index: 1000;
     max-height: 40px;
     justify-content: center;
     transition-duration: .1s;
@@ -365,7 +347,7 @@
     margin-bottom: 8px;
     left: calc(var(--toolbar-button-width) + 3px);
     box-sizing: border-box;
-    z-index: 1000;
+    z-index: 100;
     overflow: auto;
 }
 
@@ -430,7 +412,7 @@
 
 .prop__list-container {
     display: flex;
-    z-index: 1000;
+    z-index: 100;
     position: absolute;
     left: 0;
     transition-duration: 0.5s;
@@ -605,7 +587,7 @@
     right: 0;
     top: 0;
     color: var(--scene-snackbar-text);
-    z-index: 1400;
+    z-index: 190;
     border-radius: 4px;
     transition-duration: .3s;
     font-weight: 600;
