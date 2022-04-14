@@ -72,10 +72,10 @@ export class PropList extends SceneComponent {
             filterDialog = new FilterDialog(this.scene)
             filterDialog.renderComponent()
         }
-        this.scene.$('.prop__list__item').addEventListener("click", (e) => {
+        this.scene.$$('.prop__list__item').forEach(el => el.addEventListener("click", (e) => {
             const [id] = this.idCtx.extractIdType((e.currentTarget as HTMLElement).id)
             this.propCtx.toggleSelected(id)
-        })
+        }))
         document.getElementById(this.ids.PROP_LIST_HIDE).addEventListener("click", () => {
             this.open.set(!this.open.get())
         })
@@ -83,7 +83,7 @@ export class PropList extends SceneComponent {
             openFilterDialog()
         })
         document.getElementById(this.ids.PROP_LIST_RESET_BUTTON).addEventListener("click", () => {
-            if(filterDialog){
+            if (filterDialog) {
                 filterDialog.unmount()
             }
             this.propCtx.resetFilter()
@@ -105,13 +105,13 @@ export class PropList extends SceneComponent {
             buttonText.innerText = text
 
             const icon = document.createElement('span')
-            icon.classList.add(...iconClasses,'prop__list__action__button__icon')
+            icon.classList.add(...iconClasses, 'prop__list__action__button__icon')
 
             button.append(buttonText, icon)
             return button
         }
-        const dialogButton = createButton('Filter', this.ids.PROP_LIST_DIALOG_BUTTON,'bi','bi-search')
-        const resetButton = createButton('Reset', this.ids.PROP_LIST_RESET_BUTTON,'bi','bi-arrow-clockwise')
+        const dialogButton = createButton('Filter', this.ids.PROP_LIST_DIALOG_BUTTON, 'bi', 'bi-search')
+        const resetButton = createButton('Reset', this.ids.PROP_LIST_RESET_BUTTON, 'bi', 'bi-arrow-clockwise')
 
         const buttonGroup = document.createElement('div')
         buttonGroup.classList.add('prop__list__action__container')

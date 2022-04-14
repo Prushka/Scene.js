@@ -207,6 +207,13 @@ export class ViewSVG extends View {
             }
         }
 
+        const clickProp = (e) => {
+            const target = (e.target as HTMLElement)
+            const elementId = target.id ? target.id : target.parentElement.id
+            let [id] = this.idCtx.extractIdType(elementId)
+            this.propCtx.toggleSelected(id)
+        }
+
 
         rootView.onmousedown = rootView.ontouchstart = mousedown
 
@@ -225,11 +232,9 @@ export class ViewSVG extends View {
             this.applyViewportAttrs(true)
         }
 
-        this.scene.$('.view__prop').addEventListener('click touchend', (e) => {
-            const target = (e.target as HTMLElement)
-            const elementId = target.id ? target.id : target.parentElement.id
-            let [id] = this.idCtx.extractIdType(elementId)
-            this.propCtx.toggleSelected(id)
+        this.scene.$$('.view__prop').forEach(el => {
+            el.addEventListener('click', clickProp)
+            el.addEventListener('touchend', clickProp)
         })
     }
 

@@ -64,22 +64,18 @@ export class PropDialog extends SceneComponent {
             const [id] = this.idCtx.extractIdType(e.target.id)
             this.propCtx.toggleSelected(id)
         }
-        console.log('render')
         const closeButton = document.getElementById(this.ids.PROP_DIALOG_CLOSE_ICON)
         closeButton && closeButton.addEventListener("click", (e) => {
             this.propCtx.clearSelectedProp()
         })
-        const headerTabs = this.scene.$$('.header__tab')
-        headerTabs.forEach(e => {
-            e.addEventListener("click", (e) => {
+        this.scene.$$('.header__tab').forEach(el => {
+            el.addEventListener("click", (e) => {
                 this.selectedTabState.set(this.idCtx.extractIdType((e.target as HTMLElement).id)[0])
             })
         })
-        const image = this.scene.$('.content .image__container img')
-        image && image.addEventListener('click', (e) => {
+        this.scene.$$('.content .image__container img').forEach(el => el.addEventListener('click', (e) => {
             this.overlayCtx.openWith(`<img src='${(e.target as HTMLElement).getAttribute('src')}' alt=""/>`)
-        })
-
+        }))
     }
 
     render() {
