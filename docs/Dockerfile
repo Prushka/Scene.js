@@ -5,7 +5,7 @@ ENV NODE_ENV production
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
-COPY package-lock.json ./
+COPY yarn.lock ./
 RUN yarn install --frozen-lockfile
 COPY . ./
 RUN npm run build
