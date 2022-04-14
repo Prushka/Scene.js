@@ -2,12 +2,14 @@
 FROM node:17-alpine3.14 AS build
 ENV NODE_ENV production
 # Add a work directory
+
 WORKDIR /app
+COPY . ./
+WORKDIR /app/docs
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
 COPY yarn.lock ./
 RUN yarn install --frozen-lockfile
-COPY . ./
 RUN npm run build
 
 # Bundle static assets with nginx
