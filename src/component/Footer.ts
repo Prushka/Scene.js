@@ -152,14 +152,14 @@ export class Footer extends SceneComponent {
     afterRender() {
         this.open.set(this.scene.config.defaultOpenToolbar)
         const hookButton = (action: (el: HTMLElement) => void, id: string) => {
-            document.getElementById(id).addEventListener("click", (e) => {
+            this.scene.idOn(id, "click", (e) => {
                 action(document.getElementById(id))
             })
         }
-        this.scene.$('.timeline__frame').addEventListener("click", (e) => {
+        this.scene.$$('.timeline__frame').forEach(el => el.addEventListener("click", (e) => {
             const [frame] = this.idCtx.extractIdType((e.target as HTMLElement).id)
             this.scene.propCtx.currentFrame = frame
-        })
+        }))
         hookButton(() => {
             this.open.set(!this.open.get())
         }, this.ids.TOOLBAR_COLLAPSE_BUTTON)

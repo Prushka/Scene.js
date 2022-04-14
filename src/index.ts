@@ -133,9 +133,16 @@ export class Scene {
         return document.querySelectorAll(`${this.rootContainerIdSymbol} ${selector}`)
     }
 
+    public idOn(id: string, event: string, f: (e: any) => void) {
+        const el = document.getElementById(id)
+        if (el) {
+            el.addEventListener(event, f)
+        }
+    }
+
     public display() {
         this.beforeDisplay()
-        document.addEventListener("DOMContentLoaded", (e)=>{
+        document.addEventListener("DOMContentLoaded", (e) => {
             const container = document.getElementById(this.rootContainerId)
             container.classList.add('root-container')
             container.innerHTML = `<div id="${this.ids.ROOT_SNACKBAR}" class='snackbar-container'></div>

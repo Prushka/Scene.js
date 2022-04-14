@@ -64,8 +64,7 @@ export class PropDialog extends SceneComponent {
             const [id] = this.idCtx.extractIdType(e.target.id)
             this.propCtx.toggleSelected(id)
         }
-        const closeButton = document.getElementById(this.ids.PROP_DIALOG_CLOSE_ICON)
-        closeButton && closeButton.addEventListener("click", (e) => {
+        this.scene.idOn(this.ids.PROP_DIALOG_CLOSE_ICON, "click", (e) => {
             this.propCtx.clearSelectedProp()
         })
         this.scene.$$('.header__tab').forEach(el => {

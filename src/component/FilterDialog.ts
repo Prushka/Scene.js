@@ -17,9 +17,9 @@ export class FilterDialog extends SceneComponent {
         return [[this.propCtx.searchPropValueState, () => {
         }, (previousValue, value) => {
             this.renderFilteredProps()
-            if(previousValue !== value){
+            if (previousValue !== value) {
                 const input = document.getElementById(this.ids.PROP_SEARCH_INPUT)
-                if(input){
+                if (input) {
                     input['value'] = value
                 }
             }
@@ -33,22 +33,22 @@ export class FilterDialog extends SceneComponent {
     afterRender() {
         this.renderFilteredProps()
         const propCtx = this.propCtx
-        this.scene.$('.list__items__item').addEventListener('click', (e) => {
+        this.scene.$$('.list__items__item').forEach(el => el.addEventListener('click', (e) => {
             const [_, type] = this.idCtx.extractIdType((e.currentTarget as HTMLElement).id, ...IdTypes.PROP_TYPE_TOGGLE)
             if (type && type.length > 0) {
                 this.propCtx.toggleSelectedPropType(type[0])
             }
-        })
-        document.getElementById(this.ids.PROP_SEARCH_INPUT).addEventListener('input', function (e) {
+        }))
+        this.scene.idOn(this.ids.PROP_SEARCH_INPUT, 'input', (e) => {
             propCtx.searchValue = (e.target as HTMLInputElement).value
         })
-        document.getElementById(this.ids.PROP_FILTER_DIALOG_SELECT_ALL).addEventListener('click', () => {
+        this.scene.idOn(this.ids.PROP_FILTER_DIALOG_SELECT_ALL, 'click', () => {
             propCtx.selectAllPropTypes()
         })
-        document.getElementById(this.ids.PROP_FILTER_DIALOG_DESELECT_ALL).addEventListener('click', () => {
+        this.scene.idOn(this.ids.PROP_FILTER_DIALOG_DESELECT_ALL, 'click', () => {
             propCtx.deselectAllPropTypes()
         })
-        document.getElementById(this.ids.PROP_FILTER_DIALOG_CLEAR_TEXTFIELD).addEventListener('click', () => {
+        this.scene.idOn(this.ids.PROP_FILTER_DIALOG_CLEAR_TEXTFIELD, 'click', () => {
             propCtx.searchValue = ''
         })
     }
