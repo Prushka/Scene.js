@@ -285,6 +285,7 @@
     transition-timing-function: ease-in;
     position: absolute;
     margin: 0 0 4px 10px;
+    left: 0;
 }
 
 
@@ -322,20 +323,15 @@
     margin-left: 10px;
 }
 
-.button {
+.scene__button {
     text-align: center;
     align-self: center;
     font-weight: bold;
     cursor: pointer;
     transition-duration: 0.3s;
     border-radius: 4px;
-    padding: 9px 12px;
     width: 100%;
     box-sizing: border-box;
-}
-
-.button i {
-    font-size: 1.1rem;
 }
 
 .toolbar__button:hover {
@@ -343,8 +339,17 @@
 }
 
 .toolbar__button {
-    color: var(--scene-button-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 40px;
+    min-height: 40px;
     background-color: var(--scene-button-color);
+}
+
+.toolbar__button i {
+    font-size: 1.1rem;
+    color: var(--scene-button-text);
 }
 
 .timeline-container {

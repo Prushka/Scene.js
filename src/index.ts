@@ -142,7 +142,8 @@ export class Scene {
 
     public display() {
         this.beforeDisplay()
-        document.addEventListener("DOMContentLoaded", (e) => {
+
+        const render = () => {
             const container = document.getElementById(this.rootContainerId)
             container.classList.add('root-container')
             container.innerHTML = `<div id="${this.ids.ROOT_SNACKBAR}" class='snackbar-container'></div>
@@ -157,6 +158,10 @@ export class Scene {
                 this.register(PropList)
             }
             this.viewComponent = view as View
+        }
+        render()
+        document.addEventListener("DOMContentLoaded", (e) => {
+
         })
     }
 
@@ -380,16 +385,11 @@ export function demo(rootRootId) {
         return s
     }
     let ids = 0
-    const display = (content, config, width?, height?) => {
-        const rootRoot = document.createElement('div')
-        rootRoot.id = `root-${ids}`
+    const display = (config, width?, height?) => {
         const root = document.createElement('div')
         root.id = `scene-${ids}`
         ids += 1
-        const contentEl = document.createElement('p')
-        contentEl.innerText = content
-        rootRoot.append(contentEl, root)
-        rootContainer.append(rootRoot)
+        rootContainer.append(root)
         if (width) {
             root.style.width = width
             root.style.height = height
@@ -403,7 +403,7 @@ export function demo(rootRootId) {
     }
 
     let frames = 6
-    display(`A random scene\n with walls, slower default frame speed (slower animation speed when users skip frames),\n a dark theme and a director's viewfinder`, {
+    display({
         frameSpeed: getRandomFrameSpeed(frames),
         defaultOpenPropList: true,
         frameSelectionSpeed: 5,
@@ -412,7 +412,7 @@ export function demo(rootRootId) {
             [{x: 300, y: 98}, {x: 600, y: 98}, {color: 'var(--scene-base-inv-s2)', width: 3}],
             [{x: 0, y: 0}, {x: 300, y: 0}, {color: 'var(--scene-base-inv-s2)', width: 3}]],
         props: [...getRandoms(25, frames), getStoryBoard(sImage2)]
-    }, '90vw', '800px')
+    }, '80%', '800px')
 }
 
 export default function test() {

@@ -219,7 +219,7 @@ export class Footer extends SceneComponent {
             const toolbarButton = document.createElement('div')
             toolbarButton.id = id
             // toolbarButton.title = title
-            toolbarButton.classList.add('button', 'toolbar__button', 'pointer')
+            toolbarButton.classList.add('scene__button', 'toolbar__button', 'pointer')
             const icon = document.createElement('i')
             icon.classList.add(...iconClasses.split(' '))
             toolbarButton.append(icon)

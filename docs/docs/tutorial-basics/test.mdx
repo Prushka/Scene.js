@@ -1,10 +1,28 @@
-
-<script>
-    sceneBlocking.demo('root-1')
-</script>
+import {demo} from '../../../src/index'
 
 aha
 
 
 
-<div id="root-1"></div>
+export const Highlight = ({children, color}) => {
+    demo('container')
+    return (
+        <span
+            style={{
+                backgroundColor: color,
+                borderRadius: '20px',
+                color: '#fff',
+                padding: '10px',
+                cursor: 'pointer',
+            }}
+            onClick={() => {
+            }}>
+    {children}
+  </span>
+    )
+};
+
+This is <Highlight color="#25c2a0">Docusaurus green</Highlight> !
+
+<div id="container"></div>
+
