@@ -106,14 +106,14 @@ export class Scene {
         this.themeCtx.renderTheme()
     }
 
-    private register(...c: Array<new(T) => CustomComponent>): CustomComponent[] {
-        const components: CustomComponent[] = []
+    components: CustomComponent[] = []
+
+    private register(...c: Array<new(T) => CustomComponent>) {
         c.forEach(cl => {
             const component = new cl(this)
             component.renderComponent()
-            components.push(component)
+            this.components.push(component)
         })
-        return components
     }
 
     public $(selector) {
@@ -131,8 +131,15 @@ export class Scene {
         }
     }
 
+    private unmountIfMount() {
+        this.components.forEach(c => {
+            c.unmount()
+        })
+    }
+
     public display() {
         console.log(`Going to render scene: ${this.rootContainerId}`)
+        this.unmountIfMount()
         this.beforeDisplay()
 
         const render = () => {
@@ -145,16 +152,13 @@ export class Scene {
                                     <div id="${this.ids.ROOT_FOOTER}" class="footer-container"></div>
                                     <div id="${this.ids.ROOT_OVERLAY}" class="overlay-container"></div>`
             const v = this.config.renderMethod === 'canvas' ? ViewCanvas : ViewSVG
-            const [view] = this.register(v, PropDialog, Footer, Snackbar, Overlay)
+            this.register(v, PropDialog, Footer, Snackbar, Overlay)
             if (this.config.displayPropList) {
                 this.register(PropList)
             }
-            this.viewComponent = view as View
+            this.viewComponent = this.components[0] as View
         }
         render()
-        document.addEventListener("DOMContentLoaded", (e) => {
-
-        })
     }
 
 }
@@ -250,8 +254,7 @@ export function demo(rootRootId): Scene {
                     disabledPaths: `<path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>`
                 }
             }
-        },
-        renderMethod: 'svg',
+        }
     }
 
     const getDemoLight = () => {
@@ -383,7 +386,7 @@ export function demo(rootRootId): Scene {
         })
     }
     let frames = 6
-    const s = display({
+    return display({
         frameSpeed: getRandomFrameSpeed(frames),
         defaultOpenPropList: true,
         frameSelectionSpeed: 5,
@@ -391,10 +394,8 @@ export function demo(rootRootId): Scene {
             [{x: 300, y: -2}, {x: 300, y: 100}, {color: 'var(--scene-base-inv-s2)', width: 3}],
             [{x: 300, y: 98}, {x: 600, y: 98}, {color: 'var(--scene-base-inv-s2)', width: 3}],
             [{x: 0, y: 0}, {x: 300, y: 0}, {color: 'var(--scene-base-inv-s2)', width: 3}]],
-        props: [...getRandoms(25, frames), getStoryBoard(sImage2)]
+        props: [...getRandoms(5, frames), getStoryBoard(sImage2)]
     })
-    console.log(s)
-    return s
 }
 
 console.log('Scene.js loaded')

@@ -259,7 +259,7 @@ export const DefaultConfig: Config = {
     lines: [],
     alwaysShowAllDialogTabs: false,
     props: [],
-    renderMethod: "canvas",
+    renderMethod: "svg",
     zoomLowerBound: 0.15,
     zoomUpperBound: 2,
     zoomFactor: 1.02,
