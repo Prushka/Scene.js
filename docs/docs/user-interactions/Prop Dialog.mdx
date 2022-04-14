@@ -1,0 +1,58 @@
+---
+sidebar_position: 4
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly
+} from "../../src/components/Scene/SceneComponents";
+
+<SceneOnly {...sceneUserInteractionPropDialog}/>
+
+## Dialog
+
+There are 2 ways to open a prop dialog:
+
+1. Click a prop in the **Prop List**
+2. Click a prop in the viewport
+
+:::tip
+
+If a tab doesn't contain any value (will be detected by the library), it may be ignored.
+
+However, developers can configure the library so that it always shows all tabs in the **Prop Dialog Header**.
+
+:::
+
+## Tabs
+
+### General
+
+This tab displays general information of this prop in a key-value style.
+
+If a key-value pair doesn't exist or is not truthy, it won't be displayed.
+
+This includes:
+
+* Style
+* Note
+* Any external key-value property on this prop AND such property is not excluded in the config
+
+
+### Scripts
+
+Display script property of this prop. This is a plain text.
+
+
+### Steps
+
+Display steps property of this prop.
+
+It will be sorted and use a step number -> content style.
+
+
+### Images
+
+Display prop's image config. Such config consists of a list of images with their optional titles.
+
+Users can **click the image to open an overlay**.

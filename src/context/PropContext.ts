@@ -222,7 +222,7 @@ export default class PropContext extends Context {
     public isPropSelected(prop: PropConfig | number): boolean {
         const selectedProp: PropConfig = this.selectedProp
         const propId: number = typeof prop === 'number' ? prop : prop.id
-        return selectedProp && selectedProp.id === propId;
+        return (selectedProp && selectedProp.id === propId);
     }
 
     public get selectedProp() {

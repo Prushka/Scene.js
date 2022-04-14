@@ -154,7 +154,7 @@ export class Scene {
             const root = document.getElementById(this.rootContainerId)
             root.innerHTML = ''
             if (!console) {
-                console.log('Warning: scene display has been called but root container cannot be found')
+                console.warn('Scene: scene display has been called but root container cannot be found')
             }
             const container = document.createElement('div')
             container.classList.add('root-container')
@@ -203,16 +203,17 @@ export abstract class ConfigGenerator<T extends { [K in keyof T]: any }> {
 export class GlobalConfigGenerator extends ConfigGenerator<Config> {
 
     static randomFrames = 6
+    static randomNumberOfProps = 6
 
     protected initializeConfig() {
         return {};
     }
 
-    public withProps(props?: PropConfig[]) {
-        if (props) {
+    public withProps(props?: PropConfig[] | number, frames?:number) {
+        if (Array.isArray(props)) {
             this.config.props = props
         } else {
-            this.config.props = PropConfigGenerator.generateRandomProps(6, GlobalConfigGenerator.randomFrames)
+            this.config.props = PropConfigGenerator.generateRandomProps(props ?? GlobalConfigGenerator.randomNumberOfProps, frames ?? GlobalConfigGenerator.randomFrames)
         }
         return this
     }
@@ -229,6 +230,16 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
 
     public withTransitionTimingFunction(transitionTimingFunction: string) {
         this.config.transitionTimingFunction = transitionTimingFunction
+        return this
+    }
+
+    public defaultOpenToolbar(v: boolean = true) {
+        this.config.defaultOpenToolbar = v
+        return this
+    }
+
+    public defaultOpenPropList(v: boolean = true) {
+        this.config.defaultOpenPropList = v
         return this
     }
 

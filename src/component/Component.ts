@@ -61,7 +61,7 @@ export abstract class CustomComponent {
                     parent.append(el)
                 }
             }else{
-                console.log(`Warning: ${elementId} not found`)
+                console.warn(`Scene: ${elementId} not found`)
             }
         })
         this.afterRender()

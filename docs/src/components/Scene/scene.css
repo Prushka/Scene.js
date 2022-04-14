@@ -1,0 +1,42 @@
+.docs__actions{
+    display: flex;
+    flex-direction: column;
+}
+
+.docs__button {
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: #2e8f7c;
+    transition-duration: .2s;
+}
+
+.docs__button:hover {
+    background-color: #0c6b5e;
+}
+
+.docs__button--success {
+    background-color: #25c2a0;
+}
+
+.docs__button--success:hover{
+    background-color: #219a7f;
+}
+
+.docs__button--error{
+    background-color: #e81f69;
+}
+
+.docs__button--error:hover{
+    background-color: #b21d57;
+}
+
+.docs__button span {
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+}
