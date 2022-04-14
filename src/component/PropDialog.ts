@@ -64,36 +64,30 @@ export class PropDialog extends SceneComponent {
             const [id] = this.idCtx.extractIdType(e.target.id)
             this.propCtx.toggleSelected(id)
         }
-        if (this.propCtx.selectedProp) {
-            this.scene.$('.prop__dialog__close').addEventListener("click", (e) => {
-                toggle(e)
-            })
-            this.scene.$('.prop__dialog').addEventListener("click", () => {
-                this.propCtx.clearSelectedProp()
-            })
-            this.scene.$('.prop__dialog--popup').addEventListener("click", (e) => {
-                e.stopPropagation()
-            })
-            this.scene.$('.header span').addEventListener("click", (e) => {
+        console.log('render')
+        const closeButton = document.getElementById(this.ids.PROP_DIALOG_CLOSE_ICON)
+        closeButton && closeButton.addEventListener("click", (e) => {
+            this.propCtx.clearSelectedProp()
+        })
+        const headerTabs = this.scene.$$('.header__tab')
+        headerTabs.forEach(e => {
+            e.addEventListener("click", (e) => {
                 this.selectedTabState.set(this.idCtx.extractIdType((e.target as HTMLElement).id)[0])
             })
-            this.scene.$('.content .image__container img').addEventListener("click", (e) => {
-                this.overlayCtx.openWith(`<img src='${(e.target as HTMLElement).getAttribute('src')}' alt=""/>`)
-            })
-        }
+        })
+        const image = this.scene.$('.content .image__container img')
+        image && image.addEventListener('click', (e) => {
+            this.overlayCtx.openWith(`<img src='${(e.target as HTMLElement).getAttribute('src')}' alt=""/>`)
+        })
 
     }
 
     render() {
         const selectedProp = this.propCtx.selectedProp
         if (selectedProp) {
-            const isPopup = this.scene.config.dialog === 'popup'
             const parentContainer = document.createElement('div')
-            if (isPopup) {
-                parentContainer.classList.add("prop__dialog")
-            }
             const dialogContainerElement = document.createElement('div')
-            dialogContainerElement.classList.add(`prop__dialog--${isPopup ? 'popup' : 'embedded'}`,
+            dialogContainerElement.classList.add(`prop__dialog--embedded`,
                 this.scene.isRootMobile() ? 'prop__dialog--embedded--mobile' : 'prop__dialog--embedded--normal')
             parentContainer.appendChild(dialogContainerElement)
             const header = document.createElement('div')
@@ -225,7 +219,7 @@ export class PropDialog extends SceneComponent {
             const footer = document.createElement('div')
             footer.classList.add('footer')
             const headerCloseIcon = document.createElement('i')
-            headerCloseIcon.id = this.idCtx.PROP_DIALOG_CLOSE_ICON(selectedProp)
+            headerCloseIcon.id = this.ids.PROP_DIALOG_CLOSE_ICON
             headerCloseIcon.classList.add("bi", "bi-x", "pointer", "prop__dialog__close")
             header.appendChild(headerCloseIcon)
 
