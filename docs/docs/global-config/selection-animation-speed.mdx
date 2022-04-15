@@ -1,0 +1,103 @@
+---
+title: Selection Animation Speed
+sidebar_position: 2
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneZoomInLimit,
+    SceneZoom,
+    sceneZoomStep,
+    sceneDialogMissing,
+    sceneDialogAll,
+    sceneDialogShowDebug,
+    sceneDialogShowDebugFlat,
+    sceneFrameSpeed124,
+    sceneFrameSpeedDefaultFS,
+    sceneFrameSpeedDefaultFS5s,
+    sceneSelectionSpeed,
+    sceneSelectionSpeed0,
+    sceneSelectionSpeed03
+} from "../../src/components/Scene/SceneComponents";
+
+
+
+
+## Animation Speed when select random frames
+
+
+:::info
+
+Note that this page describes how to configure the
+animation duration it takes when the user **goes forward more than 1 frame** or **goes backward**.
+
+(see [Frame Animation Speed](frame-animation-speed) for frame based animation speed)
+
+:::
+
+
+### Default Behavior
+
+When the user select any frame that's not `previous frame + 1` or `previous frame is the last frame and the new frame is 1`, **frameSelectionSpeed** will be used to determine its duration.
+
+By default, this value is 1 second.
+
+Try to go from **frame 1 to frame 4** or go from **frame 3 to frame 2** in the following scene:
+
+<GeneratorConfigBlock
+    generator={
+`new GlobalConfigGenerator()
+    .withFrameSpeed(1, 10)
+    .withFrameSpeed(2, 10)
+    .withFrameSpeed(3, 10)
+    .withFrameSpeed(4, 10)`}
+    config={
+`config.frameSpeed = {1: 10, 2: 10, 3: 10, 4: 10}`} />
+
+<SceneOnlyShort {...sceneSelectionSpeed} />
+
+
+### No animation when select random frames
+
+Simply configure **frameSelectionSpeed** to **0** yields no animation:
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .withFrameSpeed(1, 10)
+    .withFrameSpeed(2, 10)
+    .withFrameSpeed(3, 10)
+    .withFrameSpeed(4, 10)
+    .frameSelectionSpeed(0)`}
+    config={
+`config.frameSpeed = {1: 10, 2: 10, 3: 10, 4: 10}
+config.frameSelectionSpeed = 0`} />
+
+<SceneOnlyShort {...sceneSelectionSpeed0} />
+
+
+### 0.3 seconds animation when select random frames
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .withFrameSpeed(1, 10)
+    .withFrameSpeed(2, 10)
+    .withFrameSpeed(3, 10)
+    .withFrameSpeed(4, 10)
+    .frameSelectionSpeed(0.5)`}
+    config={
+        `config.frameSpeed = {1: 10, 2: 10, 3: 10, 4: 10}
+config.frameSelectionSpeed = 0.3`} />
+
+<SceneOnlyShort {...sceneSelectionSpeed03} />

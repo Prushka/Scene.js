@@ -4,6 +4,8 @@ import {Theme} from "../context/ThemeContext";
 
 export type FrameSpeeds = { [key: number]: number }
 
+export type DebugTabFormats = 'json' | 'flat'
+
 export interface Config {
     /** The default theme used
      *
@@ -145,7 +147,7 @@ export interface Config {
      * False shows only the tab elements that contain data.
      *
      * @see dialog
-     * @see dialogShowAllProperties
+     * @see showDialogDebugTab
      * @default false
      */
     alwaysShowAllDialogTabs?: boolean,
@@ -202,7 +204,7 @@ export interface Config {
      *
      * @default: false
      */
-    dialogShowAllProperties?: boolean,
+    showDialogDebugTab?: boolean,
 
     /** Affects the dialog element's debug tab's render format
      *  and all its text elements' colors.
@@ -215,7 +217,7 @@ export interface Config {
      *
      * @default: 'flat'
      */
-    dialogAllPropertiesFormat?: 'json' | 'flat',
+    dialogDebugTabFormat?: DebugTabFormats,
 
     /** Affects the toolbar theme selection button, its icon and all theme colors
      *
@@ -266,8 +268,8 @@ export const DefaultConfig: Config = {
     zoomLowerBound: 0.15,
     zoomUpperBound: 2,
     zoomStep: 1.02,
-    dialogShowAllProperties: false,
-    dialogAllPropertiesFormat: 'json',
+    showDialogDebugTab: false,
+    dialogDebugTabFormat: 'json',
     customThemes: {},
     displayToolbar: true,
     displayPropList: true,

@@ -1,0 +1,77 @@
+---
+title: Prop Dialog Tabs
+sidebar_position: 2
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneZoomInLimit,
+    SceneZoom, sceneZoomStep, sceneDialogMissing, sceneDialogAll, sceneDialogShowDebug, sceneDialogShowDebugFlat
+} from "../../src/components/Scene/SceneComponents";
+
+
+## Default Behavior
+
+By default, all prop dialogs only show tabs that have information (*i.e.,* truthy).
+
+You can check this behavior by clicking props listed in the following scene:
+
+<SceneOnlyShort {...sceneDialogMissing} />
+
+## Always show all tabs
+
+You can change the config to always show all dialog tabs regardless of the prop's properties.
+
+<GeneratorConfigBlock
+    generator={"new GlobalConfigGenerator().alwaysShowAllDialogTabs(true)"}
+    config={"config.alwaysShowAllDialogTabs = true"} />
+
+<SceneOnlyShort {...sceneDialogAll} />
+
+## Show debug tab
+
+There's also a debug tab that's disabled by default.
+
+**By default**, the debug tab gives you a json format of all of this prop's properties.
+
+You can enable it with the following:
+
+<GeneratorConfigBlock
+    generator={"new GlobalConfigGenerator().showDialogDebugTab(true)"}
+    config={"config.showDialogDebugTab = true"} />
+
+<SceneOnlyShort {...sceneDialogShowDebug} />
+
+## Debug tab flat format
+
+::: info
+
+**dialogDebugTabFormat** can only be **json** or **flat**
+
+:::
+
+You can also make the dialog display the selected prop's properties in flat format.
+
+This is similar to how the general information tab displays the data:
+
+<GeneratorConfigBlock
+    generator={
+`new GlobalConfigGenerator()
+    .showDialogDebugTab(true)
+    .dialogDebugTabFormat('flat')`}
+    config={
+`config.showDialogDebugTab = true
+config.dialogDebugTabFormat = 'flat'
+`} />
+
+<SceneOnlyShort {...sceneDialogShowDebugFlat} />

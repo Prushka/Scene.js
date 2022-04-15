@@ -106,8 +106,8 @@ export class PropDialog extends SceneComponent {
             addTitleTab(Tab.SCRIPTS, "Scripts", selectedProp.script, "bi", "bi-journal-bookmark-fill")
             addTitleTab(Tab.STEPS, "Steps", selectedProp.steps, "bi", "bi-123")
             addTitleTab(Tab.IMAGES, "Images", selectedProp.images, "bi", "bi-image-fill")
-            if(this.scene.config.dialogShowAllProperties){
-                addTitleTab(Tab.DEBUG, "Debug Information", this.scene.config.dialogShowAllProperties, "bi", "bi-bug")
+            if(this.scene.config.showDialogDebugTab){
+                addTitleTab(Tab.DEBUG, "Debug Information", this.scene.config.showDialogDebugTab, "bi", "bi-bug")
             }
 
             const contentElement = document.createElement('div')
@@ -194,7 +194,7 @@ export class PropDialog extends SceneComponent {
                     }
                     break
                 case Tab.DEBUG:
-                    switch (this.scene.config.dialogAllPropertiesFormat) {
+                    switch (this.scene.config.dialogDebugTabFormat) {
                         case "flat":
                             const flat = flatObject(selectedProp)
                             for (let key in flat) {

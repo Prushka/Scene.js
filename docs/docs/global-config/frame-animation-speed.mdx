@@ -1,0 +1,82 @@
+---
+title: Frame Animation Speed
+sidebar_position: 2
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneZoomInLimit,
+    SceneZoom,
+    sceneZoomStep,
+    sceneDialogMissing,
+    sceneDialogAll,
+    sceneDialogShowDebug,
+    sceneDialogShowDebugFlat,
+    sceneFrameSpeed124, sceneFrameSpeedDefaultFS, sceneFrameSpeedDefaultFS5s
+} from "../../src/components/Scene/SceneComponents";
+
+
+## Frame Speed / Timeline
+
+:::info
+
+Setting the frame speed to `{1: 1, 2: 2, 3: 4}`
+allocates 1 second for frame 1->2 transition, 2 seconds for frame 2->3 transition and 4 seconds for frame 3->1 transition
+
+:::
+
+The duration it takes to transition to the next frame and how long the animation takes depend on the **frameSpeed**.
+
+<GeneratorConfigBlock
+    generator={
+`new GlobalConfigGenerator()
+    .withFrameSpeed(1, 1)
+    .withFrameSpeed(2, 2)
+    .withFrameSpeed(3, 4)`}
+    config={
+`config.frameSpeed = {1: 1, 2: 2, 3: 4}`} />
+
+:::caution
+
+If any prop contains data for more than specified frames in the **frameSpeed** global config.
+
+Their animation speeds will depend on the global **defaultFrameSpeed** property.
+
+:::
+
+<SceneOnlyShort {...sceneFrameSpeed124} />
+
+## Default frame speed
+
+By default, the **defaultFrameSpeed** is set to last 1 second (*i.e.,* `config.defaultFrameSpeed = 1`):
+
+The following scene is generated using the same frameSpeed: `{1: 1, 2: 2, 3: 4}` but all props contain data for 6 frames.
+
+<SceneOnlyShort {...sceneFrameSpeedDefaultFS} />
+
+## Change default frame speed
+
+You can change the default frame speed:
+
+<GeneratorConfigBlock
+    generator={
+`new GlobalConfigGenerator()
+    .withFrameSpeed(1, 1)
+    .withFrameSpeed(2, 2)
+    .withFrameSpeed(3, 4)
+    .defaultFrameSpeed(5)`}
+    config={
+`config.frameSpeed = {1: 1, 2: 2, 3: 4}
+config.defaultFrameSpeed = 5`} />
+
+<SceneOnlyShort {...sceneFrameSpeedDefaultFS5s} />

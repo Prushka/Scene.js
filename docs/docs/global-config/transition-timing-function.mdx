@@ -1,0 +1,70 @@
+---
+title: Transition Timing Function
+sidebar_position: 2
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneZoomInLimit,
+    SceneZoom,
+    sceneZoomStep,
+    sceneDialogMissing,
+    sceneDialogAll,
+    sceneDialogShowDebug,
+    sceneDialogShowDebugFlat,
+    sceneFrameSpeed124,
+    sceneFrameSpeedDefaultFS,
+    sceneFrameSpeedDefaultFS5s,
+    sceneSelectionSpeed,
+    sceneSelectionSpeed0,
+    sceneSelectionSpeed03, sceneDefaultTransitionFunction, sceneTransitionFunctionEaseInOut
+} from "../../src/components/Scene/SceneComponents";
+
+
+
+
+## Global Transition Timing Function
+
+
+:::info
+
+The animation of this library is done using CSS transition.
+
+This page describes how to configure the
+default transition timing function. This affects the timeline progress bar's transition and when a prop's transition is not provided in its frame data.
+
+(see [Prop Transition Timing Function](frame-animation-speed) for prop's frame based transition timing function)
+
+:::
+
+
+### Default Behavior
+
+By default, this value is set to `linear`.
+
+Check how the timeline's progress bar and props animate:
+
+<SceneOnlyShort {...sceneDefaultTransitionFunction} />
+
+### Setting Transition Timing Function
+
+You can set **transitionTimingFunction** to any css transition-timing-function:
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator().transitionTimingFunction('ease-in-out')`}
+    config={
+        `config.transitionTimingFunction = 'ease-in-out'`} />
+
+<SceneOnlyShort {...sceneTransitionFunctionEaseInOut} />
+

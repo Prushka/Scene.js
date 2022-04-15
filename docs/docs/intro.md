@@ -599,7 +599,7 @@ You don't have to understand the following config. It will be covered in section
         "renderMethod": "svg",
         "zoomLowerBound": 0.15,
         "zoomUpperBound": 2,
-        "zoomFactor": 1.02,
+        "zoomStep": 1.02,
         "dialogShowAllProperties": false,
         "dialogAllPropertiesFormat": "json",
         "customThemes": {

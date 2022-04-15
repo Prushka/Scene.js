@@ -17,7 +17,7 @@ import {getRandomFromList, randBoolean, randInclusive} from "./utils/Utils";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
 import {ViewSVG} from "./component/ViewSVG";
-import {Config, DefaultConfig, FrameSpeeds} from "./config/Config";
+import {Config, DebugTabFormats, DefaultConfig, FrameSpeeds} from "./config/Config";
 import {Snackbar} from "./component/Snackbar";
 import {CustomComponent} from "./component/Component";
 import {Overlay} from "./component/Overlay";
@@ -210,7 +210,21 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
     static randomNumberOfProps = 6
 
     protected initializeConfig() {
-        return {};
+        return {
+            frameSpeed: {},
+            props: [],
+            customThemes: {}
+        };
+    }
+
+    public defaultFrameSpeed(n: number){
+        this.config.defaultFrameSpeed = n
+        return this
+    }
+
+    public frameSelectionSpeed(n: number){
+        this.config.frameSelectionSpeed = n
+        return this
     }
 
     public withProps(props?: PropConfig[] | number, frames?: number) {
@@ -223,9 +237,6 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
     }
 
     public addProp(f: (generator: PropConfigGenerator) => void) {
-        if(!this.config.props){
-            this.config.props = []
-        }
         const propConfigGenerator = new PropConfigGenerator()
         f(propConfigGenerator)
         this.config.props.push(propConfigGenerator.getConfig())
@@ -248,9 +259,6 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
     }
 
     public customTheme(key: string, theme: Theme) {
-        if (!this.config.customThemes) {
-            this.config.customThemes = {}
-        }
         this.config.customThemes[key] = theme
         return this
     }
@@ -264,7 +272,17 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         this.config.alwaysShowAllDialogTabs = true
         return this
     }
+    
+    public showDialogDebugTab(v: boolean){
+        this.config.showDialogDebugTab = true
+        return this
+    }
 
+    public dialogDebugTabFormat(v: DebugTabFormats){
+        this.config.dialogDebugTabFormat = v
+        return this
+    }
+    
     public viewportCalcOffset(offset: number) {
         this.config.viewOffset = offset
         return this
@@ -297,6 +315,11 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
 
     public showPropList(v: boolean = true) {
         this.config.displayPropList = v
+        return this
+    }
+
+    public transitionTimingFunction(v: string){
+        this.config.transitionTimingFunction = v
         return this
     }
 

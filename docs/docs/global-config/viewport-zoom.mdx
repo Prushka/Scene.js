@@ -1,4 +1,5 @@
 ---
+title: Viewport Zoom
 sidebar_position: 2
 ---
 
@@ -15,7 +16,7 @@ import {
     sceneHidePropList,
     sceneHideToolbarPropList,
     sceneZoomInLimit,
-    SceneZoom
+    SceneZoom, sceneZoomStep
 } from "../../src/components/Scene/SceneComponents";
 
 import Tabs from '@theme/Tabs';
@@ -32,14 +33,43 @@ Please note that this is different from other context retrieval methods to allow
 ```js
 // suppose you have a setZoomFactor function to
 // set your local variable
+const round = (input) => input.toFixed(2)
 setZoomFactor(scene.getViewportCtx().scale)
-scene.getViewportCtx().setOnZoom((n) => {
-    setZoomFactor(n)
+scene.getViewportCtx().setOnZoom((n, prev) => {
+    setZoomStep(round(Math.abs(n - prev)))
+    setZoomFactor(round(n))
 })
 ```
 
 :::
 
-### Zoom-in limit
+### Zoom-in/out limit
+
+<GeneratorConfigBlock
+    generator={
+`new GlobalConfigGenerator()
+    .zoomUpperBound(0.9)
+    .zoomLowerBound(0.6)`}
+    config={
+`config.zoomUpperBound = 0.9
+config.zoomLowerBound = 0.6
+`} />
 
 <SceneZoom {...sceneZoomInLimit}/>
+
+
+### Zoom Step
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .zoomUpperBound(3)
+    .zoomLowerBound(0.2)
+    .zoomStep(1.3)`}
+    config={
+`config.zoomUpperBound = 3
+config.zoomLowerBound = 0.2
+config.zoomStep = 1.3
+`} />
+
+<SceneZoom {...sceneZoomStep}/>

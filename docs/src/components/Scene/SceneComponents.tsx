@@ -184,7 +184,7 @@ export const sceneUserInteractionViewport = getCustomScene(() => {
 export const sceneDeveloperInteractionManualSelection = getCustomScene(() => {
     const config = new GlobalConfigGenerator().withFrameSpeed(1).withProps(1, 3).getConfig()
     config.props.push(
-        new PropConfigGenerator().asRandom().shouldDisplayName(true).withName('Select Me').withPosition(3).getConfig()
+        new PropConfigGenerator().asRandom().shouldDisplayName(true).name('Select Me').withPosition(3).getConfig()
     )
     return config
 })
@@ -253,10 +253,13 @@ export const sceneDefaultCustomTheme = getCustomScene(() => {
 
 export const SceneZoom = ({scene, uid}) => {
     const [zoomFactor, setZoomFactor] = useState(0)
+    const [zoomStep, setZoomStep] = useState(0)
     useEffect(() => {
-        setZoomFactor(scene.getViewportCtx().scale)
-        scene.getViewportCtx().setOnZoom((n) => {
-            setZoomFactor(n)
+        const round = (input) => input.toFixed(2)
+        setZoomFactor(round(scene.getViewportCtx().scale))
+        scene.getViewportCtx().setOnZoom((n, prev) => {
+            setZoomStep(round(n - prev))
+            setZoomFactor(round(n))
         })
     }, [])
     return (<BrowserOnly>
@@ -264,10 +267,10 @@ export const SceneZoom = ({scene, uid}) => {
             () =>
                 <>
                     <Button>
-                        Zoom: {`${zoomFactor}`}
+                        Zoom: {zoomFactor} | Step: {zoomStep}
                     </Button>
                     <div className='docs__actions'>
-                        <SceneComponent scene={scene} uid={uid} width={'100%'} height={'450px'}/>
+                        <SceneComponent scene={scene} uid={uid} width={'100%'} height={'650px'}/>
                     </div>
                 </>
 
@@ -277,9 +280,148 @@ export const SceneZoom = ({scene, uid}) => {
 
 export const sceneZoomInLimit = getCustomScene(() => {
     return new GlobalConfigGenerator()
-        .zoomUpperBound(1)
+        .zoomUpperBound(0.9)
+        .zoomLowerBound(0.6)
         .withFrameSpeed()
         .defaultOpenPropList(false)
         .defaultOpenToolbar(false)
         .withProps().getConfig()
+})
+
+export const sceneZoomStep = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .zoomUpperBound(3)
+        .zoomLowerBound(0.2)
+        .zoomStep(1.3)
+        .withFrameSpeed()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .withProps().getConfig()
+})
+
+function getDialogDemoGenerator(){
+    return new GlobalConfigGenerator()
+        .withFrameSpeed(4)
+        .defaultOpenToolbar(false)
+        .addProp((generator)=>{
+            generator.name('Only General').type().withPosition(4)
+        })
+        .addProp((generator)=>{
+            generator.name('With Note').note("Here's some note").type().withPosition(4)
+        })
+        .addProp((generator)=>{
+            generator.name('With Scripts, Images')
+                .type().script('Some SCRIPT!\nSCRIPT!')
+                .images().withPosition(4)
+        })
+        .addProp((generator)=>{
+            generator.name('With Steps, Images')
+                .type().images()
+                .steps().withPosition(4)
+        })
+}
+
+export const sceneDialogMissing = getCustomScene(() => {
+    return getDialogDemoGenerator()
+        .getConfig()
+})
+
+export const sceneDialogAll = getCustomScene(() => {
+    return getDialogDemoGenerator()
+        .alwaysShowAllDialogTabs(true)
+        .getConfig()
+})
+
+export const sceneDialogShowDebug = getCustomScene(() => {
+    return getDialogDemoGenerator()
+        .showDialogDebugTab(true)
+        .getConfig()
+})
+
+export const sceneDialogShowDebugFlat = getCustomScene(() => {
+    return getDialogDemoGenerator()
+        .showDialogDebugTab(true)
+        .dialogDebugTabFormat('flat')
+        .getConfig()
+})
+
+export const sceneFrameSpeed124 = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .withFrameSpeed(1, 1)
+        .withFrameSpeed(2, 2)
+        .withFrameSpeed(3, 4)
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .withProps(5, 3).getConfig()
+})
+
+export const sceneFrameSpeedDefaultFS = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .withFrameSpeed(1, 1)
+        .withFrameSpeed(2, 2)
+        .withFrameSpeed(3, 4)
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .withProps(5, 6).getConfig()
+})
+
+export const sceneFrameSpeedDefaultFS5s = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .withFrameSpeed(1, 1)
+        .withFrameSpeed(2, 2)
+        .withFrameSpeed(3, 4)
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .defaultFrameSpeed(5)
+        .withProps(5, 6).getConfig()
+})
+
+export const sceneSelectionSpeed = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .withFrameSpeed(1, 10)
+        .withFrameSpeed(2, 10)
+        .withFrameSpeed(3, 10)
+        .withFrameSpeed(4, 10)
+        .withProps(5, 4).getConfig()
+})
+
+export const sceneSelectionSpeed0 = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .withFrameSpeed(1, 10)
+        .withFrameSpeed(2, 10)
+        .withFrameSpeed(3, 10)
+        .withFrameSpeed(4, 10)
+        .frameSelectionSpeed(0)
+        .withProps(5, 4).getConfig()
+})
+
+export const sceneSelectionSpeed03 = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .withFrameSpeed(1, 10)
+        .withFrameSpeed(2, 10)
+        .withFrameSpeed(3, 10)
+        .withFrameSpeed(4, 10)
+        .frameSelectionSpeed(0.3)
+        .withProps(5, 4).getConfig()
+})
+
+export const sceneDefaultTransitionFunction = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .withProps(5, 4).getConfig()
+})
+
+export const sceneTransitionFunctionEaseInOut = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .transitionTimingFunction('ease-in-out')
+        .withProps(5, 4).getConfig()
 })
