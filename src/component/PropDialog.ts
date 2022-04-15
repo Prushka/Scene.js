@@ -103,7 +103,7 @@ export class PropDialog extends SceneComponent {
 
 
             addTitleTab(Tab.GENERAL, "General Information", true, "bi", "bi-boxes")
-            addTitleTab(Tab.SCRIPTS, "Scripts", selectedProp.script, "bi", "bi-journal-bookmark-fill")
+            addTitleTab(Tab.SCRIPTS, "Scripts", selectedProp.scripts, "bi", "bi-journal-bookmark-fill")
             addTitleTab(Tab.STEPS, "Steps", selectedProp.steps, "bi", "bi-123")
             addTitleTab(Tab.IMAGES, "Images", selectedProp.images, "bi", "bi-image-fill")
             if(this.scene.config.showDialogDebugTab){
@@ -172,9 +172,9 @@ export class PropDialog extends SceneComponent {
                     }
                     break
                 case Tab.SCRIPTS:
-                    if (selectedProp.script) {
+                    if (selectedProp.scripts) {
                         const scriptElement = document.createElement('span')
-                        scriptElement.innerText = selectedProp.script
+                        scriptElement.innerText = selectedProp.scripts
                         scriptElement.classList.add('content-text--normal')
                         contentElement.append(scriptElement)
                     }

@@ -1,11 +1,47 @@
 ---
 title: Prop Selection
-sidebar_position: 4
+sidebar_position: 2
 ---
 
+import BrowserOnly from "@docusaurus/BrowserOnly";
 import {
+    CodeBlockWithAction, SceneComponent,
     sceneDeveloperInteractionManualSelection,
-    SceneOnly, ScenePropManualSelection, SceneSnackbar, sceneSnackbar, sceneUserInteractionViewport
+    SceneOnly, SceneSnackbar, sceneSnackbar, sceneUserInteractionViewport
 } from "../../src/components/Scene/SceneComponents";
+
+export const ScenePropManualSelection = ({scene, uid}) => {
+    return (<BrowserOnly>
+        {
+            () =>
+                <div className='docs__actions'>
+                    <CodeBlockWithAction title={'Select a prop by its name: '}
+                                         buttonText={`Click to select prop with name: 'Select Me'`}
+                                         scene={scene}
+                                         action={`const prop = scene.propCtx.getPropByName('Select Me')
+if(prop){
+    scene.propCtx.selectedProp = prop
+}`}/>
+                    <CodeBlockWithAction title={`Toggle a prop's selection: `}
+                                         buttonText={`Click to toggle prop selection with name: 'Select Me'`}
+                                         scene={scene}
+                                         action={`const prop = scene.propCtx.getPropByName('Select Me')
+if(prop){
+    scene.propCtx.toggleSelected(prop)
+}`}/>
+                    <CodeBlockWithAction title={`Check if a prop is selected: `}
+                                         buttonText={`Click to check if prop: 'Select Me' is selected`}
+                                         scene={scene}
+                                         action={`const prop = scene.propCtx.getPropByName('Select Me')
+if(prop){
+    const isSelected = scene.propCtx.isPropSelected(prop)
+    const selectedString = isSelected ? 'is' : 'is not'
+    scene.snackbarCtx.snackbar("Prop: Select Me "+selectedString+" selected", !isSelected)
+}`}/>
+                    <SceneComponent scene={scene} uid={uid} width={'100%'} height={'650px'}/>
+                </div>
+        }
+    </BrowserOnly>)
+}
 
 <ScenePropManualSelection {...sceneDeveloperInteractionManualSelection}/>

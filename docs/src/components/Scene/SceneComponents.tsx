@@ -56,6 +56,21 @@ export const SceneOnlyShort = ({scene, uid}) => {
     </BrowserOnly>)
 }
 
+export const SceneWithSelectedProp = ({scene, uid, propSelected}) => {
+    scene.setAfterRender(()=>{
+        const prop = scene.propCtx.getPropByName(propSelected)
+        if(prop){
+            scene.propCtx.selectedProp = prop
+        }
+    })
+    return (<BrowserOnly>
+        {
+            () =>
+                <SceneOnlyShort scene={scene} uid={uid}/>
+        }
+    </BrowserOnly>)
+}
+
 export const GeneratorConfigBlock = ({generator, config}) => {
     return (<Tabs>
         <TabItem value="generator" label="Global Config Generator" default>
@@ -74,13 +89,6 @@ export const GeneratorConfigBlock = ({generator, config}) => {
 
         </TabItem>
     </Tabs>)
-}
-
-export const CodeSnippet = ({children}) => {
-    return (<details>
-        <summary>Code snippet used to generate the following scene</summary>
-        {children}
-    </details>)
 }
 
 export const GeneratorWithPropConfigBlock = ({generator, propGenerator, config}) => {
@@ -148,45 +156,6 @@ export const CodeBlockWithAction = ({title, buttonText, action, scene}) => {
         </CodeBlock>
         <Button onClick={() => eval(action)}>{buttonText}</Button>
     </>)
-}
-
-export const ScenePropManualSelection = ({scene, uid}) => {
-    return (<BrowserOnly>
-        {
-            () =>
-                <div className='docs__actions'>
-                    <CodeBlockWithAction title={'Select a prop by its name: '}
-                                         buttonText={`Click to select prop with name: 'Select Me'`}
-                                         scene={scene}
-                                         action={
-                                             `const props = scene.propCtx.getPropsByName('Select Me')
-if(props && props.length > 0){
-    scene.propCtx.selectedProp = props[0]
-}`}/>
-                    <CodeBlockWithAction title={`Toggle a prop's selection: `}
-                                         buttonText={`Click to toggle prop selection with name: 'Select Me'`}
-                                         scene={scene}
-                                         action={
-                                             `const props = scene.propCtx.getPropsByName('Select Me')
-if(props && props.length > 0){
-    scene.propCtx.toggleSelected(props[0])
-}`}/>
-                    <CodeBlockWithAction title={`Check if a prop is selected: `}
-                                         buttonText={`Click to check if prop: 'Select Me' is selected`}
-                                         scene={scene}
-                                         action={
-                                             `const props = scene.propCtx.getPropsByName('Select Me')
-if(props && props.length > 0){
-    const isSelected = scene.propCtx.isPropSelected(props[0])
-    const selectedString = isSelected ? 'is' : 'is not'
-    scene.snackbarCtx.snackbar("Prop: Select Me "+selectedString+" selected", !isSelected)
-}`}/>
-
-
-                    <SceneComponent scene={scene} uid={uid} width={'100%'} height={'650px'}/>
-                </div>
-        }
-    </BrowserOnly>)
 }
 
 export function getScene() {
@@ -349,7 +318,7 @@ function getDialogDemoGenerator() {
         })
         .addProp((generator) => {
             generator.name('With Scripts, Images')
-                .type().script('Some SCRIPT!\nSCRIPT!')
+                .type().scripts('Some SCRIPT!\nSCRIPT!')
                 .images().withPosition(4)
         })
         .addProp((generator) => {
@@ -844,6 +813,21 @@ export const sceneOrderSet = getCustomScene(() => {
                 .renderOrder(4)
                 .addPosition((positionGenerator) => {
                     positionGenerator.x(30).y(30).scale(5)
+                })
+        }).getConfig()
+})
+
+export const sceneScripts = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .viewOffset(1.8)
+        .addProp((generator) => {
+            generator.type('CHARACTER')
+                .name('Eula')
+                .scripts("Good Morning\n\nHow's your day???")
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0).scale(10)
                 })
         }).getConfig()
 })

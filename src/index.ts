@@ -506,8 +506,8 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         return this
     }
 
-    public script(script?: string) {
-        this.config.script = script ?? "Here's some random script\nLorem ipsum dolor sit amet, consectetur adipiscing elit,\n123\n\na: c"
+    public scripts(script?: string) {
+        this.config.scripts = script ?? "Here's some random script\nLorem ipsum dolor sit amet, consectetur adipiscing elit,\n123\n\na: c"
         return this
     }
 
@@ -566,7 +566,7 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
     public asRandom() {
         this.type()
             .images()
-            .script()
+            .scripts()
             .note()
             .steps()
             .nameScale()

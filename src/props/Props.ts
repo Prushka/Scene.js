@@ -128,7 +128,7 @@ export interface PropConfig extends HasId {
      *
      * Affects the prop dialog's script tab and its content
      */
-    script?: string,
+    scripts?: string,
 
     /** A list of objects
      *
@@ -218,10 +218,10 @@ export const DefaultPropConfig: PropConfig = {
     excludeKeys: []
 }
 
-export const ExcludeKeys = ["name", "color", "type", "frameAnimationConfig", "script",
+export const ExcludeKeys = ["name", "color", "type", "frameAnimationConfig",
     "steps", "note", "shouldDisplayName", "id", "images", "orderIndex",
     "namePosition", "nameScale", "nameXOffset", "nameYOffset", "excludeKeys",
-    "nameColor"]
+    "nameColor", "scripts"]
 
 /** The default PropTypes */
 export enum PropType {

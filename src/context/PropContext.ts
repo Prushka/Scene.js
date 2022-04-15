@@ -127,7 +127,15 @@ export default class PropContext extends Context {
         return null
     }
 
-    public getPropsByName(name: string) {
+    public getPropByName(name: string): PropConfig | undefined{
+        const props = this.getPropsByName(name)
+        if(props.length === 0){
+            return undefined
+        }
+        return props[0]
+    }
+
+    public getPropsByName(name: string): PropConfig[] {
         const props = []
         for (const prop of this.propsState.get()) {
             if (prop.name.toLowerCase() === name.toLowerCase()) {
