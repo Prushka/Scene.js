@@ -6,6 +6,7 @@ import {SceneComponent} from "./Component";
 import State, {createState, StateAction} from "../state/State";
 import {ExcludeKeys, ImageConfig, StepConfig} from "../props/Props";
 import {camelToDisplay, flatObject, positionToDisplay} from "../utils/Utils";
+import {IdTypes} from "../context/IdContext";
 
 enum Tab {
     IMAGES="IMAGES",
@@ -73,7 +74,8 @@ export class PropDialog extends SceneComponent {
         })
         this.scene.$$('.header__tab').forEach(el => {
             el.addEventListener("click", (e) => {
-                this.selectedTabState.set(this.idCtx.extractIdType((e.target as HTMLElement).id)[0])
+                const [_,types] = this.idCtx.extractIdType((e.target as HTMLElement).id, ...IdTypes.PROP_DIALOG_HEADER_TAB)
+                this.selectedTabState.set(types[0])
             })
         })
         this.scene.$$('.content .image__container img').forEach(el => el.addEventListener('click', (e) => {
@@ -92,15 +94,15 @@ export class PropDialog extends SceneComponent {
             const header = document.createElement('div')
             header.classList.add('header')
 
-            const addTitleTab = (id, title, enableTab, ...classNames) => {
+            const addTitleTab = (type, title, enableTab, ...classNames) => {
                 if (this.scene.config.alwaysShowAllDialogTabs || enableTab) {
                     const button = document.createElement('span')
                     const tooltip = document.createElement('span')
                     tooltip.innerText = title
                     button.append(tooltip)
                     button.classList.add(...classNames, 'tooltip', 'header__tab')
-                    button.id = this.idCtx.PROP_DIALOG_HEADER_TAB(id)
-                    button.classList.add(this.selectedTabState.get() === id ? "header__button--selected" : "header__button--not-selected")
+                    button.id = this.idCtx.PROP_DIALOG_HEADER_TAB(null, type)
+                    button.classList.add(this.selectedTabState.get() === type ? "header__button--selected" : "header__button--not-selected")
                     header.append(button)
                 }
             }

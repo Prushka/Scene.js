@@ -155,7 +155,8 @@ export class Scene {
         })
     }
 
-    private afterRender: () => void = () => {}
+    private afterRender: () => void = () => {
+    }
 
     public setAfterRender(f: () => void) {
         this.afterRender = f
@@ -499,6 +500,11 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
 
     public nameScale(nameScale?: number) {
         this.config.nameScale = nameScale ?? randInclusive(5, 10) / 10
+        return this
+    }
+
+    public addImage(imageURL: string, title?: string, width?: number, height?: number) {
+        this.images([{title: title, imageURL: imageURL, width: width, height: height}])
         return this
     }
 

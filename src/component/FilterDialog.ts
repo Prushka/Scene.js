@@ -34,9 +34,9 @@ export class FilterDialog extends SceneComponent {
         this.renderFilteredProps()
         const propCtx = this.propCtx
         this.scene.$$('.list__items__item').forEach(el => el.addEventListener('click', (e) => {
-            const [_, type] = this.idCtx.extractIdType((e.currentTarget as HTMLElement).id, ...IdTypes.PROP_TYPE_TOGGLE)
-            if (type && type.length > 0) {
-                this.propCtx.toggleSelectedPropType(type[0])
+            const [_, types] = this.idCtx.extractIdType((e.currentTarget as HTMLElement).id, ...IdTypes.PROP_TYPE_TOGGLE)
+            if (types && types.length > 0) {
+                this.propCtx.toggleSelectedPropType(types[0])
             }
         }))
         this.scene.idOn(this.ids.PROP_SEARCH_INPUT, 'input', (e) => {
