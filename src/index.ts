@@ -490,6 +490,7 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
 
     public namePosition(position?: PropNamePosition) {
         this.config.namePosition = position ?? getRandomFromList(PropConfigGenerator.allPositions)
+        return this
     }
 
     public getAllPropTypes() {
@@ -559,10 +560,10 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         return this
     }
 
-    public addPosition(frame: number, f: (generator: PositionConfigGenerator) => void) {
+    public addPosition(f: (generator: PositionConfigGenerator) => void, frame?: number) {
         const generator = new PositionConfigGenerator()
         f(generator)
-        this.withPosition(frame, generator.getConfig())
+        this.withPosition(frame ?? 1, generator.getConfig())
         return this
     }
 

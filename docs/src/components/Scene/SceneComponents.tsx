@@ -77,6 +77,37 @@ export const GeneratorConfigBlock = ({generator, config}) => {
 
 }
 
+export const GeneratorWithPropConfigBlock = ({generator, propGenerator, config}) => {
+    return (<Tabs>
+        <TabItem value="globalGenerator" label="Global Config Generator" default>
+
+            <CodeBlock language={'js'}>
+                {`${generator}`}
+            </CodeBlock>
+
+
+        </TabItem>
+
+        <TabItem value="propGenerator" label="Prop Config Generator" default>
+
+            <CodeBlock language={'js'}>
+                {`${propGenerator}`}
+            </CodeBlock>
+
+
+        </TabItem>
+
+        <TabItem value="config" label="Config">
+
+            <CodeBlock language={'js'}>
+                {`${config}`}
+            </CodeBlock>
+
+        </TabItem>
+    </Tabs>)
+
+}
+
 export const SceneSnackbar = ({scene, uid}) => {
     return (<BrowserOnly>
         {
@@ -432,12 +463,12 @@ function getViewOffsetDemoGenerator() {
         .defaultOpenPropList(false)
         .defaultOpenToolbar(false)
         .addProp((generator) => {
-            generator.type('TABLE').addPosition(1, (positionGenerator) => {
+            generator.type('TABLE').addPosition((positionGenerator) => {
                 positionGenerator.x(50).y(50)
             })
         })
         .addProp((generator) => {
-            generator.type('CAMERA').addPosition(1, (positionGenerator) => {
+            generator.type('CAMERA').addPosition((positionGenerator) => {
                 positionGenerator.x(200).y(200)
             })
         })
@@ -470,4 +501,123 @@ export const sceneThemeRoot2 = getCustomScene(() => {
 
 export const sceneThemeRoot3 = getCustomScene(() => {
     return getThemeRootDemoGenerator()
+})
+
+export const sceneCreateProp = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE').addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50)
+            })
+        })
+        .addProp((generator) => {
+            generator.type('CAMERA').addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200)
+            })
+        }).getConfig()
+})
+
+export const scenePropName = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE').name('I have name').addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50)
+            })
+        })
+        .addProp((generator) => {
+            generator.type('CAMERA').addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200)
+            })
+        }).getConfig()
+})
+
+export const scenePropHideName = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE').name(`I have name but you can't see it`)
+                .shouldDisplayName(false).addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50)
+            })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE').name(`I have name and you can see it`).addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200)
+            })
+        }).getConfig()
+})
+
+export const scenePropType = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE').addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50)
+            })
+        })
+        .addProp((generator) => {
+            generator.type().addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200)
+            })
+        }).getConfig()
+})
+
+export const scenePropStyle = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE').addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50)
+            })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE').style('fillSquare').addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200)
+            })
+        }).getConfig()
+})
+
+export const sceneNamePosition = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .name('top')
+                .namePosition('top')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .name('left')
+                .namePosition('left')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(150).y(150)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .name('right')
+                .namePosition('right')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(150)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .name('bottom')
+                .namePosition('bottom')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(150).y(0)
+                })
+        }).getConfig()
 })

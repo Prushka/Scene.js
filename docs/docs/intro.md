@@ -39,7 +39,11 @@ To import this library, all you need to do is include one script tag in your hea
 
 Even though this landing page is built using React and Docusaurus, the library doesn't use React.
 
-In fact, the library doesn't use any external libraries and can be used both in vanilla html/js with script tag and ESM environments.
+In fact, the library doesn't use any external js/css libraries and can be used both in vanilla html/js with script tag and ESM environments.
+
+The library uses Webpack to bundle its TypeScript files.
+
+Bootstrap icon font is used for button icons and props.
 
 ## Create a scene
 

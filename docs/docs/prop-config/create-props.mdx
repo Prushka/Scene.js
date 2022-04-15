@@ -1,0 +1,101 @@
+---
+title: Create Props
+sidebar_position: 1
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneZoomInLimit,
+    SceneZoom,
+    sceneZoomStep,
+    sceneDialogMissing,
+    sceneDialogAll,
+    sceneDialogShowDebug,
+    sceneDialogShowDebugFlat,
+    sceneFrameSpeed124,
+    sceneFrameSpeedDefaultFS,
+    sceneFrameSpeedDefaultFS5s,
+    sceneSelectionSpeed,
+    sceneSelectionSpeed0,
+    sceneSelectionSpeed03,
+    sceneDefaultTransitionFunction,
+    sceneTransitionFunctionEaseInOut,
+    sceneViewOffsetDefault,
+    sceneViewOffset09, sceneCreateProp, GeneratorWithPropConfigBlock
+} from "../../src/components/Scene/SceneComponents";
+
+Even though you can create prop configs by
+either creating its **json** or using a **PropConfigGenerator**,
+you have to include it in the **Global Config's Prop List**.
+
+You can however interact with a scene's **PropContext** to modify your prop list.
+
+:::info
+
+We will only use `GlobalConfigGenerator.addProp` to demonstrate functionalities later since it uses an underlying `PropConfigGenerator`.
+
+:::
+
+There are 3 ways to create a prop. We will cover a prop's properties later.
+
+<GeneratorWithPropConfigBlock
+propGenerator={
+`const camera = new PropConfigGenerator()
+    .type('CAMERA')
+    .addPosition((positionGenerator) => {
+          positionGenerator.x(200).y(200)
+    })
+const table = new PropConfigGenerator()
+    .type('TABLE')
+    .addPosition((positionGenerator) => {
+          positionGenerator.x(50).y(50)
+    })
+new GlobalConfigGenerator().withProps([table, camera])`
+}
+    generator={
+`new GlobalConfigGenerator()
+    .addProp((generator) => {
+        generator.type('TABLE').addPosition((positionGenerator) => {
+            positionGenerator.x(50).y(50)
+        })
+    })
+    .addProp((generator) => {
+        generator.type('CAMERA').addPosition((positionGenerator) => {
+            positionGenerator.x(200).y(200)
+        })
+    })`}
+    config={
+`config.props = [
+    {
+      "frameAnimationConfig": {
+        "1": {
+          "x": 50,
+          "y": 50,
+        }
+      },
+      "type": "TABLE"
+    },
+    {
+      "frameAnimationConfig": {
+        "1": {
+          "x": 200,
+          "y": 200,
+        }
+      },
+      "type": "CAMERA"
+    }
+  ]`} />
+
+<SceneOnlyShort {...sceneCreateProp} />
+
+

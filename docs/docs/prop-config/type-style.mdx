@@ -1,0 +1,156 @@
+---
+title: Type & Style
+sidebar_position: 2
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneZoomInLimit,
+    SceneZoom,
+    sceneZoomStep,
+    sceneDialogMissing,
+    sceneDialogAll,
+    sceneDialogShowDebug,
+    sceneDialogShowDebugFlat,
+    sceneFrameSpeed124,
+    sceneFrameSpeedDefaultFS,
+    sceneFrameSpeedDefaultFS5s,
+    sceneSelectionSpeed,
+    sceneSelectionSpeed0,
+    sceneSelectionSpeed03,
+    sceneDefaultTransitionFunction,
+    sceneTransitionFunctionEaseInOut,
+    sceneViewOffsetDefault,
+    sceneViewOffset09, sceneCreateProp, GeneratorWithPropConfigBlock, scenePropName, scenePropType, scenePropStyle
+} from "../../src/components/Scene/SceneComponents";
+
+## Type (required)
+
+To use **custom prop types**, see [Custom Prop Types](t)
+
+The library comes with following types (every type contains multiple styles with enable/disable):
+
+* TABLE
+    * default
+    * triangle
+    * fillTriangle
+    * square
+    * fillSquare
+* LIGHT
+    * default
+    * lightning
+* CHARACTER
+    * default
+* CAMERA
+    * default
+* DISPLAY
+    * default
+* SHELF
+    * default
+* MAP
+    * default
+* SCRIPT
+    * default
+* STORYBOARD
+    * default
+
+
+:::tip
+
+When using **PropConfigGenerator**,
+you can choose to not pass in a type (*i.e.,* `new PropConfigGenerator().type()`),
+this uses a random type from all existing types.
+
+:::
+
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+        generator.type('TABLE').addPosition((positionGenerator) => {
+            positionGenerator.x(50).y(50)
+        })
+    })
+    .addProp((generator) => {
+        generator.type().addPosition((positionGenerator) => {
+            positionGenerator.x(200).y(200)
+        })
+    })`}
+    config={
+        `// You have to provide a type when you're not using a generator
+config.props = [
+    {
+      "frameAnimationConfig": {
+        "1": {
+          "x": 50,
+          "y": 50,
+        }
+      },
+      "type": "TABLE",
+    },
+    {
+      "frameAnimationConfig": {
+        "1": {
+          "x": 200,
+          "y": 200,
+        }
+      },
+      "type": "CAMERA"
+    }
+  ]`} />
+
+<SceneOnlyShort {...scenePropType} />
+
+## Style
+
+* If a style is not provided, a prop's style will be set to `default`
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+        generator.type('TABLE').addPosition((positionGenerator) => {
+            positionGenerator.x(50).y(50)
+        })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE').style('fillSquare').addPosition((positionGenerator) => {
+            positionGenerator.x(200).y(200)
+        })
+    })`}
+    config={
+        `// You have to provide a type when you're not using a generator
+config.props = [
+    {
+      "frameAnimationConfig": {
+        "1": {
+          "x": 50,
+          "y": 50,
+        }
+      },
+      "type": "TABLE",
+    },
+    {
+      "frameAnimationConfig": {
+        "1": {
+          "x": 200,
+          "y": 200,
+        }
+      },
+      "type": "TABLE",
+      "style": "fillSquare"
+    }
+  ]`} />
+
+<SceneOnlyShort {...scenePropStyle} />
