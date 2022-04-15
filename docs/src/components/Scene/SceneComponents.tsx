@@ -758,3 +758,26 @@ export const scenePropColorWithNameColor = getCustomScene(() => {
                 })
         }).getConfig()
 })
+
+
+export const sceneNamePositionWithOffset = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .name('y: -15')
+                .nameYOffset(-15)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .name('x: 50 | y: 20')
+                .nameOffset(50, 20)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(150).y(150)
+                })
+        }).getConfig()
+})

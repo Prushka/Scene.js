@@ -1,5 +1,5 @@
 ---
-title: Name, NamePosition, NameScale
+title: Name, NamePosition, NameOffset NameScale
 sidebar_position: 2
 ---
 
@@ -37,7 +37,7 @@ import {
     scenePropName,
     scenePropType,
     scenePropStyle,
-    scenePropHideName, sceneNamePosition, scenePropNameScale
+    scenePropHideName, sceneNamePosition, scenePropNameScale, sceneNamePositionWithOffset
 } from "../../src/components/Scene/SceneComponents";
 
 ## Name
@@ -307,3 +307,57 @@ You can set the name position to **top**, **left**, **bottom**, **right** or **c
     ]`} />
 
 <SceneOnlyShort {...sceneNamePosition} />
+
+## Name position offset in viewport
+
+* By default, the prop's name will be displayed center to the prop icon
+
+You can set the name's xOffset and yOffset:
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+            generator.type('TABLE')
+                .name('y: -15')
+                .nameYOffset(-15)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+                })
+        })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .name('x: 50 | y: 20')
+            .nameOffset(50, 20)
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(150).y(150)
+            })
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "type": "TABLE",
+        "name": "y: -15",
+        "nameYOffset": -15
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 150,
+            "y": 150
+          }
+        },
+        "type": "TABLE",
+        "name": "x: 50 | y: 20",
+        "nameXOffset": 50,
+        "nameYOffset": 20
+      }
+    ]`} />
+
+<SceneOnlyShort {...sceneNamePositionWithOffset} />

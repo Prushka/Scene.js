@@ -464,17 +464,23 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         };
     }
 
-    public nameYOffset(n?: number) {
+    public nameYOffset(n: number) {
         this.config.nameYOffset = n
         return this
     }
 
-    public nameXOffset(n?: number) {
+    public nameOffset(x: number, y: number) {
+        this.nameXOffset(x)
+        this.nameYOffset(y)
+        return this
+    }
+
+    public nameXOffset(n: number) {
         this.config.nameXOffset = n
         return this
     }
 
-    public nameColor(nameColor?: string) {
+    public nameColor(nameColor: string) {
         this.config.nameColor = nameColor
         return this
     }
