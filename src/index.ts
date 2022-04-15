@@ -223,6 +223,9 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
     }
 
     public addProp(f: (generator: PropConfigGenerator) => void) {
+        if(!this.config.props){
+            this.config.props = []
+        }
         const propConfigGenerator = new PropConfigGenerator()
         f(propConfigGenerator)
         this.config.props.push(propConfigGenerator.getConfig())
@@ -254,6 +257,11 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
 
     public defaultTheme(defaultTheme: string) {
         this.config.defaultTheme = defaultTheme
+        return this
+    }
+
+    public alwaysShowAllDialogTabs(v: boolean){
+        this.config.alwaysShowAllDialogTabs = true
         return this
     }
 
@@ -359,37 +367,37 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         return {};
     }
 
-    public withNameScale(nameScale?: number) {
+    public nameScale(nameScale?: number) {
         this.config.nameScale = nameScale ?? randInclusive(5, 10) / 10
         return this
     }
 
-    public withImages(images?: ImageConfig[]) {
+    public images(images?: ImageConfig[]) {
         this.config.images = images ?? PropConfigGenerator.demoImages
         return this
     }
 
-    public withScript(script?: string) {
+    public script(script?: string) {
         this.config.script = script ?? "Here's some random script\nLorem ipsum dolor sit amet, consectetur adipiscing elit,\n123\n\na: c"
         return this
     }
 
-    public withNote(note?: string) {
+    public note(note?: string) {
         this.config.note = note ?? "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
         return this
     }
 
-    public withSteps(steps?: StepsConfig) {
+    public steps(steps?: StepsConfig) {
         this.config.steps = steps ?? PropConfigGenerator.demoSteps
         return this
     }
 
-    public withStyle(style?: string) {
+    public style(style?: string) {
         this.config.style = style ?? getRandomFromList(Object.keys(PropTypeIcons[this.config.type]))
         return this
     }
 
-    public withNamePosition(position?: PropNamePosition) {
+    public namePosition(position?: PropNamePosition) {
         this.config.namePosition = position ?? getRandomFromList(PropConfigGenerator.allPositions)
     }
 
@@ -402,7 +410,7 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         return allIconPropTypes
     }
 
-    public withType(type?: string) {
+    public type(type?: string) {
         this.config.type = type ?? getRandomFromList(this.getAllPropTypes())
         return this
     }
@@ -426,23 +434,23 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
     }
 
     public asRandom() {
-        this.withType()
-            .withImages()
-            .withScript()
-            .withNote()
-            .withSteps()
-            .withNameScale()
-            .withStyle()
+        this.type()
+            .images()
+            .script()
+            .note()
+            .steps()
+            .nameScale()
+            .style()
             .shouldDisplayName()
         return this
     }
 
-    public withName(name: string) {
+    public name(name: string) {
         this.config.name = name
         return this
     }
 
-    public withColor(color: string) {
+    public color(color: string) {
         this.config.color = color
         return this
     }
