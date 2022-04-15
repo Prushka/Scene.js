@@ -56,6 +56,7 @@ export class Scene {
     public readonly idContext
 
     public viewComponent: View
+    public propDialogComponent: PropDialog
 
     public readonly originalConfig: string
 
@@ -154,8 +155,7 @@ export class Scene {
         })
     }
 
-    private afterRender: () => void = () => {
-    }
+    private afterRender: () => void = () => {}
 
     public setAfterRender(f: () => void) {
         this.afterRender = f
@@ -187,6 +187,7 @@ export class Scene {
                 this.register(PropList)
             }
             this.viewComponent = this.components[0] as View
+            this.propDialogComponent = this.components[1] as PropDialog
 
             this.themeCtx.renderTheme()
             this.afterRender()

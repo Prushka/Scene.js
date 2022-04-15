@@ -56,11 +56,17 @@ export const SceneOnlyShort = ({scene, uid}) => {
     </BrowserOnly>)
 }
 
-export const SceneWithSelectedProp = ({scene, uid, propSelected}) => {
+export const SceneWithSelection = ({scene, uid, propSelected, tabSelected}) => {
     scene.setAfterRender(()=>{
         const prop = scene.propCtx.getPropByName(propSelected)
         if(prop){
             scene.propCtx.selectedProp = prop
+            if(tabSelected){
+                const propDialog = scene.propDialogComponent
+                if(propDialog){
+                    propDialog.selectTab(tabSelected)
+                }
+            }
         }
     })
     return (<BrowserOnly>

@@ -8,11 +8,11 @@ import {ExcludeKeys, ImageConfig, StepConfig} from "../props/Props";
 import {camelToDisplay, flatObject, positionToDisplay} from "../utils/Utils";
 
 enum Tab {
-    IMAGES,
-    GENERAL,
-    STEPS,
-    SCRIPTS,
-    DEBUG
+    IMAGES="IMAGES",
+    GENERAL="GENERAL",
+    STEPS="STEPS",
+    SCRIPTS="SCRIPTS",
+    DEBUG="DEBUG"
 }
 
 export class PropDialog extends SceneComponent {
@@ -20,6 +20,10 @@ export class PropDialog extends SceneComponent {
     // prop is not a property, it's the prop used in a scene
 
     selectedTabState: State<Tab>
+
+    public selectTab(tab: Tab) {
+        this.selectedTabState.set(tab, true)
+    }
 
     afterConstructor() {
         this.selectedTabState = createState(Tab.GENERAL)
