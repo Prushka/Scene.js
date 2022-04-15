@@ -1,0 +1,269 @@
+---
+title: Prop & Name Color
+sidebar_position: 2
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneZoomInLimit,
+    SceneZoom,
+    sceneZoomStep,
+    sceneDialogMissing,
+    sceneDialogAll,
+    sceneDialogShowDebug,
+    sceneDialogShowDebugFlat,
+    sceneFrameSpeed124,
+    sceneFrameSpeedDefaultFS,
+    sceneFrameSpeedDefaultFS5s,
+    sceneSelectionSpeed,
+    sceneSelectionSpeed0,
+    sceneSelectionSpeed03,
+    sceneDefaultTransitionFunction,
+    sceneTransitionFunctionEaseInOut,
+    sceneViewOffsetDefault,
+    sceneViewOffset09,
+    sceneCreateProp,
+    GeneratorWithPropConfigBlock,
+    scenePropName,
+    scenePropType,
+    scenePropStyle,
+    sceneDefaultLightColor, sceneDefaultDarkColor, scenePropColor, scenePropColorWithNameColor
+} from "../../src/components/Scene/SceneComponents";
+
+:::tip
+
+Check [here](../global-config/theme) to see how to set a default theme
+
+:::
+
+* If a color is **not provided**, a prop's color will be set:
+    * A dark color if a white theme is the default theme
+    * A light color if a dark theme is the default theme
+* If the user chooses to **change the theme**, the prop's color will stay **the same**
+
+### Light Theme
+
+<SceneOnlyShort {...sceneDefaultLightColor} />
+
+### Dark Theme
+
+<SceneOnlyShort {...sceneDefaultDarkColor} />
+
+## Setting prop color
+
+You can set a prop's color:
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+            generator.type('TABLE')
+                .color('#F8B195')
+                .addPosition((positionGenerator) => {
+                positionGenerator.x(0).y(0)
+            })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .color('#C06C84')
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(150).y(0)
+            })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .color('#6C5B7B')
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(0).y(150)
+            })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .color('#F67280')
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(150).y(150)
+            })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .color('#355C7D')
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(75).y(75)
+            })
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 0,
+          }
+        },
+        "type": "TABLE",
+        "color": "#F8B195"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 150,
+            "y": 0,
+          }
+        },
+        "type": "TABLE",
+        "color": "#C06C84"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 150,
+          }
+        },
+        "type": "TABLE",
+        "color": "#6C5B7B"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 150,
+            "y": 150,
+          }
+        },
+        "type": "TABLE",
+        "color": "#F67280"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 75,
+            "y": 75,
+          }
+        },
+        "type": "TABLE",
+        "color": "#355C7D"
+      }
+    ]`} />
+
+<SceneOnlyShort {...scenePropColor} />
+
+
+## Setting name color
+
+* By default, if name color is not provided, the prop's name color will be the same as the prop's color.
+
+You can set the prop's name color:
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+            generator.type('TABLE')
+                .color('#F8B195')
+                .nameColor('#525B88')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+                })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .color('#C06C84')
+            .nameColor('#B6B049')
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(150).y(0)
+            })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .color('#6C5B7B')
+            .nameColor('#B8293D')
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(0).y(150)
+            })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .color('#F67280')
+            .nameColor('#035956')
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(150).y(150)
+            })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .color('#355C7D')
+            .nameColor('#BFA8BB')
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(75).y(75)
+            })
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "type": "TABLE",
+        "color": "#F8B195",
+        "nameColor": "#525B88"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 150,
+            "y": 0
+          }
+        },
+        "type": "TABLE",
+        "color": "#C06C84",
+        "nameColor": "#B6B049"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 150
+          }
+        },
+        "type": "TABLE",
+        "color": "#6C5B7B",
+        "nameColor": "#B8293D"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 150,
+            "y": 150
+          }
+        },
+        "type": "TABLE",
+        "color": "#F67280",
+        "nameColor": "#035956"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 75,
+            "y": 75
+          }
+        },
+        "type": "TABLE",
+        "color": "#355C7D",
+        "nameColor": "#BFA8BB"
+      }
+    ]`} />
+
+<SceneOnlyShort {...scenePropColorWithNameColor} />

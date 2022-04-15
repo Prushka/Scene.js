@@ -1,5 +1,5 @@
 ---
-title: Name & Name Position
+title: Name, NamePosition, NameScale
 sidebar_position: 2
 ---
 
@@ -37,7 +37,7 @@ import {
     scenePropName,
     scenePropType,
     scenePropStyle,
-    scenePropHideName, sceneNamePosition
+    scenePropHideName, sceneNamePosition, scenePropNameScale
 } from "../../src/components/Scene/SceneComponents";
 
 ## Name
@@ -131,12 +131,78 @@ You can hide it:
 
 <SceneOnlyShort {...scenePropHideName} />
 
+## Name Scale
+
+* By default, name will have scale 1 in the viewport
+
+You can scale the name:
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+            generator.type('TABLE').name('Scale 1')
+                .addPosition((positionGenerator) => {
+                positionGenerator.x(0).y(0)
+            })
+        })
+    .addProp((generator) => {
+        generator.type('TABLE').name('Scale 0.5')
+            .nameScale(0.5)
+            .addPosition((positionGenerator) => {
+            positionGenerator.x(0).y(200)
+        })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE').name('Scale 2')
+            .nameScale(2)
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(0)
+            })
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 0,
+          }
+        },
+        "type": "TABLE",
+        "name": "Scale 1"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 200,
+          }
+        },
+        "type": "TABLE",
+        "name": "Scale 0.5",
+        "nameScale": 0.5
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 200,
+            "y": 0,
+          }
+        },
+        "type": "TABLE",
+        "name": "Scale 2",
+        "nameScale": 2
+      }
+    ]`} />
+
+<SceneOnlyShort {...scenePropNameScale} />
 
 ## Name position in viewport
 
 * By default, the prop's name will be displayed above the prop icon in the viewport
 
-You can change this behavior:
+You can set the name position to **top**, **left**, **bottom**, **right** or **center**:
 
 <GeneratorConfigBlock
     generator={
@@ -172,6 +238,14 @@ You can change this behavior:
             .addPosition((positionGenerator) => {
                 positionGenerator.x(150).y(0)
             })
+    })
+    .addProp((generator) => {
+            generator.type('TABLE')
+                .name('center')
+                .namePosition('center')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(75).y(75)
+                })
     })`}
     config={
         `config.props = [
@@ -218,6 +292,17 @@ You can change this behavior:
         "type": "TABLE",
         "name": "bottom",
         "namePosition": "bottom"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 150,
+            "y": 0,
+          }
+        },
+        "type": "TABLE",
+        "name": "center",
+        "namePosition": "center"
       }
     ]`} />
 

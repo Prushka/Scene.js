@@ -535,6 +535,32 @@ export const scenePropName = getCustomScene(() => {
         }).getConfig()
 })
 
+export const scenePropNameScale = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE').name('Scale 1')
+                .addPosition((positionGenerator) => {
+                positionGenerator.x(0).y(0)
+            })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE').name('Scale 0.5')
+                .nameScale(0.5)
+                .addPosition((positionGenerator) => {
+                positionGenerator.x(0).y(200)
+            })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE').name('Scale 2')
+                .nameScale(2)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(200).y(0)
+                })
+        }).getConfig()
+})
+
 export const scenePropHideName = getCustomScene(() => {
     return new GlobalConfigGenerator()
         .defaultOpenPropList(false)
@@ -618,6 +644,117 @@ export const sceneNamePosition = getCustomScene(() => {
                 .namePosition('bottom')
                 .addPosition((positionGenerator) => {
                     positionGenerator.x(150).y(0)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .name('center')
+                .namePosition('center')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(75).y(75)
+                })
+        }).getConfig()
+})
+
+export const sceneDefaultLightColor = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .withProps(12, 2).getConfig()
+})
+
+export const sceneDefaultDarkColor = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .defaultTheme('dark')
+        .withProps(12, 2).getConfig()
+})
+
+export const scenePropColor = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .color('#F8B195')
+                .addPosition((positionGenerator) => {
+                positionGenerator.x(0).y(0)
+            })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .color('#C06C84')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(150).y(0)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .color('#6C5B7B')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(150)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .color('#F67280')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(150).y(150)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .color('#355C7D')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(75).y(75)
+                })
+        }).getConfig()
+})
+
+
+export const scenePropColorWithNameColor = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .color('#F8B195')
+                .nameColor('#525B88')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .color('#C06C84')
+                .nameColor('#B6B049')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(150).y(0)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .color('#6C5B7B')
+                .nameColor('#B8293D')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(150)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .color('#F67280')
+                .nameColor('#035956')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(150).y(150)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .color('#355C7D')
+                .nameColor('#BFA8BB')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(75).y(75)
                 })
         }).getConfig()
 })
