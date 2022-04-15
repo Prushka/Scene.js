@@ -1,0 +1,61 @@
+---
+title: Theme Scope
+sidebar_position: 3
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneDefaultDarkTheme,
+    sceneDefaultCustomTheme, sceneThemeRoot1, sceneThemeRoot2, sceneThemeRoot3
+} from "../../src/components/Scene/SceneComponents";
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+This page covers the effect of setting **themeScope** to **root**.
+
+By default, **themeScope** is set to **container** (see [Theme](theme)).
+
+:::info
+
+**themeScope** can only be set to **root** or **container**:
+
+* root: this allows switching themes using the toolbar to affect every scene in this page
+* container: this restricts the theme switching functionality to the current theme
+
+:::
+
+### Themes with root scope
+
+To use **root** **themeScope**, every scene in the page has to have root themeScope.
+
+Try to change the **theme** of any scene below using the bottom left **toolbar**.
+
+The following code snippet is applied to every scene in this page:
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator().themeScope('root')`}
+    config={
+        `config.themeScope = 'root'`} />
+
+
+<SceneOnlyShort {...sceneThemeRoot1}/>
+
+---
+
+<SceneOnlyShort {...sceneThemeRoot2}/>
+
+---
+
+<SceneOnlyShort {...sceneThemeRoot3}/>

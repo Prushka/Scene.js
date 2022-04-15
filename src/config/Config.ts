@@ -6,6 +6,8 @@ export type FrameSpeeds = { [key: number]: number }
 
 export type DebugTabFormats = 'json' | 'flat'
 
+export type ThemeScope = 'root' | 'container'
+
 export interface Config {
     /** The default theme used
      *
@@ -29,7 +31,7 @@ export interface Config {
      *
      * @default 'container
      */
-    themeScope?: 'root' | 'container',
+    themeScope?: ThemeScope,
 
     /** [TODO: Popup hasn't been fully implemented]
      *

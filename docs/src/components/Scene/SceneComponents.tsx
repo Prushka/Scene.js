@@ -425,3 +425,48 @@ export const sceneTransitionFunctionEaseInOut = getCustomScene(() => {
         .transitionTimingFunction('ease-in-out')
         .withProps(5, 4).getConfig()
 })
+
+function getViewOffsetDemoGenerator() {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator)=>{
+            generator.type('TABLE').addPosition(1, (positionGenerator)=>{
+                positionGenerator.x(50).y(50)
+            })
+        })
+        .addProp((generator)=>{
+            generator.type('CAMERA').addPosition(1, (positionGenerator)=>{
+                positionGenerator.x(200).y(200)
+            })
+        })
+}
+
+export const sceneViewOffsetDefault = getCustomScene(() => {
+    return getViewOffsetDemoGenerator().getConfig()
+})
+
+export const sceneViewOffset09 = getCustomScene(() => {
+    return getViewOffsetDemoGenerator().viewOffset(0.9).getConfig()
+})
+
+function getThemeRootDemoGenerator() {
+    return new GlobalConfigGenerator()
+        .withFrameSpeed()
+        .defaultOpenPropList(false)
+        .withProps()
+        .themeScope('root')
+        .getConfig()
+}
+
+export const sceneThemeRoot1 = getCustomScene(() => {
+    return getThemeRootDemoGenerator()
+})
+
+export const sceneThemeRoot2 = getCustomScene(() => {
+    return getThemeRootDemoGenerator()
+})
+
+export const sceneThemeRoot3 = getCustomScene(() => {
+    return getThemeRootDemoGenerator()
+})

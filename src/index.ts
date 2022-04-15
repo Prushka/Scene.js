@@ -17,7 +17,7 @@ import {getRandomFromList, randBoolean, randInclusive} from "./utils/Utils";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
 import {ViewSVG} from "./component/ViewSVG";
-import {Config, DebugTabFormats, DefaultConfig, FrameSpeeds} from "./config/Config";
+import {Config, DebugTabFormats, DefaultConfig, FrameSpeeds, ThemeScope} from "./config/Config";
 import {Snackbar} from "./component/Snackbar";
 import {CustomComponent} from "./component/Component";
 import {Overlay} from "./component/Overlay";
@@ -258,6 +258,11 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         return this
     }
 
+    public themeScope(v: ThemeScope){
+        this.config.themeScope = v
+        return this
+    }
+
     public customTheme(key: string, theme: Theme) {
         this.config.customThemes[key] = theme
         return this
@@ -283,7 +288,7 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         return this
     }
 
-    public viewportCalcOffset(offset: number) {
+    public viewOffset(offset: number) {
         this.config.viewOffset = offset
         return this
     }
@@ -440,8 +445,10 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         width: 300
     }
 
-    protected initializeConfig() {
-        return {};
+    protected initializeConfig(): PropConfig {
+        return {
+            frameAnimationConfig: {}
+        };
     }
 
     public nameScale(nameScale?: number) {
@@ -545,7 +552,7 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         return this
     }
 
-    public addPosition(f: (generator: PositionConfigGenerator) => void, frame: number) {
+    public addPosition(frame: number, f: (generator: PositionConfigGenerator) => void) {
         const generator = new PositionConfigGenerator()
         f(generator)
         this.withPosition(frame, generator.getConfig())
