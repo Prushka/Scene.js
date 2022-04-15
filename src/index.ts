@@ -5,7 +5,7 @@
 import {
     AnimationConfig,
     DefaultLine,
-    ImageConfig,
+    ImageConfig, PositionConfig,
     PropConfig,
     PropNamePosition,
     PropType,
@@ -217,12 +217,12 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         };
     }
 
-    public defaultFrameSpeed(n: number){
+    public defaultFrameSpeed(n: number) {
         this.config.defaultFrameSpeed = n
         return this
     }
 
-    public frameSelectionSpeed(n: number){
+    public frameSelectionSpeed(n: number) {
         this.config.frameSelectionSpeed = n
         return this
     }
@@ -268,21 +268,21 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         return this
     }
 
-    public alwaysShowAllDialogTabs(v: boolean){
+    public alwaysShowAllDialogTabs(v: boolean) {
         this.config.alwaysShowAllDialogTabs = true
         return this
     }
-    
-    public showDialogDebugTab(v: boolean){
+
+    public showDialogDebugTab(v: boolean) {
         this.config.showDialogDebugTab = true
         return this
     }
 
-    public dialogDebugTabFormat(v: DebugTabFormats){
+    public dialogDebugTabFormat(v: DebugTabFormats) {
         this.config.dialogDebugTabFormat = v
         return this
     }
-    
+
     public viewportCalcOffset(offset: number) {
         this.config.viewOffset = offset
         return this
@@ -318,7 +318,7 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         return this
     }
 
-    public transitionTimingFunction(v: string){
+    public transitionTimingFunction(v: string) {
         this.config.transitionTimingFunction = v
         return this
     }
@@ -336,6 +336,60 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         return this
     }
 
+}
+
+export class PositionConfigGenerator extends ConfigGenerator<AnimationConfig> {
+
+    protected initializeConfig(): AnimationConfig {
+        return {};
+    }
+
+    public enabled(v: boolean) {
+        this.config.enabled = v
+        return this
+    }
+
+    public hide(v: boolean) {
+        this.config.hide = v
+        return this
+    }
+
+    public transitionTimingFunction(v: string) {
+        this.config.transitionTimingFunction = v
+        return this
+    }
+
+    public degree(v: number) {
+        this.config.degree = v
+        return this
+    }
+
+    public x(v: number) {
+        this.config.x = v
+        return this
+    }
+
+    public y(v: number) {
+        this.config.y = v
+        return this
+    }
+
+    public scaleX(v: number) {
+        this.config.scaleX = v
+        return this
+    }
+
+    public scaleY(v: number) {
+        this.config.scaleY = v
+        return this
+    }
+
+    public thumbnail(imageURL: string) {
+        this.config.thumbnail = {
+            imageURL: imageURL
+        }
+        return this
+    }
 }
 
 export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
@@ -488,6 +542,13 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
             }
             this.config.frameAnimationConfig = s
         }
+        return this
+    }
+
+    public addPosition(f: (generator: PositionConfigGenerator) => void, frame: number) {
+        const generator = new PositionConfigGenerator()
+        f(generator)
+        this.withPosition(frame, generator.getConfig())
         return this
     }
 
