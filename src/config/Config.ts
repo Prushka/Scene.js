@@ -247,7 +247,15 @@ export interface Config {
      *
      * @default true
      */
-    displayTimeline?: boolean
+    displayTimeline?: boolean,
+
+    /**
+     * When set to true, the toolbar export button will export the config that was passed it
+     *
+     * If set to false, it will export a config populated with default values
+     *
+     */
+    exportPopulatedConfig?: boolean
 }
 
 export const DefaultConfig: Config = {
@@ -276,4 +284,5 @@ export const DefaultConfig: Config = {
     displayToolbar: true,
     displayPropList: true,
     displayTimeline: true,
+    exportPopulatedConfig: true
 }

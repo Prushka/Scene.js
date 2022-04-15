@@ -57,15 +57,20 @@ export class Scene {
 
     public viewComponent: View
 
+    public readonly originalConfig: string
+
     public constructor(rootContainerId: string, config?: Config) {
         [this.ids, this.idContext] = useId()
+
+        this.originalConfig = JSON.stringify(config, null, 2)
+
         this.rootContainerId = rootContainerId
         this.rootContainerIdSymbol = '#' + this.rootContainerId
         this.config = config ? {...DefaultConfig, ...config} : {...DefaultConfig}
         this.config.lines.forEach((l) => {
             l[2] = {...DefaultLine, ...l[2]}
         })
-        console.log(this.config)
+
         this.themeCtx = new ThemeContext(this)
         this.propCtx = new PropContext(this)
         this.propCtx.addPropType(config.propTypes)
@@ -149,7 +154,8 @@ export class Scene {
         })
     }
 
-    private afterRender: () => void = () => {}
+    private afterRender: () => void = () => {
+    }
 
     public setAfterRender(f: () => void) {
         this.afterRender = f
@@ -456,6 +462,26 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         return {
             frameAnimationConfig: {}
         };
+    }
+
+    public nameYOffset(n?: number) {
+        this.config.nameYOffset = n
+        return this
+    }
+
+    public nameXOffset(n?: number) {
+        this.config.nameXOffset = n
+        return this
+    }
+
+    public nameColor(nameColor?: string) {
+        this.config.nameColor = nameColor
+        return this
+    }
+
+    public order(n: number) {
+        this.config.orderIndex = n
+        return this
     }
 
     public nameScale(nameScale?: number) {

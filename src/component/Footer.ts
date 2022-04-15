@@ -188,7 +188,10 @@ export class Footer extends SceneComponent {
             }
         }, this.ids.TOOLBAR_PLAY_BUTTON)
         hookButton(() => {
-            navigator.clipboard.writeText(JSON.stringify(this.scene.config, null, 2)).then(() => this.snackbarCtx.success("Copied to clipboard"))
+            const data = !this.scene.config.exportPopulatedConfig ? JSON.stringify(this.scene.config, null, 2) : this.scene.originalConfig
+            navigator.clipboard
+                .writeText(data)
+                .then(() => this.snackbarCtx.success("Copied to clipboard"))
         }, this.ids.TOOLBAR_EXPORT_BUTTON)
 
         hookButton(() => {
