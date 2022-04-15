@@ -397,6 +397,12 @@ export class PositionConfigGenerator extends ConfigGenerator<AnimationConfig> {
         return this
     }
 
+    public scale(v: number) {
+        this.scaleX(v)
+        this.scaleY(v)
+        return this
+    }
+
     public scaleY(v: number) {
         this.config.scaleY = v
         return this
@@ -485,7 +491,7 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         return this
     }
 
-    public order(n: number) {
+    public renderOrder(n: number) {
         this.config.orderIndex = n
         return this
     }

@@ -17,8 +17,6 @@ import {
     sceneHideToolbarPropList,
     sceneZoomInLimit,
     SceneZoom,
-    sceneZoomStep,
-    sceneDialogMissing,
     sceneDialogAll,
     sceneDialogShowDebug,
     sceneDialogShowDebugFlat,
@@ -328,6 +326,7 @@ You can set the name's xOffset and yOffset:
     .addProp((generator) => {
         generator.type('TABLE')
             .name('x: 50 | y: 20')
+            .namePosition('left')
             .nameOffset(50, 20)
             .addPosition((positionGenerator) => {
                 positionGenerator.x(150).y(150)
@@ -344,7 +343,8 @@ You can set the name's xOffset and yOffset:
         },
         "type": "TABLE",
         "name": "y: -15",
-        "nameYOffset": -15
+        "nameYOffset": -15,
+        "namePosition": "left"
       },
       {
         "frameAnimationConfig": {

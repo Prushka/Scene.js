@@ -74,7 +74,13 @@ export const GeneratorConfigBlock = ({generator, config}) => {
 
         </TabItem>
     </Tabs>)
+}
 
+export const CodeSnippet = ({children}) => {
+    return (<details>
+        <summary>Code snippet used to generate the following scene</summary>
+        {children}
+    </details>)
 }
 
 export const GeneratorWithPropConfigBlock = ({generator, propGenerator, config}) => {
@@ -542,15 +548,15 @@ export const scenePropNameScale = getCustomScene(() => {
         .addProp((generator) => {
             generator.type('TABLE').name('Scale 1')
                 .addPosition((positionGenerator) => {
-                positionGenerator.x(0).y(0)
-            })
+                    positionGenerator.x(0).y(0)
+                })
         })
         .addProp((generator) => {
             generator.type('TABLE').name('Scale 0.5')
                 .nameScale(0.5)
                 .addPosition((positionGenerator) => {
-                positionGenerator.x(0).y(200)
-            })
+                    positionGenerator.x(0).y(200)
+                })
         })
         .addProp((generator) => {
             generator.type('TABLE').name('Scale 2')
@@ -679,8 +685,8 @@ export const scenePropColor = getCustomScene(() => {
             generator.type('TABLE')
                 .color('#F8B195')
                 .addPosition((positionGenerator) => {
-                positionGenerator.x(0).y(0)
-            })
+                    positionGenerator.x(0).y(0)
+                })
         })
         .addProp((generator) => {
             generator.type('TABLE')
@@ -774,10 +780,70 @@ export const sceneNamePositionWithOffset = getCustomScene(() => {
         })
         .addProp((generator) => {
             generator.type('TABLE')
-                .name('x: 50 | y: 20')
+                .name('left & x: 50 | y: 20')
+                .namePosition('left')
                 .nameOffset(50, 20)
                 .addPosition((positionGenerator) => {
                     positionGenerator.x(150).y(150)
+                })
+        }).getConfig()
+})
+
+export const sceneOrderDefault = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .viewOffset(0.9)
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .style('fillSquare')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0).scale(10)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .style('fillSquare')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(-50).y(-50).scale(8)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .style('fillSquare')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(30).y(30).scale(5)
+                })
+        }).getConfig()
+})
+
+export const sceneOrderSet = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .viewOffset(0.9)
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .style('fillSquare')
+                .renderOrder(1)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0).scale(10)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .style('fillSquare')
+                .renderOrder(5)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(-50).y(-50).scale(8)
+                })
+        })
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .style('fillSquare')
+                .renderOrder(4)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(30).y(30).scale(5)
                 })
         }).getConfig()
 })

@@ -1,0 +1,198 @@
+---
+title: Render Stack Order
+sidebar_position: 2
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneZoomInLimit,
+    SceneZoom,
+    sceneZoomStep,
+    sceneDialogMissing,
+    sceneDialogAll,
+    sceneDialogShowDebug,
+    sceneDialogShowDebugFlat,
+    sceneFrameSpeed124,
+    sceneFrameSpeedDefaultFS,
+    sceneFrameSpeedDefaultFS5s,
+    sceneSelectionSpeed,
+    sceneSelectionSpeed0,
+    sceneSelectionSpeed03,
+    sceneDefaultTransitionFunction,
+    sceneTransitionFunctionEaseInOut,
+    sceneViewOffsetDefault,
+    sceneViewOffset09,
+    sceneCreateProp,
+    GeneratorWithPropConfigBlock,
+    scenePropName,
+    scenePropType,
+    scenePropStyle,
+    sceneDefaultLightColor,
+    sceneDefaultDarkColor,
+    scenePropColor,
+    scenePropColorWithNameColor,
+    sceneOrderDefault,
+    CodeSnippet, sceneOrderSet
+} from "../../src/components/Scene/SceneComponents";
+
+## Default Behavior
+
+* By default, props will be rendered in the order they are added.
+If a prop gets added later, it will be on top of the prop added earlier (*i.e.*, have lower index in the array).
+
+See how 3 tables display (table 3 has the highest order index since it was added at the last):
+<details>
+    <summary>Code snippet used to generate the following scene</summary>
+    <GeneratorConfigBlock
+        generator={
+            `new GlobalConfigGenerator()
+    .addProp((generator) => {
+            generator.type('TABLE')
+                .style('fillSquare')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0).scale(10)
+                })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .style('fillSquare')
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(-50).y(-50).scale(8)
+            })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .style('fillSquare')
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(30).y(30).scale(5)
+            })
+    })`}
+        config={
+            `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 0,
+            "scaleX": 10,
+            "scaleY": 10
+          }
+        },
+        "type": "TABLE",
+        "style": "fillSquare"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": -50,
+            "y": -50,
+            "scaleX": 8,
+            "scaleY": 8
+          }
+        },
+        "type": "TABLE",
+        "style": "fillSquare"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 30,
+            "y": 30,
+            "scaleX": 5,
+            "scaleY": 5
+          }
+        },
+        "type": "TABLE",
+        "style": "fillSquare"
+      }
+    ]`}/>
+</details>
+
+<SceneOnlyShort {...sceneOrderDefault} />
+
+## Setting prop's stack order index
+
+You can set a prop's order index (higher order index props have higher stack order (*i.e.,* they will be on top of props with lower stack order)):
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+            generator.type('TABLE')
+                .style('fillSquare')
+                .renderOrder(1)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0).scale(10)
+                })
+        })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .style('fillSquare')
+            .renderOrder(5)
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(-50).y(-50).scale(8)
+            })
+    })
+    .addProp((generator) => {
+        generator.type('TABLE')
+            .style('fillSquare')
+            .renderOrder(4)
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(30).y(30).scale(5)
+            })
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 0,
+            "scaleX": 10,
+            "scaleY": 10
+          }
+        },
+        "type": "TABLE",
+        "style": "fillSquare",
+        "orderIndex": 1
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": -50,
+            "y": -50,
+            "scaleX": 8,
+            "scaleY": 8
+          }
+        },
+        "type": "TABLE",
+        "style": "fillSquare",
+        "orderIndex": 5
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 30,
+            "y": 30,
+            "scaleX": 5,
+            "scaleY": 5
+          }
+        },
+        "type": "TABLE",
+        "style": "fillSquare",
+        "orderIndex": 4
+      }
+    ]`}/>
+
+
+<SceneOnlyShort {...sceneOrderSet} />
