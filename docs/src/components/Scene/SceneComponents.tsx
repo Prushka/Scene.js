@@ -254,14 +254,15 @@ export const sceneDefaultCustomTheme = getCustomScene(() => {
 export const SceneZoom = ({scene, uid}) => {
     const [zoomFactor, setZoomFactor] = useState(0)
     const [zoomStep, setZoomStep] = useState(0)
-    useEffect(() => {
+    scene.setAfterRender(() => {
+        const viewportCtx = scene.getViewportCtx()
         const round = (input) => input.toFixed(2)
         setZoomFactor(round(scene.getViewportCtx().scale))
         scene.getViewportCtx().setOnZoom((n, prev) => {
             setZoomStep(round(n - prev))
             setZoomFactor(round(n))
         })
-    }, [])
+    })
     return (<BrowserOnly>
         {
             () =>
@@ -299,22 +300,22 @@ export const sceneZoomStep = getCustomScene(() => {
         .withProps().getConfig()
 })
 
-function getDialogDemoGenerator(){
+function getDialogDemoGenerator() {
     return new GlobalConfigGenerator()
         .withFrameSpeed(4)
         .defaultOpenToolbar(false)
-        .addProp((generator)=>{
+        .addProp((generator) => {
             generator.name('Only General').type().withPosition(4)
         })
-        .addProp((generator)=>{
+        .addProp((generator) => {
             generator.name('With Note').note("Here's some note").type().withPosition(4)
         })
-        .addProp((generator)=>{
+        .addProp((generator) => {
             generator.name('With Scripts, Images')
                 .type().script('Some SCRIPT!\nSCRIPT!')
                 .images().withPosition(4)
         })
-        .addProp((generator)=>{
+        .addProp((generator) => {
             generator.name('With Steps, Images')
                 .type().images()
                 .steps().withPosition(4)
@@ -430,13 +431,13 @@ function getViewOffsetDemoGenerator() {
     return new GlobalConfigGenerator()
         .defaultOpenPropList(false)
         .defaultOpenToolbar(false)
-        .addProp((generator)=>{
-            generator.type('TABLE').addPosition(1, (positionGenerator)=>{
+        .addProp((generator) => {
+            generator.type('TABLE').addPosition(1, (positionGenerator) => {
                 positionGenerator.x(50).y(50)
             })
         })
-        .addProp((generator)=>{
-            generator.type('CAMERA').addPosition(1, (positionGenerator)=>{
+        .addProp((generator) => {
+            generator.type('CAMERA').addPosition(1, (positionGenerator) => {
                 positionGenerator.x(200).y(200)
             })
         })

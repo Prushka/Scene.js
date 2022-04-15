@@ -149,6 +149,12 @@ export class Scene {
         })
     }
 
+    private afterRender: () => void = () => {}
+
+    public setAfterRender(f: () => void) {
+        this.afterRender = f
+    }
+
     public display(checkDOMContentLoaded: boolean = false) {
         console.log(`Going to render scene: ${this.rootContainerId}`)
         this.unmountIfMount()
@@ -177,6 +183,7 @@ export class Scene {
             this.viewComponent = this.components[0] as View
 
             this.themeCtx.renderTheme()
+            this.afterRender()
         }
 
         if (checkDOMContentLoaded) {
@@ -258,7 +265,7 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         return this
     }
 
-    public themeScope(v: ThemeScope){
+    public themeScope(v: ThemeScope) {
         this.config.themeScope = v
         return this
     }
