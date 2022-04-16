@@ -4,7 +4,7 @@ import {
     getDemoScene,
     GlobalConfigGenerator,
     PropConfigGenerator,
-    Scene
+    Scene, getDemoGlobalConfigGenerator
 } from '../../../../src/index';
 import './scene.css';
 import BrowserOnly from "@docusaurus/BrowserOnly";
@@ -1095,4 +1095,8 @@ export const sceneWalls = getCustomScene(() => {
                 positionGenerator.x(90).y(90).scale(2)
             }, 3)
         }).getConfig()
+})
+
+export const sceneDemo = getCustomScene(() => {
+    return getDemoGlobalConfigGenerator().getConfig()
 })

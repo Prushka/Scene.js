@@ -1,14 +1,17 @@
 ---
+title: Scene.js Intro
 sidebar_position: 1
 ---
 
-# Scene.js Intro
+import {sceneDemo, SceneOnly} from "../src/components/Scene/SceneComponents";
 
 This is a **JavaScript** library. It can be used to display one or multiple instances of **scene(s)**.
 
-**Scene** refers to a stage or scene used in theater and film (See: [Wikipedia](https://en.wikipedia.org/wiki/Blocking_(stage))).
+**Scene** refers to a stage or scene used in **theater and film** (See: [Wikipedia](https://en.wikipedia.org/wiki/Blocking_(stage))).
 
 Such scene consists of **characters, props, cameras, lights** etc., their **positions** and their **animations**.
+
+This library is used to display **dynamic or static** layout of a scene with such props and characters.
 
 ## Movie Prop Properties
 
@@ -23,6 +26,7 @@ Every prop can also contain following properties:
 * Steps (a list of step number with instructions)
 * Multiple images with titles (*e.g.,* storyboard/director's viewfinder)
 
+<SceneOnly {...sceneDemo} />
 
 ## Getting Started
 
@@ -32,7 +36,7 @@ To import this library, all you need to do is include one script tag in your hea
 
 
 ```html
-<script defer type="text/javascript" src="js/scene.js"></script>
+<script type="text/javascript" src="js/scene.js"></script>
 ```
 
 ### Disclaimer
