@@ -8,13 +8,22 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
     title: 'Scene.js',
     tagline: 'A JavaScript library for scene blocking and staging',
-    url: 'https://your-docusaurus-test-site.com',
+    url: 'https://scene.muddy.ca',
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
-    organizationName: 'facebook', // Usually your GitHub org/user name.
+    organizationName: 'prushka', // Usually your GitHub org/user name.
     projectName: 'docusaurus', // Usually your repo name.
+    themes: [
+        [
+            require.resolve("@easyops-cn/docusaurus-search-local"),
+            {
+                hashed: true,
+                indexPages: true,
+            },
+        ]
+    ],
 
     presets: [
         [
@@ -40,8 +49,8 @@ const config = {
             navbar: {
                 title: 'Scene.js',
                 logo: {
-                    alt: 'My Site Logo',
-                    src: 'img/logo.svg',
+                    alt: 'Scene.js logo',
+                    src: 'img/scene.png',
                 },
                 items: [
                     {

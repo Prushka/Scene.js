@@ -5,6 +5,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import {SceneComponent, sceneDemo} from "@site/src/components/Scene/SceneComponents";
 
 function HomepageHeader() {
     const {siteConfig} = useDocusaurusContext();
@@ -17,7 +18,7 @@ function HomepageHeader() {
                     <Link
                         className="button button--secondary button--lg"
                         to="/docs/intro">
-                        Docusaurus Tutorial - 5min ⏱️
+                        Detailed Docs
                     </Link>
                 </div>
             </div>
@@ -29,11 +30,11 @@ export default function Home(): JSX.Element {
     const {siteConfig} = useDocusaurusContext();
     return (
         <Layout
-            title={`Hello from ${siteConfig.title}`}
-            description="Description will go into a meta tag in <head />">
+            title={`Scene.js`}
+            description="Scene.js for scene blocking and staging">
             <HomepageHeader/>
-            <main>
-                <HomepageFeatures/>
+            <main className={styles.mainContainer}>
+                <SceneComponent {...sceneDemo} width={'90%'} height={'800px'}/>
             </main>
         </Layout>
     );

@@ -7,7 +7,7 @@ import {sceneDemo, SceneOnly} from "../src/components/Scene/SceneComponents";
 
 This is a **JavaScript** library. It can be used to display one or multiple instances of **scene(s)**.
 
-**Scene** refers to a stage or scene used in **theater and film** (See: [Wikipedia](https://en.wikipedia.org/wiki/Blocking_(stage))).
+**Scene** refers to a stage or scene used in **theater and film** (See: **[Wikipedia](https://en.wikipedia.org/wiki/Blocking_(stage))**).
 
 Such scene consists of **characters, props, cameras, lights** etc., their **positions** and their **animations**.
 
@@ -28,6 +28,32 @@ Every prop can also contain following properties:
 
 <SceneOnly {...sceneDemo} />
 
+## Disclaimer
+
+Even though this landing page is built using React and Docusaurus, the library doesn't use React.
+
+In fact, the library itself **doesn't use any external js/css libraries** and can be used both in vanilla html/js with script tag and ESM environments.
+
+
+### Libraries used for development and docs
+
+The library is written in **TypeScript**.
+
+* **Webpack** is used to bundle its TypeScript files to a single js file.
+* Bootstrap icon font is used for button icons and props.
+* I don't own any images used in this docs page.
+
+:::caution DOM Manipulation
+
+Even though some part of this library uses SVG tags (including `<g>`, `<path>`).
+
+DOM manipulation were mainly used to layer them, 
+apply different attributes to different layers of elements and attach event listeners.
+
+Apart from the SVG part, the library also contains a large amount of DOM manipulation (see **[User - Interactions](user-interactions/timeline)**).
+
+:::
+
 ## Getting Started
 
 To import this library, all you need to do is include one script tag in your header:
@@ -38,27 +64,6 @@ To import this library, all you need to do is include one script tag in your hea
 ```html
 <script type="text/javascript" src="js/scene.js"></script>
 ```
-
-### Disclaimer
-
-Even though this landing page is built using React and Docusaurus, the library doesn't use React.
-
-In fact, the library doesn't use any external js/css libraries and can be used both in vanilla html/js with script tag and ESM environments.
-
-The library uses Webpack to bundle its TypeScript files.
-
-Bootstrap icon font is used for button icons and props.
-
-:::caution
-
-Even though some part of this library uses SVG tags (including `<g>`, `<path>`).
-
-DOM manipulation were mainly used to layer them, 
-apply different attributes to different layers of elements and attach event listeners.
-
-Apart from the SVG part, the library also contains a large amount of DOM manipulation (see **[User - Interactions](user-interactions/timeline)**).
-
-:::
 
 ### Support for multiple instances
 

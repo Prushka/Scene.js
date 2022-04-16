@@ -21,3 +21,10 @@
   align-items: center;
   justify-content: center;
 }
+
+.mainContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
