@@ -31,6 +31,12 @@ Every animation config property also **applies to STORYBOARD** with thumbnail.
 
 Apart from setting the storyboard's scale to scale it, you can also directly set the image's width and height (see below):
 
+:::tip
+
+If you simly want to attach some images or storyboard to your props, please check [Scripts, Notes, Images, Step](../prop-dialog-properties)
+
+:::
+
 <GeneratorConfigBlock
     generator={
 `new GlobalConfigGenerator()
@@ -49,9 +55,7 @@ Apart from setting the storyboard's scale to scale it, you can also directly set
             positionGenerator.x(50).y(50)
         }, 2).addPosition((positionGenerator) => {
             positionGenerator.x(90).y(90)
-        }, 3).addPosition((positionGenerator) => {
-            positionGenerator.x(150).y(150)
-        }, 4)
+        }, 3)
     })`}
     config={
         `config.props = [
@@ -97,14 +101,10 @@ Apart from setting the storyboard's scale to scale it, you can also directly set
           "3": {
             "x": 90,
             "y": 90
-          },
-          "4": {
-            "x": 150,
-            "y": 150
           }
         },
         "type": "CHARACTER"
       }
     ]`} />
 
-<SceneOnlyShort autoPlay={true} {...sceneThumbnails} />
+<SceneOnlyShort autoPlay={false} {...sceneThumbnails} />

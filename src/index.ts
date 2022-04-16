@@ -5,7 +5,7 @@
 import {
     AnimationConfig,
     DefaultLine,
-    ImageConfig,
+    ImageConfig, PositionConfig,
     PropConfig,
     PropNamePosition,
     PropType,
@@ -259,8 +259,17 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         return {
             frameSpeed: {},
             props: [],
-            customThemes: {}
+            customThemes: {},
+            lines: []
         };
+    }
+
+    public addLine(start: PositionConfig, end: PositionConfig, width?: number, color?: string) {
+        this.config.lines.push([start, end, {
+            color: color ?? 'var(--scene-base-inv-s2)',
+            width: width ?? 3
+        }])
+        return this
     }
 
     public defaultFrameSpeed(n: number) {

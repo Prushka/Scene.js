@@ -1,0 +1,132 @@
+---
+title: Walls and Lines
+sidebar_position: 1
+---
+
+import {
+    GeneratorConfigBlock,
+    GeneratorWithPropConfigBlock,
+    sceneEnableDisableHide,
+    SceneOnlyShort,
+    scenePropTransitionTimingFunction,
+    sceneRotation,
+    sceneScale, sceneThumbnails, sceneWalls
+} from "../../../src/components/Scene/SceneComponents";
+
+### Create lines in the scene
+
+You can draw lines in the scene (they don't animation and are different from props) by using following parameters:
+
+#### When using GlobalConfigGenerator:
+
+* Required: start coordinate: `{x: number, y: number}`
+* Required: end coordinate: `{x: number, y: number}`
+* Optional: `width: number` (default is `3`)
+* Optional: `color: string` (default is `--scene-base-inv-s2`)
+
+#### When passing line json to the scene:
+
+All 4 properties are required (see example below):
+
+<GeneratorConfigBlock
+    generator={
+`new GlobalConfigGenerator()
+    .addLine({x: 300, y: -2}, {x: 300, y: 100})
+    .addLine({x: 300, y: 98}, {x: 600, y: 98}, 5, '#355070')
+    .addLine({x: 0, y: 0}, {x: 0, y: 200}, 10, '#6D597A')
+    .addLine({x: 0, y: 0}, {x: 300, y: 0}, 3)
+    .addProp((generator) => {
+        generator.type('CHARACTER').addPosition((positionGenerator) => {
+            positionGenerator.x(200).y(200).scale(2)
+        }).addPosition((positionGenerator) => {
+            positionGenerator.x(50).y(50).scale(2)
+        }, 2).addPosition((positionGenerator) => {
+            positionGenerator.x(90).y(90).scale(2)
+        }, 3)
+    })`}
+    config={
+        `config.props = "props": [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 200,
+            "y": 200,
+            "scaleX": 2,
+            "scaleY": 2
+          },
+          "2": {
+            "x": 50,
+            "y": 50,
+            "scaleX": 2,
+            "scaleY": 2
+          },
+          "3": {
+            "x": 90,
+            "y": 90,
+            "scaleX": 2,
+            "scaleY": 2
+          }
+        },
+        "type": "CHARACTER"
+      }
+    ],
+    "lines": [
+      [
+        {
+          "x": 300,
+          "y": -2
+        },
+        {
+          "x": 300,
+          "y": 100
+        },
+        {
+          "color": "var(--scene-base-inv-s2)",
+          "width": 3
+        }
+      ],
+      [
+        {
+          "x": 300,
+          "y": 98
+        },
+        {
+          "x": 600,
+          "y": 98
+        },
+        {
+          "color": "#355070",
+          "width": 5
+        }
+      ],
+      [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 200
+        },
+        {
+          "color": "#6D597A",
+          "width": 10
+        }
+      ],
+      [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 300,
+          "y": 0
+        },
+        {
+          "color": "var(--scene-base-inv-s2)",
+          "width": 3
+        }
+      ]
+    ]`} />
+
+<SceneOnlyShort autoPlay={false} {...sceneWalls} />

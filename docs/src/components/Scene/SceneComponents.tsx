@@ -1073,8 +1073,26 @@ export const sceneThumbnails = getCustomScene(() => {
                 positionGenerator.x(50).y(50)
             }, 2).addPosition((positionGenerator) => {
                 positionGenerator.x(90).y(90)
-            }, 3).addPosition((positionGenerator) => {
-                positionGenerator.x(150).y(150)
-            }, 4)
+            }, 3)
+        }).getConfig()
+})
+
+export const sceneWalls = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .viewOffset(1)
+        .addLine({x: 300, y: -2}, {x: 300, y: 100})
+        .addLine({x: 300, y: 98}, {x: 600, y: 98}, 5, '#355070')
+        .addLine({x: 0, y: 0}, {x: 0, y: 200}, 10, '#6D597A')
+        .addLine({x: 0, y: 0}, {x: 300, y: 0}, 3)
+        .addProp((generator) => {
+            generator.type('CHARACTER').addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200).scale(2)
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50).scale(2)
+            }, 2).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).scale(2)
+            }, 3)
         }).getConfig()
 })
