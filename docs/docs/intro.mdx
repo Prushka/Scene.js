@@ -3,7 +3,13 @@ title: Scene.js Intro
 sidebar_position: 1
 ---
 
-import {sceneDemo, sceneIntroDemo, sceneMultipleFrames, SceneOnly} from "../src/components/Scene/SceneComponents";
+import {
+    SceneComponent,
+    sceneDemo, sceneDemoShort,
+    sceneIntroDemo, sceneIntroDemoShort,
+    sceneMultipleFrames,
+    SceneOnly
+} from "../src/components/Scene/SceneComponents";
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -34,7 +40,9 @@ Every prop can also contain following properties:
 
 <SceneOnly {...sceneDemo} />
 
-## Disclaimer
+---
+
+# Disclaimer
 
 Even though this landing page is built using React and Docusaurus, the library doesn't use React.
 
@@ -60,7 +68,9 @@ Apart from the SVG part, the library also contains a large amount of DOM manipul
 
 :::
 
-## Getting Started
+---
+
+# Getting Started
 
 To import this library, all you need to do is include one script tag in your header:
 
@@ -84,15 +94,32 @@ You don't need to handle any of the above-mentioned features on your side.
 
 If you need to display the scene again after it's been unmounted. You can use the same `scene` instance and call `scene.display()` again.
 
-## Create a scene
 
-:::tip Scene width and height
+:::danger Scene Instances
+
+By design, a `scene` object can only be attached to 1 container id.
+
+Even though you can change its container or mount / unmount it, you **cannot** render the same scene instance in multiple containers.
+
+To render **multiple instances** of scenes, either clone your config or create new ones and pass them to a new `scene` object.
+
+:::
+
+---
+
+# Create a scene
 
 The scene will be rendered in your container. **It will take up all your container's space** (see below).
 
+You don't need to set any size related configs in the library.
+
 Note that you can use a css class for your container.
 
-:::
+**For instance**, you can have a scene with mobile width by setting its container width:
+
+<SceneComponent {...sceneDemoShort} width={'400px'} height={'700px'} />
+
+### Set up scene configs
 
 Essentially, there are 3 types of objects you need to create:
 

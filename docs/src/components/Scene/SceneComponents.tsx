@@ -1131,3 +1131,7 @@ export const sceneCustomPropTypes = getCustomScene(() => {
 export const sceneDemo = getCustomScene(() => {
     return getDemoGlobalConfigGenerator().getConfig()
 })
+
+export const sceneDemoShort = getCustomScene(() => {
+    return getDemoGlobalConfigGenerator().getConfig()
+})

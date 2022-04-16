@@ -61,13 +61,18 @@
   color: white;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.1), 0 17px 50px 0 rgba(0, 0, 0, 0.08);
 }
-
-.mainButtonRed {
-  background-color: #e56b6f;
+.mainButton1 {
+  background-color: #FF6384;
 }
-.mainButtonPurple {
-  background-color: #B56576;
+.mainButton2 {
+  background-color: #3f9ace;
 }
-.mainButtonDPurple {
-  background-color: #6D597A;
+.mainButton3 {
+  background-color: #36b6b6;
+}
+.mainButton4 {
+  background-color: #a46cbe;
+}
+.mainButton5 {
+  background-color: #ee998c;
 }

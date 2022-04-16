@@ -21,20 +21,32 @@ function HomepageHeader() {
                 <h1>{siteConfig.title}</h1>
                 <p className="hero__subtitle">{siteConfig.tagline}</p>
                 <div className={styles.buttons}>
+
                     <CustomLink
-                        className={styles.mainButtonRed}
+                        className={styles.mainButton1}
                         to="/docs/intro">
                         Get Started
                     </CustomLink>
+
                     <CustomLink
-                        className={styles.mainButtonPurple}
+                        className={styles.mainButton2}
                         to="/docs/user-interactions">
                         User
                     </CustomLink>
                     <CustomLink
-                        className={styles.mainButtonDPurple}
+                        className={styles.mainButton3}
                         to="/docs/developer-interactions">
                         Developer
+                    </CustomLink>
+                    <CustomLink
+                        className={styles.mainButton4}
+                        to="/docs/global-config">
+                        Global - Config
+                    </CustomLink>
+                    <CustomLink
+                        className={styles.mainButton5}
+                        to="/docs/prop-config">
+                        Prop - Config
                     </CustomLink>
                 </div>
             </div>
