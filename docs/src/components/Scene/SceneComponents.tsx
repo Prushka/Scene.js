@@ -44,7 +44,12 @@ export const SceneOnly = ({scene, uid}) => {
     </BrowserOnly>)
 }
 
-export const SceneOnlyShort = ({scene, uid}) => {
+export const SceneOnlyShort = ({scene, uid, autoPlay = false}) => {
+    if (autoPlay) {
+        scene.addAfterRender(() => {
+            scene.play(true)
+        })
+    }
     return (<BrowserOnly>
         {
             () =>
@@ -57,7 +62,7 @@ export const SceneOnlyShort = ({scene, uid}) => {
 }
 
 export const SceneWithSelection = ({scene, uid, propSelected, tabSelected}) => {
-    scene.setAfterRender(() => {
+    scene.addAfterRender(() => {
         const prop = scene.propCtx.getPropByName(propSelected)
         if (prop) {
             scene.propCtx.selectedProp = prop
@@ -266,7 +271,7 @@ export const sceneDefaultCustomTheme = getCustomScene(() => {
 export const SceneZoom = ({scene, uid}) => {
     const [zoomFactor, setZoomFactor] = useState(0)
     const [zoomStep, setZoomStep] = useState(0)
-    scene.setAfterRender(() => {
+    scene.addAfterRender(() => {
         const viewportCtx = scene.getViewportCtx()
         const round = (input) => input.toFixed(2)
         setZoomFactor(round(scene.getViewportCtx().scale))

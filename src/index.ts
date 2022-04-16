@@ -155,11 +155,14 @@ export class Scene {
         })
     }
 
-    private afterRender: () => void = () => {
+    private afterRender: Array<() => void> = []
+
+    public addAfterRender(f: () => void) {
+        this.afterRender.push(f)
     }
 
-    public setAfterRender(f: () => void) {
-        this.afterRender = f
+    public play(v: boolean) {
+        this.footerComponent && this.footerComponent.play(v)
     }
 
     public display(checkDOMContentLoaded: boolean = false) {
@@ -194,7 +197,12 @@ export class Scene {
             this.register(Overlay)
 
             this.themeCtx.renderTheme()
-            this.afterRender()
+
+            if (this.config.autoPlay) {
+                this.play(true)
+            }
+
+            this.afterRender.forEach(f => f())
         }
 
         if (checkDOMContentLoaded) {
