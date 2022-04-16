@@ -5,7 +5,7 @@
 import {
     AnimationConfig,
     DefaultLine,
-    ImageConfig, PositionConfig,
+    ImageConfig,
     PropConfig,
     PropNamePosition,
     PropType,
@@ -17,7 +17,7 @@ import {getRandomFromList, randBoolean, randInclusive} from "./utils/Utils";
 import {PropDialog} from "./component/PropDialog";
 import {Footer} from "./component/Footer";
 import {ViewSVG} from "./component/ViewSVG";
-import {Config, DebugTabFormats, DefaultConfig, FrameSpeeds, ThemeScope} from "./config/Config";
+import {Config, DebugTabFormats, DefaultConfig, ThemeScope} from "./config/Config";
 import {Snackbar} from "./component/Snackbar";
 import {CustomComponent, SceneComponent} from "./component/Component";
 import {Overlay} from "./component/Overlay";
@@ -31,7 +31,6 @@ import {useId} from "./context/IdContext";
 import {PropList} from "./component/PropList";
 
 import './index.css'
-import Prop from "./props/Prop";
 import ThemeContext, {Theme} from "./context/ThemeContext";
 
 export * from './utils/Utils'
@@ -149,9 +148,27 @@ export class Scene {
         }
     }
 
+    public timeouts = []
+
+    public registerTimeOut(s: () => void, ms: number) {
+        const timeout = setTimeout(() => {
+            if (this.canRootBeFound()) {
+                s()
+            } else {
+                this.unmountIfMount()
+            }
+        }, ms)
+        this.timeouts.push(timeout)
+        return timeout
+    }
+
     private unmountIfMount() {
+        console.log("Scene: going to unmount scene: " + this.rootContainerId)
         this.components.forEach(c => {
             c.unmount()
+        })
+        this.timeouts.forEach(t => {
+            clearTimeout()
         })
     }
 
@@ -163,6 +180,10 @@ export class Scene {
 
     public play(v: boolean) {
         this.footerComponent && this.footerComponent.play(v)
+    }
+
+    public canRootBeFound() {
+        return document.getElementById(this.rootContainerId) != null
     }
 
     public display(checkDOMContentLoaded: boolean = false) {

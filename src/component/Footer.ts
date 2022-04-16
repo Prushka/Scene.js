@@ -76,8 +76,10 @@ export class Footer extends SceneComponent {
     actions(): StateAction<any>[] {
         const setFrameButton = (frame: number, selected: boolean) => {
             const frameElement = document.getElementById(this.idCtx.TIMELINE_FRAME(frame))
-            frameElement.classList.remove(!selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
-            frameElement.classList.add(selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
+            if(frameElement){
+                frameElement.classList.remove(!selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
+                frameElement.classList.add(selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
+            }
         }
         return [[this.themeCtx.currentState, null, () => {
             const theme = this.themeCtx.currentTheme
@@ -112,7 +114,7 @@ export class Footer extends SceneComponent {
             const nextFrame = () => {
                 if (this.playing.get()) {
                     const previousFrame = this.scene.propCtx.nextFrame()
-                    setTimeout(() => {
+                    this.scene.registerTimeOut(() => {
                         nextFrame()
                     }, this.scene.getFrameSeconds(previousFrame) * 1000)
                 }
@@ -128,7 +130,7 @@ export class Footer extends SceneComponent {
                 if (this.propCtx.ifJumpOneLiterally(oldFrame, newFrame)) {
                     // normal flow, (start -> end, one frame jump) will trigger progress bar change and frame button timeout change
                     setFrameButton(oldFrame, true)
-                    this.timeouts.push(setTimeout(() => {
+                    this.timeouts.push(this.scene.registerTimeOut(() => {
                         setFrameButton(newFrame, true)
                     }, frameSeconds * 1000))
                     if (previousFrame == null || this.propCtx.ifJumpOne(previousFrame, oldFrame)) {

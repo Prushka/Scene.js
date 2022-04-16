@@ -25,7 +25,7 @@ export class Snackbar extends SceneComponent {
             this.timeouts.forEach(t => {
                 clearTimeout(t)
             })
-            this.timeouts.push(setTimeout(() => {
+            this.timeouts.push(this.scene.registerTimeOut(() => {
                 snackbar.classList.add("snackbar--closed")
             }, 4000))
         })]]
