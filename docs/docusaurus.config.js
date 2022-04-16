@@ -79,7 +79,7 @@ const config = {
                         ],
                     },
                 ],
-                copyright: `Copyright © ${new Date().getFullYear()} Dan Lyu. Built with Docusaurus.`,
+                copyright: `Copyright © ${new Date().getFullYear()} Dan Lyu`,
             },
             prism: {
                 theme: lightCodeTheme,

@@ -1053,3 +1053,28 @@ export const scenePropTransitionTimingFunction = getCustomScene(() => {
             }, 5)
         }).getConfig()
 })
+
+export const sceneThumbnails = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('STORYBOARD').addPosition((positionGenerator) => {
+                positionGenerator.x(0).y(0).thumbnail('https://s2.loli.net/2022/03/16/KZw7yAWXudMGL21.png', 100)
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(25).y(25).thumbnail('https://s2.loli.net/2022/03/19/kfoHSKL792r4cvD.jpg', 200)
+            }, 2).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).degree(300).scale(0.5).degree(20)
+            }, 3).shouldDisplayName(false)
+        }).addProp((generator) => {
+            generator.type('CHARACTER').addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200)
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50)
+            }, 2).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90)
+            }, 3).addPosition((positionGenerator) => {
+                positionGenerator.x(150).y(150)
+            }, 4)
+        }).getConfig()
+})
