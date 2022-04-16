@@ -4,22 +4,38 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import {SceneComponent, sceneDemo} from "@site/src/components/Scene/SceneComponents";
+
+function CustomLink({children, className, to}) {
+    return (<Link className={`${styles.mainButton} ${className}`} to={to}>
+        {children}
+    </Link>)
+}
 
 function HomepageHeader() {
     const {siteConfig} = useDocusaurusContext();
     return (
-        <header className={clsx('hero hero--primary', styles.heroBanner)}>
+        <header className={clsx('hero', styles.heroBanner)}>
             <div className="container">
-                <h1 className="hero__title">{siteConfig.title}</h1>
+                <img src={'/img/scene.png'} alt={'logo'}/>
+                <h1>{siteConfig.title}</h1>
                 <p className="hero__subtitle">{siteConfig.tagline}</p>
                 <div className={styles.buttons}>
-                    <Link
-                        className="button button--secondary button--lg"
+                    <CustomLink
+                        className={styles.mainButtonRed}
                         to="/docs/intro">
-                        Detailed Docs
-                    </Link>
+                        Get Started
+                    </CustomLink>
+                    <CustomLink
+                        className={styles.mainButtonPurple}
+                        to="/docs/user-interactions">
+                        User
+                    </CustomLink>
+                    <CustomLink
+                        className={styles.mainButtonDPurple}
+                        to="/docs/developer-interactions">
+                        Developer
+                    </CustomLink>
                 </div>
             </div>
         </header>

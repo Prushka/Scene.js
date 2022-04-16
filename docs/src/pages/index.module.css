@@ -1,13 +1,17 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
 .heroBanner {
   padding: 4rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+}
+
+.heroBanner img {
+  width: 200px;
+}
+
+.heroBanner h1 {
+  color: #F765A3;
+  font-size: 60px;
 }
 
 @media screen and (max-width: 996px) {
@@ -17,14 +21,53 @@
 }
 
 .buttons {
+  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
+  align-self: center;
 }
 
 .mainContainer {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding-bottom: 30px;
+}
+
+.mainButton {
+  padding: 10px 20px 12px 20px;
+  width: 180px;
+
+  color: white;
+  border-radius: 8px;
+  font-size: 18px;
+  text-decoration: none;
+  font-weight: 600;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition-duration: .2s;
+  transition-property: all !important;
+
+  margin: 12px;
+}
+
+.mainButton:hover {
+  text-decoration: none;
+  color: white;
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.1), 0 17px 50px 0 rgba(0, 0, 0, 0.08);
+}
+
+.mainButtonRed {
+  background-color: #e56b6f;
+}
+.mainButtonPurple {
+  background-color: #B56576;
+}
+.mainButtonDPurple {
+  background-color: #6D597A;
 }

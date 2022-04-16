@@ -1,7 +1,17 @@
 ---
 title: Developer Interactions
-sidebar_position: 4
 ---
+
+import DocCardList from '@theme/DocCardList';
+import {useCurrentSidebarCategory} from '@docusaurus/theme-common';
+
+:::caution SEE [CONFIG](../global-config)
+
+This section only covers how to interact with an existing scene once it's been set up.
+
+Check the **config section** for how to configure a scene and its props.
+
+:::
 
 :::info States and Components
 
@@ -48,4 +58,8 @@ You can directly interact with the library's states. They are bundled in separat
 
 1. How I am able to display **zoom factors** and **zoom steps** in **[Global - Config / Zoom Limit - Steps](../global-config/viewport/viewport-zoom)**
 2. How I made it possible to autoplay a scene on load: **[Prop - Config / Animation Config / Transition Timing Function](../prop-config/animation-config/transition-timing-function)**
-2. How I made it possible to select a prop with a specified tab on load: **[Prop - Config / Scripts, Notes, Images, Steps](../prop-config/prop-dialog-properties)**
+3. How I made it possible to select a prop with a specified tab on load: **[Prop - Config / Scripts, Notes, Images, Steps](../prop-config/prop-dialog-properties)**
+
+---
+
+<DocCardList items={useCurrentSidebarCategory().items}/>
