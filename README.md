@@ -2,6 +2,15 @@
 
 ### Landing Page: [https://scene.muddy.ca](https://scene.muddy.ca)
 
+Every category contains multiple documents and/or subcategories.
+
+**Please access them using the sidebar in the landing/docs page**
+
+* [Intro](https://scene.muddy.ca/docs/intro)
+* [User Interactions](https://scene.muddy.ca/docs/user-interactions)
+* [Developer Interactions](https://scene.muddy.ca/docs/developer-interactions/)
+* [Global Config](https://scene.muddy.ca/docs/global-config/)
+* [Prop Config](https://scene.muddy.ca/docs/prop-config/)
 
 ## Getting Started
 
