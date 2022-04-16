@@ -192,10 +192,11 @@ export class Scene {
 
         const render = () => {
             const root = document.getElementById(this.rootContainerId)
-            root.innerHTML = ''
             if (!console) {
                 console.warn('Scene: scene display has been called but root container cannot be found')
+                return
             }
+            root.innerHTML = ''
             const container = document.createElement('div')
             container.classList.add('root-container')
             container.innerHTML = `<div id="${this.ids.ROOT_SNACKBAR}" class='snackbar-container'></div>
