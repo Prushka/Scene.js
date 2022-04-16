@@ -883,3 +883,35 @@ export const sceneSteps = getCustomScene(() => {
             })
         }).getConfig()
 })
+
+
+export const sceneExtraKeys = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('LIGHT').name('Brand')
+                .addData('brand',"I have a brand!")
+                .addData('light type',"hard")
+                .addData('color temperature',"5000")
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+                })
+        }).getConfig()
+})
+
+export const sceneExtraKeysExclude = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('LIGHT').name('Brand')
+                .addData('brand',"I have a brand!")
+                .addData('light type',"hard")
+                .addData('color temperature',"5000")
+                .addExcludeKey('style', 'color temperature')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+                })
+        }).getConfig()
+})

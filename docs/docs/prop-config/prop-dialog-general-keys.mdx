@@ -1,0 +1,145 @@
+---
+title: Extra keys and data
+sidebar_position: 2
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneZoomInLimit,
+    SceneZoom,
+    sceneZoomStep,
+    sceneDialogMissing,
+    sceneDialogAll,
+    sceneDialogShowDebug,
+    sceneDialogShowDebugFlat,
+    sceneFrameSpeed124,
+    sceneFrameSpeedDefaultFS,
+    sceneFrameSpeedDefaultFS5s,
+    sceneSelectionSpeed,
+    sceneSelectionSpeed0,
+    sceneSelectionSpeed03,
+    sceneDefaultTransitionFunction,
+    sceneTransitionFunctionEaseInOut,
+    sceneViewOffsetDefault,
+    sceneViewOffset09,
+    sceneCreateProp,
+    GeneratorWithPropConfigBlock,
+    scenePropName,
+    scenePropType,
+    scenePropStyle,
+    sceneDefaultLightColor,
+    sceneDefaultDarkColor,
+    scenePropColor,
+    scenePropColorWithNameColor,
+    sceneOrderDefault,
+    sceneOrderSet,
+    sceneScripts,
+    SceneWithSelection,
+    sceneNote,
+    sceneImages,
+    sceneSteps,
+    sceneExtraKeys,
+    sceneExtraKeysExclude
+} from "../../src/components/Scene/SceneComponents";
+
+## Extra keys
+
+
+:::caution
+
+The keys you set cannot overlap with the prop's property default keys.
+
+For instance, you can set a **brand** value in a prop, but you cannot set its **type** using this method.
+
+:::
+
+You can attach **extra data** to the prop.
+
+You can check the prop's extra data in **prop dialog -> general tab**:
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+            generator.type('LIGHT').name('Brand')
+                .addData('brand',"I have a brand!")
+                .addData('light type',"hard")
+                .addData('color temperature',"5000")
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+           })
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "type": "LIGHT",
+        "name": "Brand",
+        "brand": "I have a brand!",
+        "light type": "hard",
+        "color temperature": "5000"
+      }
+    ]`}/>
+
+<SceneWithSelection propSelected={'Brand'}
+                    {...sceneExtraKeys} />
+
+## Exclude extra keys in general tab
+
+You can choose to not show certain keys attached to your prop.
+
+(However, setting extra non-display related keys to your prop is **not recommended**)
+
+The following scene disables the prop's **style** and **color temperature** by including it in its excluded keys list.
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+            generator.type('LIGHT').name('Brand')
+                .addData('brand',"I have a brand!")
+                .addData('light type',"hard")
+                .addData('color temperature',"5000")
+                .addExcludeKey('style', 'color temperature')
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+            })
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "excludeKeys": [
+          "style",
+          "color temperature"
+        ],
+        "type": "LIGHT",
+        "name": "Brand",
+        "brand": "I have a brand!",
+        "light type": "hard",
+        "color temperature": "5000"
+      }
+    ]`}/>
+
+<SceneWithSelection propSelected={'Brand'}
+                    {...sceneExtraKeysExclude} />

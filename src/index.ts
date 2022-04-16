@@ -470,7 +470,8 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         return {
             frameAnimationConfig: {},
             images: [],
-            steps: {}
+            steps: {},
+            excludeKeys: []
         };
     }
 
@@ -508,6 +509,16 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
     public addImage(imageURL: string, title?: string, width?: number, height?: number) {
         const image = {title: title, imageURL: imageURL, width: width, height: height}
         this.config.images.push(image)
+        return this
+    }
+
+    public addData(key: string, value: string) {
+        this.config[key] = value
+        return this
+    }
+
+    public addExcludeKey(...v: string[]){
+        v.forEach(s => this.config.excludeKeys.push(s))
         return this
     }
 
