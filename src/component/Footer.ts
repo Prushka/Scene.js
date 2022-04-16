@@ -104,6 +104,16 @@ export class Footer extends SceneComponent {
                 setClassList(iconEl, "bi", "bi-play-fill")
                 spanEl.innerText = 'Play'
             }
+        }, () => {
+            const nextFrame = () => {
+                if (this.playing.get()) {
+                    const previousFrame = this.scene.propCtx.nextFrame()
+                    setTimeout(() => {
+                        nextFrame()
+                    }, this.scene.getFrameSeconds(previousFrame) * 1000)
+                }
+            }
+            nextFrame()
         }],
             [this.scene.propCtx.currentFrameState, (oldFrame, newFrame, previousFrame) => {
                 console.log(`Frame: ${previousFrame} | ${oldFrame} -> ${newFrame}`)
@@ -173,19 +183,9 @@ export class Footer extends SceneComponent {
             this.snackbarCtx.success("Reset Current Viewport")
         }, this.ids.TOOLBAR_RESET_CURRENT_BUTTON)
 
-        const nextFrame = () => {
-            if (this.playing.get()) {
-                const previousFrame = this.scene.propCtx.nextFrame()
-                setTimeout(() => {
-                    nextFrame()
-                }, this.scene.getFrameSeconds(previousFrame) * 1000)
-            }
-        }
+
         hookButton(() => {
             this.playing.set(!this.playing.get())
-            if (this.playing.get()) {
-                nextFrame()
-            }
         }, this.ids.TOOLBAR_PLAY_BUTTON)
         hookButton(() => {
             const data = !this.scene.config.exportPopulatedConfig ? JSON.stringify(this.scene.config, null, 2) : this.scene.originalConfig

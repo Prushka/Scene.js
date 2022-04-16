@@ -256,6 +256,13 @@ export interface Config {
      *
      */
     exportPopulatedConfig?: boolean
+
+    /**
+     * When set to true, the scene will start playing once it's loaded
+     *
+     * @default false
+     */
+    autoPlay?: boolean
 }
 
 export const DefaultConfig: Config = {
@@ -284,5 +291,6 @@ export const DefaultConfig: Config = {
     displayToolbar: true,
     displayPropList: true,
     displayTimeline: true,
-    exportPopulatedConfig: true
+    exportPopulatedConfig: true,
+    autoPlay: false
 }

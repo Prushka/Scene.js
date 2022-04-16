@@ -19,7 +19,7 @@ import {Footer} from "./component/Footer";
 import {ViewSVG} from "./component/ViewSVG";
 import {Config, DebugTabFormats, DefaultConfig, FrameSpeeds, ThemeScope} from "./config/Config";
 import {Snackbar} from "./component/Snackbar";
-import {CustomComponent} from "./component/Component";
+import {CustomComponent, SceneComponent} from "./component/Component";
 import {Overlay} from "./component/Overlay";
 import PropContext from "./context/PropContext";
 import ViewPortContext from "./context/ViewPortContext";
@@ -57,6 +57,7 @@ export class Scene {
 
     public viewComponent: View
     public propDialogComponent: PropDialog
+    public footerComponent: Footer
 
     public readonly originalConfig: string
 
@@ -126,12 +127,11 @@ export class Scene {
 
     components: CustomComponent[] = []
 
-    private register(...c: Array<new(T) => CustomComponent>) {
-        c.forEach(cl => {
-            const component = new cl(this)
-            component.renderComponent()
-            this.components.push(component)
-        })
+    private register<T extends SceneComponent>(c: new(T) => T) {
+        const component = new c(this)
+        component.renderComponent()
+        this.components.push(component)
+        return component
     }
 
     public $(selector) {
@@ -183,12 +183,15 @@ export class Scene {
                                     <div id="${this.ids.ROOT_OVERLAY}" class="overlay-container"></div>`
             root.append(container)
             const v = this.config.renderMethod === 'canvas' ? ViewCanvas : ViewSVG
-            this.register(v, PropDialog, Footer, Snackbar, Overlay)
             if (this.config.displayPropList) {
                 this.register(PropList)
             }
-            this.viewComponent = this.components[0] as View
-            this.propDialogComponent = this.components[1] as PropDialog
+
+            this.viewComponent = this.register(v)
+            this.propDialogComponent = this.register(PropDialog)
+            this.footerComponent = this.register(Footer)
+            this.register(Snackbar)
+            this.register(Overlay)
 
             this.themeCtx.renderTheme()
             this.afterRender()
@@ -255,6 +258,11 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         const propConfigGenerator = new PropConfigGenerator()
         f(propConfigGenerator)
         this.config.props.push(propConfigGenerator.getConfig())
+        return this
+    }
+
+    public autoPlay(v: boolean) {
+        this.config.autoPlay = v
         return this
     }
 
@@ -364,13 +372,23 @@ export class PositionConfigGenerator extends ConfigGenerator<AnimationConfig> {
         return {};
     }
 
-    public enabled(v: boolean) {
-        this.config.enabled = v
+    public enable() {
+        this.config.enabled = true
         return this
     }
 
-    public hide(v: boolean) {
-        this.config.hide = v
+    public disable() {
+        this.config.enabled = false
+        return this
+    }
+
+    public hide() {
+        this.config.hide = true
+        return this
+    }
+
+    public show() {
+        this.config.hide = false
         return this
     }
 
@@ -517,7 +535,7 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         return this
     }
 
-    public addExcludeKey(...v: string[]){
+    public addExcludeKey(...v: string[]) {
         v.forEach(s => this.config.excludeKeys.push(s))
         return this
     }
@@ -537,7 +555,7 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         return this
     }
 
-    public addStep(index:number, title?: string, content?: string) {
+    public addStep(index: number, title?: string, content?: string) {
         const step = {
             title: title,
             content: content
