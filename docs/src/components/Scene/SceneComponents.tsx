@@ -1002,16 +1002,20 @@ export const sceneEnableDisableHide = getCustomScene(() => {
             }).addPosition((positionGenerator) => {
                 positionGenerator.x(90).y(90).show()
             }, 2).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90)
+            }, 3).addPosition((positionGenerator) => {
                 positionGenerator.x(90).y(90).hide()
-            }, 3).shouldDisplayName(false)
+            }, 4).shouldDisplayName(false)
         })
         .addProp((generator) => {
             generator.type('CHARACTER').addPosition((positionGenerator) => {
-                positionGenerator.x(200).y(200)
+                positionGenerator.x(200).y(200).enable()
             }).addPosition((positionGenerator) => {
-                positionGenerator.x(50).y(50).degree(-40)
+                positionGenerator.x(50).y(50).disable()
             }, 2).addPosition((positionGenerator) => {
-                positionGenerator.x(90).y(90).degree(80)
-            }, 3)
+                positionGenerator.x(90).y(90).disable()
+            }, 3).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).disable()
+            }, 4)
         }).getConfig()
 })

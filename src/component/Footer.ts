@@ -76,10 +76,8 @@ export class Footer extends SceneComponent {
     actions(): StateAction<any>[] {
         const setFrameButton = (frame: number, selected: boolean) => {
             const frameElement = document.getElementById(this.idCtx.TIMELINE_FRAME(frame))
-            if(frameElement){
-                frameElement.classList.remove(!selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
-                frameElement.classList.add(selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
-            }
+            frameElement.classList.remove(!selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
+            frameElement.classList.add(selected ? "timeline__frame--selected" : "timeline__frame--not-selected")
         }
         return [[this.themeCtx.currentState, null, () => {
             const theme = this.themeCtx.currentTheme

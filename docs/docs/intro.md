@@ -56,6 +56,19 @@ Apart from the SVG part, the library also contains a large amount of DOM manipul
 
 :::
 
+### Support for multiple instances
+
+You can **safely create multiple instances** of scenes in a single page.
+
+### Mount / Unmount
+
+You can expect a scene to **safely unmount itself** and cancel all its timeouts
+when the scene cannot find its root element. (*e.g.,* you removed its root container)
+
+You don't need to handle any of the above-mentioned features on your side.
+
+If you need to display the scene again after it's been unmounted. You can use the same `scene` instance and call `scene.display()` again.
+
 ## Create a scene
 
 :::tip
