@@ -1,6 +1,6 @@
 # Scene.js
 
-### Landing Page: [https://scene.muddy.ca](https://scene.muddy.ca)
+# Landing Page: [https://scene.muddy.ca](https://scene.muddy.ca)
 
 Every category contains multiple documents and/or subcategories.
 
@@ -12,7 +12,7 @@ Every category contains multiple documents and/or subcategories.
 * [Global Config](https://scene.muddy.ca/docs/global-config/)
 * [Prop Config](https://scene.muddy.ca/docs/prop-config/)
 
-## Getting Started
+# Getting Started
 
 All my docs are written in `mdx` (essentially markdown with JSX).
 
@@ -24,9 +24,6 @@ They are located here and you can sort of view them using a markdown interpreter
 
 ## For the purpose of including a *Getting Started* here, I've included part of the intro:
 
----
-title: Scene.js Intro
-sidebar_position: 1
 ---
 
 This is a **JavaScript** library. It can be used to display one or multiple instances of **scene(s)**.
@@ -71,7 +68,7 @@ The library is written in **TypeScript**.
 * Bootstrap icon font is used for button icons and props.
 * I don't own any images used in this docs page.
 
-:::caution DOM Manipulation
+#### DOM Manipulation
 
 Even though some part of this library uses SVG tags (including `<g>`, `<path>`).
 
@@ -79,8 +76,6 @@ DOM manipulation were mainly used to layer them,
 apply different attributes to different layers of elements and attach event listeners.
 
 Apart from the SVG part, the library also contains a large amount of DOM manipulation (see **[User - Interactions](user-interactions)**).
-
-:::
 
 ---
 
@@ -96,7 +91,7 @@ you will need to prefix your calls with `SceneJS` (*e.g.,* `new SceneJS.Scene(id
 
 
 ```html
-<script type="text/javascript" src="js/scene.js"></script>
+<script type="text/javascript" src="https://scene.muddy.ca/scene.js"></script>
 ```
 
 ### Support for multiple instances
@@ -113,15 +108,13 @@ You don't need to handle any of the above-mentioned features on your side.
 If you need to display the scene again after it's been unmounted. You can use the same `scene` instance and call `scene.display()` again.
 
 
-:::danger Scene Instances
+#### Scene Instances
 
 By design, a `scene` object can only be attached to 1 container id.
 
 Even though you can change its container or mount / unmount it, you **cannot** render the same scene instance in multiple containers.
 
 To render **multiple instances** of scenes, either clone your config or create new ones and pass them to a new `scene` object.
-
-:::
 
 ---
 
@@ -149,7 +142,7 @@ There are 2 ways to create any scene, its props and prop animation configs:
 1. Use their related generators: **GlobalConfigGenerator**, **PropConfigGenerator** and **PositionConfigGenerator**
 2. Create their json and pass the config to the scene
 
-:::tip Generator chaining and callbacks
+#### Generator chaining and callbacks
 
 You can chain methods in all generators.
 
@@ -177,10 +170,7 @@ new GlobalConfigGenerator()
     }, 2).getConfig()
 ```
 
-:::
-
 ### Create a demo scene
-
 
 Please see sidebar [Global Config](global-config) and [Prop Config](prop-config) for more information.
 
@@ -192,13 +182,14 @@ Note that I chose to include the entire `index.html` file in case any part is co
 
 <details>
     <summary>Code Snippet</summary>
+
 ```html title="index.html"
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Scene.js demo</title>
-<script type="text/javascript" src="js/scene.js"></script>
+<script type="text/javascript" src="https://scene.muddy.ca/scene.js"></script>
 <body>
 
 <div id="some-container-id" style="width: 800px; height: 600px"></div>
@@ -237,7 +228,7 @@ Note that I chose to include the entire `index.html` file in case any part is co
 <head>
 <meta charset="UTF-8">
 <title>Scene.js demo</title>
-<script type="text/javascript" src="js/scene.js"></script>
+<script type="text/javascript" src="https://scene.muddy.ca/scene.js"></script>
 <body>
 
 <div id="some-container-id" style="width: 800px; height: 600px"></div>
@@ -292,7 +283,7 @@ Note that I chose to include the entire `index.html` file in case any part is co
 <head>
 <meta charset="UTF-8">
 <title>Scene.js demo</title>
-<script type="text/javascript" src="js/scene.js"></script>
+<script type="text/javascript" src="https://scene.muddy.ca/scene.js"></script>
 <body>
 
 <div id="some-container-id" style="width: 800px; height: 600px"></div>
@@ -324,4 +315,5 @@ Note that I chose to include the entire `index.html` file in case any part is co
 </body>
 </html>
 ```
+
 </details>
