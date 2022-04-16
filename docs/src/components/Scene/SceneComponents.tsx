@@ -1097,6 +1097,30 @@ export const sceneWalls = getCustomScene(() => {
         }).getConfig()
 })
 
+export const sceneCustomPropTypes = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addPropType('HOUSE', 'default',
+            '<path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>',
+            '<path fill-rule="evenodd" d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/><path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>')
+        .addProp((generator) => {
+            generator.type('HOUSE').addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50).enable()
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).disable()
+            }, 2)
+        })
+        .addProp((generator) => {
+            generator.type('CAMERA').addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200)
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50)
+            }, 2)
+        }).getConfig()
+})
+
+
 export const sceneDemo = getCustomScene(() => {
     return getDemoGlobalConfigGenerator().getConfig()
 })

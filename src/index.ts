@@ -259,8 +259,21 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
             frameSpeed: {},
             props: [],
             customThemes: {},
-            lines: []
+            lines: [],
+            propTypes: {}
         };
+    }
+
+    public addPropType(type: string, style: string, enabledPath: string, disabledPath: string) {
+        const propType = this.config.propTypes[type]
+        if (!propType) {
+            this.config.propTypes[type] = {}
+        }
+        this.config.propTypes[type][style] = {
+            enabledPaths: enabledPath,
+            disabledPaths: disabledPath
+        }
+        return this
     }
 
     public addLine(start: PositionConfig, end: PositionConfig, width?: number, color?: string) {
