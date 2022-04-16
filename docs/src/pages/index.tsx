@@ -58,7 +58,11 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
     const {siteConfig} = useDocusaurusContext();
     const {scene, uid} = sceneDemoLanding;
-    // I don't know why useEffect gets called before DOM ready if a page is first loaded in
+    // I don't know why useEffect gets called before DOM ready if this landing page is first loaded in.
+    // i.e., query the document doesn't work in useEffect in this landing page when you refresh it.
+    // It works in all other pages.
+    // This may be an issue with docusaurus? IDK
+    // The code below works (I don't know if it's reliable)
     const [isLoaded, setLoaded] = useState(false)
     useEffect(() => {
         setLoaded(true)
