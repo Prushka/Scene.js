@@ -4,7 +4,7 @@ services:
   react:
     build:
       context: .
-    image: scenejs:1.5
+    image: scenejs:2.0
     container_name: scene-js
     restart: unless-stopped
     ports:
