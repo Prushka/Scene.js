@@ -38,8 +38,8 @@ module.exports = [{
             type: 'umd',
             umdNamedDefine: true
         },
-        path: path.resolve(__dirname, './express/pub/js'),
-        filename: "scene-production.js",
+        path: path.resolve(__dirname, './dist'),
+        filename: "scene.js",
     },
     resolve: {
         extensions: ['.ts', '.js'],

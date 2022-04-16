@@ -17,6 +17,7 @@ ENV NODE_ENV production
 COPY --from=build /app/docs/build /usr/share/nginx/html
 # Add your nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY dist/scene.js /usr/share/nginx/html
 # Expose port
 EXPOSE 80
 # Start nginx
