@@ -468,7 +468,9 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
 
     protected initializeConfig(): PropConfig {
         return {
-            frameAnimationConfig: {}
+            frameAnimationConfig: {},
+            images: [],
+            steps: {}
         };
     }
 
@@ -504,7 +506,8 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
     }
 
     public addImage(imageURL: string, title?: string, width?: number, height?: number) {
-        this.images([{title: title, imageURL: imageURL, width: width, height: height}])
+        const image = {title: title, imageURL: imageURL, width: width, height: height}
+        this.config.images.push(image)
         return this
     }
 
@@ -520,6 +523,15 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
 
     public note(note?: string) {
         this.config.note = note ?? "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        return this
+    }
+
+    public addStep(index:number, title?: string, content?: string) {
+        const step = {
+            title: title,
+            content: content
+        }
+        this.config.steps[index] = step
         return this
     }
 

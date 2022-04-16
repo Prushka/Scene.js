@@ -1,0 +1,240 @@
+---
+title: Scripts, Notes, Images, Steps
+sidebar_position: 2
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneZoomInLimit,
+    SceneZoom,
+    sceneZoomStep,
+    sceneDialogMissing,
+    sceneDialogAll,
+    sceneDialogShowDebug,
+    sceneDialogShowDebugFlat,
+    sceneFrameSpeed124,
+    sceneFrameSpeedDefaultFS,
+    sceneFrameSpeedDefaultFS5s,
+    sceneSelectionSpeed,
+    sceneSelectionSpeed0,
+    sceneSelectionSpeed03,
+    sceneDefaultTransitionFunction,
+    sceneTransitionFunctionEaseInOut,
+    sceneViewOffsetDefault,
+    sceneViewOffset09,
+    sceneCreateProp,
+    GeneratorWithPropConfigBlock,
+    scenePropName,
+    scenePropType,
+    scenePropStyle,
+    sceneDefaultLightColor,
+    sceneDefaultDarkColor,
+    scenePropColor,
+    scenePropColorWithNameColor,
+    sceneOrderDefault,
+    sceneOrderSet, sceneScripts, SceneWithSelection, sceneNote, sceneImages, sceneSteps
+} from "../../src/components/Scene/SceneComponents";
+
+Global config defines prop dialog tabs' behaviors (see **[here](../global-config/prop-dialog-tabs)**).
+
+We will only cover setting the prop's dialog related properties in this page.
+
+## Scripts
+
+You can check the prop's scripts in **prop dialog -> scripts tab**.
+
+You can set a prop's scripts (*e.g.,* an actor's scripts):
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+            generator.type('CHARACTER')
+                .name('Eula')
+                .scripts("Good Morning\\n\\nHow's your day???")
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+            })
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 0,
+          }
+        },
+        "type": "CHARACTER",
+        "name": "Eula",
+        "scripts": "Good Morning\n\nHow's your day???"
+      }
+    ]`}/>
+
+<SceneWithSelection tabSelected={'SCRIPTS'}
+                    propSelected={'Eula'}
+                    {...sceneScripts} />
+
+
+## Note
+
+You can check the prop's note in **prop dialog -> general tab**.
+
+You can set a prop's note:
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+            generator.type('TABLE')
+                .name('Great Table')
+                .note("Some note")
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+            })
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "images": [],
+        "type": "TABLE",
+        "name": "Great Table",
+        "note": "Some note"
+      }
+    ]`}/>
+
+<SceneWithSelection propSelected={'Great Table'}
+                    {...sceneNote} />
+
+
+## Images
+
+You can check the prop's note in **prop dialog -> images tab**.
+
+**Clicking** the image gives you a full browser screen popup with that image.
+
+You can set a prop's images:
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+        generator.type('LIGHT')
+            .name("Here's LIGHT")
+            .addImage("https://s2.loli.net/2022/04/16/YwqJ74RUlGaCv6H.jpg","Light Style 1")
+            .addImage("https://s2.loli.net/2022/04/16/2MOenGxdwJPl1Hz.jpg","Light Style 2")
+            .addImage("https://s2.loli.net/2022/03/16/KZw7yAWXudMGL21.png")
+            .addPosition((positionGenerator) => {
+                positionGenerator.x(0).y(0)
+            })
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "images": [
+          {
+            "title": "Light Style 1",
+            "imageURL": "https://s2.loli.net/2022/04/16/YwqJ74RUlGaCv6H.jpg"
+          },
+          {
+            "title": "Light Style 2",
+            "imageURL": "https://s2.loli.net/2022/04/16/2MOenGxdwJPl1Hz.jpg"
+          },
+          {
+            "imageURL": "https://s2.loli.net/2022/03/16/KZw7yAWXudMGL21.png"
+          }
+        ],
+        "type": "LIGHT",
+        "name": "Here's LIGHT"
+      }
+    ]`}/>
+
+<SceneWithSelection propSelected={"Here's LIGHT"}
+                    tabSelected={'IMAGES'}
+                    {...sceneImages} />
+
+
+## Steps
+
+You can check the prop's steps in **prop dialog -> steps tab**.
+
+:::info
+
+Steps are sorted by the step number.
+
+A step's title and content are both **optional**.
+
+You also don't have to follow a sequential order.
+
+:::
+
+You can set a prop's steps (*e.g.,* steps *n* -> do something):
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+        generator.type('SHELF')
+            .name("Bookcase")
+            .addStep(5)
+            .addStep(1, "Move this", "I mean move this")
+            .addStep(2, "Paint this")
+            .addStep(3, null, "I have empty title")
+            .addPosition((positionGenerator) => {
+            positionGenerator.x(0).y(0)
+        })
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "images": [],
+        "steps": {
+          "1": {
+            "title": "Move this",
+            "content": "I mean move this"
+          },
+          "2": {
+            "title": "Paint this"
+          },
+          "3": {
+            "title": null,
+            "content": "I have empty title"
+          },
+          "5": {}
+        },
+        "type": "SHELF",
+        "name": "Bookcase"
+      }
+    ]`}/>
+
+<SceneWithSelection propSelected={"Bookcase"}
+                    tabSelected={'STEPS'}
+                    {...sceneSteps} />

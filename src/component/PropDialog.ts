@@ -110,8 +110,8 @@ export class PropDialog extends SceneComponent {
 
             addTitleTab(Tab.GENERAL, "General Information", true, "bi", "bi-boxes")
             addTitleTab(Tab.SCRIPTS, "Scripts", selectedProp.scripts, "bi", "bi-journal-bookmark-fill")
-            addTitleTab(Tab.STEPS, "Steps", selectedProp.steps, "bi", "bi-123")
-            addTitleTab(Tab.IMAGES, "Images", selectedProp.images, "bi", "bi-image-fill")
+            addTitleTab(Tab.STEPS, "Steps", selectedProp.steps && Object.keys(selectedProp.steps).length > 0, "bi", "bi-123")
+            addTitleTab(Tab.IMAGES, "Images", selectedProp.images && selectedProp.images.length > 0, "bi", "bi-image-fill")
             if(this.scene.config.showDialogDebugTab){
                 addTitleTab(Tab.DEBUG, "Debug Information", this.scene.config.showDialogDebugTab, "bi", "bi-bug")
             }

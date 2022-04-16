@@ -49,7 +49,7 @@ export const SceneOnlyShort = ({scene, uid}) => {
         {
             () =>
                 <div className='docs__actions'>
-                    <SceneComponent scene={scene} uid={uid} width={'100%'} height={'450px'}/>
+                    <SceneComponent scene={scene} uid={uid} width={'100%'} height={'460px'}/>
                 </div>
 
         }
@@ -827,13 +827,59 @@ export const sceneScripts = getCustomScene(() => {
     return new GlobalConfigGenerator()
         .defaultOpenPropList(false)
         .defaultOpenToolbar(false)
-        .viewOffset(1.8)
         .addProp((generator) => {
             generator.type('CHARACTER')
                 .name('Eula')
                 .scripts("Good Morning\n\nHow's your day???")
                 .addPosition((positionGenerator) => {
-                    positionGenerator.x(0).y(0).scale(10)
+                    positionGenerator.x(0).y(0)
                 })
+        }).getConfig()
+})
+
+export const sceneNote = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE')
+                .name('Great Table')
+                .note("Some note")
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+                })
+        }).getConfig()
+})
+
+export const sceneImages = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('LIGHT')
+                .name("Here's LIGHT")
+                .addImage("https://s2.loli.net/2022/04/16/YwqJ74RUlGaCv6H.jpg","Light Style 1")
+                .addImage("https://s2.loli.net/2022/04/16/2MOenGxdwJPl1Hz.jpg","Light Style 2")
+                .addImage("https://s2.loli.net/2022/03/16/KZw7yAWXudMGL21.png")
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(0).y(0)
+                })
+        }).getConfig()
+})
+
+export const sceneSteps = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('SHELF')
+                .name("Bookcase")
+                .addStep(5)
+                .addStep(1, "Move this", "I mean move this")
+                .addStep(2, "Paint this")
+                .addStep(3, null, "I have empty title")
+                .addPosition((positionGenerator) => {
+                positionGenerator.x(0).y(0)
+            })
         }).getConfig()
 })
