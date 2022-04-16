@@ -1,0 +1,88 @@
+---
+title: Enable, Disable and Hide
+sidebar_position: 6
+---
+
+import {
+    GeneratorConfigBlock,
+    GeneratorWithPropConfigBlock, sceneEnableDisableHide, SceneOnlyShort, sceneRotation,
+    sceneScale
+} from "../../../src/components/Scene/SceneComponents";
+
+You can enable/disable or hide a prop at any frame:
+
+* Enable/Disable affects the prop's icon style
+* Hide/Show affects the prop's opacity
+
+By default, a prop's `enabled` with opacity set to `1`.
+
+<GeneratorConfigBlock
+    generator={
+`new GlobalConfigGenerator()
+    .addProp((generator) => {
+        generator.type('TABLE').addPosition((positionGenerator) => {
+            positionGenerator.x(50).y(50).degree(60)
+        }).addPosition((positionGenerator) => {
+            positionGenerator.x(90).y(90).degree(180).scale(2)
+        }, 2).addPosition((positionGenerator) => {
+            positionGenerator.x(90).y(90).degree(300).scale(3)
+        }, 3).shouldDisplayName(false)
+    })
+    .addProp((generator) => {
+        generator.type('CHARACTER').addPosition((positionGenerator) => {
+            positionGenerator.x(200).y(200)
+        }).addPosition((positionGenerator) => {
+            positionGenerator.x(50).y(50).degree(-40)
+        }, 2).addPosition((positionGenerator) => {
+            positionGenerator.x(90).y(90).degree(80)
+        }, 3)
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 50,
+            "y": 50,
+            "degree": 60
+          },
+          "2": {
+            "x": 90,
+            "y": 90,
+            "degree": 180,
+            "scaleX": 2,
+            "scaleY": 2
+          },
+          "3": {
+            "x": 90,
+            "y": 90,
+            "degree": 300,
+            "scaleX": 3,
+            "scaleY": 3
+          }
+        },
+        "type": "TABLE",
+        "shouldDisplayName": false
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 200,
+            "y": 200
+          },
+          "2": {
+            "x": 50,
+            "y": 50,
+            "degree": -40
+          },
+          "3": {
+            "x": 90,
+            "y": 90,
+            "degree": 80
+          }
+        },
+        "type": "CHARACTER"
+      }
+    ]`} />
+
+<SceneOnlyShort {...sceneEnableDisableHide} />

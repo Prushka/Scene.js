@@ -57,13 +57,13 @@ export const SceneOnlyShort = ({scene, uid}) => {
 }
 
 export const SceneWithSelection = ({scene, uid, propSelected, tabSelected}) => {
-    scene.setAfterRender(()=>{
+    scene.setAfterRender(() => {
         const prop = scene.propCtx.getPropByName(propSelected)
-        if(prop){
+        if (prop) {
             scene.propCtx.selectedProp = prop
-            if(tabSelected){
+            if (tabSelected) {
                 const propDialog = scene.propDialogComponent
-                if(propDialog){
+                if (propDialog) {
                     propDialog.selectTab(tabSelected)
                 }
             }
@@ -858,8 +858,8 @@ export const sceneImages = getCustomScene(() => {
         .addProp((generator) => {
             generator.type('LIGHT')
                 .name("Here's LIGHT")
-                .addImage("https://s2.loli.net/2022/04/16/YwqJ74RUlGaCv6H.jpg","Light Style 1")
-                .addImage("https://s2.loli.net/2022/04/16/2MOenGxdwJPl1Hz.jpg","Light Style 2")
+                .addImage("https://s2.loli.net/2022/04/16/YwqJ74RUlGaCv6H.jpg", "Light Style 1")
+                .addImage("https://s2.loli.net/2022/04/16/2MOenGxdwJPl1Hz.jpg", "Light Style 2")
                 .addImage("https://s2.loli.net/2022/03/16/KZw7yAWXudMGL21.png")
                 .addPosition((positionGenerator) => {
                     positionGenerator.x(0).y(0)
@@ -879,8 +879,8 @@ export const sceneSteps = getCustomScene(() => {
                 .addStep(2, "Paint this")
                 .addStep(3, null, "I have empty title")
                 .addPosition((positionGenerator) => {
-                positionGenerator.x(0).y(0)
-            })
+                    positionGenerator.x(0).y(0)
+                })
         }).getConfig()
 })
 
@@ -891,9 +891,9 @@ export const sceneExtraKeys = getCustomScene(() => {
         .defaultOpenToolbar(false)
         .addProp((generator) => {
             generator.type('LIGHT').name('Brand')
-                .addData('brand',"I have a brand!")
-                .addData('light type',"hard")
-                .addData('color temperature',"5000")
+                .addData('brand', "I have a brand!")
+                .addData('light type', "hard")
+                .addData('color temperature', "5000")
                 .addPosition((positionGenerator) => {
                     positionGenerator.x(0).y(0)
                 })
@@ -906,12 +906,107 @@ export const sceneExtraKeysExclude = getCustomScene(() => {
         .defaultOpenToolbar(false)
         .addProp((generator) => {
             generator.type('LIGHT').name('Brand')
-                .addData('brand',"I have a brand!")
-                .addData('light type',"hard")
-                .addData('color temperature',"5000")
+                .addData('brand', "I have a brand!")
+                .addData('light type', "hard")
+                .addData('color temperature', "5000")
                 .addExcludeKey('style', 'color temperature')
                 .addPosition((positionGenerator) => {
                     positionGenerator.x(0).y(0)
                 })
+        }).getConfig()
+})
+
+export const sceneMultipleFrames = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE').addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50)
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90)
+            }, 2)
+        })
+        .addProp((generator) => {
+            generator.type('CAMERA').addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200)
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50)
+            }, 2)
+        }).getConfig()
+})
+
+
+export const sceneScale = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE').addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50).scaleY(2)
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).scaleX(2)
+            }, 2).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).scale(2)
+            }, 3).shouldDisplayName(false)
+        })
+        .addProp((generator) => {
+            generator.type('CHARACTER').addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200).scale(0.5)
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50).scale(2)
+            }, 2).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).scale(1)
+            }, 3)
+        }).getConfig()
+})
+
+
+export const sceneRotation = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE').addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50).degree(60)
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).degree(180).scale(2)
+            }, 2).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).degree(300).scale(3)
+            }, 3).shouldDisplayName(false)
+        })
+        .addProp((generator) => {
+            generator.type('CHARACTER').addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200)
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50).degree(-40)
+            }, 2).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).degree(80)
+            }, 3)
+        }).getConfig()
+})
+
+
+export const sceneEnableDisableHide = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .addProp((generator) => {
+            generator.type('TABLE').addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50).hide()
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).show()
+            }, 2).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).hide()
+            }, 3).shouldDisplayName(false)
+        })
+        .addProp((generator) => {
+            generator.type('CHARACTER').addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200)
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50).degree(-40)
+            }, 2).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).degree(80)
+            }, 3)
         }).getConfig()
 })

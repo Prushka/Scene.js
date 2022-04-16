@@ -45,6 +45,17 @@ The library uses Webpack to bundle its TypeScript files.
 
 Bootstrap icon font is used for button icons and props.
 
+:::caution
+
+Even though some part of this library uses SVG tags (including `<g>`, `<path>`).
+
+DOM manipulation were mainly used to layer them, 
+apply different attributes to different layers of elements and attach event listeners.
+
+Apart from the SVG part, the library also contains a large amount of DOM manipulation (see **[User - Interactions](user-interactions/timeline)**).
+
+:::
+
 ## Create a scene
 
 :::tip

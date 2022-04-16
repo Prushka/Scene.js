@@ -31,7 +31,7 @@ import {
     sceneDefaultTransitionFunction,
     sceneTransitionFunctionEaseInOut,
     sceneViewOffsetDefault,
-    sceneViewOffset09, sceneCreateProp, GeneratorWithPropConfigBlock
+    sceneViewOffset09, sceneCreateProp, GeneratorWithPropConfigBlock, sceneMultipleFrames, sceneOnePropFrame2
 } from "../../../src/components/Scene/SceneComponents";
 
 
@@ -96,3 +96,55 @@ The scene is considered dynamic if any of the following conditions are met:
 * A prop contains more than 1 frame of animation configs
 * Multiple props and not all props contain animation configs at the same frame
 
+### Multiple frames
+
+<GeneratorConfigBlock
+    generator={
+        `new GlobalConfigGenerator()
+    .addProp((generator) => {
+            generator.type('TABLE').addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50)
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90)
+            }, 2)
+        })
+    .addProp((generator) => {
+        generator.type('CAMERA').addPosition((positionGenerator) => {
+            positionGenerator.x(200).y(200)
+        }).addPosition((positionGenerator) => {
+            positionGenerator.x(50).y(50)
+        }, 2)
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 50,
+            "y": 50
+          },
+          "2": {
+            "x": 90,
+            "y": 90
+          }
+        },
+        "type": "TABLE"
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 200,
+            "y": 200
+          },
+          "2": {
+            "x": 50,
+            "y": 50
+          }
+        },
+        "type": "CAMERA"
+      }
+    ]`} />
+
+<SceneOnlyShort {...sceneCreateProp} />
+
+<SceneOnlyShort {...sceneMultipleFrames} />
