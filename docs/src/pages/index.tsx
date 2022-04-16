@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
-import {SceneComponent, sceneDemo} from "@site/src/components/Scene/SceneComponents";
+import {SceneComponent, sceneDemo, sceneDemoLanding} from "@site/src/components/Scene/SceneComponents";
+import BrowserOnly from "@docusaurus/BrowserOnly";
 
 function CustomLink({children, className, to}) {
     return (<Link className={`${styles.mainButton} ${className}`} to={to}>
@@ -56,14 +57,30 @@ function HomepageHeader() {
 
 export default function Home(): JSX.Element {
     const {siteConfig} = useDocusaurusContext();
-    return (
-        <Layout
-            title={`Scene.js`}
-            description="Scene.js for scene blocking and staging">
-            <HomepageHeader/>
-            <main className={styles.mainContainer}>
-                <SceneComponent {...sceneDemo} width={'90%'} height={'800px'}/>
-            </main>
-        </Layout>
+    const {scene, uid} = sceneDemoLanding;
+    // I don't know why useEffect gets called before DOM ready if a page is first loaded in
+    const [isLoaded, setLoaded] = useState(false)
+    useEffect(() => {
+        setLoaded(true)
+    }, [])
+    useEffect(()=>{
+        if(isLoaded){
+            scene.display()
+        }
+    },[isLoaded])
+    return (<BrowserOnly>
+        {
+            () =>
+                <Layout
+                    title={`Scene.js`}
+                    description="Scene.js for scene blocking and staging">
+                    <HomepageHeader/>
+                    <main className={styles.mainContainer}>
+                        <div id={uid} style={{width: '90%', height: '800px'}}></div>
+                    </main>
+                </Layout>
+
+        }
+    </BrowserOnly>
     );
 }

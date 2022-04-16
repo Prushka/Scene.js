@@ -192,8 +192,8 @@ export class Scene {
 
         const render = () => {
             const root = document.getElementById(this.rootContainerId)
-            if (!console) {
-                console.warn('Scene: scene display has been called but root container cannot be found')
+            if (!root) {
+                console.warn(`Scene: display() has been called but root container: ${this.rootContainerId} cannot be found`)
                 return
             }
             root.innerHTML = ''

@@ -1132,6 +1132,10 @@ export const sceneDemo = getCustomScene(() => {
     return getDemoGlobalConfigGenerator().getConfig()
 })
 
+export const sceneDemoLanding = getCustomScene(() => {
+    return getDemoGlobalConfigGenerator().getConfig()
+})
+
 export const sceneDemoShort = getCustomScene(() => {
     return getDemoGlobalConfigGenerator().getConfig()
 })
