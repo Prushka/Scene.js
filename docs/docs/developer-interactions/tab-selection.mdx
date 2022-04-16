@@ -1,0 +1,47 @@
+---
+title: Tab Selection
+sidebar_position: 3
+description: Get and set selected prop's dialog tab
+---
+
+import BrowserOnly from "@docusaurus/BrowserOnly";
+import {
+    CodeBlockWithAction, SceneComponent,
+    sceneDeveloperInteractionManualSelection, sceneDeveloperInteractionTabSelection
+} from "../../src/components/Scene/SceneComponents";
+
+export const SceneCustomComponent = ({scene, uid}) => {
+    return (<BrowserOnly>
+        {
+            () =>
+                <div className='docs__actions'>
+                    <CodeBlockWithAction title={'Select a prop and its images tab: '}
+                                         buttonText={`Click to select prop: 'Select Me' and its 'IMAGES' dialog tab`}
+                                         scene={scene}
+                                         action={`const prop = scene.propCtx.getPropByName('Select Me')
+if(prop){
+    scene.propCtx.selectedProp = prop
+    const propDialog = scene.propDialogComponent
+    if (propDialog) {
+        propDialog.selectTab('IMAGES')
+    }
+}`}/>
+                    <CodeBlockWithAction title={'Select another tab: '}
+                                         buttonText={`Click to select 'STEPS' dialog tab`}
+                                         scene={scene}
+                                         action={`const prop = scene.propCtx.selectedProp
+if(prop){
+    const propDialog = scene.propDialogComponent
+    if (propDialog) {
+        propDialog.selectTab('STEPS')
+    }
+}else{
+    scene.snackbarCtx.error('You need to select a prop first')
+}`}/>
+                    <SceneComponent scene={scene} uid={uid} width={'100%'} height={'650px'}/>
+                </div>
+        }
+    </BrowserOnly>)
+}
+
+<SceneCustomComponent {...sceneDeveloperInteractionTabSelection}/>

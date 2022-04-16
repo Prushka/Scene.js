@@ -198,12 +198,20 @@ export const sceneUserInteractionPropDialog = getCustomScene(() => {
 export const sceneUserInteractionViewport = getCustomScene(() => {
     return new GlobalConfigGenerator().withFrameSpeed().withProps().getConfig()
 })
-export const sceneDeveloperInteractionManualSelection = getCustomScene(() => {
+
+function getPropSelectionDemo() {
     const config = new GlobalConfigGenerator().withFrameSpeed(1).withProps(1, 3).getConfig()
     config.props.push(
         new PropConfigGenerator().asRandom().shouldDisplayName(true).name('Select Me').withPosition(3).getConfig()
     )
     return config
+}
+export const sceneDeveloperInteractionManualSelection = getCustomScene(() => {
+    return getPropSelectionDemo()
+})
+
+export const sceneDeveloperInteractionTabSelection = getCustomScene(() => {
+    return getPropSelectionDemo()
 })
 
 export const sceneNoToolbar = getCustomScene(() => {
