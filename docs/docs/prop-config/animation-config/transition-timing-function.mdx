@@ -1,0 +1,111 @@
+---
+title: Transition Timing Function
+sidebar_position: 7
+---
+
+import {
+    GeneratorConfigBlock,
+    GeneratorWithPropConfigBlock,
+    sceneEnableDisableHide,
+    SceneOnlyShort,
+    scenePropTransitionTimingFunction,
+    sceneRotation,
+    sceneScale
+} from "../../../src/components/Scene/SceneComponents";
+
+You can set a prop's transition timing function at a given frame.
+
+* By default, if a transition timing function is not provided, the prop will use the global `transitionTimingFunction` (see **[Global Config](../../global-config/animation/transition-timing-function)**).
+
+<GeneratorConfigBlock
+    generator={
+`new GlobalConfigGenerator()
+    .addProp((generator) => {
+        generator.type('TABLE').addPosition((positionGenerator) => {
+            positionGenerator.x(50).y(50).transitionTimingFunction('ease-in')
+        }).addPosition((positionGenerator) => {
+            positionGenerator.x(90).y(90).transitionTimingFunction('ease-out')
+        }, 2).addPosition((positionGenerator) => {
+            positionGenerator.x(90).y(90)
+        }, 3).addPosition((positionGenerator) => {
+            positionGenerator.x(90).y(90)
+        }, 4).addPosition((positionGenerator) => {
+            positionGenerator.x(200).y(0).transitionTimingFunction('steps(5, jump-both)')
+        }, 5).shouldDisplayName(false)
+    })
+    .addProp((generator) => {
+        generator.type('CHARACTER').addPosition((positionGenerator) => {
+            positionGenerator.x(200).y(200).transitionTimingFunction('steps(4, jump-start)')
+        }).addPosition((positionGenerator) => {
+            positionGenerator.x(50).y(50).transitionTimingFunction('ease, step-start, cubic-bezier(0.1, 0.7, 1.0, 0.1)')
+        }, 2).addPosition((positionGenerator) => {
+            positionGenerator.x(90).y(90)
+        }, 3).addPosition((positionGenerator) => {
+            positionGenerator.x(150).y(150).transitionTimingFunction('cubic-bezier(0.1, 0.7, 1.0, 0.1)')
+        }, 4).addPosition((positionGenerator) => {
+            positionGenerator.x(100).y(90).transitionTimingFunction('cubic-bezier(.09,.93,.36,1.14)')
+        }, 5)
+    })`}
+    config={
+        `config.props = [
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 50,
+            "y": 50,
+            "transitionTimingFunction": "ease-in"
+          },
+          "2": {
+            "x": 90,
+            "y": 90,
+            "transitionTimingFunction": "ease-out"
+          },
+          "3": {
+            "x": 90,
+            "y": 90
+          },
+          "4": {
+            "x": 90,
+            "y": 90
+          },
+          "5": {
+            "x": 200,
+            "y": 0,
+            "transitionTimingFunction": "steps(5, jump-both)"
+          }
+        },
+        "type": "TABLE",
+        "shouldDisplayName": false
+      },
+      {
+        "frameAnimationConfig": {
+          "1": {
+            "x": 200,
+            "y": 200,
+            "transitionTimingFunction": "steps(4, jump-start)"
+          },
+          "2": {
+            "x": 50,
+            "y": 50,
+            "transitionTimingFunction": "ease, step-start, cubic-bezier(0.1, 0.7, 1.0, 0.1)"
+          },
+          "3": {
+            "x": 90,
+            "y": 90
+          },
+          "4": {
+            "x": 150,
+            "y": 150,
+            "transitionTimingFunction": "cubic-bezier(0.1, 0.7, 1.0, 0.1)"
+          },
+          "5": {
+            "x": 100,
+            "y": 90,
+            "transitionTimingFunction": "cubic-bezier(.09,.93,.36,1.14)"
+          }
+        },
+        "type": "CHARACTER"
+      }
+    ]`} />
+
+<SceneOnlyShort autoPlay={true} {...scenePropTransitionTimingFunction} />

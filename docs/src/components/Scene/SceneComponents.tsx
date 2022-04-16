@@ -1019,3 +1019,37 @@ export const sceneEnableDisableHide = getCustomScene(() => {
             }, 4)
         }).getConfig()
 })
+
+export const scenePropTransitionTimingFunction = getCustomScene(() => {
+    return new GlobalConfigGenerator()
+        .defaultOpenPropList(false)
+        .defaultOpenToolbar(false)
+        .withFrameSpeed(4, 2)
+        .withFrameSpeed(5, 2)
+        .addProp((generator) => {
+            generator.type('TABLE').addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50).transitionTimingFunction('ease-in')
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90).transitionTimingFunction('ease-out')
+            }, 2).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90)
+            }, 3).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90)
+            }, 4).addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(0).transitionTimingFunction('steps(5, jump-both)')
+            }, 5).shouldDisplayName(false)
+        })
+        .addProp((generator) => {
+            generator.type('CHARACTER').addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(200).transitionTimingFunction('steps(4, jump-start)')
+            }).addPosition((positionGenerator) => {
+                positionGenerator.x(50).y(50).transitionTimingFunction('ease, step-start, cubic-bezier(0.1, 0.7, 1.0, 0.1)')
+            }, 2).addPosition((positionGenerator) => {
+                positionGenerator.x(90).y(90)
+            }, 3).addPosition((positionGenerator) => {
+                positionGenerator.x(150).y(150).transitionTimingFunction('cubic-bezier(0.1, 0.7, 1.0, 0.1)')
+            }, 4).addPosition((positionGenerator) => {
+                positionGenerator.x(100).y(90).transitionTimingFunction('cubic-bezier(.09,.93,.36,1.14)')
+            }, 5)
+        }).getConfig()
+})
