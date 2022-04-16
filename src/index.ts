@@ -206,12 +206,11 @@ export class Scene {
                                     <div id="${this.ids.ROOT_FOOTER}" class="footer-container"></div>
                                     <div id="${this.ids.ROOT_OVERLAY}" class="overlay-container"></div>`
             root.append(container)
-            const v = this.config.renderMethod === 'canvas' ? ViewCanvas : ViewSVG
             if (this.config.displayPropList) {
                 this.register(PropList)
             }
 
-            this.viewComponent = this.register(v)
+            this.viewComponent = this.register(ViewSVG)
             this.propDialogComponent = this.register(PropDialog)
             this.footerComponent = this.register(Footer)
             this.register(Snackbar)
@@ -457,9 +456,11 @@ export class PositionConfigGenerator extends ConfigGenerator<AnimationConfig> {
         return this
     }
 
-    public thumbnail(imageURL: string) {
+    public thumbnail(imageURL: string, width?: number, height?: number) {
         this.config.thumbnail = {
-            imageURL: imageURL
+            imageURL: imageURL,
+            width: width,
+            height: height
         }
         return this
     }

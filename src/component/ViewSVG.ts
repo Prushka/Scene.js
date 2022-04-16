@@ -70,6 +70,9 @@ export class ViewSVG extends View {
                             if (newPosition.thumbnail.width) {
                                 storyboard.setAttributeNS(null, 'width', String(newPosition.thumbnail.width))
                             }
+                            if (newPosition.thumbnail.imageURL) {
+                                storyboard.setAttributeNS('http://www.w3.org/1999/xlink', 'href', newPosition.thumbnail.imageURL)
+                            }
                         }
                     }
                     groupElement.setAttribute("transform", `translate(${newPosition.x}, ${newPosition.y}) rotate(${newPosition.degree}) scale(${newPosition.scaleX} ${newPosition.scaleY})`)
