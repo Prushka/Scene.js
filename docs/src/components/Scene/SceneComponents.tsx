@@ -921,7 +921,7 @@ export const sceneExtraKeysExclude = getCustomScene(() => {
         }).getConfig()
 })
 
-export const sceneMultipleFrames = getCustomScene(() => {
+function getDemoMultipleFrame () {
     return new GlobalConfigGenerator()
         .defaultOpenPropList(false)
         .defaultOpenToolbar(false)
@@ -938,9 +938,16 @@ export const sceneMultipleFrames = getCustomScene(() => {
             }).addPosition((positionGenerator) => {
                 positionGenerator.x(50).y(50)
             }, 2)
-        }).getConfig()
+        })
+}
+
+export const sceneMultipleFrames = getCustomScene(() => {
+    return getDemoMultipleFrame().getConfig()
 })
 
+export const sceneIntroDemo = getCustomScene(() => {
+    return getDemoMultipleFrame().defaultOpenPropList(true).autoPlay(true).getConfig()
+})
 
 export const sceneScale = getCustomScene(() => {
     return new GlobalConfigGenerator()

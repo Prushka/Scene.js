@@ -1,26 +1,50 @@
-<!--
-  ~ Copyright 2022 Dan Lyu.
-  -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Scene.js demo</title>
-
-    <link rel="stylesheet" href="examples.css">
     <script type="text/javascript" src="js/scene.js"></script>
-
-    <script defer>
-        const scene = sceneBlocking.getDemoScene('container')
-        scene.display(true)
-    </script>
 <body>
-<!--Inline styles are used to create a simple example app, this will be refactored in a landing page-->
 
-<div class="container" id="container">
-</div>
+<div id="some-container-id" style="width: 800px; height: 600px"></div>
+
+<script defer>
+    const config = {
+        "frameSpeed": {},
+        "props": [
+            {
+                "frameAnimationConfig": {
+                    "1": {
+                        "x": 50,
+                        "y": 50
+                    },
+                    "2": {
+                        "x": 90,
+                        "y": 90
+                    }
+                },
+                "type": "TABLE"
+            },
+            {
+                "frameAnimationConfig": {
+                    "1": {
+                        "x": 200,
+                        "y": 200
+                    },
+                    "2": {
+                        "x": 50,
+                        "y": 50
+                    }
+                },
+                "type": "CAMERA"
+            }
+        ],
+        "defaultOpenToolbar": false,
+        "autoPlay": true
+    }
+    const scene = new SceneJS.Scene('some-container-id', config)
+    scene.display();
+</script>
+
 </body>
 </html>

@@ -294,9 +294,13 @@ export class GlobalConfigGenerator extends ConfigGenerator<Config> {
         return this
     }
 
-    public withProps(props?: PropConfig[] | number, frames?: number) {
-        if (Array.isArray(props)) {
-            this.config.props = props
+    public withProps(props?: PropConfig[] | number | PropConfigGenerator[], frames?: number) {
+        if (Array.isArray(props) && props.length > 0) {
+            if (props[0] instanceof PropConfigGenerator) {
+                this.config.props = props.map(generator => generator.getConfig())
+            } else {
+                this.config.props = props as PropConfig[]
+            }
         } else {
             this.config.props = PropConfigGenerator.generateRandomProps(props ?? GlobalConfigGenerator.randomNumberOfProps, frames ?? GlobalConfigGenerator.randomFrames)
         }
@@ -692,9 +696,13 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         return this
     }
 
-    public withPosition(frame: number, position?: AnimationConfig) {
+    public withPosition(frame: number, position?: AnimationConfig | PositionConfigGenerator) {
         if (position) {
-            this.config.frameAnimationConfig[frame] = position
+            if (position instanceof PositionConfigGenerator) {
+                this.config.frameAnimationConfig[frame] = position.getConfig()
+            } else {
+                this.config.frameAnimationConfig[frame] = position
+            }
         } else {
             const s = {}
             for (let i = 0; i < frame; i++) {

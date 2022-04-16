@@ -6,7 +6,7 @@ module.exports = [{
     entry: "./src/index.ts",
     output: {
         library: {
-            name: 'sceneBlocking',
+            name: 'SceneJS',
             type: 'umd',
             umdNamedDefine: true
         },
@@ -34,7 +34,7 @@ module.exports = [{
     entry: "./src/index.ts",
     output: {
         library: {
-            name: 'sceneBlocking',
+            name: 'SceneJS',
             type: 'umd',
             umdNamedDefine: true
         },
