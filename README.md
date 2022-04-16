@@ -183,6 +183,8 @@ Note that I chose to include the entire `index.html` file in case any part is co
 <details>
     <summary>Code Snippet</summary>
 
+#### Using Global Config Generator Chaining
+
 ```html title="index.html"
 <!DOCTYPE html>
 <html lang="en">
@@ -221,6 +223,8 @@ Note that I chose to include the entire `index.html` file in case any part is co
 ```
 
 ---
+
+#### Using json config
 
 ```html
 <!DOCTYPE html>
@@ -276,6 +280,8 @@ Note that I chose to include the entire `index.html` file in case any part is co
 ```
 
 ---
+
+#### Using separate generators
 
 ```html
 <!DOCTYPE html>
