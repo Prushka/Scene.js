@@ -28,6 +28,34 @@ module.exports = [{
             }
         ]
     }
+},{
+    target: "web",
+    mode: "production",
+    entry: "./src/index.ts",
+    output: {
+        library: {
+            name: 'sceneBlocking',
+            type: 'umd',
+            umdNamedDefine: true
+        },
+        path: path.resolve(__dirname, './express/pub/js'),
+        filename: "scene-production.js",
+    },
+    resolve: {
+        extensions: ['.ts', '.js'],
+    },
+    module: {
+        rules: [
+            {
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
+            },
+            {
+                test: /\.tsx?$/,
+                loader: "ts-loader"
+            }
+        ]
+    }
 },
 //     {
 //     target: "web",

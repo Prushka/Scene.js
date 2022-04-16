@@ -25,7 +25,6 @@ import PropContext from "./context/PropContext";
 import ViewPortContext from "./context/ViewPortContext";
 import {useSnackbar} from "./context/SnackbarContext";
 import {useOverlay} from "./context/OverlayContext";
-import {ViewCanvas} from "./component/ViewCanvas";
 import View from "./component/View";
 import {useId} from "./context/IdContext";
 import {PropList} from "./component/PropList";
@@ -650,6 +649,14 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         }
     }
 
+    public asRandomDialogProperties() {
+        this.images()
+            .scripts()
+            .note()
+            .steps()
+        return this
+    }
+
     public asRandom() {
         this.type()
             .images()
@@ -692,6 +699,15 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
         return this
     }
 
+    public addPositions(f: (generator: PositionConfigGenerator) => void, frames: number[]) {
+        const generator = new PositionConfigGenerator()
+        f(generator)
+        frames.forEach(frame => {
+            this.withPosition(frame, {...generator.getConfig()})
+        })
+        return this
+    }
+
     static generateRandomProps(howMany, frames) {
         const s = []
         for (let i = 0; i < howMany; i++) {
@@ -702,6 +718,9 @@ export class PropConfigGenerator extends ConfigGenerator<PropConfig> {
 
 }
 
+
+// Creates a scene to demo built-in prop functionalities
+// Devs can use this as a boilerplate for global config experimenting
 
 export function getDemoScene(rootRootId): Scene {
     console.log(`Render demo scene in: ${rootRootId}`)
@@ -754,7 +773,137 @@ export function getDemoScene(rootRootId): Scene {
 }
 
 
-// Creates a scene to demo built-in prop functionalities
-// Devs can use this as a boilerplate for global config experimenting
+export function getDemoGlobalConfigGenerator() {
+    return new GlobalConfigGenerator()
+        .withFrameSpeed(1, 1)
+        .withFrameSpeed(2, 2)
+        .withFrameSpeed(3, 1)
+        .addProp((propGenerator) => {
+            propGenerator
+                .type('CAMERA')
+                .name('Behind Stage Camera')
+                .nameScale(0.5)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(50).y(50).degree(30)
+                }, 1)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(20).y(150)
+                }, 2)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(50).y(250).degree(-30)
+                }, 3)
+        })
+        .addProp((propGenerator) => {
+            propGenerator
+                .type('TABLE')
+                .name('Main Table')
+                .style('fillSquare')
+                .shouldDisplayName(false)
+                .addPositions((positionGenerator) => {
+                    positionGenerator.x(150).y(70).scale(8)
+                }, [1, 2, 3])
+        })
+        .addProp((propGenerator) => {
+            propGenerator
+                .type('CAMERA')
+                .name('Camera A')
+                .color('rgb(201,201,201)')
+                .addPositions((positionGenerator) => {
+                    positionGenerator.x(170).y(140).degree(210)
+                }, [1, 3])
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(170).y(120).degree(200)
+                }, 2)
+        })
+        .addProp((propGenerator) => {
+            propGenerator
+                .type('CAMERA')
+                .name('Camera B')
+                .color('rgb(199,199,199)')
+                .addPositions((positionGenerator) => {
+                    positionGenerator.x(230).y(140).degree(20)
+                }, [1, 3])
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(230).y(140).degree(0)
+                }, 2)
+        })
+        .addProp((propGenerator) => {
+            propGenerator
+                .type('SHELF')
+                .addData('texture', 'wood')
+                .shouldDisplayName(false)
+                .addPositions((positionGenerator) => {
+                    positionGenerator.x(400).y(150).degree(0)
+                }, [1, 2])
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(320).y(170).degree(0)
+                }, 3)
+        })
+        .addProp((propGenerator) => {
+            propGenerator
+                .type('CHARACTER')
+                .name('Emily')
+                .asRandomDialogProperties()
+                .addPositions((positionGenerator) => {
+                    positionGenerator.x(120).y(100).degree(20)
+                }, [1, 3])
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(120).y(100).degree(-20)
+                }, 2)
+        })
+        .addProp((propGenerator) => {
+            propGenerator
+                .type('CHARACTER')
+                .name('Elizabeth')
+                .asRandomDialogProperties()
+                .addPositions((positionGenerator) => {
+                    positionGenerator.x(290).y(170).degree(0).transitionTimingFunction('ease-in-out')
+                }, [1, 3])
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(380).y(160).degree(-10)
+                }, 2)
+        })
+        .addProp((propGenerator) => {
+            propGenerator
+                .type('CHARACTER')
+                .name('Eric')
+                .asRandomDialogProperties()
+                .addPositions((positionGenerator) => {
+                    positionGenerator.x(400).y(80).degree(100)
+                }, [1, 3])
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(250).y(20).degree(150)
+                }, 2)
+        })
+        .addProp((propGenerator) => {
+            propGenerator
+                .type('STORYBOARD')
+                .asRandomDialogProperties()
+                .shouldDisplayName(false)
+                .addPositions((positionGenerator) => {
+                    positionGenerator.x(80).y(150).thumbnail('https://s2.loli.net/2022/03/19/kfoHSKL792r4cvD.jpg', 250)
+                }, [1, 2, 3])
+        })
+        .addProp((propGenerator) => {
+            propGenerator
+                .type('LIGHT')
+                .name('Light 1')
+                .namePosition('bottom')
+                .nameScale(0.5)
+                .nameXOffset(8)
+                .nameYOffset(9)
+                .scripts('Good Morning')
+                .nameScale(0.5)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(230).y(60).degree(180).scale(2)
+                }, 1)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(230).y(60).degree(180).scale(2).disable()
+                }, 2)
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(230).y(60).degree(180).scale(2).enable()
+                }, 3)
+        })
+}
 
 console.log('Scene.js loaded')
