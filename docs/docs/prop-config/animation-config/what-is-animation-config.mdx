@@ -1,0 +1,70 @@
+---
+title: What is an animation config?
+sidebar_position: 1
+---
+
+import {
+    sceneUserInteractionPropDialog,
+    SceneOnly,
+    SceneOnlyShort,
+    sceneNoTimeline,
+    sceneNoToolbar,
+    sceneNoPropList,
+    GeneratorConfigBlock,
+    sceneNoTimelineToolbarPropList,
+    sceneHideToolbar,
+    sceneHidePropList,
+    sceneHideToolbarPropList,
+    sceneZoomInLimit,
+    SceneZoom,
+    sceneZoomStep,
+    sceneDialogMissing,
+    sceneDialogAll,
+    sceneDialogShowDebug,
+    sceneDialogShowDebugFlat,
+    sceneFrameSpeed124,
+    sceneFrameSpeedDefaultFS,
+    sceneFrameSpeedDefaultFS5s,
+    sceneSelectionSpeed,
+    sceneSelectionSpeed0,
+    sceneSelectionSpeed03,
+    sceneDefaultTransitionFunction,
+    sceneTransitionFunctionEaseInOut,
+    sceneViewOffsetDefault,
+    sceneViewOffset09, sceneCreateProp, GeneratorWithPropConfigBlock
+} from "../../../src/components/Scene/SceneComponents";
+
+An animation config describes the following data of the prop at **a specified frame**:
+
+* Position X and Position Y
+* Scale X and Scale Y
+* Rotation Degree
+* Enabled OR Disabled (affects its icon)
+* Hidden OR Visible
+* Transition Timing Function
+
+**Every property** listed above will be considered in the frame to frame transition of that prop.
+
+:::caution
+
+To not confuse the developer, **Position** and **Animation Config** will be used interchangeably.
+
+:::
+
+### Every position must be tied to one frame number
+
+You should set prop's frame number 1's position if your scene's static.
+
+This can be easily achieved using the generator:
+
+```js
+// Passing no frame into PropConfigGenerator's addPosition sets the animation config at frame 1
+new PropConfigGenerator().addPosition((positionGenerator) => {
+          positionGenerator.x(200).y(200)
+})
+
+// The following sets the animation config at frame 2
+new PropConfigGenerator().addPosition((positionGenerator) => {
+          positionGenerator.x(200).y(200)
+}, 2)
+```

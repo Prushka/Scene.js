@@ -1,6 +1,6 @@
 ---
-title: Create Props
-sidebar_position: 1
+title: Static / Dynamic Scene
+sidebar_position: 3
 ---
 
 import {
@@ -32,27 +32,12 @@ import {
     sceneTransitionFunctionEaseInOut,
     sceneViewOffsetDefault,
     sceneViewOffset09, sceneCreateProp, GeneratorWithPropConfigBlock
-} from "../../src/components/Scene/SceneComponents";
+} from "../../../src/components/Scene/SceneComponents";
 
-Even though you can create prop configs by
-either creating its **json** or using a **PropConfigGenerator**,
-you have to include it in the **Global Config's Prop List**.
 
-You can however interact with a scene's **PropContext** to modify your prop list.
+## Static Scene
 
-:::info
-
-We will only use `GlobalConfigGenerator.addProp` to demonstrate functionalities later since it uses an underlying `PropConfigGenerator`.
-
-:::
-
-There are 3 ways to create a prop. We will cover prop's properties later.
-
-* Create its json and add it to global config's **props**
-* Use a **PropConfigGenerator**
-  * `new GlobalConfigGenerator().addProp((generator)=>generator...)` (this gives you a callback with one instance of **PropConfigGenerator**)
-  * `const generator = new PropConfigGenerator()` and `generator.getConfig()` (This gives you a prop config object)
-
+A scene is considered **static** and won't display a **timeline** when all props have only 1 frame with frame number: `1`.
 
 <GeneratorWithPropConfigBlock
 propGenerator={
@@ -104,4 +89,10 @@ new GlobalConfigGenerator().withProps([table, camera])`
 
 <SceneOnlyShort {...sceneCreateProp} />
 
+## Dynamic Scene
+
+The scene is considered dynamic if any of the following conditions are met:
+
+* A prop contains more than 1 frame of animation configs
+* Multiple props and not all props contain animation configs at the same frame
 

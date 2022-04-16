@@ -1,6 +1,6 @@
 ---
-title: Create Props
-sidebar_position: 1
+title: Create Animation Configs
+sidebar_position: 2
 ---
 
 import {
@@ -32,27 +32,31 @@ import {
     sceneTransitionFunctionEaseInOut,
     sceneViewOffsetDefault,
     sceneViewOffset09, sceneCreateProp, GeneratorWithPropConfigBlock
-} from "../../src/components/Scene/SceneComponents";
+} from "../../../src/components/Scene/SceneComponents";
 
-Even though you can create prop configs by
-either creating its **json** or using a **PropConfigGenerator**,
-you have to include it in the **Global Config's Prop List**.
-
-You can however interact with a scene's **PropContext** to modify your prop list.
+Even though you can create position configs by
+either creating its **json** or using a **PositionConfigGenerator**,
+you have to include it in the **Prop Config's frameAnimationConfig**.
 
 :::info
 
-We will only use `GlobalConfigGenerator.addProp` to demonstrate functionalities later since it uses an underlying `PropConfigGenerator`.
+We will only use `PropConfigGenerator.addPosition` to demonstrate functionalities later since it uses an underlying `PositionConfigGenerator`.
 
 :::
 
-There are 3 ways to create a prop. We will cover prop's properties later.
+There are 3 ways to create a prop's position:
 
-* Create its json and add it to global config's **props**
-* Use a **PropConfigGenerator**
-  * `new GlobalConfigGenerator().addProp((generator)=>generator...)` (this gives you a callback with one instance of **PropConfigGenerator**)
-  * `const generator = new PropConfigGenerator()` and `generator.getConfig()` (This gives you a prop config object)
+* Create its json and add it to prop's **frameAnimationConfig**
+* Use a PositionConfigGenerator
+    * `new PropConfigGenerator().addPosition((generator)=>generator...)` (this gives you a callback with one instance of **PositionConfigGenerator**)
+    * `const generator = new PositionConfigGenerator()` and `generator.getConfig()` (This gives you an animation config object)
 
+
+### Required properties
+
+If you include a prop in the scene, it has to contain **at least 1 animation config** at any frame.
+
+For every animation config, the property **x** and **y** (which defines where the prop's going to be placed at that frame) are **required**.
 
 <GeneratorWithPropConfigBlock
 propGenerator={
