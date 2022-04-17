@@ -2,9 +2,11 @@
 
 # Landing / Docs Page:
 
-The site is deployed here: **[https://scene.muddy.ca](https://scene.muddy.ca)**
+The site is deployed here:
 
-In case anything went wrong, here's a Heroku deployment with the exact same content:
+**[https://scene.muddy.ca](https://scene.muddy.ca)**
+
+In case anything went wrong, here's a Heroku deployment with the **exact same content**:
 
 **[https://thawing-coast-29357.herokuapp.com](https://thawing-coast-29357.herokuapp.com)**
 
