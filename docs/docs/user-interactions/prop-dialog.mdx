@@ -6,10 +6,10 @@ description: Interact with the embedded prop dialog
 
 import {
     sceneUserInteractionPropDialog,
-    SceneOnly
+    SceneOnly, SceneWithSelection
 } from "../../src/components/Scene/SceneComponents";
 
-<SceneOnly {...sceneUserInteractionPropDialog}/>
+<SceneWithSelection useShort={false} propSelected={'Select Me'}  {...sceneUserInteractionPropDialog}/>
 
 ## Dialog
 

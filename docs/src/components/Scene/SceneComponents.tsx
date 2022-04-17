@@ -61,7 +61,7 @@ export const SceneOnlyShort = ({scene, uid, autoPlay = false}) => {
     </BrowserOnly>)
 }
 
-export const SceneWithSelection = ({scene, uid, propSelected, tabSelected}) => {
+export const SceneWithSelection = ({scene, uid, propSelected, tabSelected, useShort=true}) => {
     scene.addAfterRender(() => {
         const prop = scene.propCtx.getPropByName(propSelected)
         if (prop) {
@@ -77,7 +77,7 @@ export const SceneWithSelection = ({scene, uid, propSelected, tabSelected}) => {
     return (<BrowserOnly>
         {
             () =>
-                <SceneOnlyShort scene={scene} uid={uid}/>
+                useShort ? <SceneOnlyShort scene={scene} uid={uid}/> : <SceneOnly scene={scene} uid={uid}/>
         }
     </BrowserOnly>)
 }
@@ -195,7 +195,21 @@ export const sceneUserInteractionPropList = getCustomScene(() => {
     return new GlobalConfigGenerator().withFrameSpeed().showToolbar(false).showTimeline(false).withProps().getConfig()
 })
 export const sceneUserInteractionPropDialog = getCustomScene(() => {
-    return new GlobalConfigGenerator().withFrameSpeed().showToolbar(false).showTimeline(false).withProps().getConfig()
+    return new GlobalConfigGenerator()
+        .withFrameSpeed()
+        .showToolbar(false)
+        .showTimeline(false)
+        .withProps()
+        .addProp((generator) => {
+            generator.asRandomDialogProperties().type('LIGHT').name('Select Me')
+                .addData('brand',"I have a brand!")
+                .addData('light type',"hard")
+                .addData('color temperature',"5000")
+                .addPosition((positionGenerator) => {
+                    positionGenerator.x(22).y(200)
+                })
+        })
+        .getConfig()
 })
 export const sceneUserInteractionViewport = getCustomScene(() => {
     return new GlobalConfigGenerator().withFrameSpeed().withProps().getConfig()
