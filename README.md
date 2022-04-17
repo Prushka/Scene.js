@@ -34,8 +34,6 @@ They are located here and you can sort of view them using a markdown interpreter
 
 ## For the purpose of including a *Getting Started* here, I've included part of the intro:
 
----
-
 This is a **JavaScript** library. It can be used to display one or multiple instances of **scene(s)**.
 
 **Scene** refers to a stage or scene used in **theater and film** (See: **[Wikipedia](https://en.wikipedia.org/wiki/Blocking_(stage))**).
