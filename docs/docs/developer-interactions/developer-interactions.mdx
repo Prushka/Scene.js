@@ -30,11 +30,11 @@ All contexts are **instance based**, every action besides changing a *root scope
 You can directly interact with the library's states. They are bundled in separate contexts:
 
 * **scene.propCtx**: Contains selected prop, filtered props, filter / search, frames and timeline actions
-    * Search / Filter props
-    * Reset filter
-    * Select prop by prop config / id / prop name
-    * Get the selected prop
-    * Get all filtered props
+    * **[Search / Filter props](filter-props)**
+    * **[Reset Filter](filter-props)**
+    * **[Select prop by prop config / id / prop name](prop-selection)**
+    * **[Get the selected prop](prop-selection)**
+    * **[Get all filtered props](filter-props)**
     * Go to any frame
     * Go to the next frame
     * Check if a prop is enabled
@@ -46,7 +46,7 @@ You can directly interact with the library's states. They are bundled in separat
 * **[scene.snackbarCtx](embedded-snackbar)**: Controls the snackbar
     * Popup an embedded snackbar in the scene to display **error** or **success** message
 * **scene.overlayCtx**: Controls the overlay of the current scene
-    * Open a popup overlay with custom **HTMLElement** or **HTML string**
+    * Open a popup overlay with custom **HTMLElement** or **HTML string** **[Example in filter props](filter-props)**
     * Close the current popup overlay
 * **[scene.getViewportCtx()](../global-config/viewport/viewport-zoom)**: Controls the viewport zoom and offset
     * Zoom in or out
