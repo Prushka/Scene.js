@@ -160,13 +160,15 @@ export const SceneSnackbar = ({scene, uid}) => {
 }
 
 export const CodeBlockWithAction = ({title, buttonText, action, scene}) => {
-    return (<>
-        <h4>{title}</h4>
+    return (<div className={'action__card'}>
+        <div className={'action__header'}>
+            <h4>{title}</h4>
+            <Button className={'action__button'} onClick={() => eval(action)}>{buttonText}</Button>
+        </div>
         <CodeBlock language="js">
             {`${action}`}
         </CodeBlock>
-        <Button onClick={() => eval(action)}>{buttonText}</Button>
-    </>)
+    </div>)
 }
 
 export function getScene() {
@@ -1164,6 +1166,10 @@ export const sceneFilterPropsInteraction = getCustomScene(() => {
                 positionGenerator.x(200).y(100)
             })
         }).getConfig()
+})
+
+export const scenePlayPauseFrames = getCustomScene(() => {
+    return getDemoGlobalConfigGenerator().getConfig()
 })
 
 export const sceneDemo = getCustomScene(() => {

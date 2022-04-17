@@ -51,6 +51,10 @@ export class Footer extends SceneComponent {
     playing: State<boolean>
     timeouts = []
 
+    public isPlaying(){
+        return this.playing && this.playing.get()
+    }
+
     public play(v: boolean) {
         this.playing.set(v)
     }

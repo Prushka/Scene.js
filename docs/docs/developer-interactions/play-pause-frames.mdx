@@ -1,0 +1,44 @@
+---
+title: Play/Pause and Frames
+sidebar_position: 5
+description: Programmatically play / pause a scene and select frame
+---
+
+import BrowserOnly from "@docusaurus/BrowserOnly";
+import {
+    CodeBlockWithAction,
+    SceneComponent,
+    sceneDeveloperInteractionManualSelection,
+    sceneDeveloperInteractionTabSelection,
+    sceneFilterPropsInteraction,
+    scenePlayPauseFrames
+} from "../../src/components/Scene/SceneComponents";
+
+export const SceneCustomComponent = ({scene, uid}) => {
+    return (<BrowserOnly>
+        {
+            () =>
+                <div className='docs__actions'>
+                    <CodeBlockWithAction title={'Play / Pause:'}
+                                         buttonText={`Click to toggle the play status`}
+                                         scene={scene}
+                                         action={`scene.play(!scene.isPlaying())`}/>
+                    <CodeBlockWithAction title={'Select next frame:'}
+                                         buttonText={`Click to select the next frame`}
+                                         scene={scene}
+                                         action={`scene.propCtx.nextFrame()`}/>
+                    <CodeBlockWithAction title={'Select frame 1:'}
+                                         buttonText={`Click to select frame 1 (try to select a different frame first)`}
+                                         scene={scene}
+                                         action={`scene.propCtx.currentFrame = 1`}/>
+                    <CodeBlockWithAction title={'Get current frame:'}
+                                         buttonText={`Click to get the current frame`}
+                                         scene={scene}
+                                         action={`alert(scene.propCtx.currentFrame)`}/>
+                    <SceneComponent scene={scene} uid={uid} width={'100%'} height={'650px'}/>
+                </div>
+        }
+    </BrowserOnly>)
+}
+
+<SceneCustomComponent {...scenePlayPauseFrames}/>

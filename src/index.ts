@@ -181,6 +181,10 @@ export class Scene {
         this.footerComponent && this.footerComponent.play(v)
     }
 
+    public isPlaying() {
+        return this.footerComponent && this.footerComponent.isPlaying()
+    }
+
     public canRootBeFound() {
         return document.getElementById(this.rootContainerId) != null
     }
