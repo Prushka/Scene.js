@@ -1,6 +1,16 @@
 # Scene.js
 
-# Landing Page: [https://scene.muddy.ca](https://scene.muddy.ca)
+# Landing / Docs Page:
+
+The site is deployed here: [https://scene.muddy.ca](https://scene.muddy.ca)
+
+In case anything went wrong, here's a Heroku deployment with the exact same content:
+
+[https://thawing-coast-29357.herokuapp.com/docs](https://thawing-coast-29357.herokuapp.com/docs)
+
+Note that  the landing / docs website is static.
+
+---
 
 Every category contains multiple documents and/or subcategories.
 
