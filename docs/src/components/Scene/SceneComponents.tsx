@@ -206,6 +206,7 @@ function getPropSelectionDemo() {
     )
     return config
 }
+
 export const sceneDeveloperInteractionManualSelection = getCustomScene(() => {
     return getPropSelectionDemo()
 })
@@ -929,7 +930,7 @@ export const sceneExtraKeysExclude = getCustomScene(() => {
         }).getConfig()
 })
 
-function getDemoMultipleFrame () {
+function getDemoMultipleFrame() {
     return new GlobalConfigGenerator()
         .defaultOpenPropList(false)
         .defaultOpenToolbar(false)
@@ -1137,6 +1138,32 @@ export const sceneCustomPropTypes = getCustomScene(() => {
 
 export const sceneThemeInteraction = getCustomScene(() => {
     return getDemoGlobalConfigGenerator().getConfig()
+})
+
+export const sceneFilterPropsInteraction = getCustomScene(() => {
+    return getViewOffsetDemoGenerator().defaultOpenPropList(true).addProp((generator) => {
+        generator.type('TABLE').addPosition((positionGenerator) => {
+            positionGenerator.x(100).y(100)
+        })
+    })
+        .addProp((generator) => {
+            generator.type('CAMERA').addPosition((positionGenerator) => {
+                positionGenerator.x(150).y(150)
+            })
+        }).addProp((generator) => {
+            generator.type('TABLE').addPosition((positionGenerator) => {
+                positionGenerator.x(100).y(0)
+            })
+        })
+        .addProp((generator) => {
+            generator.type('CAMERA').addPosition((positionGenerator) => {
+                positionGenerator.x(0).y(100)
+            })
+        }).addProp((generator) => {
+            generator.type('CAMERA').addPosition((positionGenerator) => {
+                positionGenerator.x(200).y(100)
+            })
+        }).getConfig()
 })
 
 export const sceneDemo = getCustomScene(() => {

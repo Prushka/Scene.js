@@ -1,6 +1,6 @@
 ---
 title: Theme Interaction
-sidebar_position: 4
+sidebar_position: 10
 description: Get and set selected prop's dialog tab
 ---
 
@@ -23,6 +23,10 @@ export const SceneCustomComponent = ({scene, uid}) => {
                                          buttonText={`Click to change the theme to 'light'`}
                                          scene={scene}
                                          action={`scene.themeCtx.changeThemeByThemeName('light')`}/>
+                    <CodeBlockWithAction title={'Cycle to next theme: '}
+                                         buttonText={`Click to cycle themes`}
+                                         scene={scene}
+                                         action={`scene.themeCtx.next()`}/>
                     <CodeBlockWithAction title={'Get the current and next theme name:'}
                                          buttonText={`Click to get the current and next theme name`}
                                          scene={scene}
