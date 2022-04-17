@@ -145,6 +145,23 @@ export default class ThemeContext extends Context{
         return this._themeKeys[index]
     }
 
+    public getCurrentThemeName() {
+        return this.getThemeName(this._current.get())
+    }
+
+    public getNextThemeName() {
+        return this.getThemeName(this.nextThemeIndex)
+    }
+
+    public changeThemeByThemeName(name: string) {
+        for (let themeKey of this._themeKeys) {
+            if(themeKey.toLowerCase() === name.toLowerCase()){
+                this._current.set(this._themeKeys.indexOf(name))
+                this.renderTheme()
+            }
+        }
+    }
+
     public getNextThemeIndex(index: number) {
         let next = index + 1
         if (next >= this._themeKeys.length) {
@@ -154,7 +171,7 @@ export default class ThemeContext extends Context{
     }
 
     public get themeToDisplay() {
-        return `${this.getThemeName(this._current.get())} -> ${this.getThemeName(this.nextThemeIndex)}`
+        return `${this.getCurrentThemeName()} -> ${this.getNextThemeName()}`
     }
 
     public get nextThemeIndex() {

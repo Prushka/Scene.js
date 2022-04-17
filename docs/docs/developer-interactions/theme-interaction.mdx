@@ -1,0 +1,44 @@
+---
+title: Theme Interaction
+sidebar_position: 4
+description: Get and set selected prop's dialog tab
+---
+
+import BrowserOnly from "@docusaurus/BrowserOnly";
+import {
+    CodeBlockWithAction, SceneComponent,
+    sceneDeveloperInteractionManualSelection, sceneDeveloperInteractionTabSelection, sceneThemeInteraction
+} from "../../src/components/Scene/SceneComponents";
+
+export const SceneCustomComponent = ({scene, uid}) => {
+    return (<BrowserOnly>
+        {
+            () =>
+                <div className='docs__actions'>
+                    <CodeBlockWithAction title={'Change the theme to dark: '}
+                                         buttonText={`Click to change the theme to 'dark'`}
+                                         scene={scene}
+                                         action={`scene.themeCtx.changeThemeByThemeName('dark')`}/>
+                    <CodeBlockWithAction title={'Change the theme to light: '}
+                                         buttonText={`Click to change the theme to 'light'`}
+                                         scene={scene}
+                                         action={`scene.themeCtx.changeThemeByThemeName('light')`}/>
+                    <CodeBlockWithAction title={'Get the current and next theme name:'}
+                                         buttonText={`Click to get the current and next theme name`}
+                                         scene={scene}
+                                         action={`// Note that "Next Theme" refers to the name theme in the sequence (so that the user can cycle through all themes)
+scene.snackbarCtx.success(scene.themeCtx.getCurrentThemeName() + ' -> ' + scene.themeCtx.getNextThemeName())`}/>
+                    <SceneComponent scene={scene} uid={uid} width={'100%'} height={'650px'}/>
+                </div>
+        }
+    </BrowserOnly>)
+}
+
+:::caution CHECK [THEME CONFIG](../global-config/theme/theme-scope)
+
+Even though you can programmatically change all scenes' theme, you can achieve the same goal
+with the [theme scope config](../global-config/theme/theme-scope) and change a single instance of scene in your page.
+
+:::
+
+<SceneCustomComponent {...sceneThemeInteraction}/>

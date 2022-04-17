@@ -1135,6 +1135,9 @@ export const sceneCustomPropTypes = getCustomScene(() => {
         }).getConfig()
 })
 
+export const sceneThemeInteraction = getCustomScene(() => {
+    return getDemoGlobalConfigGenerator().getConfig()
+})
 
 export const sceneDemo = getCustomScene(() => {
     return getDemoGlobalConfigGenerator().getConfig()
