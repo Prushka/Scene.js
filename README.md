@@ -30,7 +30,7 @@ All my docs are written in `mdx` (essentially markdown with JSX).
 
 They are located here and you can sort of view them using a markdown interpreter (*e.g.,* Github):
 
-[https://github.com/csc309-winter-2022/js-library-lyudan1/tree/main/docs/docs](https://github.com/csc309-winter-2022/js-library-lyudan1/tree/main/docs/docs)
+[https://github.com/Prushka/Scene.js/tree/main/docs/docs](https://github.com/Prushka/Scene.js/tree/main/docs/docs)
 
 **Note that these files don't render any JSX content or my library's demo**, please refer to the landing page for more information.
 

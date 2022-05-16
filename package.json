@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/csc309-winter-2022/js-library-lyudan1.git"
+    "url": "git+https://github.com/Prushka/Scene.js.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/csc309-winter-2022/js-library-lyudan1/issues"
+    "url": "https://github.com/Prushka/Scene.js/issues"
   },
-  "homepage": "https://github.com/csc309-winter-2022/js-library-lyudan1#readme",
+  "homepage": "https://github.com/Prushka/Scene.js#readme",
   "dependencies": {
     "express": "^4.17.3",
     "ts-loader": "^9.2.8",
