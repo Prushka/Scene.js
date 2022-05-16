@@ -1,14 +1,12 @@
-# Scene.js
+# CSC309H1S Scene.js (Course Project)
+
+This is a JavaScript library built for *CSC309: Programming on the Web* at *University of Toronto*.
 
 # Landing / Docs Page:
 
 The site is deployed here:
 
 **[https://scene.muddy.ca](https://scene.muddy.ca)**
-
-In case anything went wrong, here's a Heroku deployment with the **exact same content**:
-
-**[https://thawing-coast-29357.herokuapp.com](https://thawing-coast-29357.herokuapp.com)**
 
 Note that  the landing / docs website is static.
 
