@@ -51,7 +51,7 @@ jobs:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
   notify-always:
-    needs: [ build-and-push-image ]
+    needs: [ build-and-push-image, deploy-image ]
     runs-on: ubuntu-latest
     steps:
       - name: Discord notification
