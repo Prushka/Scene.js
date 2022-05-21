@@ -28,6 +28,28 @@ jobs:
           push: true
           tags: meinya/scene.js:latest
 
+  deploy-image:
+    runs-on: ubuntu-latest
+    needs: build-and-push-image
+    timeout-minutes: 3
+    steps:
+      - name: Deploy using Post URI
+        id: posturi
+        uses: fjogeleit/http-request-action@v1
+        with:
+          preventFailureOnNoResponse: 'true'
+          timeout: 20000
+          url: ${{ secrets.DEPLOYMENT_WEBHOOK_URL }}
+          method: 'POST'
+
+      - name: Discord notification
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: info
+          details: Docker POST URI Invocation Results ${{ steps.posturi.outputs.response }}
+          color: '#2E8B57'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
   notify-always:
     needs: [ build-and-push-image ]
     runs-on: ubuntu-latest
