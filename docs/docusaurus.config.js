@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: 'Scene.js',
-    tagline: 'Scene blocking and staging vanilla JavaScript library for filmmakers and developers',
+    tagline: 'Scene blocking / staging vanilla JavaScript library for filmmakers and developers',
     url: 'https://scene.muddy.ca',
     baseUrl: '/',
     onBrokenLinks: 'throw',
