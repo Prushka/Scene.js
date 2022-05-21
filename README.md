@@ -1,6 +1,6 @@
 # CSC309H1S Scene.js (Course Project)
 
-This is a JavaScript library built for *CSC309: Programming on the Web* at *University of Toronto*.
+This is a JavaScript library (written in TypeScript) built for *CSC309: Programming on the Web* at *University of Toronto*.
 
 # Landing / Docs Page:
 
