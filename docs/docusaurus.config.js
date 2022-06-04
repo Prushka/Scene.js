@@ -10,11 +10,13 @@ const config = {
     tagline: 'Scene blocking / staging vanilla JavaScript library for filmmakers and developers',
     url: 'https://scene.muddy.ca',
     baseUrl: '/',
-    onBrokenLinks: 'throw',
+    onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
     organizationName: 'prushka', // Usually your GitHub org/user name.
-    projectName: 'docusaurus', // Usually your repo name.
+    projectName: 'Scene.js', // Usually your repo name.
+    deploymentBranch: 'gh-pages',
+    trailingSlash: false,
     themes: [
         [
             require.resolve("@easyops-cn/docusaurus-search-local"),
